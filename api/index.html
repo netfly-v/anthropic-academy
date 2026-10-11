@@ -31,6 +31,24 @@
         <ul class="lesson-nav">
           <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
         </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="quiz-accessing.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
       </div>
     </aside>
     <main class="lesson">
@@ -38,12 +56,24 @@
       <h1>Building with the Claude API</h1>
       <div class="rule"></div>
       <p class="overview-lead">Как встроить модели Claude в своё приложение через официальный API: от первого запроса до tools, RAG и агентов.</p>
-      <p>На Skilljar это длинный видеокурс. Здесь пока два первых урока. Оба в оригинале — только ролик, без текста на странице. Ниже тот же смысл по-русски, плюс пояснения там, где ролик уже расходится с текущими моделями. Сами файлы видео не скачиваются: смотреть их нужно на Skilljar.</p>
+      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блок про доступ к API. Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
       <ul class="card-list">
         <li><a href="01-welcome.html"><strong>1. Добро пожаловать</strong><span>Карта курса, что нужно заранее и как учиться · 2 мин 14 с</span></a></li>
         <li><a href="02-claude-models.html"><strong>2. Модели Claude</strong><span>Opus, Sonnet и Haiku: интеллект, скорость и цена · 3 мин 56 с</span></a></li>
+        <li><a href="03-accessing-the-api.html"><strong>3. Как устроен запрос</strong><span>От кнопки в чате до ответа модели</span></a></li>
+        <li><a href="04-api-key.html"><strong>4. Ключ API</strong><span>Консоль, .env и почему ключ не коммитят</span></a></li>
+        <li><a href="05-making-a-request.html"><strong>5. Первый запрос</strong><span>model, max_tokens и messages</span></a></li>
+        <li><a href="06-multi-turn.html"><strong>6. Диалог из нескольких ходов</strong><span>Историю храните вы, не модель</span></a></li>
+        <li><a href="07-chat-exercise.html"><strong>7. Упражнение: чат</strong><span>Цикл ввода, ответа и накопления сообщений</span></a></li>
+        <li><a href="08-system-prompts.html"><strong>8. System prompt</strong><span>Роль и ограничения отдельно от реплик</span></a></li>
+        <li><a href="09-system-prompts-exercise.html"><strong>9. Упражнение: system prompt</strong><span>Тьютор, который не выдаёт готовый ответ</span></a></li>
+        <li><a href="10-temperature.html"><strong>10. Temperature</strong><span>Разброс ответа, а не его ум</span></a></li>
+        <li><a href="11-streaming.html"><strong>11. Потоковый ответ</strong><span>Показывать текст по мере генерации</span></a></li>
+        <li><a href="12-structured-data.html"><strong>12. Структурированные данные</strong><span>JSON, который можно разобрать кодом</span></a></li>
+        <li><a href="13-structured-data-exercise.html"><strong>13. Упражнение: поля из текста</strong><span>Имя, дата и сумма</span></a></li>
+        <li><a href="quiz-accessing.html"><strong>Practice exam</strong><span>Короткий тест по этому блоку, на английском</span></a></li>
       </ul>
-      <p>Дальше в оригинале идёт блок Accessing Claude with the API: ключ, первый запрос, диалоги, system prompt, temperature и структурированный ответ. Эти уроки добавим следующим шагом.</p>
+      <p>Опрос удовлетворённости из оригинала пропущен: в нём нет нового материала. Следующий большой раздел курса — оценка промптов.</p>
       <p class="source">Оригинал курса: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api">Building with the Claude API</a>.</p>
     </main>
   </div>

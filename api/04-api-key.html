@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ключ API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html" aria-current="page"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="quiz-accessing.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Ключ API</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 5 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>создать ключ в консоли Anthropic;</li>
+        <li>подставить его в программу через переменную окружения;</li>
+        <li>не закоммитить секрет в репозиторий.</li>
+      </ul>
+      <h2>Где его взять</h2>
+      <p class="duration">Видео про ключ и окружение.</p>
+            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/296766" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Getting an API key · видео</span>
+      </a>
+      <p>Ключ создаётся в консоли Anthropic, на console.anthropic.com. Это длинная строка. Она подтверждает, что запрос ваш, и списание идёт с вашего счёта. Показать её в чате, в скриншоте или в git — то же самое, что отдать пароль.</p>
+      <p>В курсе ключ кладут в файл <code>.env</code> рядом с ноутбуком и читают пакетом <code>python-dotenv</code>. SDK сам смотрит переменную <code>ANTHROPIC_API_KEY</code>, если вы не передали ключ в коде.</p>
+      <pre>ANTHROPIC_API_KEY=sk-ant-...</pre>
+      <pre>from dotenv import load_dotenv
+from anthropic import Anthropic
+
+load_dotenv()
+client = Anthropic()</pre>
+      <p>Файл <code>.env</code> добавляют в <code>.gitignore</code>. В репозиторий кладут пример без секрета, например <code>.env.example</code> с пустым значением, чтобы коллега понял, какое имя переменной нужно.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Если ключ уже попал в коммит, удалить строку в следующем коммите недостаточно: она остаётся в истории. Ключ надо отозвать в консоли и выпустить новый. Локальный ноутбук для учёбы — нормальное место для <code>.env</code>. Публичный сайт — нет: там ключ только на сервере.</p>
+      </aside>
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Есть ли у вас уже <code>.gitignore</code>, в котором перечислен <code>.env</code>?</li>
+        <li>Кто ещё должен иметь возможность звать API от вашего имени, и заведёте ли вы им отдельный ключ?</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>С ключом можно отправить первый запрос и прочитать текст ответа.</p>
+      <div class="pager">
+        <a class="ghost" href="03-accessing-the-api.html">Назад</a>
+        <a class="next" href="05-making-a-request.html">Дальше</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/296766" target="_blank" rel="noopener noreferrer">Getting an API key</a>.</p>
+    </main>
+  </div>
+</body>
+</html>

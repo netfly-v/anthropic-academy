@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Как устроен запрос</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html" aria-current="page"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="quiz-accessing.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Как устроен запрос</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 5 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>назвать, через какие звенья проходит сообщение, пока пользователь видит ответ;</li>
+        <li>перечислить, что обязательно уходит в Anthropic API;</li>
+        <li>отличить ваш сервер от самой модели.</li>
+      </ul>
+      <h2>Пять шагов</h2>
+      <p class="duration">Видео, около 5 минут.</p>
+            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287726" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Accessing the API · 5:18</span>
+      </a>
+      <p>Пользователь нажимает «отправить» в вашем чате. Дальше цепочка всегда одна и та же, даже если интерфейс разный.</p>
+      <ol>
+        <li>Браузер отправляет текст на ваш сервер.</li>
+        <li>Сервер вызывает Anthropic API: официальным SDK или обычным HTTP.</li>
+        <li>Модель обрабатывает запрос.</li>
+        <li>API возвращает серверу структурированный ответ.</li>
+        <li>Сервер отдаёт текст обратно в интерфейс.</li>
+      </ol>
+      <p>SDK есть для Python, TypeScript, JavaScript, Go и Ruby. Смысл полей от языка не меняется. В запросе нужны ключ API, имя модели, список сообщений и <code>max_tokens</code> — потолок длины ответа.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Ключ не должен жить в браузере. Страница, которую видит пользователь, ходит на ваш сервер. Уже сервер хранит ключ и говорит с Anthropic. Иначе любой, кто открыл сайт, может потратить ваш счёт.</p>
+        <p>Внутри модели запрос проходит четыре грубых этапа: текст режется на токены, каждый токен становится числовым вектором, соседние слова уточняют смысл, затем модель выбирает следующий кусок текста. Вам не нужно считать эти векторы. Нужно помнить, что вы платите за входные и выходные токены, а не за «один вопрос».</p>
+      </aside>
+      <h2>Что приходит назад</h2>
+      <p>Ответ — не просто строка. В нём есть сгенерированный текст, причина остановки и счётчик токенов. В интерфейс обычно уходит только текст. Остальное нужно вам: понять, оборвался ли ответ по лимиту, и сколько стоил ход.</p>
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Где в вашем будущем приложении будет ключ: в ноутбуке для учёбы или на сервере?</li>
+        <li>Какие поля запроса вы уже можете назвать, не открывая документацию?</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>Следующий урок — где взять ключ и как не положить его в git.</p>
+      <div class="pager">
+        <a class="ghost" href="02-claude-models.html">Назад</a>
+        <a class="next" href="04-api-key.html">Дальше</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287726" target="_blank" rel="noopener noreferrer">Accessing the API</a>.</p>
+    </main>
+  </div>
+</body>
+</html>
