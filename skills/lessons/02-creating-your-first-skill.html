@@ -7,15 +7,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
   <header class="site-header">
-    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
     <nav class="header-nav">
-      <a href="../index.html">Курсы</a>
-      <a href="../skills/index.html" aria-current="page">Skills</a>
-      <a href="../api/index.html">API</a>
+      <a href="../../index.html">Курсы</a>
+      <a href="../../index.html" aria-current="page">Skills</a>
+      <a href="../../api/index.html">API</a>
       <a href="03-configuration-and-multi-file-skills.html">Дальше</a>
     </nav>
   </header>
@@ -23,7 +23,7 @@
     <aside class="sidebar">
       <div class="sidebar-inner">
         <h2 class="course-title">Введение в agent skills</h2>
-        <a class="course-kicker" href="../skills/index.html">Обзор курса</a>
+        <a class="course-kicker" href="../../index.html">Обзор курса</a>
         <ul class="lesson-nav">
           <li><a href="01-what-are-skills.html"><span class="mark"></span>Что такое skills</a></li>
           <li><a href="02-creating-your-first-skill.html" aria-current="page"><span class="mark"></span>Первый skill</a></li>
@@ -34,7 +34,7 @@
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
-          <li><a href="../skills/quiz.html"><span class="mark"></span>Practice exam</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
         </ul>
       </div>
     </aside>
@@ -92,7 +92,7 @@ Brief context on why this change is needed
 - Mention any files deleted or renamed</pre>
       <p>Имя идентифицирует skill. Описание — критерий совпадения. Текст после второго <code>---</code> Claude выполняет, когда skill уже выбран.</p>
       <figure class="shot">
-        <img src="../assets/Skills2_04.png" alt="Редактор с папкой личных skills и открытым SKILL.md для pr-description">
+        <img src="../../assets/Skills2_04.png" alt="Редактор с папкой личных skills и открытым SKILL.md для pr-description">
         <figcaption>Личные skills в боковой панели: <code>commit-message</code>, <code>debugging</code>, <code>documentation</code> и <code>pr-description</code>. В файле — шаблон описания PR.</figcaption>
       </figure>
       <aside class="callout">
@@ -104,7 +104,7 @@ Brief context on why this change is needed
       <p>Список skills собирается при запуске сессии. После создания файла перезапустите Claude Code и спросите, какие skills доступны. В списке должно появиться <code>pr-description</code>.</p>
       <p>Дальше сделайте изменения на ветке и скажите что-то вроде «напиши описание PR по моим изменениям». Claude отметит, что использует skill, посмотрит diff и соберёт текст по вашему шаблону.</p>
       <figure class="shot">
-        <img src="../assets/Skills2_05.png" alt="Окно Available Skills со списком documentation, debugging, pr-description и commit-message">
+        <img src="../../assets/Skills2_05.png" alt="Окно Available Skills со списком documentation, debugging, pr-description и commit-message">
         <figcaption>После перезапуска skill виден в списке Available Skills. Его можно вызвать командой <code>/имя</code> или дождаться, пока Claude выберет его сам.</figcaption>
       </figure>
 
@@ -113,7 +113,7 @@ Brief context on why this change is needed
       <p>Когда вы отправляете сообщение, запрос сравнивается с описаниями. Совпадение смысловое, а не по точному слову. Фраза «объясни, что делает эта функция» может задеть skill с описанием «explain code with visual diagrams», потому что намерение общее.</p>
       <p>После совпадения Claude просит подтвердить загрузку. Так вы видите, какой текст сейчас войдёт в контекст. После согласия читается весь <code>SKILL.md</code>, и Claude следует ему.</p>
       <figure class="shot">
-        <img src="../assets/Skills2_17.png" alt="Подсказка Use backend-review Skill рядом с описанием skill">
+        <img src="../../assets/Skills2_17.png" alt="Подсказка Use backend-review Skill рядом с описанием skill">
         <figcaption>Перед загрузкой Claude показывает описание и спрашивает, использовать ли skill.</figcaption>
       </figure>
       <aside class="callout">
