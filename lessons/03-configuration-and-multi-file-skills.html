@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Настройка и несколько файлов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html" aria-current="page">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="04-skills-vs-other-features.html">Дальше</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в agent skills</h2>
+        <a class="course-kicker" href="../skills/index.html">Обзор курса</a>
+        <ul class="lesson-nav">
+          <li><a href="01-what-are-skills.html"><span class="mark"></span>Что такое skills</a></li>
+          <li><a href="02-creating-your-first-skill.html"><span class="mark"></span>Первый skill</a></li>
+          <li><a href="03-configuration-and-multi-file-skills.html" aria-current="page"><span class="mark"></span>Настройка и несколько файлов</a></li>
+          <li><a href="04-skills-vs-other-features.html"><span class="mark"></span>Skills и другие возможности</a></li>
+          <li><a href="05-sharing-skills.html"><span class="mark"></span>Как делиться skills</a></li>
+          <li><a href="06-troubleshooting.html"><span class="mark"></span>Если skill не работает</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="../skills/quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Настройка и несколько файлов</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 20 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>заполнить поля frontmatter, включая <code>allowed-tools</code> и <code>model</code>;</li>
+        <li>написать описание, по которому skill срабатывает на нужные запросы;</li>
+        <li>заранее разрешить инструменты, которые skill использует каждый раз;</li>
+        <li>разложить большой skill по файлам, не забивая контекст.</li>
+      </ul>
+
+      <h2>Поля, описание, файлы</h2>
+      <p class="duration">Видео, около 4 минут</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/98KaK_rn5rQ" title="Configuration and multi-file skills" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p>Ролик проходит метаданные, хорошие описания, доступ к инструментам и раскладку большого skill по файлам. Ниже то же самое, с уточнением по <code>allowed-tools</code>: в тексте курса на Skilljar это поле описано как запрет остальных инструментов. В текущей документации Claude Code смысл другой.</p>
+      <h3>Коротко</h3>
+      <ul>
+        <li><code>name</code> и <code>description</code> обязательны. <code>allowed-tools</code> и <code>model</code> необязательны, но сильно меняют поведение.</li>
+        <li>Хорошее описание отвечает: что skill делает и когда его звать.</li>
+        <li><code>allowed-tools</code> заранее разрешает перечисленные инструменты на ход, в котором skill вызван. Остальные инструменты при этом не исчезают.</li>
+        <li>Держите <code>SKILL.md</code> короче примерно 500 строк. Подробности уносите в соседние файлы, которые Claude читает только по необходимости.</li>
+        <li>Скрипт выполняется снаружи контекста. В контекст попадает вывод, а не исходный код скрипта, если вы просите его запустить, а не прочитать.</li>
+      </ul>
+
+      <h2>Поля метаданных</h2>
+      <p>Открытый стандарт Agent Skills задаёт основу frontmatter. Claude Code добавляет свои поля. Минимум такой:</p>
+      <ul>
+        <li><code>name</code> — имя. Строчные буквы, цифры и дефисы, до 64 символов. Для личного и проектного skill держите его таким же, как имя каталога.</li>
+        <li><code>description</code> — когда использовать skill. До 1024 символов. Это главное поле для автоматического выбора.</li>
+        <li><code>allowed-tools</code> — какие инструменты можно вызывать без вопроса о разрешении, пока длится ход, вызвавший skill.</li>
+        <li><code>model</code> — какую модель использовать для этого skill, например <code>sonnet</code>.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../assets/Skills3_17.png" alt="SKILL.md skill codebase-onboarding с полями allowed-tools и model">
+        <figcaption>В редакторе: <code>allowed-tools</code> перечисляет Read, Grep, Glob и Bash, ниже указана модель <code>sonnet</code>.</figcaption>
+      </figure>
+      <pre>---
+name: codebase-onboarding
+description: Helps a new developer map the codebase. Use when someone asks how the system works, where a feature lives, or how to start reading the repo.
+allowed-tools: Read, Grep, Glob, Bash
+model: sonnet
+---</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В уроке на Skilljar про этот пример сказано, что Claude «может пользоваться только этими инструментами». Так поле работало в более ранней формулировке курса. Сейчас в документации Claude Code два разных механизма:</p>
+        <ul>
+          <li><code>allowed-tools</code> выдаёт разрешение на перечисленные инструменты на один ход. Запрос подтверждения для них не появляется. Все остальные инструменты по-прежнему доступны и подчиняются обычным правилам разрешений. Разрешение сбрасывается, когда вы отправляете следующее сообщение, хотя текст skill в разговоре остаётся. Повторный вызов skill выдаёт разрешение снова.</li>
+          <li><code>disallowed-tools</code> убирает инструменты из доступного набора, пока skill активен. Это и есть ограничение. Оно тоже снимается со следующим вашим сообщением.</li>
+        </ul>
+        <p>Если цель — «только читать, ничего не писать», одного <code>allowed-tools: Read, Grep, Glob</code> недостаточно: Edit и Write останутся. Для запрета перечислите их в <code>disallowed-tools</code>. Если цель — не кликать «разрешить» на каждый <code>git status</code> внутри skill, тогда как раз <code>allowed-tools</code>.</p>
+        <p>Разрешение можно сузить до конкретной команды: <code>Bash(git diff *)</code>. Переменная <code>${CLAUDE_SKILL_DIR}</code> подставляется и в тексте skill, и в правилах <code>allowed-tools</code>, поэтому скрипт из папки skill можно разрешить точечно, без общего доступа к любому Bash.</p>
+      </aside>
+
+      <h2>Как писать описание</h2>
+      <p>«Помогай с документацией» не говорит, что делать. Claude оказывается в том же положении. Описание должно ответить на два вопроса: что skill делает и в какой момент его брать.</p>
+      <p>Если skill молчит на ваши обычные фразы, добавьте в описание те слова, которыми вы реально просите. Совпадение смысловое, но модели нужно за что зацепиться. Сравните:</p>
+      <pre>description: Helps with docs.</pre>
+      <pre>description: Rewrites README sections for this repo. Use when the user asks to update the README, document a command, or explain install steps.</pre>
+      <p>Второе сработает на «допиши в README, как ставить проект». Первое легко промахнётся или, наоборот, включится на любую мелочь про текст.</p>
+
+      <h2>Не тащить всё в один файл</h2>
+      <p>Когда skill активируется, содержимое <code>SKILL.md</code> входит в контекст и остаётся в разговоре. Файл на две тысячи строк съедает место и плохо поддерживается.</p>
+      <p>Progressive disclosure — «раскрытие по мере надобности». В <code>SKILL.md</code> остаётся суть и оглавление. Подробности лежат рядом, и Claude открывает файл только если инструкция это велит.</p>
+      <p>Обычная раскладка каталога:</p>
+      <ul>
+        <li><code>scripts/</code> — исполняемый код;</li>
+        <li><code>references/</code> — длинные справки;</li>
+        <li><code>assets/</code> — шаблоны, картинки, данные.</li>
+      </ul>
+      <pre>my-skill/
+  SKILL.md
+  scripts/validate.sh
+  references/architecture-guide.md
+  assets/pr-template.md</pre>
+      <figure class="shot">
+        <img src="../assets/Skills3_13.png" alt="SKILL.md со ссылками на references/architecture-guide.md и deep-dive-guide.md, слева папки scripts, assets и references">
+        <figcaption>В <code>SKILL.md</code> ссылки открываются только по запросу. Рядом в каталоге skill лежат <code>scripts</code>, <code>assets</code> и <code>references</code>.</figcaption>
+      </figure>
+      <p>В <code>SKILL.md</code> пишут условие, а не весь справочник:</p>
+      <pre>If the user asks about system design, read references/architecture-guide.md.
+If they only ask where to add a component, do not open that file.
+To check the environment, run scripts/validate.sh. Do not read the script into context.</pre>
+      <p>Ориентир: <code>SKILL.md</code> короче 500 строк. Всё, что не нужно в каждом запуске, уезжает в <code>references/</code>.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Контекст общий у разговора, <code>CLAUDE.md</code> и тела skill. Справка на 800 строк, прочитанная «на всякий случай», вытесняет diff и ваши уточнения. Ссылка в <code>SKILL.md</code> стоит дёшево: это несколько строк оглавления. Дорогой кусок появляется, только когда Claude открывает файл.</p>
+        <p>Со скриптом ещё выгоднее. Если Claude читает <code>validate.sh</code>, в контекст попадает исходник. Если он его запускает, в контекст попадает вывод: «node 22, нет .env». Поэтому в инструкции прямо напишите «запусти, не читай». Так надёжнее и для проверок окружения, и для преобразований, которые уже отлажены как код: модели не нужно заново изобретать скрипт на каждом запуске.</p>
+      </aside>
+
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Какой ваш будущий skill разъедется на <code>SKILL.md</code> и справки? Что обязано быть в главном файле, а что можно открыть потом?</li>
+        <li>Где вам нужно меньше вопросов о разрешениях (<code>allowed-tools</code>), а где нужен настоящий запрет писать файлы (<code>disallowed-tools</code>)?</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>Следующий урок сравнивает skills с <code>CLAUDE.md</code>, субагентами, hooks и MCP, чтобы не запихивать в skill то, чему есть более точный механизм.</p>
+      <div class="pager">
+        <a class="ghost" href="02-creating-your-first-skill.html">Назад</a>
+        <a class="next" href="04-skills-vs-other-features.html">Дальше</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-agent-skills/434526">Configuration and multi-file skills</a>. Поле <code>allowed-tools</code> сверено с <a href="https://code.claude.com/docs/en/skills">документацией skills</a>.</p>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Как делиться skills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html" aria-current="page">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="06-troubleshooting.html">Дальше</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в agent skills</h2>
+        <a class="course-kicker" href="../skills/index.html">Обзор курса</a>
+        <ul class="lesson-nav">
+          <li><a href="01-what-are-skills.html"><span class="mark"></span>Что такое skills</a></li>
+          <li><a href="02-creating-your-first-skill.html"><span class="mark"></span>Первый skill</a></li>
+          <li><a href="03-configuration-and-multi-file-skills.html"><span class="mark"></span>Настройка и несколько файлов</a></li>
+          <li><a href="04-skills-vs-other-features.html"><span class="mark"></span>Skills и другие возможности</a></li>
+          <li><a href="05-sharing-skills.html" aria-current="page"><span class="mark"></span>Как делиться skills</a></li>
+          <li><a href="06-troubleshooting.html"><span class="mark"></span>Если skill не работает</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="../skills/quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Как делиться skills</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 20 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>отдать skill команде коммитом в репозиторий;</li>
+        <li>раздать skill по нескольким проектам через плагин;</li>
+        <li>понять, зачем организации корпоративный уровень;</li>
+        <li>явно подключить skills к своему субагенту.</li>
+      </ul>
+
+      <h2>Один skill на всю команду</h2>
+      <p class="duration">Видео, около 4 минут</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/OCBi3eScNLk" title="Sharing skills" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p>Личный skill помогает вам. Тот же skill в репозитории выравнивает ревью у всей команды. Ролик разбирает три способа раздачи и ловушку: субагент ваши skills сам не видит.</p>
+      <h3>Коротко</h3>
+      <ul>
+        <li>Проектные skills в <code>.claude/skills</code> приезжают вместе с <code>git clone</code>.</li>
+        <li>Плагин раздаёт skills между репозиториями, в том числе через маркетплейс.</li>
+        <li>Корпоративные managed settings ставят skills всей организации и побеждают при конфликте имён. Это уровень для обязательных правил.</li>
+        <li>Субагент не наследует skills разговора. Их перечисляют в поле <code>skills</code> его файла.</li>
+        <li>Встроенные агенты skills не получают. Только агенты, которые вы описали в <code>.claude/agents</code>.</li>
+      </ul>
+
+      <h2>Коммит в репозиторий</h2>
+      <p>Самый прямой путь: положить каталоги в <code>.claude/skills</code> и закоммитить. Кто клонирует репозиторий, получает skills без отдельной установки. Обновление приезжает со следующим <code>git pull</code>.</p>
+      <p>Так хорошо живут стандарты команды, сценарии этого конкретного репозитория и инструкции, которые ссылаются на его структуру. Рядом в <code>.claude</code> обычно лежат агенты, hooks и настройки — тоже под версионированием.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Проектный skill с <code>allowed-tools</code> применяется и в папке, которой вы ещё не доверяли, в том числе в одноразовом запуске. Чужой репозиторий может разрешить себе широкий доступ к инструментам. Перед первым запуском Claude Code в склонированном проекте имеет смысл прочитать frontmatter его skills.</p>
+      </aside>
+
+      <h2>Плагин</h2>
+      <p>Плагин — упаковка, которую ставят в разные проекты. Внутри у плагина каталог skills с той же идеей: папка на skill и <code>SKILL.md</code> внутри. После публикации в маркетплейс люди находят плагин и ставят его в свой Claude Code.</p>
+      <p>Это путь для skills, которые не привязаны к одному репозиторию: общий стиль коммитов компании, проверка доступности, шаблон ADR. То, что знает пути вашего монорепозитория, лучше оставить проектным skill.</p>
+      <figure class="shot">
+        <img src="../assets/Skills5_07.png" alt="Экран Discover plugins в Claude Code со списком плагинов и числом установок">
+        <figcaption>После публикации плагин появляется в поиске Claude Code, и его можно поставить себе.</figcaption>
+      </figure>
+
+      <h2>Корпоративные настройки</h2>
+      <p>Администратор может разложить skills на все машины организации. При одинаковом имени корпоративный skill перекрывает личный, проектный и плагинный.</p>
+      <p>Тот же файл настроек умеет ограничивать, откуда вообще можно ставить плагины:</p>
+      <figure class="shot">
+        <img src="../assets/Skills5_08.png" alt="Файл managed-settings.json с блоком strictKnownMarketplaces для GitHub и npm">
+        <figcaption><code>managed-settings.json</code>: организация разрешает плагины только из своих репозиториев.</figcaption>
+      </figure>
+      <pre>"strictKnownMarketplaces": [
+  {
+    "source": "github",
+    "repo": "acme-corp/approved-plugins"
+  },
+  {
+    "source": "npm",
+    "package": "@acme-corp/compliance-plugins"
+  }
+]</pre>
+      <p>Сюда кладут то, что обязано быть одинаковым: безопасность, комплаенс, обязательный формат ревью. Ключевое слово — «обязано», а не «нам так удобнее».</p>
+
+      <h2>Субагент skills не наследует</h2>
+      <p>Делегированная задача стартует с чистого контекста. Три следствия:</p>
+      <ul>
+        <li>встроенные агенты (Explorer, Plan, Verify) skills не видят;</li>
+        <li>ваш агент видит только перечисленные skills;</li>
+        <li>они загружаются в момент старта субагента, а не по ходу, когда «тема подошла», как в основном чате.</li>
+      </ul>
+      <p>Файл агента лежит в <code>.claude/agents</code>. Создать его можно командой <code>/agents</code>. Поле <code>skills</code> называет каталоги, которые уже должны существовать в <code>.claude/skills</code>:</p>
+      <figure class="shot">
+        <img src="../assets/Skills5_13.png" alt="Команда /agents в Claude Code: форма создания агента с описанием ревью фронтенда">
+        <figcaption>Команда <code>/agents</code> спрашивает, что агент должен делать. Skills к нему дописываются в frontmatter файла.</figcaption>
+      </figure>
+      <pre>---
+name: frontend-security-accessibility-reviewer
+description: "Use this agent when you need to review frontend code for accessibility..."
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch, Skill
+model: sonnet
+color: blue
+skills: accessibility-audit, performance-check
+---</pre>
+      <p>Когда вы отдаёте работу этому агенту, оба skill уже загружены, и ревью идёт по ним без отдельной просьбы. Так удобно, если разным агентам нужны разные знания (фронт и бэкенд) и вы не хотите каждый раз дописывать это в промпт.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В основном чате skill экономит контекст: тело читается по совпадению. У субагента экономии «может и не понадобиться» нет — перечисленные skills входят сразу. Поэтому список держите коротким и по делу. Имя в <code>skills</code> — это имя каталога skill, а не произвольная подпись. Если каталога нет, агент стартует без этого знания, и ошибка выглядит как «забыл стандарт», хотя файл просто не подключился.</p>
+      </aside>
+
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Ваш следующий skill нужен одному репозиторию, нескольким проектам или всей организации без права отказаться?</li>
+        <li>Есть ли делегирование, где субагент каждый раз «забывает» чеклист? Какой файл агента и какие два skill это закрыли бы?</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>Последний урок — что проверять, когда skill не срабатывает, не грузится, проигрывает другому имени или падает в рантайме.</p>
+      <div class="pager">
+        <a class="ghost" href="04-skills-vs-other-features.html">Назад</a>
+        <a class="next" href="06-troubleshooting.html">Дальше</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-agent-skills/434529">Sharing skills</a></p>
+    </main>
+  </div>
+</body>
+</html>

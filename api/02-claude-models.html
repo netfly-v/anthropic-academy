@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Модели Claude</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html" aria-current="page"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Модели Claude</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 4 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>отличить Opus, Sonnet и Haiku по тому, на что они заточены;</li>
+        <li>выбрать модель по тому, что важнее: интеллект или скорость с ценой;</li>
+        <li>понять, зачем в одном приложении держать несколько моделей.</li>
+      </ul>
+
+      <h2>Три семейства</h2>
+      <p class="duration">Видео, 3 минуты 56 секунд. На странице Skilljar нет текста, только ролик.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287722" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Overview of Claude models · 3:56</span>
+      </a>
+      <p>У Claude в этом уроке три семейства. Все три умеют одно и то же ядро: генерировать текст, писать код, разбирать картинки и закрывать прочие обычные задачи. Разница не в списке способностей, а в том, под что модель оптимизировали. Одна тянет интеллект, другая скорость и цену, третья держит середину.</p>
+      <h3>Коротко</h3>
+      <ul>
+        <li>Opus — самый способный. Сложные требования, план на много шагов, долгая работа с малым числом уточнений от человека. Умеет и ответить коротко, и подумать дольше, если задача трудная. Плата — выше цена и заметнее задержка.</li>
+        <li>Sonnet — середина по интеллекту, скорости и цене. Сильный код и быстрый текст. Хорошо вносит точечные правки в большой проект, не разваливая то, что уже работает. В этом курсе Sonnet берут чаще всего именно из-за этого баланса.</li>
+        <li>Haiku — самая быстрая и дешёвая. Её место там, где важен отклик: интерфейс, который ждёт ответ сразу, или большой поток простых запросов.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Ролик говорит, что у Haiku нет reasoning, который есть у Opus и Sonnet. Это уже не так для текущего Haiku 4.5: extended thinking у него есть, но бюджет токенов на размышление нужно задать явно. Сам он не решает, сколько думать. Opus и более крупные модели умеют тратить это время сами, когда задача того просит.</p>
+        <p>Имена в ролике — семейства, без номеров. Сейчас рабочие версии такие: Haiku 4.5 (<code>claude-haiku-4-5</code>), Sonnet 5 (<code>claude-sonnet-5</code>), Opus 5.5 (<code>claude-opus-5-5</code>). Выше Opus есть ещё Fable 5.1 (<code>claude-fable-5-1</code>): его берут на самые тяжёлые длинные задачи, он дороже Opus, и в этом ролике его нет. В параметр <code>model</code> передаётся конкретное имя, не слово «Sonnet».</p>
+      </aside>
+
+      <h2>Как выбирать</h2>
+      <p>Выбор сводится к одной оси. На одном конце высокий интеллект, на другом низкая цена и высокая скорость.</p>
+      <ul>
+        <li>Opus стоит на стороне интеллекта: сложное рассуждение, качество важнее скорости и счёта.</li>
+        <li>Haiku стоит на стороне скорости и цены: живой интерфейс или много однотипных ответов, которые надо вернуть как можно быстрее.</li>
+        <li>Sonnet посередине. Для большинства приложений этого хватает, поэтому курс дальше опирается на него.</li>
+      </ul>
+      <p>Сначала решите, что для этой конкретной задачи нельзя потерять. Если нельзя потерять качество рассуждения — Opus. Если нельзя ждать и нельзя раздувать счёт — Haiku. Если нужно и то и другое в разумных пределах — Sonnet.</p>
+
+      <h2>Несколько моделей в одном приложении</h2>
+      <p>Команды редко оставляют одну модель на всё. Типичное деление из ролика:</p>
+      <ul>
+        <li>Haiku там, где пользователь ждёт ответ;</li>
+        <li>Sonnet на основной логике;</li>
+        <li>Opus на кусках, где нужно более глубокое рассуждение.</li>
+      </ul>
+      <p>Так каждая часть платит только за то качество, которое ей нужно. Меняется поле <code>model</code> в запросе, не весь клиент.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Семейство — это линейка, а не один застывший файл. Когда Anthropic выпускает следующую версию Sonnet, баланс «ум / скорость / цена» остаётся идеей урока, а строка в коде меняется. Имеет смысл завести имя модели в одном месте ноутбука и подставлять его во все примеры курса, чтобы не искать его по ячейкам, когда номер версии сменится.</p>
+      </aside>
+
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Какой ваш ближайший запрос к API: черновик, правка кода или разбор, где ошибка в рассуждении дороже, чем лишние секунды?</li>
+        <li>Есть ли в будущем приложении место, где Haiku на входе и Sonnet на сложном шаге сэкономят больше, чем одна модель на всё?</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>В оригинале следующий урок — как запрос доходит до API. В русской версии его ещё нет: сначала эти два вводных. Вернуться к списку можно кнопкой ниже.</p>
+      <div class="pager">
+        <a class="ghost" href="01-welcome.html">Назад</a>
+        <a class="next" href="index.html">К обзору</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287722">Overview of Claude models</a>. Про Haiku 4.5 и Fable сверено с <a href="https://academy.claude.com/courses/claude-platform-101/choosing-the-right-model">Choosing the right model</a>.</p>
+    </main>
+  </div>
+</body>
+</html>

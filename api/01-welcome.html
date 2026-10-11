@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Добро пожаловать</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html" aria-current="page"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Добро пожаловать</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 2 минут, дальше курс на много часов</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>назвать, в каком порядке курс идёт от моделей к агентам;</li>
+        <li>понять, что нужно установить и получить до первого кода;</li>
+        <li>выбрать, как смотреть уроки, чтобы код не остался чужим.</li>
+      </ul>
+
+      <h2>Карта курса</h2>
+      <p class="duration">Видео, 2 минуты 14 секунд. На странице Skilljar нет текста, только ролик.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287818" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Welcome to the course · 2:14</span>
+      </a>
+      <p>Курс ведёт сотрудник Anthropic и сразу раскладывает дорожку. Сначала коротко про сами модели. Потом доступ к ним через официальный API. Затем промпты: сначала как их оценивать, потом приёмы, которыми их пишут. Дальше tool use — как расширить Claude внешними действиями. Потом retrieval augmented generation: как подкладывать в запрос нужный кусок ваших данных. Затем Model Context Protocol, чтобы подключать новые сервисы. После этого два агента Anthropic, Claude Code и Computer Use, и в конце — workflows и agents для задач сложнее одного запроса.</p>
+      <h3>Коротко</h3>
+      <ul>
+        <li>Сначала модели и API, потом промпты, tools, RAG, MCP, готовые агенты и свои сценарии.</li>
+        <li>Нужен базовый Python и среда, в которой запускаются ноутбуки: почти весь код курса пишется и выполняется там.</li>
+        <li>Нужен аккаунт Anthropic или ключ API. Как его получить, расскажут в следующих уроках, не в этом.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Этот урок — только карта. Кода здесь нет. Следующий блок оригинала, Accessing Claude with the API, начинается с того, как устроен запрос и где взять ключ. Его русский конспект появится отдельно. JSON в требованиях курса нужен потому, что и запрос, и ответ API — это объекты: роль сообщения, текст, лимит токенов, usage.</p>
+      </aside>
+
+      <h2>Что подготовить</h2>
+      <ul>
+        <li>Понимать Python на уровне функций, списков и словарей. Курс не учит язык с нуля.</li>
+        <li>Иметь среду для ноутбуков: Jupyter, VS Code или то, чем вы уже пользуетесь. Команды установки пакетов в курсе идут внутри ноутбука.</li>
+        <li>Иметь доступ к API. Без ключа примеры не отработают, но смотреть устройство запроса можно и до этого.</li>
+      </ul>
+
+      <h2>Как проходить</h2>
+      <p>Ролик даёт четыре практических совета, потому что темп высокий.</p>
+      <ol>
+        <li>Пишите код вместе с видео. Просмотр чужого набора ячеек почти ничего не закрепляет.</li>
+        <li>Ускоряйте воспроизведение и возвращайтесь к тем роликам, которые оказались плотными.</li>
+        <li>Меняйте ноутбуки под свою задачу: добавьте поле, другой пример, другой лимит. Так приём становится вашим.</li>
+        <li>Если застряли, спросите Claude. Он годится и чтобы починить ошибку в ячейке, и чтобы пересказать место, которое прозвучало быстро.</li>
+      </ol>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Ноутбук здесь — файл с ячейками кода и текста, который выполняется по частям. Для API это удобно: один запрос, сразу ответ, следующая ячейка дописывает диалог. Отдельный сервис поднимать не нужно, пока вы учитесь форме <code>messages</code>.</p>
+      </aside>
+
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Есть ли у вас уже среда, где открывается <code>.ipynb</code>, или это первое, что стоит поставить до урока про ключ?</li>
+        <li>Какой кусок карты вам нужен первым в работе: обычный запрос, tools или поиск по своим документам?</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>Следующий ролик разбирает три семейства моделей и то, чем платить: интеллектом, скоростью или ценой.</p>
+      <div class="pager">
+        <a class="next" href="02-claude-models.html">Дальше</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287818">Welcome to the course</a>.</p>
+    </main>
+  </div>
+</body>
+</html>

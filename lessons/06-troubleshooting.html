@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Если skill не работает</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html" aria-current="page">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="../skills/index.html">К обзору</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в agent skills</h2>
+        <a class="course-kicker" href="../skills/index.html">Обзор курса</a>
+        <ul class="lesson-nav">
+          <li><a href="01-what-are-skills.html"><span class="mark"></span>Что такое skills</a></li>
+          <li><a href="02-creating-your-first-skill.html"><span class="mark"></span>Первый skill</a></li>
+          <li><a href="03-configuration-and-multi-file-skills.html"><span class="mark"></span>Настройка и несколько файлов</a></li>
+          <li><a href="04-skills-vs-other-features.html"><span class="mark"></span>Skills и другие возможности</a></li>
+          <li><a href="05-sharing-skills.html"><span class="mark"></span>Как делиться skills</a></li>
+          <li><a href="06-troubleshooting.html" aria-current="page"><span class="mark"></span>Если skill не работает</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="../skills/quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Если skill не работает</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 15 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>прогнать валидатор до того, как искать причину в поведении модели;</li>
+        <li>починить skill, который не срабатывает или не появляется в списке;</li>
+        <li>разобрать конфликт одинаковых имён;</li>
+        <li>найти типичные ошибки запуска: зависимости, права, пути.</li>
+      </ul>
+
+      <h2>Сначала категория, потом правка</h2>
+      <p class="duration">Видео, около 4 минут</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/YBa1cwaG7is" title="Troubleshooting skills" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p>Поломки обычно попадают в несколько корзин: не срабатывает, не грузится, побеждает не тот, падает при выполнении. Ролик идёт по ним по порядку и показывает валидатор и <code>claude --debug</code>.</p>
+      <h3>Коротко</h3>
+      <ul>
+        <li>Сначала валидатор: он ловит сломанную структуру раньше, чем вы начнёте переписывать описание.</li>
+        <li>Не срабатывает — почти всегда описание. Добавьте фразы, которыми вы реально просите.</li>
+        <li>Не грузится — <code>SKILL.md</code> должен лежать в именованном каталоге, а файл называться ровно <code>SKILL.md</code>.</li>
+        <li>Включается не тот — описания слишком похожи. Разведите их.</li>
+        <li>Падает при запуске — зависимости, <code>chmod +x</code> на скриптах, прямые слэши в путях даже на Windows.</li>
+      </ul>
+
+      <h2>Валидатор</h2>
+      <p>Первая команда — проверка структуры skill, а не новый промпт. В курсе её ставят через <code>uv</code>: так быстрее, чем собирать окружение вручную под свою систему. Запускайте из каталога skill или укажите путь. Валидатор смотрит форму файла: frontmatter, имя, расположение. Пока структура сломана, правка описания ничего не даст.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Частая тихая поломка: YAML не разобрался, и skill всё равно «загрузился», но без полей. Тогда нет ни описания для совпадения, ни <code>allowed-tools</code>. Первая строка файла обязана быть <code>---</code>, без пробела и без пустой строки выше. Если Claude Code пишет про unexpected key, во frontmatter осталось поле, которого нет в стандарте для этого канала распространения. Для загрузки в claude.ai и Skills API допустимы <code>name</code>, <code>description</code>, <code>license</code>, <code>compatibility</code>, <code>metadata</code>, <code>allowed-tools</code>. Поля вроде <code>model</code> — расширение Claude Code.</p>
+      </aside>
+
+      <h2>Не срабатывает</h2>
+      <p>Файл на месте, валидатор молчит, а на вашу фразу skill не включается. Совпадение смысловое: если пересечения с описанием мало, выбора нет.</p>
+      <ol>
+        <li>Сравните <code>description</code> с тем, как вы на самом деле просите.</li>
+        <li>Допишите живые формулировки, не синонимы «для красоты».</li>
+        <li>Проверьте вариации: «помоги профилировать», «почему так медленно», «ускорь это».</li>
+        <li>Какая не сработала — те слова добавьте в описание.</li>
+      </ol>
+      <p>Пока сессия старая, новое описание не видно. Перезапустите Claude Code.</p>
+
+      <h2>Не появляется в списке</h2>
+      <p>Спросите «какие skills доступны». Если вашего нет:</p>
+      <ul>
+        <li>файл лежит в каталоге с именем, а не как <code>skills/SKILL.md</code> без папки;</li>
+        <li>имя файла ровно <code>SKILL.md</code>: <code>SKILL</code> заглавными, <code>md</code> строчными. <code>skill.md</code> и <code>SKILL.MD</code> не то.</li>
+      </ul>
+      <p><code>claude --debug</code> печатает ошибки загрузки. Ищите своё имя каталога: часто сообщение сразу говорит про YAML или путь.</p>
+
+      <h2>Включился не тот</h2>
+      <p>Два описания про «review» будут путаться. Сделайте их различимыми по задаче и по словам пользователя: фронтенд-доступность и безопасность API не должны делить одни и те же триггеры. Конкретика помогает и выбрать нужный skill, и не задеть соседний.</p>
+
+      <h2>Ваш skill молчит, потому что имя занято</h2>
+      <p>Личный <code>code-review</code> не используется, если корпоративный skill называется так же. Enterprise побеждает всегда. Обычно проще переименовать свой каталог во что-то узкое. Второй путь — договориться с администратором, если корпоративная версия вам реально мешает, а не просто перекрывает личную привычку.</p>
+      <figure class="shot">
+        <img src="../assets/Skills6_12.png" alt="Иерархия: Enterprise выделен, ниже бледнее Personal, Project и Plugins, рядом подпись managed-settings.json">
+        <figcaption>При одинаковом имени побеждает корпоративный уровень из <code>managed-settings.json</code>. Личный, проектный и плагин остаются ниже.</figcaption>
+      </figure>
+
+      <h2>Плагин стоит, skills не видно</h2>
+      <p>Очистите кэш, перезапустите Claude Code и поставьте плагин снова. Если после этого пусто, структура внутри плагина, скорее всего, неверная — снова валидатор, уже на каталоге плагина.</p>
+
+      <h2>Упал во время работы</h2>
+      <ul>
+        <li>Нет зависимости. Пакет, который вызывает скрипт, должен быть установлен. Напишите это в инструкции skill, чтобы Claude не гадал.</li>
+        <li>Нет права на запуск. Для скриптов: <code>chmod +x</code> на файл, на который ссылается skill.</li>
+        <li>Пути. Везде прямые слэши, включая Windows: <code>scripts/validate.sh</code>, не обратный слэш.</li>
+      </ul>
+
+      <h2>Короткий чеклист</h2>
+      <ol>
+        <li>Не срабатывает — описание и живые фразы, затем перезапуск.</li>
+        <li>Не в списке — путь, имя файла, первая строка <code>---</code>, <code>claude --debug</code>.</li>
+        <li>Не тот skill — разведите описания.</li>
+        <li>Вас перекрыли — иерархия имён, переименуйте свой.</li>
+        <li>Плагин пустой — кэш, перезапуск, переустановка, валидатор.</li>
+        <li>Падает в работе — зависимости, <code>chmod +x</code>, прямые слэши.</li>
+      </ol>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Имеет смысл идти сверху вниз и не чинить описание, пока файла нет в списке. «Не срабатывает» и «не загрузился» выглядят одинаково из чата: Claude просто не использует skill. Вопрос «какие skills доступны» разделяет эти случаи за один ход. Нет в списке — структура. Есть в списке, но молчит на вашу фразу — описание.</p>
+      </aside>
+
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Какой из пунктов чеклиста сэкономил бы вам время, если бы вы смотрели его до переписывания промпта?</li>
+        <li>Где в команде запускать валидатор до того, как skill попадёт в общий репозиторий?</li>
+      </ul>
+      <h2>Конец курса</h2>
+      <p>Вы прошли, как skill устроен, как его создать, настроить, отличить от других механизмов, отдать команде и починить. Хороший skill начинается с фразы, которую вы уже устали повторять.</p>
+      <div class="pager">
+        <a class="ghost" href="05-sharing-skills.html">Назад</a>
+        <a class="next" href="../skills/index.html">К обзору</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-agent-skills/434530">Troubleshooting skills</a></p>
+    </main>
+  </div>
+</body>
+</html>

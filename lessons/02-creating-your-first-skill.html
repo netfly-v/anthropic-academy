@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Первый skill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html" aria-current="page">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="03-configuration-and-multi-file-skills.html">Дальше</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в agent skills</h2>
+        <a class="course-kicker" href="../skills/index.html">Обзор курса</a>
+        <ul class="lesson-nav">
+          <li><a href="01-what-are-skills.html"><span class="mark"></span>Что такое skills</a></li>
+          <li><a href="02-creating-your-first-skill.html" aria-current="page"><span class="mark"></span>Первый skill</a></li>
+          <li><a href="03-configuration-and-multi-file-skills.html"><span class="mark"></span>Настройка и несколько файлов</a></li>
+          <li><a href="04-skills-vs-other-features.html"><span class="mark"></span>Skills и другие возможности</a></li>
+          <li><a href="05-sharing-skills.html"><span class="mark"></span>Как делиться skills</a></li>
+          <li><a href="06-troubleshooting.html"><span class="mark"></span>Если skill не работает</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="../skills/quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Первый skill</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 20 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>собрать skill с правильным frontmatter;</li>
+        <li>проверить, что Claude Code его видит;</li>
+        <li>объяснить, как запрос сопоставляется с описаниями;</li>
+        <li>назвать порядок приоритета: Enterprise, Personal, Project, Plugins.</li>
+      </ul>
+
+      <h2>Собираем skill с нуля</h2>
+      <p class="duration">Видео, около 4 минут</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/Wx6_vjFFyHM" title="Creating your first skill" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p>В ролике делают личный skill для описаний pull request: он работает во всех ваших проектах. Заодно показывают, какой skill побеждает, если имена совпали.</p>
+      <h3>Коротко</h3>
+      <ul>
+        <li>Skill — каталог с <code>SKILL.md</code>: метаданные сверху, инструкции снизу.</li>
+        <li>На старте Claude читает только имя и описание, потом сравнивает запрос с описаниями по смыслу.</li>
+        <li>Перед тем как втянуть полный текст в контекст, Claude спрашивает подтверждение.</li>
+        <li>При одинаковом имени побеждает: Enterprise, затем Personal, затем Project, затем Plugins.</li>
+        <li>Правите <code>SKILL.md</code>, чтобы обновить. Удаляете каталог, чтобы убрать. После изменений перезапустите Claude Code.</li>
+      </ul>
+
+      <h2>Личный skill для описания PR</h2>
+      <p>Имя каталога совпадает с именем skill. Создайте папку в личной директории:</p>
+      <pre>mkdir -p ~/.claude/skills/pr-description</pre>
+      <p>Внутри — <code>SKILL.md</code>. Описание должно звучать так, как вы сами просите эту работу.</p>
+      <pre>---
+name: pr-description
+description: Writes pull request descriptions. Use when creating a PR, writing a PR, or when the user asks to summarize changes for a pull request.
+---
+
+When writing a PR description:
+
+1. Run `git diff main...HEAD` to see all changes on this branch
+2. Write a description following this format:
+
+## What
+One sentence explaining what this PR does.
+
+## Why
+Brief context on why this change is needed
+
+## Changes
+- Bullet points of specific changes made
+- Group related changes together
+- Mention any files deleted or renamed</pre>
+      <p>Имя идентифицирует skill. Описание — критерий совпадения. Текст после второго <code>---</code> Claude выполняет, когда skill уже выбран.</p>
+      <figure class="shot">
+        <img src="../assets/Skills2_04.png" alt="Редактор с папкой личных skills и открытым SKILL.md для pr-description">
+        <figcaption>Личные skills в боковой панели: <code>commit-message</code>, <code>debugging</code>, <code>documentation</code> и <code>pr-description</code>. В файле — шаблон описания PR.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В личном или проектном skill команда, которую вы набираете после <code>/</code>, берётся из имени каталога, а не из поля <code>name</code>. Поле <code>name</code> здесь — подпись в списке. Каталог <code>pr-description</code> даёт команду <code>/pr-description</code>. В плагине поле <code>name</code> как раз меняет последнюю часть команды. Поэтому для своего первого skill проще держать имя папки и поле <code>name</code> одинаковыми: меньше путаницы.</p>
+      </aside>
+
+      <h2>Как проверить</h2>
+      <p>Список skills собирается при запуске сессии. После создания файла перезапустите Claude Code и спросите, какие skills доступны. В списке должно появиться <code>pr-description</code>.</p>
+      <p>Дальше сделайте изменения на ветке и скажите что-то вроде «напиши описание PR по моим изменениям». Claude отметит, что использует skill, посмотрит diff и соберёт текст по вашему шаблону.</p>
+      <figure class="shot">
+        <img src="../assets/Skills2_05.png" alt="Окно Available Skills со списком documentation, debugging, pr-description и commit-message">
+        <figcaption>После перезапуска skill виден в списке Available Skills. Его можно вызвать командой <code>/имя</code> или дождаться, пока Claude выберет его сам.</figcaption>
+      </figure>
+
+      <h2>Как происходит совпадение</h2>
+      <p>При старте Claude Code обходит места, где лежат skills, но в память кладёт только имя и описание. Полный файл ещё не читается.</p>
+      <p>Когда вы отправляете сообщение, запрос сравнивается с описаниями. Совпадение смысловое, а не по точному слову. Фраза «объясни, что делает эта функция» может задеть skill с описанием «explain code with visual diagrams», потому что намерение общее.</p>
+      <p>После совпадения Claude просит подтвердить загрузку. Так вы видите, какой текст сейчас войдёт в контекст. После согласия читается весь <code>SKILL.md</code>, и Claude следует ему.</p>
+      <figure class="shot">
+        <img src="../assets/Skills2_17.png" alt="Подсказка Use backend-review Skill рядом с описанием skill">
+        <figcaption>Перед загрузкой Claude показывает описание и спрашивает, использовать ли skill.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Семантическое совпадение значит: модель смотрит на смысл, а не на точное вхождение ключевого слова. Если в описании только «helps with docs», запрос «поправь README в разделе установки» может не зацепиться — слишком широко и не про тот момент. Рабочее описание отвечает на два вопроса сразу: что skill делает и в каких формулировках его звать. Если одна из ваших обычных фраз не срабатывает, допишите её в <code>description</code> почти дословно.</p>
+        <p>Подтверждение нужно, потому что тело skill может быть длинным. Вы решаете, тратить ли на него контекст именно сейчас. Сам вызов через <code>/pr-description</code> тоже загружает текст, но уже без угадывания: вы назвали skill прямо.</p>
+      </aside>
+
+      <h2>Чей skill побеждает</h2>
+      <p>Если в склонированном репозитории есть skill с тем же именем, что и ваш личный, победитель задан порядком:</p>
+      <ol>
+        <li>Enterprise — управляемые настройки организации, самый высокий приоритет.</li>
+        <li>Personal — <code>~/.claude/skills</code>.</li>
+        <li>Project — <code>.claude/skills</code> в репозитории.</li>
+        <li>Plugins — установленные плагины, самый низкий приоритет.</li>
+      </ol>
+      <p>Корпоративный <code>code-review</code> перекроет ваш личный <code>code-review</code>. Организация может закрепить обязательный стандарт, а личные skills остаются для всего, что не конфликтует по имени. Чтобы не сталкиваться, называйте skills конкретно: не <code>review</code>, а <code>frontend-review</code> или <code>backend-review</code>.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Приоритет сравнивает одинаковые имена, а не «похожие» skills. <code>frontend-review</code> и <code>code-review</code> живут рядом: оба могут сработать на один запрос, если описания пересекаются. Тогда проблема уже не в иерархии, а в слишком похожих описаниях. Иерархия отвечает только на вопрос «какой файл с этим именем настоящий».</p>
+        <p>В документации Claude Code есть ещё вложенные skills: <code>.claude/skills</code> внутри подпапки монорепозитория подхватывается, когда сессия работает с файлами этой подпапки. Для первого skill это не нужно, но полезно знать, что «проектный» уровень не всегда один на весь репозиторий.</p>
+      </aside>
+
+      <h2>Правка и удаление</h2>
+      <p>Обновление — это правка <code>SKILL.md</code>. Удаление — удаление каталога skill. Пока сессия не перезапущена, Claude Code продолжает видеть тот список, который собрал на старте.</p>
+
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Какую ежедневную задачу вы можете превратить в skill сегодня? Как прозвучит её <code>description</code>, если записать ваши обычные фразы?</li>
+        <li>Что в вашей команде должно быть проектным skill, а что лучше оставить личным, чтобы не спорить с корпоративным стандартом?</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>Дальше — дополнительные поля, как писать описание, чтобы оно срабатывало, и как разложить большой skill по нескольким файлам.</p>
+      <div class="pager">
+        <a class="ghost" href="01-what-are-skills.html">Назад</a>
+        <a class="next" href="03-configuration-and-multi-file-skills.html">Дальше</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-agent-skills/434527">Creating your first skill</a></p>
+    </main>
+  </div>
+</body>
+</html>

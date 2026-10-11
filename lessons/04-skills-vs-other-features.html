@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills и другие возможности</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html" aria-current="page">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="05-sharing-skills.html">Дальше</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в agent skills</h2>
+        <a class="course-kicker" href="../skills/index.html">Обзор курса</a>
+        <ul class="lesson-nav">
+          <li><a href="01-what-are-skills.html"><span class="mark"></span>Что такое skills</a></li>
+          <li><a href="02-creating-your-first-skill.html"><span class="mark"></span>Первый skill</a></li>
+          <li><a href="03-configuration-and-multi-file-skills.html"><span class="mark"></span>Настройка и несколько файлов</a></li>
+          <li><a href="04-skills-vs-other-features.html" aria-current="page"><span class="mark"></span>Skills и другие возможности</a></li>
+          <li><a href="05-sharing-skills.html"><span class="mark"></span>Как делиться skills</a></li>
+          <li><a href="06-troubleshooting.html"><span class="mark"></span>Если skill не работает</a></li>
+        </ul>
+        <p class="nav-group">Exam</p>
+        <ul class="lesson-nav">
+          <li><a href="../skills/quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Skills и другие возможности</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Около 15 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>сравнить skills с <code>CLAUDE.md</code>, субагентами, hooks и MCP;</li>
+        <li>выбрать механизм под конкретную задачу;</li>
+        <li>собрать набор, где каждый механизм делает свою работу.</li>
+      </ul>
+
+      <h2>Не всё надо делать skill</h2>
+      <p class="duration">Видео, около 3 минут</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/IgNN4v0BJdU" title="Skills vs. other Claude Code features" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <p>Неверный выбор раздувает настройку. Ролик раскладывает, когда нужен skill, а когда постоянный файл, отдельный агент, событие или внешний инструмент.</p>
+      <h3>Коротко</h3>
+      <ul>
+        <li><code>CLAUDE.md</code> всегда в разговоре. Туда — постоянные стандарты проекта. Skill — по запросу, для конкретной процедуры.</li>
+        <li>Субагент работает в отдельном контексте и возвращает результат. Skill добавляет знание в текущий разговор.</li>
+        <li>Hook срабатывает на событие: сохранение файла, вызов инструмента. Skill срабатывает на то, о чём вы попросили.</li>
+        <li>MCP-сервер даёт внешние инструменты. Это другая категория, не замена инструкции.</li>
+        <li>Их можно сочетать. Не нужно запихивать всё в один механизм.</li>
+      </ul>
+
+      <h2>CLAUDE.md или skill</h2>
+      <p><code>CLAUDE.md</code> попадает в каждую сессию этого проекта. «Пиши TypeScript в strict mode» живёт там, потому что правило верно и когда вы пишете код, и когда чините тест.</p>
+      <p>Skill присоединяется, когда запрос совпал. Чеклист ревью не обязан висеть в контексте, пока вы добавляете кнопку.</p>
+      <figure class="shot">
+        <img src="../assets/Skills4_06.png" alt="Сравнение: CLAUDE.md для постоянных стандартов проекта и Skills для знаний, которые нужны иногда">
+        <figcaption>Слева то, что верно всегда. Справа то, что нужно только для конкретной задачи.</figcaption>
+      </figure>
+      <table class="compare">
+        <thead>
+          <tr><th></th><th>CLAUDE.md</th><th>Skill</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Когда грузится</td><td>Всегда</td><td>Когда запрос совпал или вы вызвали <code>/имя</code></td></tr>
+          <tr><td>Что класть</td><td>Стандарты, запреты, стиль, которые верны всегда</td><td>Процедуры и знания, нужные иногда</td></tr>
+          <tr><td>Пример</td><td>«Не меняй схему базы»</td><td>Пошаговое ревью PR</td></tr>
+        </tbody>
+      </table>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Практический тест: если убрать этот текст из половины сессий, Claude начнёт ошибаться — это <code>CLAUDE.md</code>. Если текст нужен только когда вы произносите определённую задачу и он длиннее абзаца — это skill. Длинный <code>CLAUDE.md</code> незаметно съедает контекст в каждом разговоре, даже когда вы спрашиваете, почему упал тест.</p>
+      </aside>
+
+      <h2>Skill или субагент</h2>
+      <p>Skill дописывает инструкции в текущий разговор. История, открытые файлы и ваш вопрос остаются рядом.</p>
+      <p>Субагент получает задачу, работает в чистом контексте и возвращает итог. Основной разговор не забивается промежуточными поисками по репозиторию.</p>
+      <p>Субагент уместен, когда работу надо делегировать, когда ей нужен другой набор инструментов или когда промежуточные шаги не должны смешиваться с вашей сессией. Skill уместен, когда знание должно вести текущую задачу от начала до конца.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Встроенные агенты вроде Explorer, Plan и Verify skills не видят. Свой субагент в <code>.claude/agents</code> видит только те skills, которые вы перечислили в его frontmatter, и получает их сразу при старте, а не «когда тема всплывёт». Как это записать — в следующем уроке. Пока достаточно не ждать, что делегирование само подхватит ваши skills.</p>
+      </aside>
+
+      <h2>Skill или hook</h2>
+      <p>Hook — реакция на событие. Например, прогнать линтер каждый раз, когда Claude сохраняет файл, или проверить ввод до определённого вызова инструмента. Вам не нужно просить об этом в чате.</p>
+      <p>Skill — реакция на просьбу. Он меняет то, как Claude рассуждает над задачей, а не запускает побочное действие на каждое сохранение.</p>
+      <ul>
+        <li>Hook: «на каждое сохранение», «перед таким-то инструментом», автоматическое следствие действия.</li>
+        <li>Skill: «когда просят ревью», «как рассуждать про доступность», гайд, а не триггер.</li>
+      </ul>
+
+      <h2>MCP — это инструменты, не память</h2>
+      <p>MCP-сервер подключает внешние возможности: трекер задач, базу, браузер, внутренний API. Skill может сказать «заведи тикет так-то», но сам тикет создаёт инструмент. Путать их стоит так: skill — как делать, MCP — чем делать, если этого нет среди встроенных инструментов Claude Code.</p>
+
+      <h2>Как это живёт вместе</h2>
+      <ul>
+        <li><code>CLAUDE.md</code> — постоянные правила проекта.</li>
+        <li>Skills — процедуры, которые подключаются по теме.</li>
+        <li>Hooks — автоматические действия на события.</li>
+        <li>Субагенты — изолированная работа, которую вернули итогом.</li>
+        <li>MCP — внешние системы.</li>
+      </ul>
+      <p>Один рабочий набор может включать все пять. Skill берут, когда знание должно включаться само, как только тема релевантна, и оставляют в покое механизмы, которые лучше ловят события или ходят во внешние системы.</p>
+
+      <h2>Вопросы к себе</h2>
+      <ul class="reflection">
+        <li>Откройте свой <code>CLAUDE.md</code>. Что из него нужно только иногда и раздувает каждый разговор?</li>
+        <li>Какая боль команды — «Claude забывает процедуру», «надо автоматически гонять проверку» или «надо сходить в трекер»? Это три разных механизма.</li>
+      </ul>
+      <h2>Дальше</h2>
+      <p>Дальше — как отдать skill команде: через git, плагин или корпоративные настройки, и как явно подключить его к своему субагенту.</p>
+      <div class="pager">
+        <a class="ghost" href="03-configuration-and-multi-file-skills.html">Назад</a>
+        <a class="next" href="05-sharing-skills.html">Дальше</a>
+      </div>
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-agent-skills/434528">Skills vs. other Claude Code features</a></p>
+    </main>
+  </div>
+</body>
+</html>
