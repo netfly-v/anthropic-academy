@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html" aria-current="page"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,46 +52,98 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Потоковый ответ</h1>
+            <h1>Потоковый ответ</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
       <p class="estimate">Около 8 минут</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>включить поток через <code>stream=True</code>;</li>
-        <li>печатать куски текста по мере прихода;</li>
-        <li>отличить более ранний показ от более дешёвой генерации.</li>
+        <li>объяснить, зачем поток, если ответ занимает 10–30 секунд;</li>
+        <li>отличить события потока и где в них текст;</li>
+        <li>показать куски пользователю и сохранить целое сообщение.</li>
       </ul>
-      <h2>Не ждать весь ответ</h2>
-      <p class="duration">Видео, около 8 минут.</p>
+      <h2>Долгое молчание</h2>
+      <p class="duration">Видео и схемы урока.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287734" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Response streaming · 8:23</span>
+        <span>Response streaming</span>
       </a>
-      <p>Обычный вызов молчит, пока модель не закончит. Для длинного ответа интерфейс кажется зависшим. Поток присылает события по ходу. Текст из них можно сразу писать на экран.</p>
+
+      <p>В обычном чате сервер ждёт полный ответ Claude и только потом отдаёт его клиенту. На экране 10–30 секунд крутится индикатор. Поток это убирает: текст появляется по мере генерации.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-13-Streaming_03.png" alt="Без потока клиент ждёт весь ответ. С потоком куски идут сразу.">
+        <figcaption>Без потока клиент ждёт весь ответ. С потоком куски идут сразу.</figcaption>
+      </figure>
+
+      <h2>Как идёт поток</h2>
+      <p>Claude сразу подтверждает, что запрос принят и генерация началась. Дальше приходит серия событий, в каждом кусок текста. Сервер пересылает их клиенту. Это всё ещё один запрос, не несколько.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-15-Streaming_11.png" alt="Один запрос, несколько событий с кусками текста.">
+        <figcaption>Один запрос, несколько событий с кусками текста.</figcaption>
+      </figure>
+
+      <h2>Какие бывают события</h2>
+      <ul>
+        <li>MessageStart — началось сообщение;</li>
+        <li>ContentBlockStart — начался блок: текст, tool use или другое;</li>
+        <li>ContentBlockDelta — кусок сгенерированного текста, его и показывают;</li>
+        <li>ContentBlockStop — блок закончен;</li>
+        <li>MessageDelta — сообщение собрано;</li>
+        <li>MessageStop — сведений об этом сообщении больше нет.</li>
+      </ul>
+      <h2>Разбор событий вручную</h2>
+      <pre>messages = []
+add_user_message(messages, "Write a 1 sentence description of a fake database")
+
+stream = client.messages.create(
+    model=model,
+    max_tokens=1000,
+    messages=messages,
+    stream=True
+)
+
+for event in stream:
+    print(event)</pre>
+      <h2>Только текст</h2>
+      <p>SDK умеет отдать уже вынутый текст, без ручного разбора событий.</p>
       <pre>with client.messages.stream(
     model=model,
     max_tokens=1000,
-    messages=[{"role": "user", "content": "Explain photosynthesis in a short paragraph."}],
+    messages=messages
 ) as stream:
     for text in stream.text_stream:
-        print(text, end="", flush=True)</pre>
+        print(text, end="")</pre>
+      <h2>Целиком для хранения</h2>
+      <p>Куски хороши для экрана. В базу обычно кладут собранное сообщение.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-16-Streaming_12.png" alt="Куски уходят клиенту, итоговое сообщение остаётся для хранения.">
+        <figcaption>Куски уходят клиенту, итоговое сообщение остаётся для хранения.</figcaption>
+      </figure>
+
+      <pre>with client.messages.stream(
+    model=model,
+    max_tokens=1000,
+    messages=messages
+) as stream:
+    for text in stream.text_stream:
+        # Send each chunk to your client
+        pass
+
+    # Get the complete message for database storage
+    final_message = stream.get_final_message()</pre>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Поток не делает генерацию короче и не снижает счёт за выходные токены. Он только раньше показывает то, что и так было бы сгенерировано. В конце у потока есть собранное сообщение: его удобно сохранить в историю <code>messages</code>, чтобы следующий ход не собирал строку из кусков вручную. Если <code>stop_reason</code> равен <code>max_tokens</code>, пользователь увидел обрыв, даже если куски приходили плавно.</p>
+        <p>Поток не укорачивает генерацию. Он меняет, когда пользователь видит текст. Полный текст для следующего хода диалога берут из <code>get_final_message()</code>, а не склеивают куски руками.</p>
       </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Где в интерфейсе пустой экран на пять секунд уже плохо, а где можно подождать целый JSON?</li>
-        <li>Что вы запишете в историю диалога: склейку кусков или итоговое сообщение потока?</li>
-      </ul>
       <h2>Дальше</h2>
-      <p>Дальше ответ нужен не абзацем, а полями, которые сможет прочитать программа.</p>
-      <div class="pager">
+      <p>Дальше ответ нужен без пояснений вокруг: чистый JSON или другой кусок структуры.</p>
+            <div class="pager">
         <a class="ghost" href="10-temperature.html">Назад</a>
         <a class="next" href="12-structured-data.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287734" target="_blank" rel="noopener noreferrer">Response streaming</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287734" target="_blank" rel="noopener noreferrer">Response streaming</a>.</p>
+
     </main>
   </div>
 </body>

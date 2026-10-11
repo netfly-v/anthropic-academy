@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,45 +52,90 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>System prompt</h1>
+            <h1>System prompt</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
       <p class="estimate">Около 6 минут</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>задать роль и ограничения через параметр <code>system</code>;</li>
-        <li>не путать его с сообщением пользователя;</li>
-        <li>понять, что system prompt действует на весь разговор, пока вы его передаёте.</li>
+        <li>задать тон и роль отдельной строкой <code>system</code>;</li>
+        <li>увидеть разницу ответа с ней и без неё на одном и том же вопросе;</li>
+        <li>передавать <code>system</code> в <code>chat</code> только когда он есть.</li>
       </ul>
-      <h2>Роль рядом с историей</h2>
-      <p class="duration">Видео, около 6 минут.</p>
+      <h2>Зачем он</h2>
+      <p class="duration">Видео и схемы урока.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287733" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>System prompts · 6:20</span>
+        <span>System prompts</span>
       </a>
-      <p><code>messages</code> — это реплики. <code>system</code> — инструкция над ними: кто модель в этом приложении, чего ей нельзя, каким тоном отвечать. Его передают отдельным аргументом, не как ещё один <code>role: user</code>.</p>
-      <pre>client.messages.create(
+
+      <p>System prompt меняет, как Claude отвечает: тон, стиль, подход. Без него ответы общие.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-05-m_Prompts_05.png" alt="Один и тот же вопрос с system prompt и без него.">
+        <figcaption>Один и тот же вопрос с system prompt и без него.</figcaption>
+      </figure>
+
+      <h2>Пример урока: репетитор</h2>
+      <p>Чат-репетитор по математике. Ученик спрашивает: «How do I solve 5x + 2 = 3 for x?» Нужен репетитор, а не калькулятор. Он должен:</p>
+      <ul>
+        <li>сначала дать подсказку, а не полное решение;</li>
+        <li>вести по шагам;</li>
+        <li>показывать похожие примеры.</li>
+      </ul>
+      <p>Не должен сразу выдавать ответ и не должен отправлять к калькулятору.</p>
+      <h2>Как это передают</h2>
+      <p>System prompt — обычная строка. Её передают в <code>create</code>. Claude старается отвечать так, как ответил бы человек в этой роли, и легче держится задачи.</p>
+      <pre>system_prompt = """
+You are a patient math tutor.
+Do not directly answer a student's questions.
+Guide them to a solution step by step.
+"""
+
+client.messages.create(
     model=model,
-    max_tokens=500,
-    system="You are a patient Python tutor. Give a hint first, not the full solution.",
-    messages=[{"role": "user", "content": "Why does my loop never end?"}],
+    messages=messages,
+    max_tokens=1000,
+    system=system_prompt
 )</pre>
+      <h2>Разница на одном вопросе</h2>
+      <p>Без system prompt Claude сразу пишет полное решение. С промптом репетитора вместо решения появляется вопрос вроде «What do you think would be a good first step…».</p>
+      <h2>Функция chat с необязательным system</h2>
+      <p>Чтобы не зашивать роль в функцию, <code>system</code> делают аргументом. API не принимает <code>system=None</code>, поэтому ключ добавляют в словарь, только если строка передана.</p>
+      <pre>def chat(messages, system=None):
+    params = {
+        "model": model,
+        "max_tokens": 1000,
+        "messages": messages,
+    }
+
+    if system:
+        params["system"] = system
+
+    message = client.messages.create(**params)
+    return message.content[0].text</pre>
+      <pre># Without system prompt
+answer = chat(messages)
+
+# With system prompt
+system = """
+You are a patient math tutor.
+Do not directly answer a student's questions.
+Guide them to a solution step by step.
+"""
+answer = chat(messages, system=system)</pre>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Если положить правила в первое пользовательское сообщение, человек может их «перебить» следующей репликой вроде «забудь инструкции». Отдельное поле <code>system</code> для этого и существует: это не реплика участника диалога. На каждый ход его нужно передавать снова, вместе со всей историей. Само оно в список <code>messages</code> не дописывается.</p>
+        <p>Проверка <code>if system</code> в уроке нужна именно из-за <code>None</code>: пустую роль в API не отправляют. Сам текст роли в список <code>messages</code> не кладут.</p>
       </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Какое одно ограничение вашего продукта нельзя отдавать на волю формулировки пользователя?</li>
-        <li>Что останется в <code>messages</code>, если правила уедут в <code>system</code>?</li>
-      </ul>
       <h2>Дальше</h2>
-      <p>Короткое упражнение: тьютор, который не выдаёт готовый ответ.</p>
-      <div class="pager">
+      <p>Короткое упражнение: тем же приёмом сократить ответ с кодом.</p>
+            <div class="pager">
         <a class="ghost" href="07-chat-exercise.html">Назад</a>
         <a class="next" href="09-system-prompts-exercise.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287733" target="_blank" rel="noopener noreferrer">System prompts</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287733" target="_blank" rel="noopener noreferrer">System prompts</a>.</p>
+
     </main>
   </div>
 </body>

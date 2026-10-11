@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,53 +52,51 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Упражнение: чат</h1>
+            <h1>Упражнение: чат</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 4 минут</p>
-      <p>К концу урока вы сможете:</p>
-      <ul class="objectives">
-        <li>читать строки пользователя в цикле;</li>
-        <li>копить историю и печатать ответ модели;</li>
-        <li>остановить цикл понятной командой.</li>
-      </ul>
-      <h2>Минимальный чат</h2>
-      <p class="duration">Короткое упражнение, около 4 минут.</p>
+      <p class="estimate">3 минуты 54 секунды</p>
+      <p>На странице урока нет текста, только ролик. Ниже тот же порядок шагов, который в нём разбирают.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287727" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
         <span>Chat exercise · 3:54</span>
       </a>
-      <p>Это не сайт, а скрипт или ноутбук. Пока пользователь что-то пишет, вы добавляете реплику, вызываете API, печатаете текст и кладёте его обратно в историю.</p>
+
+      <h2>Что должно получиться</h2>
+      <p>Маленький чат в ячейке Jupyter. Пока ячейка запущена, она снова и снова спрашивает текст.</p>
+      <ol>
+        <li>Пустой список <code>messages</code>.</li>
+        <li>Бесконечный цикл <code>while True</code>.</li>
+        <li>Внутри цикла встроенный <code>input</code> кладёт строку в переменную.</li>
+        <li><code>add_user_message</code> добавляет её в список.</li>
+        <li><code>chat</code> отправляет список и возвращает текст.</li>
+        <li><code>add_assistant_message</code> кладёт ответ в тот же список.</li>
+        <li>Ответ печатают между строками <code>---</code>, чтобы было видно, что это ответ модели.</li>
+        <li>Цикл возвращается к <code>input</code>.</li>
+      </ol>
+      <p>В ролике проверка такая: «what's one plus one», затем «add to that answer». Второй ответ должен опираться на первый и говорить про четыре. Остановить цикл — кнопка interrupt в ноутбуке и Escape.</p>
       <pre>messages = []
 while True:
-    user_text = input("You: ").strip()
-    if user_text.lower() in ("", "quit", "exit"):
-        break
-    messages.append({"role": "user", "content": user_text})
-    reply = client.messages.create(
-        model=model,
-        max_tokens=1000,
-        messages=messages,
-    )
-    text = reply.content[0].text
-    print("Claude:", text)
-    messages.append({"role": "assistant", "content": text})</pre>
+    user_input = input()
+    add_user_message(messages, user_input)
+    answer = chat(messages)
+    add_assistant_message(messages, answer)
+    print("---")
+    print(answer)
+    print("---")</pre>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Пустой ввод или слово <code>quit</code> — простой выход, чтобы цикл не висел. Если печатать ответ и не добавлять роль <code>assistant</code>, следующий вопрос потеряет нить, хотя на экране диалог выглядит целым. Проверьте это специально: задайте уточнение «почему?» и убедитесь, что модель ссылается на прошлую реплику.</p>
+        <p>Ролик предлагает сначала поставить паузу и собрать цикл по комментариям в ячейке. Решение выше повторяет те же вызовы, которые он потом дописывает: add user, chat, add assistant, print.</p>
       </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Что выведете пользователю, если запрос к API бросил исключение: сырой traceback или короткую фразу?</li>
-        <li>Хватит ли этого цикла для веб-чата или следующим шагом нужен сервер?</li>
-      </ul>
       <h2>Дальше</h2>
-      <p>История — это что сказали вы и модель. Отдельно задают, кем модель должна быть.</p>
-      <div class="pager">
+      <p>Дальше к этому чату добавляют system prompt, чтобы тон ответа задавался отдельно от реплик.</p>
+            <div class="pager">
         <a class="ghost" href="06-multi-turn.html">Назад</a>
         <a class="next" href="08-system-prompts.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287727" target="_blank" rel="noopener noreferrer">Chat exercise</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287727" target="_blank" rel="noopener noreferrer">Chat exercise</a>.</p>
+
     </main>
   </div>
 </body>

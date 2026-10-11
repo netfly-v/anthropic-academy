@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,47 +52,61 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Ключ API</h1>
+                        <h1>Ключ API</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 5 минут</p>
+      <p class="estimate">Пять шагов в консоли</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>создать ключ в консоли Anthropic;</li>
-        <li>подставить его в программу через переменную окружения;</li>
-        <li>не закоммитить секрет в репозиторий.</li>
+        <li>открыть консоль и дойти до списка ключей;</li>
+        <li>создать ключ в workspace Default с понятным именем;</li>
+        <li>скопировать ключ, пока окно ещё открыто.</li>
       </ul>
-      <h2>Где его взять</h2>
-      <p class="duration">Видео про ключ и окружение.</p>
-            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/296766" target="_blank" rel="noopener noreferrer">
-        <strong>Смотреть урок на Skilljar</strong>
-        <span>Getting an API key · видео</span>
-      </a>
-      <p>Ключ создаётся в консоли Anthropic, на console.anthropic.com. Это длинная строка. Она подтверждает, что запрос ваш, и списание идёт с вашего счёта. Показать её в чате, в скриншоте или в git — то же самое, что отдать пароль.</p>
-      <p>В курсе ключ кладут в файл <code>.env</code> рядом с ноутбуком и читают пакетом <code>python-dotenv</code>. SDK сам смотрит переменную <code>ANTHROPIC_API_KEY</code>, если вы не передали ключ в коде.</p>
-      <pre>ANTHROPIC_API_KEY=sk-ant-...</pre>
-      <pre>from dotenv import load_dotenv
-from anthropic import Anthropic
+      <h2>Зачем он сейчас</h2>
+      <p>В следующем видео будет запрос к API. Для него нужен секретный ключ. Эта страница — только как его создать.</p>
+      <h3>Шаг 1. Откройте консоль</h3>
+      <p>В браузере откройте <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">console.anthropic.com</a> и войдите в аккаунт Anthropic. Страница выглядит так:</p>
+            <figure class="shot">
+        <img src="../../assets/api/api04-1.png" alt="Главная консоли Anthropic после входа.">
+        <figcaption>Главная консоли Anthropic после входа.</figcaption>
+      </figure>
 
-load_dotenv()
-client = Anthropic()</pre>
-      <p>Файл <code>.env</code> добавляют в <code>.gitignore</code>. В репозиторий кладут пример без секрета, например <code>.env.example</code> с пустым значением, чтобы коллега понял, какое имя переменной нужно.</p>
+      <h3>Шаг 2. Нажмите Get API Keys</h3>
+      <p>Кнопка справа вверху на главной панели.</p>
+            <figure class="shot">
+        <img src="../../assets/api/api04-2.png" alt="Кнопка Get API Keys справа вверху.">
+        <figcaption>Кнопка Get API Keys справа вверху.</figcaption>
+      </figure>
+
+      <h3>Шаг 3. Нажмите Create Key</h3>
+      <p>На странице ключей кнопка Create Key тоже справа вверху.</p>
+            <figure class="shot">
+        <img src="../../assets/api/api04-3.png" alt="Кнопка Create Key.">
+        <figcaption>Кнопка Create Key.</figcaption>
+      </figure>
+
+      <h3>Шаг 4. Workspace и имя</h3>
+      <p>Создайте ключ в workspace Default. Имя нужно, чтобы потом отличить ключи друг от друга. В уроке имя — Anthropic Course.</p>
+            <figure class="shot">
+        <img src="../../assets/api/api04-4.png" alt="Окно создания ключа: workspace и имя.">
+        <figcaption>Окно создания ключа: workspace и имя.</figcaption>
+      </figure>
+
+      <h3>Шаг 5. Скопируйте ключ</h3>
+      <p>Ключ показывается во всплывающем окне один раз. Скопируйте его: он понадобится в следующем видео. Если окно закрыли, удалите этот ключ и создайте снова.</p>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Если ключ уже попал в коммит, удалить строку в следующем коммите недостаточно: она остаётся в истории. Ключ надо отозвать в консоли и выпустить новый. Локальный ноутбук для учёбы — нормальное место для <code>.env</code>. Публичный сайт — нет: там ключ только на сервере.</p>
+        <p>На этой странице курса ключ только копируют. Куда его положить в ноутбуке, файл <code>.env</code>, разбирается в следующем уроке, «Первый запрос».</p>
       </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Есть ли у вас уже <code>.gitignore</code>, в котором перечислен <code>.env</code>?</li>
-        <li>Кто ещё должен иметь возможность звать API от вашего имени, и заведёте ли вы им отдельный ключ?</li>
-      </ul>
       <h2>Дальше</h2>
-      <p>С ключом можно отправить первый запрос и прочитать текст ответа.</p>
-      <div class="pager">
+      <p>Скопированный ключ подставляют в окружение и делают первый вызов.</p>
+            <div class="pager">
         <a class="ghost" href="03-accessing-the-api.html">Назад</a>
         <a class="next" href="05-making-a-request.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/296766" target="_blank" rel="noopener noreferrer">Getting an API key</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/296766" target="_blank" rel="noopener noreferrer">Getting an API key</a>.</p>
+
     </main>
   </div>
 </body>

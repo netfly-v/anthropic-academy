@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,46 +52,99 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Диалог из нескольких ходов</h1>
+            <h1>Диалог из нескольких ходов</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
       <p class="estimate">Около 9 минут</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>объяснить, почему API не помнит прошлый запрос;</li>
-        <li>собрать историю из сообщений пользователя и ассистента;</li>
-        <li>понять, что каждый новый ход снова отправляет всю историю.</li>
+        <li>объяснить, что Claude не хранит историю между запросами;</li>
+        <li>собрать список сообщений и отправлять его целиком;</li>
+        <li>пользоваться функциями <code>add_user_message</code>, <code>add_assistant_message</code> и <code>chat</code>.</li>
       </ul>
-      <h2>Память — это ваш список</h2>
-      <p class="duration">Видео, около 9 минут.</p>
+      <h2>Каждый запрос сам по себе</h2>
+      <p class="duration">Видео и схемы урока.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287735" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Multi-turn conversations · 8:54</span>
+        <span>Multi-turn conversations</span>
       </a>
-      <p>Каждый вызов <code>messages.create</code> самостоятельный. Если второй вопрос — «а подробнее?», а в <code>messages</code> только эта фраза, модель не знает, о чём речь. Продолжение разговора вы собираете сами: после ответа дописываете его в список как <code>assistant</code>, затем добавляете новую реплику <code>user</code> и отправляете список целиком.</p>
-      <pre>messages = [
-    {"role": "user", "content": "Name a prime number greater than 10."},
-]
-reply = client.messages.create(model=model, max_tokens=200, messages=messages)
-text = reply.content[0].text
-messages.append({"role": "assistant", "content": text})
-messages.append({"role": "user", "content": "Why is that number prime?"})</pre>
-      <aside class="callout">
-        <p class="callout-label">Пояснение</p>
-        <p>История растёт и стоит денег: каждый ход заново оплачивает все предыдущие реплики как входные токены. Для короткого учебного чата это незаметно. Для длинной поддержки имеет смысл позже сжимать старые ходы или выкидывать то, что уже не влияет на ответ. Пока правило одно: не отправляйте только последнюю строку, если хотите, чтобы модель помнила контекст.</p>
-      </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Что сломается, если вы сохраните ответ на экран, но забудете добавить его в <code>messages</code>?</li>
-        <li>Где в вашем приложении будет жить этот список: в памяти процесса, в базе, в сессии браузера?</li>
-      </ul>
+
+      <p>Claude не хранит историю разговора. Каждый запрос независим. Если нужен диалог, состояние держите вы.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-00-ersations_01.png" alt="Каждый запрос к API независим: история на стороне клиента.">
+        <figcaption>Каждый запрос к API независим: история на стороне клиента.</figcaption>
+      </figure>
+
+      <h2>Что ломается без истории</h2>
+      <p>Спросили «What is quantum computing?», получили ответ, потом пишете «Write another sentence». Без прошлой реплики Claude не знает, к чему это «ещё одно предложение», и напишет что-то своё.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-01-ersations_02.png" alt="Второй вопрос без истории не ссылается на первый ответ.">
+        <figcaption>Второй вопрос без истории не ссылается на первый ответ.</figcaption>
+      </figure>
+
+      <h2>Как устроен многоходовый разговор</h2>
+      <p>Нужны две вещи: самому держать список сообщений и каждый раз отправлять его целиком.</p>
+      <ol>
+        <li>Отправить первое сообщение пользователя.</li>
+        <li>Ответ Claude добавить в список как assistant.</li>
+        <li>Добавить следующий вопрос как user.</li>
+        <li>Отправить весь список.</li>
+      </ol>
+            <figure class="shot">
+        <img src="../../assets/api/slide-02-ersations_05.png" alt="В список по очереди попадают user и assistant.">
+        <figcaption>В список по очереди попадают user и assistant.</figcaption>
+      </figure>
+
+            <figure class="shot">
+        <img src="../../assets/api/slide-03-ersations_08.png" alt="Следующий запрос уходит со всей историей.">
+        <figcaption>Следующий запрос уходит со всей историей.</figcaption>
+      </figure>
+
+      <h2>Три функции из урока</h2>
+      <pre>def add_user_message(messages, text):
+    user_message = {"role": "user", "content": text}
+    messages.append(user_message)
+
+def add_assistant_message(messages, text):
+    assistant_message = {"role": "assistant", "content": text}
+    messages.append(assistant_message)
+
+def chat(messages):
+    message = client.messages.create(
+        model=model,
+        max_tokens=1000,
+        messages=messages,
+    )
+    return message.content[0].text</pre>
+      <h2>Как ими пользоваться</h2>
+      <pre># Start with an empty message list
+messages = []
+
+# Add the initial user question
+add_user_message(messages, "Define quantum computing in one sentence")
+
+# Get Claude's response
+answer = chat(messages)
+
+# Add Claude's response to the conversation history
+add_assistant_message(messages, answer)
+
+# Add a follow-up question
+add_user_message(messages, "Write another sentence")
+
+# Get the follow-up response with full context
+final_answer = chat(messages)</pre>
+      <p>Теперь «Write another sentence» продолжает определение квантовых вычислений: в запросе есть вся переписка.</p>
+      <p>Эти три функции курс использует и дальше.</p>
       <h2>Дальше</h2>
-      <p>Следующий урок собирает из этого бесконечный цикл чата.</p>
-      <div class="pager">
+      <p>Упражнение собирает из них цикл, который спрашивает ввод в ячейке ноутбука.</p>
+            <div class="pager">
         <a class="ghost" href="05-making-a-request.html">Назад</a>
         <a class="next" href="07-chat-exercise.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287735" target="_blank" rel="noopener noreferrer">Multi-turn conversations</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287735" target="_blank" rel="noopener noreferrer">Multi-turn conversations</a>.</p>
+
     </main>
   </div>
 </body>

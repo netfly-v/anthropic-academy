@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,53 +52,81 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Первый запрос</h1>
+                  <h1>Первый запрос</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
       <p class="estimate">Около 6 минут</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>вызвать <code>messages.create</code> с тремя обязательными полями;</li>
-        <li>объяснить, почему <code>max_tokens</code> — потолок, а не цель;</li>
-        <li>достать из ответа только сгенерированный текст.</li>
+        <li>поставить пакеты и прочитать ключ из <code>.env</code>;</li>
+        <li>вызвать <code>client.messages.create</code> с тремя полями;</li>
+        <li>достать текст из <code>message.content[0].text</code>.</li>
       </ul>
-      <h2>Три поля</h2>
-      <p class="duration">Видео, около 6 минут.</p>
+      <h2>Окружение</h2>
+      <p class="duration">Видео и код урока.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287725" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Making a request · 6:02</span>
+        <span>Making a request</span>
       </a>
-      <p>В ноутбуке ставят SDK и чтение <code>.env</code>. Дальше один вызов.</p>
-      <pre>message = client.messages.create(
-    model="claude-sonnet-5",
-    max_tokens=1000,
-    messages=[
-        {"role": "user", "content": "What is quantum computing? Answer in one sentence."}
-    ],
-)</pre>
-      <ul>
-        <li><code>model</code> — конкретное имя модели, не слово «Sonnet».</li>
-        <li><code>max_tokens</code> — страховка. При 1000 модель остановится, даже если хотела продолжить. Она не старается дописать ровно до лимита.</li>
-        <li><code>messages</code> — история. У каждого элемента есть <code>role</code> (<code>user</code> или <code>assistant</code>) и <code>content</code>.</li>
-      </ul>
-      <p>Объект ответа большой. Текст обычно здесь:</p>
-      <pre>print(message.content[0].text)</pre>
+
+      <p>Сначала в ноутбуке ставят пакеты и прячут ключ, который скопировали на прошлом шаге.</p>
+      <pre>%pip install anthropic python-dotenv</pre>
+      <p>Рядом с ноутбуком создают файл <code>.env</code>:</p>
+      <pre>ANTHROPIC_API_KEY="your-api-key-here"</pre>
+      <p>Так ключ не лежит в коде и его сложнее случайно закоммитить. Файл <code>.env</code> добавляют в <code>.gitignore</code>.</p>
+      <pre>from dotenv import load_dotenv
+load_dotenv()
+
+from anthropic import Anthropic
+
+client = Anthropic()
+model = "claude-sonnet-4-0"</pre>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Имя модели в примере — ориентир. В курсе на Skilljar может стоять более старый идентификатор. Берите ту версию, которую выбрали в уроке про семейства, и держите её в одной переменной ноутбука. Если ответ оборвался на полуслове, смотрите <code>stop_reason</code>: значение <code>max_tokens</code> значит, что упёрлись в потолок, а не в смысл.</p>
+        <p>В прошлом уроке в списке полей примером имени модели было <code>claude-3-sonnet</code>. В коде этого урока строка другая: <code>claude-sonnet-4-0</code>. В запрос подставляют то имя, которое стоит в ноутбуке курса, а не прозвище семейства.</p>
       </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Какой <code>max_tokens</code> вы поставите для одного предложения и какой для длинного разбора?</li>
-        <li>Что вы напечатаете в ноутбуке, если нужен только абзац, а не весь объект?</li>
+      <h2>Функция create</h2>
+      <p><code>client.messages.create()</code> требует три параметра:</p>
+      <ul>
+        <li><code>model</code> — имя модели;</li>
+        <li><code>max_tokens</code> — предохранитель длины, не цель. При 1000 генерация оборвётся на 1000 токенах, даже если мысль не кончилась. Добивать лимит модель не пытается;</li>
+        <li><code>messages</code> — история, которую вы отправляете.</li>
       </ul>
+            <figure class="shot">
+        <img src="../../assets/api/api05-09.png" alt="Три обязательных параметра create: model, max_tokens, messages.">
+        <figcaption>Три обязательных параметра create: model, max_tokens, messages.</figcaption>
+      </figure>
+
+      <h2>Сообщения</h2>
+      <p>Это реплики, как в чате. Два вида: user — то, что написал человек, assistant — то, что уже сгенерировал Claude. Каждый элемент — словарь с <code>role</code> и <code>content</code>.</p>
+            <figure class="shot">
+        <img src="../../assets/api/api05-13.png" alt="Сообщение: role user или assistant и поле content.">
+        <figcaption>Сообщение: role user или assistant и поле content.</figcaption>
+      </figure>
+
+      <h2>Первый вызов</h2>
+      <pre>message = client.messages.create(
+    model=model,
+    max_tokens=1000,
+    messages=[
+        {
+            "role": "user",
+            "content": "What is quantum computing? Answer in one sentence"
+        }
+    ]
+)</pre>
+      <p>В ответе много служебного. Текст урока достаёт так:</p>
+      <pre>message.content[0].text</pre>
+      <p>Пример фразы из урока: «Quantum computing is a type of computation that leverages quantum mechanics principles like superposition and entanglement…»</p>
       <h2>Дальше</h2>
-      <p>Один ход — это ещё не разговор. Модель не помнит предыдущий вызов сама.</p>
-      <div class="pager">
+      <p>Один вызов ещё не разговор: следующий урок показывает, что историю надо хранить самим.</p>
+            <div class="pager">
         <a class="ghost" href="04-api-key.html">Назад</a>
         <a class="next" href="06-multi-turn.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287725" target="_blank" rel="noopener noreferrer">Making a request</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287725" target="_blank" rel="noopener noreferrer">Making a request</a>.</p>
+
     </main>
   </div>
 </body>

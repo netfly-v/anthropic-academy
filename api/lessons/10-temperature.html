@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html" aria-current="page"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,49 +52,111 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Temperature</h1>
+            <h1>Temperature</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
       <p class="estimate">Около 6 минут</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>объяснить, что меняет <code>temperature</code> от 0 до 1;</li>
-        <li>выбрать низкое значение для извлечения и более высокое для вариантов;</li>
-        <li>не путать это с «умнее» или «глупее».</li>
+        <li>связать temperature с выбором следующего токена;</li>
+        <li>выбрать диапазон под задачу;</li>
+        <li>передать temperature в ту же функцию <code>chat</code>.</li>
       </ul>
-      <h2>Разброс, не интеллект</h2>
-      <p class="duration">Видео, около 6 минут.</p>
+      <h2>Как выбирается следующее слово</h2>
+      <p class="duration">Видео и схемы урока.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287728" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Temperature · 6:07</span>
+        <span>Temperature</span>
       </a>
-      <p>На каждом шаге модель видит вероятности следующих кусков текста. <code>temperature</code> говорит, насколько строго брать самый вероятный. Ноль тянет к повторяемому, собранному ответу. Единица чаще сворачивает в другие допустимые формулировки. В API значение по умолчанию обычно 1.</p>
-      <pre>client.messages.create(
-    model=model,
-    max_tokens=300,
-    temperature=0,
-    messages=[{"role": "user", "content": "Extract the email as JSON."}],
-)</pre>
+
+      <p>Temperature задаёт, насколько ответ предсказуемый или разнообразный. На промпте вроде «What do you think?» модель проходит три шага: режет вход на токены, считает вероятности следующих слов, выбирает токен по этим вероятностям.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-06-mperature_00.png" alt="Три шага генерации: tokenization, prediction, sampling.">
+        <figcaption>Три шага генерации: tokenization, prediction, sampling.</figcaption>
+      </figure>
+
+      <p>В примере урока у «about» вероятность 30%, у «would» 20%, у «of» 10%. Выбранный токен дописывается, и процесс повторяется.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-07-mperature_05.png" alt="Вероятности следующих слов: about 0.3, would 0.2.">
+        <figcaption>Вероятности следующих слов: about 0.3, would 0.2.</figcaption>
+      </figure>
+
+      <h2>Что делает temperature</h2>
+      <p>Это число от 0 до 1. Оно меняет те самые вероятности. Около 0 модель почти всегда берёт самый вероятный токен. Около 1 вероятность размазывается по остальным вариантам.</p>
+            <figure class="shot">
+        <img src="../../assets/api/slide-08-mperature_06.png" alt="Низкая temperature сужает выбор, высокая размазывает вероятности.">
+        <figcaption>Низкая temperature сужает выбор, высокая размазывает вероятности.</figcaption>
+      </figure>
+
+            <figure class="shot">
+        <img src="../../assets/api/slide-09-mperature_07.png" alt="При 0.0 у одного токена вероятность 100%. При 1.0 она распределена шире.">
+        <figcaption>При 0.0 у одного токена вероятность 100%. При 1.0 она распределена шире.</figcaption>
+      </figure>
+
+      <h2>Какой диапазон под какую задачу</h2>
+      <h3>Низкая, 0.0–0.3</h3>
       <ul>
-        <li>Извлечение полей, классификация, код, где формат важнее стиля: ближе к 0.</li>
-        <li>Черновики, заголовки, несколько идей: выше, ближе к 1.</li>
+        <li>фактические ответы;</li>
+        <li>помощь с кодом;</li>
+        <li>извлечение данных;</li>
+        <li>модерация.</li>
       </ul>
-      <aside class="callout">
-        <p class="callout-label">Пояснение</p>
-        <p>Temperature не добавляет знаний и не удлиняет рассуждение. Для трудной задачи нужна другая модель или больше места на ответ, а не «температура 1, чтобы подумала». Даже при нуле ответ не обязан быть побайтно одинаковым на всех платформах, но разброс заметно меньше, и для извлечения этого обычно хватает.</p>
-      </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Где в вашем продукте два разных ответа на один и тот же вход будут ошибкой?</li>
-        <li>Где, наоборот, одинаковый текст каждый раз выглядит мёртвым?</li>
+      <h3>Средняя, 0.4–0.7</h3>
+      <ul>
+        <li>пересказ;</li>
+        <li>учебный текст;</li>
+        <li>решение задач;</li>
+        <li>творческий текст с ограничениями.</li>
+      </ul>
+      <h3>Высокая, 0.8–1.0</h3>
+      <ul>
+        <li>мозговой штурм;</li>
+        <li>художественный текст;</li>
+        <li>маркетинговые формулировки;</li>
+        <li>шутки.</li>
+      </ul>
+            <figure class="shot">
+        <img src="../../assets/api/slide-10-mperature_10.png" alt="Три диапазона temperature и примеры задач.">
+        <figcaption>Три диапазона temperature и примеры задач.</figcaption>
+      </figure>
+
+      <h2>Как добавить в chat</h2>
+      <p>В параметры добавляют <code>temperature</code>. Значение по умолчанию в функции урока — 1.0.</p>
+      <pre>def chat(messages, system=None, temperature=1.0):
+    params = {
+        "model": model,
+        "max_tokens": 1000,
+        "messages": messages,
+        "temperature": temperature
+    }
+
+    if system:
+        params["system"] = system
+
+    message = client.messages.create(**params)
+    return message.content[0].text</pre>
+      <pre># Low temperature - more predictable
+answer = chat(messages, temperature=0.0)
+
+# High temperature - more creative
+answer = chat(messages, temperature=1.0)</pre>
+      <h2>Как это выглядит</h2>
+      <p>Урок предлагает генерировать идеи фильмов. При 0.0 ответ часто один и тот же, в примере: «A time-traveling archaeologist must prevent ancient artifacts from being stolen.» При 1.0 варианты расходятся сильнее.</p>
+      <p>Temperature не гарантирует другой текст. Она меняет вероятность другого текста. Даже при высокой температуре ответы иногда совпадают.</p>
+      <ul>
+        <li>нужен устойчивый фактический ответ — низкая;</li>
+        <li>нужен штурм — высокая;</li>
+        <li>обычная задача — середина.</li>
       </ul>
       <h2>Дальше</h2>
-      <p>Пока ответ приходит целиком. Следующий урок показывает его по мере генерации.</p>
-      <div class="pager">
+      <p>Дальше ответ начинают показывать по кускам, не дожидаясь конца генерации.</p>
+            <div class="pager">
         <a class="ghost" href="09-system-prompts-exercise.html">Назад</a>
         <a class="next" href="11-streaming.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287728" target="_blank" rel="noopener noreferrer">Temperature</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287728" target="_blank" rel="noopener noreferrer">Temperature</a>.</p>
+
     </main>
   </div>
 </body>

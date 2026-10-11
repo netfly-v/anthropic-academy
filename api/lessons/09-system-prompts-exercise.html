@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,41 +52,35 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Упражнение: system prompt</h1>
+            <h1>Упражнение: system prompt</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 2 минут</p>
-      <p>К концу урока вы сможете:</p>
-      <ul class="objectives">
-        <li>написать system prompt, который меняет поведение, а не тему;</li>
-        <li>проверить, что модель не сдаёт готовое решение с первого хода.</li>
-      </ul>
-      <h2>Тьютор без готового ответа</h2>
-      <p class="duration">Короткое упражнение.</p>
+      <p class="estimate">1 минута 25 секунд</p>
+      <p>На странице нет текста, только ролик. Задача из него такая.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287724" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
         <span>System prompts exercise · 1:25</span>
       </a>
-      <p>Задача курса: сделать из модели сократовского преподавателя математики. Она задаёт наводящий вопрос и не выкладывает решение, пока ученик сам не сделает шаг.</p>
-      <pre>system = """
-You are a Socratic math tutor.
-When the student asks for a solution:
-- Do not give the final answer.
-- Ask one question that unblocks the next step.
-- If they are stuck twice, give a hint, still not the full solution.
-"""</pre>
-      <p>Проверка простая. Спросите «реши 2x + 3 = 11». Если в ответе сразу <code>x = 4</code>, ограничение не сработало: уточните формулировку и вызовите снова с тем же <code>system</code>.</p>
+
+      <h2>Задача</h2>
+      <p>Просят написать функцию Python, которая проверяет строку на повторяющиеся символы. Без system prompt модель выдаёт много кода, пояснений и комментариев.</p>
+      <p>Нужно написать system prompt, передать его в <code>chat</code> и добиться короткой реализации. Промпт должен назначить роль и просить отвечать максимально кратко. В решении ролика строка такая:</p>
+      <pre>system = "You are a Python engineer who writes very concise code."
+answer = chat(messages, system=system)</pre>
+      <p>После этого функция проверки уникальности становится заметно короче, чем первый ответ без роли.</p>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Один удачный ответ ничего не доказывает. Задайте ещё «ну скажи уже число» и «просто покажи уравнение». Хороший system prompt держится на переформулировках, а не на одной вежливой фразе. Это уже задел под оценки промптов, они будут дальше в курсе.</p>
+        <p>Ролик предлагает поставить паузу и написать промпт самим. Роль здесь не «репетитор», как в прошлом уроке, а инженер, который пишет короткий код. Меняется поведение на том же вызове <code>chat</code>.</p>
       </aside>
       <h2>Дальше</h2>
-      <p>Дальше — насколько ответ будет одним и тем же при повторном вызове.</p>
-      <div class="pager">
+      <p>Дальше параметр temperature: насколько ответ будет предсказуемым.</p>
+            <div class="pager">
         <a class="ghost" href="08-system-prompts.html">Назад</a>
         <a class="next" href="10-temperature.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287724" target="_blank" rel="noopener noreferrer">System prompts exercise</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287724" target="_blank" rel="noopener noreferrer">System prompts exercise</a>.</p>
+
     </main>
   </div>
 </body>

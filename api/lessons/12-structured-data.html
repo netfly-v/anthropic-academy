@@ -43,7 +43,7 @@
           <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
           <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="12-structured-data.html" aria-current="page"><span class="mark"></span>Структурированные данные</a></li>
-          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: поля из текста</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
         </ul>
         <p class="nav-group">Exam</p>
         <ul class="lesson-nav">
@@ -52,52 +52,80 @@
       </div>
     </aside>
     <main class="lesson">
-      <h1>Структурированные данные</h1>
+            <h1>Структурированные данные</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
       <p class="estimate">Около 6 минут</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>попросить ответ в JSON и разобрать его в Python;</li>
-        <li>увидеть, где такой приём ломается;</li>
-        <li>понять, зачем позже понадобится tool use.</li>
+        <li>увидеть, почему вокруг JSON появляются пояснения и markdown;</li>
+        <li>обрезать их через prefill сообщения assistant и stop sequence;</li>
+        <li>снять лишние переводы строк и разобрать JSON.</li>
       </ul>
-      <h2>Текст, который читает код</h2>
-      <p class="duration">Видео, около 6 минут.</p>
+      <h2>Лишний текст вокруг данных</h2>
+      <p class="duration">Видео и код урока.</p>
             <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287732" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Structured data · 5:59</span>
+        <span>Structured data</span>
       </a>
-      <p>Программе редко нужен абзац. Ей нужны поля: имя, дата, сумма. Самый прямой приём этого урока — прямо попросить JSON и распарсить строку.</p>
+
+      <p>Если просить JSON, код Python или список, Claude часто добавляет пояснение. Урок берёт веб-приложение, которое генерирует правила AWS EventBridge: пользователь вводит описание, жмёт кнопку и хочет скопировать чистый JSON. Обёртка этому мешает.</p>
+      <h2>Что приходит по умолчанию</h2>
+      <p>JSON верный, но он внутри markdown и рядом есть комментарий. Для кнопки «скопировать» это лишнее.</p>
+      <pre>```json
+{
+  "source": ["aws.ec2"],
+  "detail-type": ["EC2 Instance State-change Notification"],
+  "detail": {
+    "state": ["running"]
+  }
+}
+```
+
+This rule captures EC2 instance state changes when instances start running.</pre>
+      <h2>Prefill и stop sequence</h2>
+      <p>Урок совмещает два приёма. В историю кладут сообщение пользователя и уже начатое сообщение assistant. Генерацию обрывают на закрывающих кавычках блока.</p>
+      <pre>messages = []
+
+add_user_message(messages, "Generate a very short event bridge rule as json")
+add_assistant_message(messages, "```json")
+
+text = chat(messages, stop_sequences=["```"])</pre>
+      <ul>
+        <li>user говорит, что генерировать;</li>
+        <li>prefill <code>```json</code> выглядит так, будто блок кода уже открыт;</li>
+        <li>Claude продолжает самим JSON;</li>
+        <li>когда он пытается закрыть блок тремя обратными кавычками, stop sequence останавливает генерацию.</li>
+      </ul>
+      <p>На выходе остаётся JSON без обёртки:</p>
+      <pre>{
+  "source": ["aws.ec2"],
+  "detail-type": ["EC2 Instance State-change Notification"],
+  "detail": {
+    "state": ["running"]
+  }
+}</pre>
+      <h2>Разобрать строку</h2>
+      <p>Лишние переводы строк снимают перед разбором.</p>
       <pre>import json
 
-reply = client.messages.create(
-    model=model,
-    max_tokens=300,
-    temperature=0,
-    messages=[{
-        "role": "user",
-        "content": "Return only JSON with keys name, date, amount. Text: Anna paid 40 EUR on 2 March.",
-    }],
-)
-data = json.loads(reply.content[0].text)</pre>
-      <p>Низкая temperature здесь уместна: формат важнее разнообразия. Если модель добавит фразу до или после JSON, <code>json.loads</code> упадёт.</p>
+# Clean up and parse the JSON
+clean_json = json.loads(text.strip())</pre>
+      <h2>Не только JSON</h2>
+      <p>Тот же приём годится везде, где нужен кусок без комментария: фрагмент Python, список, CSV, любой формат, который модель хочет обернуть. Смотрят, во что она оборачивает ответ сама, и это делают prefill и stop sequence. Для кода это обычно markdown-блок. Для списка граница другая.</p>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Просьба «верни только JSON» — договорённость, не гарантия схемы. Для жёстких полей в следующем блоке курса используют tool use: модель вызывает инструмент с аргументами по схеме, и лишний текст не смешивается с данными. Пока достаточно уметь попросить JSON, разобрать его и поймать ошибку парсинга, а не показывать пользователю traceback.</p>
+        <p>Функция <code>chat</code> из прошлых уроков принимала <code>messages</code>, потом <code>system</code> и <code>temperature</code>. В этом вызове у неё ещё аргумент <code>stop_sequences</code>: его нужно прокинуть в <code>messages.create</code> так же, как temperature. Иначе пример урока не с чем вызвать.</p>
       </aside>
-      <h2>Вопросы к себе</h2>
-      <ul class="reflection">
-        <li>Что сделает ваш код, если в ответе окажутся пояснения вокруг JSON?</li>
-        <li>Какие поля нельзя угадывать, если их нет во входном тексте?</li>
-      </ul>
       <h2>Дальше</h2>
-      <p>Упражнение: вытащить из фразы имя, дату и сумму.</p>
-      <div class="pager">
+      <p>Упражнение просит три команды AWS CLI подряд, без комментариев, и только этими двумя приёмами.</p>
+            <div class="pager">
         <a class="ghost" href="11-streaming.html">Назад</a>
         <a class="next" href="13-structured-data-exercise.html">Дальше</a>
       </div>
-      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287732" target="_blank" rel="noopener noreferrer">Structured data</a>.</p>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287732" target="_blank" rel="noopener noreferrer">Structured data</a>.</p>
+
     </main>
   </div>
 </body>

@@ -132,29 +132,29 @@ window.QUIZ_BANK = {
       id: "a10",
       domain: "Structured data",
       select: 1,
-      stem: "json.loads fails because the model wrote \"Here is the JSON:\" before the object. What does that show?",
+      stem: "Claude wraps an EventBridge rule in a markdown fence and adds a sentence after it. The lesson's fix does not change the user prompt. What does it do?",
       options: [
-        { id: "a", text: "Asking for JSON only is a guarantee of a bare object" },
-        { id: "b", text: "A prose request for JSON can still include extra text, so parsing needs a failure path" },
-        { id: "c", text: "Temperature 0 makes invalid JSON impossible" },
-        { id: "d", text: "The API key was read from the wrong environment variable" }
+        { id: "a", text: "It only asks more politely for raw JSON" },
+        { id: "b", text: "It prefills the assistant message with ```json and sets a stop sequence of ```" },
+        { id: "c", text: "It sets temperature to 0 so the fence disappears" },
+        { id: "d", text: "It reads the JSON from message.usage" }
       ],
       correct: ["b"],
-      why: "\"Return only JSON\" is a convention. A schema enforced through tool use, covered later, is stricter. Until then, catch parse errors."
+      why: "Prefilling makes Claude continue inside an open code fence. The stop sequence cuts generation when Claude tries to close that fence, so the extra sentence never appears."
     },
     {
       id: "a11",
       domain: "Structured data",
       select: 1,
-      stem: "The sentence has a name and a date, but no amount. The JSON you asked for includes amount: 100. What went wrong?",
+      stem: "You prefill three backticks and stop on three backticks, but the AWS CLI sample still starts with the word bash. Why is bash there?",
       options: [
-        { id: "a", text: "Nothing. Missing numbers should be filled with a round default" },
-        { id: "b", text: "The model invented a field that was not in the source. amount should be null" },
-        { id: "c", text: "Streaming split the number across chunks" },
-        { id: "d", text: "max_tokens forced the model to add extra keys" }
+        { id: "a", text: "It is a stop sequence that failed to match" },
+        { id: "b", text: "Claude is adding a markdown language tag after the opening fence" },
+        { id: "c", text: "The API key workspace was not Default" },
+        { id: "d", text: "max_tokens inserted the language name" }
       ],
       correct: ["b"],
-      why: "Extraction should not invent facts. If the sentence has no amount, the value is null, not a guess."
+      why: "After an opening fence, Claude may write a language tag such as bash. The exercise puts bash into the prefill so that word is not generated again."
     },
     {
       id: "a12",
