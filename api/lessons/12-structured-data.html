@@ -52,26 +52,31 @@
       </div>
     </aside>
     <main class="lesson">
-            <h1>Структурированные данные</h1>
+      <h1>Структурированные данные</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 6 минут</p>
+      <p class="estimate">Видео 5:59 и текст урока</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>увидеть, почему вокруг JSON появляются пояснения и markdown;</li>
-        <li>обрезать их через prefill сообщения assistant и stop sequence;</li>
-        <li>снять лишние переводы строк и разобрать JSON.</li>
+        <li>объяснить, откуда вокруг JSON берутся пояснения и markdown;</li>
+        <li>убрать их с помощью prefill сообщения assistant и stop sequence;</li>
+        <li>подготовить и разобрать полученный JSON.</li>
       </ul>
-      <h2>Лишний текст вокруг данных</h2>
-      <p class="duration">Видео и код урока.</p>
-            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287732" target="_blank" rel="noopener noreferrer">
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287732" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Structured data</span>
+        <span>Structured data · 5:59</span>
       </a>
 
-      <p>Если просить JSON, код Python или список, Claude часто добавляет пояснение. Урок берёт веб-приложение, которое генерирует правила AWS EventBridge: пользователь вводит описание, жмёт кнопку и хочет скопировать чистый JSON. Обёртка этому мешает.</p>
+      <p>Когда нужно, чтобы Claude сгенерировал структурированные данные — JSON, код на Python или маркированный список, — часто возникает одна проблема: Claude хочет быть полезным и добавляет вокруг содержимого пояснения. Обычно это хорошо, но иногда нужны только сами данные и ничего больше.</p>
+      <p>Представьте веб-приложение, которое генерирует правила AWS EventBridge. Пользователь вводит описание, нажимает «Generate» и ждёт чистый JSON, который можно сразу скопировать. Если Claude вернёт JSON внутри markdown-блока кода и с пояснениями, пользователь не сможет просто скопировать весь ответ — придётся вручную выделять только JSON.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api12-01.png" alt="Приложение EventBridge Rule Generator: ввод «Rule to monitor EC2 instances», кнопка Generate и чистый JSON с кнопкой копирования.">
+        <figcaption>EventBridge Rule Generator: описание «Rule to monitor EC2 instances», кнопка Generate и чистый JSON с кнопкой копирования.</figcaption>
+      </figure>
+
       <h2>Что приходит по умолчанию</h2>
-      <p>JSON верный, но он внутри markdown и рядом есть комментарий. Для кнопки «скопировать» это лишнее.</p>
+      <p>По умолчанию на просьбу сгенерировать JSON можно получить что-то такое:</p>
       <pre>```json
 {
   "source": ["aws.ec2"],
@@ -83,21 +88,28 @@
 ```
 
 This rule captures EC2 instance state changes when instances start running.</pre>
-      <h2>Prefill и stop sequence</h2>
-      <p>Урок совмещает два приёма. В историю кладут сообщение пользователя и уже начатое сообщение assistant. Генерацию обрывают на закрывающих кавычках блока.</p>
+      <p>JSON правильный, но обёрнут в markdown-разметку и снабжён пояснением. В веб-приложении, где пользователю нужно скопировать чистый JSON, это мешает.</p>
+
+      <h2>Решение: prefill сообщения assistant + stop sequences</h2>
+      <p>Можно совместить предзаполнение (prefill) сообщения ассистента со стоп-последовательностями и получить ровно то содержимое, которое нужно. Вот как это работает:</p>
       <pre>messages = []
 
 add_user_message(messages, "Generate a very short event bridge rule as json")
 add_assistant_message(messages, "```json")
 
 text = chat(messages, stop_sequences=["```"])</pre>
+      <p>Приём работает так:</p>
       <ul>
-        <li>user говорит, что генерировать;</li>
-        <li>prefill <code>```json</code> выглядит так, будто блок кода уже открыт;</li>
-        <li>Claude продолжает самим JSON;</li>
-        <li>когда он пытается закрыть блок тремя обратными кавычками, stop sequence останавливает генерацию.</li>
+        <li>сообщение пользователя говорит Claude, что сгенерировать;</li>
+        <li>предзаполненное сообщение ассистента заставляет Claude думать, что он уже открыл markdown-блок кода;</li>
+        <li>Claude продолжает и пишет только сам JSON;</li>
+        <li>когда Claude пытается закрыть блок кода через <code>```</code>, стоп-последовательность сразу останавливает генерацию.</li>
       </ul>
-      <p>На выходе остаётся JSON без обёртки:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api12-02.png" alt="Stop sequence и prefill ```json заставляют Claude писать только JSON, без описания.">
+        <figcaption>Stop sequence <code>```</code> и prefill <code>```json</code>: Claude «видит», что JSON уже начат, пишет только его и останавливается на закрывающих кавычках.</figcaption>
+      </figure>
+      <p>В результате получается чистый JSON без лишнего форматирования:</p>
       <pre>{
   "source": ["aws.ec2"],
   "detail-type": ["EC2 Instance State-change Notification"],
@@ -105,20 +117,35 @@ text = chat(messages, stop_sequences=["```"])</pre>
     "state": ["running"]
   }
 }</pre>
-      <h2>Разобрать строку</h2>
-      <p>Лишние переводы строк снимают перед разбором.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Функцию <code>chat</code> нужно доработать.</strong> В прошлых уроках она принимала только <code>messages</code>, <code>system</code> и <code>temperature</code>. Чтобы вызов <code>chat(messages, stop_sequences=["```"])</code> работал, добавьте параметр <code>stop_sequences=None</code> и, если он передан, кладите его в <code>params["stop_sequences"]</code> — так же, как <code>system</code>.</li>
+          <li><strong>Prefill — последнее сообщение assistant.</strong> Claude продолжает текст именно с того места, где оно обрывается. Стоп-последовательность в результат не попадает, а в ответе будет <code>stop_reason == "stop_sequence"</code>. Prefill нельзя заканчивать пробелом или переводом строки — API вернёт ошибку.</li>
+          <li><strong>На новых моделях prefill отключён.</strong> Урок рассчитан на модель курса <code>claude-sonnet-4-0</code>. Начиная с Claude Opus 4.6 / Sonnet 4.6 и на всех текущих моделях (Opus 5.5, Sonnet 5.5, Haiku 5.5 и др.) запрос, который заканчивается сообщением assistant, возвращает ошибку 400. Современная замена для JSON — structured outputs: параметр <code>output_config={"format": {"type": "json_schema", "schema": ...}}</code> (или помощник <code>client.messages.parse()</code>), и модель гарантированно возвращает JSON по вашей схеме. Для остальных форматов — чёткая инструкция в system prompt. Сам приём prefill + stop sequence курс и экзамен по курсу всё равно разбирают, так что его нужно понимать.</li>
+        </ul>
+      </aside>
+
+      <h2>Обработка ответа</h2>
+      <p>В ответе могут оказаться лишние переводы строк. Убрать их несложно:</p>
       <pre>import json
 
 # Clean up and parse the JSON
 clean_json = json.loads(text.strip())</pre>
+
       <h2>Не только JSON</h2>
-      <p>Тот же приём годится везде, где нужен кусок без комментария: фрагмент Python, список, CSV, любой формат, который модель хочет обернуть. Смотрят, во что она оборачивает ответ сама, и это делают prefill и stop sequence. Для кода это обычно markdown-блок. Для списка граница другая.</p>
-      <aside class="callout">
-        <p class="callout-label">Пояснение</p>
-        <p>Функция <code>chat</code> из прошлых уроков принимала <code>messages</code>, потом <code>system</code> и <code>temperature</code>. В этом вызове у неё ещё аргумент <code>stop_sequences</code>: его нужно прокинуть в <code>messages.create</code> так же, как temperature. Иначе пример урока не с чем вызвать.</p>
-      </aside>
+      <p>Этот приём годится не только для JSON. Используйте его всякий раз, когда нужны структурированные данные без комментариев:</p>
+      <ul>
+        <li>фрагменты кода на Python;</li>
+        <li>маркированные списки;</li>
+        <li>данные в CSV;</li>
+        <li>любое форматированное содержимое, где нужно только оно само, без пояснений.</li>
+      </ul>
+      <p>Главное — понять, во что Claude сам по себе оборачивает ваше содержимое, и использовать это как prefill и стоп-последовательность. Для кода это обычно markdown-блок; для списков могут быть другие маркеры форматирования.</p>
+      <p>Такой подход даёт точный контроль над форматом ответа Claude и сильно упрощает встраивание сгенерированного ИИ содержимого в приложения, где нужны чистые структурированные данные.</p>
+
       <h2>Дальше</h2>
-      <p>Упражнение просит три команды AWS CLI подряд, без комментариев, и только этими двумя приёмами.</p>
+      <p>В упражнении тем же приёмом получают три команды AWS CLI подряд — без заголовков и комментариев.</p>
             <div class="pager">
         <a class="ghost" href="11-streaming.html">Назад</a>
         <a class="next" href="13-structured-data-exercise.html">Дальше</a>

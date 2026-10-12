@@ -52,54 +52,65 @@
       </div>
     </aside>
     <main class="lesson">
-                        <h1>Ключ API</h1>
+      <h1>Ключ API</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Пять шагов в консоли</p>
+      <p class="estimate">Текстовый урок, около 2 минут</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>открыть консоль и дойти до списка ключей;</li>
+        <li>открыть консоль Anthropic и найти раздел ключей;</li>
         <li>создать ключ в workspace Default с понятным именем;</li>
-        <li>скопировать ключ, пока окно ещё открыто.</li>
+        <li>сохранить ключ, пока окно с ним ещё открыто.</li>
       </ul>
-      <h2>Зачем он сейчас</h2>
-      <p>В следующем видео будет запрос к API. Для него нужен секретный ключ. Эта страница — только как его создать.</p>
-      <h3>Шаг 1. Откройте консоль</h3>
-      <p>В браузере откройте <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">console.anthropic.com</a> и войдите в аккаунт Anthropic. Страница выглядит так:</p>
-            <figure class="shot">
-        <img src="../../assets/api/api04-1.png" alt="Главная консоли Anthropic после входа.">
-        <figcaption>Главная консоли Anthropic после входа.</figcaption>
+
+      <p>В следующем видео мы сделаем запрос к Anthropic API. Для этого понадобится секретный API-ключ. Эта инструкция показывает, как его создать.</p>
+
+      <h3>Шаг 1. Откройте консоль Anthropic API</h3>
+      <p>В браузере перейдите на <a href="https://console.anthropic.com/" target="_blank" rel="noopener noreferrer">https://console.anthropic.com/</a> и войдите в аккаунт Anthropic. Вы увидите примерно такую страницу:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api04-01.png" alt="Главная консоли Anthropic с кнопками Create a prompt, Generate a prompt и Get API Key.">
+        <figcaption>Главная страница консоли с кнопками «Create a prompt», «Generate a prompt» и «Get API Key».</figcaption>
       </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Консоль переехала: сейчас она открывается по адресу <a href="https://platform.claude.com/" target="_blank" rel="noopener noreferrer">platform.claude.com</a> (старый адрес перенаправляет туда). Интерфейс может выглядеть иначе, чем на скриншотах, но шаги те же.</p>
+      </aside>
 
       <h3>Шаг 2. Нажмите Get API Keys</h3>
-      <p>Кнопка справа вверху на главной панели.</p>
-            <figure class="shot">
-        <img src="../../assets/api/api04-2.png" alt="Кнопка Get API Keys справа вверху.">
-        <figcaption>Кнопка Get API Keys справа вверху.</figcaption>
+      <p>Кнопка находится в правом верхнем углу главной панели.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api04-02.png" alt="Стрелка и рамка выделяют кнопку Get API Key — крайнюю правую из трёх.">
+        <figcaption>Кнопка «Get API Key» — крайняя правая из трёх.</figcaption>
       </figure>
 
       <h3>Шаг 3. Нажмите Create Key</h3>
-      <p>На странице ключей кнопка Create Key тоже справа вверху.</p>
-            <figure class="shot">
-        <img src="../../assets/api/api04-3.png" alt="Кнопка Create Key.">
-        <figcaption>Кнопка Create Key.</figcaption>
+      <p>Найдите кнопку «Create Key» в правом верхнем углу страницы и нажмите её.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api04-03.png" alt="Выделенная кнопка Create Key справа на панели Create an API key.">
+        <figcaption>Кнопка «Create Key» справа на панели «Create an API key».</figcaption>
       </figure>
 
-      <h3>Шаг 4. Workspace и имя</h3>
-      <p>Создайте ключ в workspace Default. Имя нужно, чтобы потом отличить ключи друг от друга. В уроке имя — Anthropic Course.</p>
-            <figure class="shot">
-        <img src="../../assets/api/api04-4.png" alt="Окно создания ключа: workspace и имя.">
-        <figcaption>Окно создания ключа: workspace и имя.</figcaption>
+      <h3>Шаг 4. Выберите workspace и задайте имя ключа</h3>
+      <p>Создайте ключ в workspace «Default» и введите имя ключа. Имя нужно, чтобы потом отличать свои ключи друг от друга. Назовём его «Anthropic Course».</p>
+      <figure class="shot">
+        <img src="../../assets/api/api04-04.png" alt="Окно Create API key: workspace Default, имя Anthropic Course, кнопки Cancel и Add.">
+        <figcaption>Окно создания ключа: workspace «Default», имя «Anthropic Course», кнопки Cancel и Add.</figcaption>
       </figure>
 
       <h3>Шаг 5. Скопируйте ключ</h3>
-      <p>Ключ показывается во всплывающем окне один раз. Скопируйте его: он понадобится в следующем видео. Если окно закрыли, удалите этот ключ и создайте снова.</p>
+      <p>Ключ появится во всплывающем окне. Скопируйте его и сохраните — он понадобится в следующем видео. Ключ показывается только один раз, так что обязательно скопируйте его!</p>
+      <p>Если случайно закрыли окно, удалите старый ключ и создайте новый.</p>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>На этой странице курса ключ только копируют. Куда его положить в ноутбуке, файл <code>.env</code>, разбирается в следующем уроке, «Первый запрос».</p>
+        <ul>
+          <li><strong>Оплата API отдельная.</strong> Подписка Claude Pro или Max на claude.ai не даёт кредитов для API. Запросы оплачиваются по токенам в консоли (Billing), и без пополненного баланса ключ будет получать ошибки.</li>
+          <li><strong>Ключ — как пароль.</strong> Не вставляйте его в код и не коммитьте в git. Куда его положить, показывает следующий урок: в файл <code>.env</code>, откуда SDK читает переменную <code>ANTHROPIC_API_KEY</code>.</li>
+          <li><strong>Workspace</strong> — группа ключей внутри организации со своими лимитами и расходами. Для курса хватает «Default».</li>
+        </ul>
       </aside>
+
       <h2>Дальше</h2>
-      <p>Скопированный ключ подставляют в окружение и делают первый вызов.</p>
+      <p>С ключом на руках можно настроить ноутбук и сделать первый запрос.</p>
             <div class="pager">
         <a class="ghost" href="03-accessing-the-api.html">Назад</a>
         <a class="next" href="05-making-a-request.html">Дальше</a>

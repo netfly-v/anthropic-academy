@@ -52,76 +52,87 @@
       </div>
     </aside>
     <main class="lesson">
-            <h1>Temperature</h1>
+      <h1>Temperature</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 6 минут</p>
+      <p class="estimate">Видео 6:07 и текст урока</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
         <li>связать temperature с выбором следующего токена;</li>
-        <li>выбрать диапазон под задачу;</li>
-        <li>передать temperature в ту же функцию <code>chat</code>.</li>
+        <li>выбрать диапазон temperature под задачу;</li>
+        <li>передать temperature в функцию <code>chat</code>.</li>
       </ul>
-      <h2>Как выбирается следующее слово</h2>
-      <p class="duration">Видео и схемы урока.</p>
-            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287728" target="_blank" rel="noopener noreferrer">
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287728" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Temperature</span>
+        <span>Temperature · 6:07</span>
       </a>
 
-      <p>Temperature задаёт, насколько ответ предсказуемый или разнообразный. На промпте вроде «What do you think?» модель проходит три шага: режет вход на токены, считает вероятности следующих слов, выбирает токен по этим вероятностям.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-06-mperature_00.png" alt="Три шага генерации: tokenization, prediction, sampling.">
-        <figcaption>Три шага генерации: tokenization, prediction, sampling.</figcaption>
-      </figure>
+      <p>Temperature — мощный параметр, который задаёт, насколько предсказуемыми или творческими будут ответы Claude. Если научиться им пользоваться, можно заметно улучшить ИИ-приложение.</p>
 
-      <p>В примере урока у «about» вероятность 30%, у «would» 20%, у «of» 10%. Выбранный токен дописывается, и процесс повторяется.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-07-mperature_05.png" alt="Вероятности следующих слов: about 0.3, would 0.2.">
-        <figcaption>Вероятности следующих слов: about 0.3, would 0.2.</figcaption>
+      <h2>Как Claude генерирует текст</h2>
+      <p>Прежде чем разбираться с temperature, полезно понять, как Claude генерирует текст. Когда вы отправляете промпт вроде «What do you think?», он проходит три ключевых шага:</p>
+      <ul>
+        <li><strong>токенизация</strong> — входной текст режется на небольшие куски;</li>
+        <li><strong>предсказание</strong> — считаются вероятности возможных следующих слов;</li>
+        <li><strong>выборка (sampling)</strong> — по этим вероятностям выбирается токен.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api10-01.png" alt="Вероятности следующего токена: about 0.3, would 0.2, of, is и when по 0.1, makes и we по 0.05.">
+        <figcaption>Вероятности следующего токена после «What do you think»: «about» 0.3, «would» 0.2, «of», «is», «when» по 0.1, «makes» и «we» по 0.05.</figcaption>
+      </figure>
+      <p>В этом примере Claude может дать «about» вероятность 30%, «would» — 20%, «of» — 10% и так далее. Затем модель выбирает один токен и повторяет весь процесс, пока не построит целые предложения.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api10-02.png" alt="Тот же список токенов в виде столбчатой диаграммы.">
+        <figcaption>Те же вероятности в виде диаграммы: «about» 30%, «would» 20%, «of», «is», «when» по 10%, «makes» и «we» по 5%.</figcaption>
       </figure>
 
       <h2>Что делает temperature</h2>
-      <p>Это число от 0 до 1. Оно меняет те самые вероятности. Около 0 модель почти всегда берёт самый вероятный токен. Около 1 вероятность размазывается по остальным вариантам.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-08-mperature_06.png" alt="Низкая temperature сужает выбор, высокая размазывает вероятности.">
-        <figcaption>Низкая temperature сужает выбор, высокая размазывает вероятности.</figcaption>
+      <p>Temperature — десятичное число от 0 до 1, которое напрямую влияет на эти вероятности выбора. Это как «ручка креативности» ответов Claude.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api10-03.png" alt="При низкой temperature у about 100%, у остальных 0%; при высокой вероятности 23, 18, 15, 12, 12, 11 и 9%.">
+        <figcaption>При низкой temperature «about» получает 100%, остальные 0%; при высокой вероятности выравниваются: 23, 18, 15, 12, 12, 11 и 9%.</figcaption>
       </figure>
+      <p>При низкой temperature (около 0) Claude становится очень детерминированным: почти всегда выбирает самый вероятный токен. При высокой (около 1) вероятность распределяется по вариантам равномернее, и ответы получаются разнообразнее и креативнее.</p>
 
-            <figure class="shot">
-        <img src="../../assets/api/slide-09-mperature_07.png" alt="При 0.0 у одного токена вероятность 100%. При 1.0 она распределена шире.">
-        <figcaption>При 0.0 у одного токена вероятность 100%. При 1.0 она распределена шире.</figcaption>
+      <h2>Интерактивное демо</h2>
+      <p>Temperature можно увидеть в действии в интерактивном демо Claude. Посмотрите, как меняется распределение вероятностей, когда двигаешь ползунок temperature:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api10-04.png" alt="Ползунок temperature на 0.49: about около 60%, остальные токены меньше 10%.">
+        <figcaption>Ползунок на 0.49: у «about» около 60%, у остальных токенов меньше 10%.</figcaption>
       </figure>
+      <p>При temperature 0.0 «about» получает 100% — полностью детерминированно. При 1.0 вероятности распределяются по всем токенам равномернее, и появляются случайность и креативность.</p>
 
-      <h2>Какой диапазон под какую задачу</h2>
-      <h3>Низкая, 0.0–0.3</h3>
+      <h2>Как выбрать temperature</h2>
+      <p>Разным задачам подходят разные диапазоны:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api10-05.png" alt="Низкий, средний и высокий диапазоны temperature и задачи для них, стрелка от Less creative к More creative.">
+        <figcaption>Три диапазона temperature и задачи для них — от «менее творческих» к «более творческим».</figcaption>
+      </figure>
+      <h3>Низкая temperature (0.0–0.3)</h3>
       <ul>
         <li>фактические ответы;</li>
         <li>помощь с кодом;</li>
         <li>извлечение данных;</li>
-        <li>модерация.</li>
+        <li>модерация контента.</li>
       </ul>
-      <h3>Средняя, 0.4–0.7</h3>
+      <h3>Средняя temperature (0.4–0.7)</h3>
       <ul>
-        <li>пересказ;</li>
-        <li>учебный текст;</li>
+        <li>пересказ и саммари;</li>
+        <li>учебные материалы;</li>
         <li>решение задач;</li>
-        <li>творческий текст с ограничениями.</li>
+        <li>творческие тексты с ограничениями.</li>
       </ul>
-      <h3>Высокая, 0.8–1.0</h3>
+      <h3>Высокая temperature (0.8–1.0)</h3>
       <ul>
         <li>мозговой штурм;</li>
-        <li>художественный текст;</li>
-        <li>маркетинговые формулировки;</li>
-        <li>шутки.</li>
+        <li>художественные тексты;</li>
+        <li>маркетинговые тексты;</li>
+        <li>придумывание шуток.</li>
       </ul>
-            <figure class="shot">
-        <img src="../../assets/api/slide-10-mperature_10.png" alt="Три диапазона temperature и примеры задач.">
-        <figcaption>Три диапазона temperature и примеры задач.</figcaption>
-      </figure>
 
-      <h2>Как добавить в chat</h2>
-      <p>В параметры добавляют <code>temperature</code>. Значение по умолчанию в функции урока — 1.0.</p>
+      <h2>Temperature в коде</h2>
+      <p>Добавить temperature в функцию <code>chat</code> просто. Вот как изменить существующую функцию:</p>
       <pre>def chat(messages, system=None, temperature=1.0):
     params = {
         "model": model,
@@ -135,21 +146,36 @@
 
     message = client.messages.create(**params)
     return message.content[0].text</pre>
+      <p>Главные изменения: параметр <code>temperature=1.0</code> в сигнатуре и <code>"temperature": temperature</code> в словаре <code>params</code>.</p>
+
+      <h2>Проверяем эффект</h2>
+      <p>Чтобы увидеть temperature в действии, попробуйте генерировать идеи фильмов с разными настройками:</p>
       <pre># Low temperature - more predictable
 answer = chat(messages, temperature=0.0)
 
 # High temperature - more creative
 answer = chat(messages, temperature=1.0)</pre>
-      <h2>Как это выглядит</h2>
-      <p>Урок предлагает генерировать идеи фильмов. При 0.0 ответ часто один и тот же, в примере: «A time-traveling archaeologist must prevent ancient artifacts from being stolen.» При 1.0 варианты расходятся сильнее.</p>
-      <p>Temperature не гарантирует другой текст. Она меняет вероятность другого текста. Даже при высокой температуре ответы иногда совпадают.</p>
+      <p>При 0.0 вы, скорее всего, раз за разом будете получать что-то вроде «A time-traveling archaeologist must prevent ancient artifacts from being stolen.» При 1.0 темы, персонажи и сюжеты станут гораздо разнообразнее.</p>
+
+      <h2>Главное</h2>
+      <p>Помните: temperature не гарантирует разные ответы — она лишь меняет вероятность их получить. Даже при высокой temperature Claude иногда выдаёт похожие ответы. Ключ в том, чтобы подобрать temperature под конкретную задачу:</p>
       <ul>
-        <li>нужен устойчивый фактический ответ — низкая;</li>
-        <li>нужен штурм — высокая;</li>
-        <li>обычная задача — середина.</li>
+        <li>нужны стабильные фактические ответы — низкая temperature;</li>
+        <li>нужен творческий мозговой штурм — повышайте temperature;</li>
+        <li>что-то среднее — для большинства обычных задач хорошо подходит средняя.</li>
       </ul>
+      <p>Temperature — один из самых практичных параметров для точной настройки поведения Claude под ваши задачи.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>По умолчанию 1.0.</strong> Если <code>temperature</code> не передать, API использует 1.0 — поэтому и в функции урока значение по умолчанию 1.0.</li>
+          <li><strong>0 — не гарантия одинаковых ответов.</strong> Даже при <code>temperature=0</code> ответы на один и тот же запрос могут немного отличаться. Для повторяемости важнее чёткий промпт и формат ответа.</li>
+          <li><strong>Новые модели.</strong> Урок рассчитан на модели курса (<code>claude-sonnet-4-0</code>). Начиная с Claude Opus 4.7 параметры выборки <code>temperature</code>, <code>top_p</code> и <code>top_k</code> на многих моделях отключены: передача возвращает ошибку 400 (на Claude Sonnet 5.5 и Haiku 5.5 — любое значение, кроме значения по умолчанию). Поведение там настраивают промптом и параметром <code>effort</code>. На моделях Claude 4 поколения, где temperature работает, задавайте либо <code>temperature</code>, либо <code>top_p</code>, но не оба.</li>
+        </ul>
+      </aside>
+
       <h2>Дальше</h2>
-      <p>Дальше ответ начинают показывать по кускам, не дожидаясь конца генерации.</p>
+      <p>Следующий урок — потоковый ответ: как показывать текст по кускам, не дожидаясь конца генерации.</p>
             <div class="pager">
         <a class="ghost" href="09-system-prompts-exercise.html">Назад</a>
         <a class="next" href="11-streaming.html">Дальше</a>

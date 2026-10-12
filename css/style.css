@@ -538,7 +538,7 @@ p code, li code, h2 code, h3 code {
 }
 
 @media (max-width: 860px) {
-  .layout { grid-template-columns: 1fr; }
+  .layout { grid-template-columns: minmax(0, 1fr); }
   .sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
   .sidebar-inner { position: static; }
   .lesson { padding: 1.5rem 1.1rem 3rem; }

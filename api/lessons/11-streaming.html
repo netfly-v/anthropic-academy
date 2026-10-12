@@ -52,46 +52,69 @@
       </div>
     </aside>
     <main class="lesson">
-            <h1>Потоковый ответ</h1>
+      <h1>Потоковый ответ</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 8 минут</p>
+      <p class="estimate">Видео 8:23 и текст урока</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>объяснить, зачем поток, если ответ занимает 10–30 секунд;</li>
-        <li>отличить события потока и где в них текст;</li>
-        <li>показать куски пользователю и сохранить целое сообщение.</li>
+        <li>объяснить, зачем нужен поток, если ответ генерируется 10–30 секунд;</li>
+        <li>назвать события потока и найти в них текст;</li>
+        <li>выводить текст по кускам и получать целое сообщение через SDK.</li>
       </ul>
-      <h2>Долгое молчание</h2>
-      <p class="duration">Видео и схемы урока.</p>
-            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287734" target="_blank" rel="noopener noreferrer">
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287734" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Response streaming</span>
+        <span>Response streaming · 8:23</span>
       </a>
 
-      <p>В обычном чате сервер ждёт полный ответ Claude и только потом отдаёт его клиенту. На экране 10–30 секунд крутится индикатор. Поток это убирает: текст появляется по мере генерации.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-13-Streaming_03.png" alt="Без потока клиент ждёт весь ответ. С потоком куски идут сразу.">
-        <figcaption>Без потока клиент ждёт весь ответ. С потоком куски идут сразу.</figcaption>
+      <p>В чат-приложениях на Claude есть серьёзная проблема пользовательского опыта: ответ может генерироваться 10–30 секунд, и всё это время пользователь смотрит на индикатор загрузки. Решение — потоковая передача ответа (streaming): пользователь видит, как текст появляется кусок за куском по мере генерации, и приложение ощущается гораздо отзывчивее.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api11-01.png" alt="Чат отправляет вопрос на сервер, сервер передаёт его Claude и получает сообщение assistant.">
+        <figcaption>Чат отправляет «What is quantum computing?» на наш сервер, сервер передаёт вопрос Claude и получает ответ ассистента.</figcaption>
       </figure>
 
-      <h2>Как идёт поток</h2>
-      <p>Claude сразу подтверждает, что запрос принят и генерация началась. Дальше приходит серия событий, в каждом кусок текста. Сервер пересылает их клиенту. Это всё ещё один запрос, не несколько.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-15-Streaming_11.png" alt="Один запрос, несколько событий с кусками текста.">
-        <figcaption>Один запрос, несколько событий с кусками текста.</figcaption>
+      <h2>Проблема обычных ответов</h2>
+      <p>В типичной схеме сервер отправляет сообщение пользователя Claude и ждёт полного ответа, прежде чем что-то вернуть клиенту. Возникает неловкая пауза, во время которой пользователь не видит никаких признаков, что что-то происходит.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api11-02.png" alt="Ответ Claude может занять 10–30 секунд, а в чате всё это время три точки.">
+        <figcaption>Генерация может занять 10–30 секунд, а в чате всё это время только три точки.</figcaption>
       </figure>
 
-      <h2>Какие бывают события</h2>
+      <h2>Как работает поток</h2>
+      <p>Со включённым потоком Claude сразу присылает начальный ответ: запрос получен, генерация началась. Затем приходит серия событий, и в каждом — небольшой кусок общего ответа.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api11-03.png" alt="Claude отвечает начальным ответом, затем событиями «Quantum», «computing», «is».">
+        <figcaption>Сначала начальный ответ, затем события с кусками текста: «Quantum», «computing», «is»…</figcaption>
+      </figure>
+      <p>Сервер может пересылать эти куски клиентскому приложению по мере поступления, и пользователь видит, как ответ складывается слово за словом. Все эти события — части одного запроса к Claude.</p>
+
+      <h2>События потока</h2>
+      <p>Со включённым потоком Claude присылает события нескольких типов:</p>
       <ul>
-        <li>MessageStart — началось сообщение;</li>
-        <li>ContentBlockStart — начался блок: текст, tool use или другое;</li>
-        <li>ContentBlockDelta — кусок сгенерированного текста, его и показывают;</li>
-        <li>ContentBlockStop — блок закончен;</li>
-        <li>MessageDelta — сообщение собрано;</li>
-        <li>MessageStop — сведений об этом сообщении больше нет.</li>
+        <li><strong>MessageStart</strong> — начинается отправка нового сообщения;</li>
+        <li><strong>ContentBlockStart</strong> — начало нового блока с текстом, вызовом инструмента или другим содержимым;</li>
+        <li><strong>ContentBlockDelta</strong> — куски сгенерированного текста;</li>
+        <li><strong>ContentBlockStop</strong> — текущий блок содержимого закончен;</li>
+        <li><strong>MessageDelta</strong> — текущее сообщение завершено;</li>
+        <li><strong>MessageStop</strong> — конец информации о текущем сообщении.</li>
       </ul>
-      <h2>Разбор событий вручную</h2>
+      <figure class="shot">
+        <img src="../../assets/api/api11-04.png" alt="Типы событий потока по порядку; ContentBlockDelta повторяется три раза и содержит сгенерированный текст.">
+        <figcaption>События приходят от Claude по порядку; сам сгенерированный текст — в повторяющихся ContentBlockDelta.</figcaption>
+      </figure>
+      <p>Именно события ContentBlockDelta содержат сгенерированный текст, который вы будете показывать пользователям.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В самом API события называются в snake_case: <code>message_start</code>, <code>content_block_start</code>, <code>content_block_delta</code>, <code>content_block_stop</code>, <code>message_delta</code>, <code>message_stop</code>. В Python SDK им соответствуют классы <code>RawMessageStartEvent</code>, <code>RawContentBlockDeltaEvent</code> и т. д. — их вы и увидите в выводе ноутбука ниже.</p>
+        <ul>
+          <li>Текст лежит в <code>event.delta.text</code> у событий <code>content_block_delta</code> с <code>delta.type == "text_delta"</code>. У блоков вызова инструмента дельты другого типа (<code>input_json_delta</code>).</li>
+          <li>Формулировка урока про MessageDelta («сообщение завершено») упрощённая. На деле <code>message_delta</code> несёт итоговые данные всего сообщения: <code>stop_reason</code> и счётчик <code>usage</code> с выходными токенами. Поэтому причину остановки в потоке узнают именно из него.</li>
+        </ul>
+      </aside>
+
+      <h2>Простая реализация потока</h2>
+      <p>Чтобы включить поток, добавьте <code>stream=True</code> в вызов <code>messages.create</code>:</p>
       <pre>messages = []
 add_user_message(messages, "Write a 1 sentence description of a fake database")
 
@@ -104,8 +127,13 @@ stream = client.messages.create(
 
 for event in stream:
     print(event)</pre>
-      <h2>Только текст</h2>
-      <p>SDK умеет отдать уже вынутый текст, без ручного разбора событий.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api11-05.png" alt="Вывод ноутбука для кода выше: RawMessageStartEvent, затем RawContentBlockStartEvent.">
+        <figcaption>Вывод ноутбука: сначала <code>RawMessageStartEvent</code>, затем <code>RawContentBlockStartEvent</code> и дальше по списку.</figcaption>
+      </figure>
+
+      <h2>Упрощённый поток текста</h2>
+      <p>Вместо того чтобы разбирать события вручную, можно воспользоваться упрощённым интерфейсом потока в SDK, который достаёт только текст:</p>
       <pre>with client.messages.stream(
     model=model,
     max_tokens=1000,
@@ -113,13 +141,10 @@ for event in stream:
 ) as stream:
     for text in stream.text_stream:
         print(text, end="")</pre>
-      <h2>Целиком для хранения</h2>
-      <p>Куски хороши для экрана. В базу обычно кладут собранное сообщение.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-16-Streaming_12.png" alt="Куски уходят клиенту, итоговое сообщение остаётся для хранения.">
-        <figcaption>Куски уходят клиенту, итоговое сообщение остаётся для хранения.</figcaption>
-      </figure>
+      <p>Этот способ автоматически отбрасывает всё, кроме текста, — обычно именно это и нужно, чтобы показывать ответ пользователю.</p>
 
+      <h2>Получаем сообщение целиком</h2>
+      <p>Поток по кускам хорош для пользователя, но часто нужно и полное сообщение — чтобы сохранить или обработать дальше. Когда поток закончился, можно получить собранное итоговое сообщение:</p>
       <pre>with client.messages.stream(
     model=model,
     max_tokens=1000,
@@ -131,12 +156,18 @@ for event in stream:
 
     # Get the complete message for database storage
     final_message = stream.get_final_message()</pre>
+      <p>Так вы получаете лучшее из двух миров: поток в реальном времени для пользователей и полный объект сообщения для логики приложения.</p>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Поток не укорачивает генерацию. Он меняет, когда пользователь видит текст. Полный текст для следующего хода диалога берут из <code>get_final_message()</code>, а не склеивают куски руками.</p>
+        <ul>
+          <li><strong>Два способа включить поток.</strong> <code>messages.create(..., stream=True)</code> отдаёт «сырые» события, разбирать их — ваша задача. <code>messages.stream(...)</code> — помощник SDK: даёт <code>text_stream</code> и собирает итог в <code>get_final_message()</code>. Склеивать куски руками не нужно.</li>
+          <li><strong>Поток не ускоряет генерацию.</strong> Общее время ответа то же; меняется момент, когда пользователь видит первые слова.</li>
+          <li><strong>Длинные ответы — только потоком.</strong> SDK требует поток для очень больших <code>max_tokens</code>, иначе обычный запрос может упереться в таймаут HTTP.</li>
+        </ul>
       </aside>
+
       <h2>Дальше</h2>
-      <p>Дальше ответ нужен без пояснений вокруг: чистый JSON или другой кусок структуры.</p>
+      <p>Следующий урок — как получать ответ без пояснений вокруг: чистый JSON или другой структурированный кусок.</p>
             <div class="pager">
         <a class="ghost" href="10-temperature.html">Назад</a>
         <a class="next" href="12-structured-data.html">Дальше</a>

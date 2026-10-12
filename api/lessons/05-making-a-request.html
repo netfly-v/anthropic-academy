@@ -52,28 +52,32 @@
       </div>
     </aside>
     <main class="lesson">
-                  <h1>Первый запрос</h1>
+      <h1>Первый запрос</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 6 минут</p>
+      <p class="estimate">Видео 6:02 и текст урока</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>поставить пакеты и прочитать ключ из <code>.env</code>;</li>
-        <li>вызвать <code>client.messages.create</code> с тремя полями;</li>
-        <li>достать текст из <code>message.content[0].text</code>.</li>
+        <li>поставить пакеты и безопасно подключить ключ через <code>.env</code>;</li>
+        <li>вызвать <code>client.messages.create()</code> с тремя обязательными параметрами;</li>
+        <li>достать текст ответа из <code>message.content[0].text</code>.</li>
       </ul>
-      <h2>Окружение</h2>
-      <p class="duration">Видео и код урока.</p>
-            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287725" target="_blank" rel="noopener noreferrer">
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287725" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Making a request</span>
+        <span>Making a request · 6:02</span>
       </a>
 
-      <p>Сначала в ноутбуке ставят пакеты и прячут ключ, который скопировали на прошлом шаге.</p>
+      <p>Сделать первый запрос к Anthropic API несложно, если понимать базовую настройку и структуру. Эта инструкция проходит по основным шагам, чтобы Claude начал отвечать на ваши промпты из Python.</p>
+
+      <h2>Настройка окружения</h2>
+      <p>Прежде чем вызывать API, нужно поставить пакеты и безопасно настроить API-ключ.</p>
+      <p>Сначала установите зависимости в Jupyter-ноутбуке:</p>
       <pre>%pip install anthropic python-dotenv</pre>
-      <p>Рядом с ноутбуком создают файл <code>.env</code>:</p>
+      <p>Затем создайте файл <code>.env</code> в той же папке, что и ноутбук, и сохраните в нём ключ:</p>
       <pre>ANTHROPIC_API_KEY="your-api-key-here"</pre>
-      <p>Так ключ не лежит в коде и его сложнее случайно закоммитить. Файл <code>.env</code> добавляют в <code>.gitignore</code>.</p>
+      <p>Так ключ не попадает в код, и его не получится случайно закоммитить в систему контроля версий. Всегда добавляйте <code>.env</code> в <code>.gitignore</code>.</p>
+      <p>Загрузите переменные окружения и создайте клиент API:</p>
       <pre>from dotenv import load_dotenv
 load_dotenv()
 
@@ -83,28 +87,39 @@ client = Anthropic()
 model = "claude-sonnet-4-0"</pre>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>В прошлом уроке в списке полей примером имени модели было <code>claude-3-sonnet</code>. В коде этого урока строка другая: <code>claude-sonnet-4-0</code>. В запрос подставляют то имя, которое стоит в ноутбуке курса, а не прозвище семейства.</p>
+        <ul>
+          <li><strong>Почему <code>Anthropic()</code> без аргументов.</strong> <code>load_dotenv()</code> кладёт строки из <code>.env</code> в переменные окружения, а SDK сам читает оттуда <code>ANTHROPIC_API_KEY</code>. Передавать ключ явно (<code>Anthropic(api_key=...)</code>) не нужно и небезопасно.</li>
+          <li><strong>Про модель.</strong> <code>claude-sonnet-4-0</code> — модель из курса; она уже помечена как устаревшая (deprecated), но работает. Весь код блока, включая prefill и <code>temperature</code>, рассчитан на неё. Текущая Sonnet — <code>claude-sonnet-5-5</code>, но на моделях новых поколений часть приёмов курса возвращает ошибку 400 (подробности — в уроках про temperature и structured data).</li>
+        </ul>
       </aside>
+
       <h2>Функция create</h2>
-      <p><code>client.messages.create()</code> требует три параметра:</p>
+      <p>Основа запросов к API — функция <code>client.messages.create()</code>. У неё три обязательных параметра:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api05-01.png" alt="Вызов client.messages.create с подписями к трём параметрам: model, max_tokens и messages.">
+        <figcaption>Вызов <code>client.messages.create()</code> и три его обязательных параметра.</figcaption>
+      </figure>
       <ul>
-        <li><code>model</code> — имя модели;</li>
-        <li><code>max_tokens</code> — предохранитель длины, не цель. При 1000 генерация оборвётся на 1000 токенах, даже если мысль не кончилась. Добивать лимит модель не пытается;</li>
-        <li><code>messages</code> — история, которую вы отправляете.</li>
+        <li><code>model</code> — имя модели Claude, которую вы хотите использовать;</li>
+        <li><code>max_tokens</code> — страховочный лимит длины ответа (не целевая длина);</li>
+        <li><code>messages</code> — история разговора, которую вы отправляете Claude.</li>
       </ul>
-            <figure class="shot">
-        <img src="../../assets/api/api05-09.png" alt="Три обязательных параметра create: model, max_tokens, messages.">
-        <figcaption>Три обязательных параметра create: model, max_tokens, messages.</figcaption>
-      </figure>
+      <p>Параметр <code>max_tokens</code> работает как предохранитель. Если поставить 1000, Claude остановится после 1000 токенов, даже если хотел сказать больше. Claude не старается дотянуть до этого лимита: он пишет столько, сколько считает нужным, и останавливается, только если упрётся в максимум.</p>
 
-      <h2>Сообщения</h2>
-      <p>Это реплики, как в чате. Два вида: user — то, что написал человек, assistant — то, что уже сгенерировал Claude. Каждый элемент — словарь с <code>role</code> и <code>content</code>.</p>
-            <figure class="shot">
-        <img src="../../assets/api/api05-13.png" alt="Сообщение: role user или assistant и поле content.">
-        <figcaption>Сообщение: role user или assistant и поле content.</figcaption>
+      <h2>Что такое messages</h2>
+      <p>Сообщения — это переписка между вами и Claude, как в чате. Сообщения бывают двух типов:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api05-02.png" alt="Окно чата: сообщение пользователя «What is quantum computing?» и ответ ассистента.">
+        <figcaption>Сообщение пользователя («What is quantum computing?») и сообщение ассистента с ответом.</figcaption>
       </figure>
+      <ul>
+        <li><strong>сообщения пользователя (user)</strong> — то, что вы отправляете Claude (пишут люди);</li>
+        <li><strong>сообщения ассистента (assistant)</strong> — ответы, которые сгенерировал Claude.</li>
+      </ul>
+      <p>Каждое сообщение — словарь с ключами <code>role</code> (<code>"user"</code> или <code>"assistant"</code>) и <code>content</code> (сам текст).</p>
 
-      <h2>Первый вызов</h2>
+      <h2>Первый запрос</h2>
+      <p>Полный пример запроса к Claude:</p>
       <pre>message = client.messages.create(
     model=model,
     max_tokens=1000,
@@ -115,11 +130,25 @@ model = "claude-sonnet-4-0"</pre>
         }
     ]
 )</pre>
-      <p>В ответе много служебного. Текст урока достаёт так:</p>
+      <p>Когда вы запустите этот код, Claude обработает запрос и вернёт объект ответа: сгенерированный текст плюс метаданные о запросе.</p>
+
+      <h2>Как достать ответ</h2>
+      <p>В объекте ответа много информации, но обычно нужен только сгенерированный текст. Он лежит здесь:</p>
       <pre>message.content[0].text</pre>
-      <p>Пример фразы из урока: «Quantum computing is a type of computation that leverages quantum mechanics principles like superposition and entanglement…»</p>
+      <p>Получится чистый читаемый текст вроде: «Quantum computing is a type of computation that leverages quantum mechanics principles like superposition and entanglement to process information using quantum bits (qubits), potentially solving certain complex problems exponentially faster than classical computers.»</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Почему <code>content[0]</code>, а не просто <code>content</code>: <code>content</code> — это <em>список блоков</em>. В простом ответе там один блок <code>{"type": "text", "text": "..."}</code>, но позже, с инструментами и thinking, блоков будет несколько и разных типов. Кроме <code>content</code>, в ответе полезны:</p>
+        <ul>
+          <li><code>message.stop_reason</code> — почему генерация остановилась (<code>"end_turn"</code>, <code>"max_tokens"</code>…);</li>
+          <li><code>message.usage.input_tokens</code> и <code>message.usage.output_tokens</code> — сколько токенов ушло, от этого зависит цена;</li>
+          <li><code>message.role</code> — всегда <code>"assistant"</code>; <code>message.model</code> — какая модель ответила.</li>
+        </ul>
+      </aside>
+      <p>С этими основами можно экспериментировать с разными промптами и строить более сложные сценарии работы с Claude.</p>
+
       <h2>Дальше</h2>
-      <p>Один вызов ещё не разговор: следующий урок показывает, что историю надо хранить самим.</p>
+      <p>Один вызов — ещё не разговор. Следующий урок показывает, почему историю диалога приходится хранить самим.</p>
             <div class="pager">
         <a class="ghost" href="04-api-key.html">Назад</a>
         <a class="next" href="06-multi-turn.html">Дальше</a>

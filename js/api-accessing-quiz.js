@@ -169,6 +169,62 @@ window.QUIZ_BANK = {
       ],
       correct: ["a"],
       why: "Those three carry the call. system, temperature, and streaming are optional. The key is how the client authenticates, not a field inside messages."
+    },
+    {
+      id: "a13",
+      domain: "Request path",
+      select: 1,
+      stem: "Your app asks Claude for a long JSON report and json.loads fails because the object ends mid-field. Which stop reason most likely explains it?",
+      options: [
+        { id: "a", text: "end_turn, because Claude decided the report was finished" },
+        { id: "b", text: "max_tokens, because generation hit the token limit you set" },
+        { id: "c", text: "stop_sequence, because JSON always contains a stop phrase" },
+        { id: "d", text: "tool_use, because Claude wanted to call a parser" }
+      ],
+      correct: ["b"],
+      why: "max_tokens is a hard ceiling: generation stops there even mid-sentence. Check stop_reason before trusting the output, and raise the limit or ask for less."
+    },
+    {
+      id: "a14",
+      domain: "Streaming",
+      select: 1,
+      stem: "You call messages.create with stream=True and loop over the raw events. Which event type carries the chunks of generated text you forward to the browser?",
+      options: [
+        { id: "a", text: "MessageStart" },
+        { id: "b", text: "ContentBlockStart" },
+        { id: "c", text: "ContentBlockDelta" },
+        { id: "d", text: "MessageStop" }
+      ],
+      correct: ["c"],
+      why: "ContentBlockDelta events hold the text pieces. The SDK's messages.stream() helper filters them for you through text_stream, and get_final_message() returns the assembled message."
+    },
+    {
+      id: "a15",
+      domain: "System prompt",
+      select: 1,
+      stem: "Your helper always calls messages.create(..., system=system), and system is sometimes None. Requests without a role fail. What is the lesson's fix?",
+      options: [
+        { id: "a", text: "Pass an empty user message instead of the system prompt" },
+        { id: "b", text: "Build a params dict and add the system key only when a system prompt is provided" },
+        { id: "c", text: "Put the role into the first assistant message" },
+        { id: "d", text: "Set temperature to 0 whenever system is None" }
+      ],
+      correct: ["b"],
+      why: "The API does not accept system=None. The lesson's chat function adds params[\"system\"] only if a prompt was passed, then calls messages.create(**params)."
+    },
+    {
+      id: "a16",
+      domain: "Multi-turn",
+      select: 1,
+      stem: "A support chat works well, but input token usage grows with every turn of a long conversation. Why?",
+      options: [
+        { id: "a", text: "Claude stores the conversation and bills a storage fee per turn" },
+        { id: "b", text: "Each request resends the entire message history, so earlier turns are counted again as input" },
+        { id: "c", text: "max_tokens automatically increases on each turn" },
+        { id: "d", text: "The system prompt is only sent on the first turn and then cached as output" }
+      ],
+      correct: ["b"],
+      why: "The API is stateless. To keep context you send the full list every time, so input tokens grow with the conversation until it reaches the context window."
     }
   ]
 };

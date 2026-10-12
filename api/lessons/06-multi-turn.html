@@ -52,55 +52,60 @@
       </div>
     </aside>
     <main class="lesson">
-            <h1>Диалог из нескольких ходов</h1>
+      <h1>Диалог из нескольких ходов</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 9 минут</p>
+      <p class="estimate">Видео 8:54 и текст урока</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>объяснить, что Claude не хранит историю между запросами;</li>
-        <li>собрать список сообщений и отправлять его целиком;</li>
+        <li>объяснить, почему Claude не помнит прошлые запросы;</li>
+        <li>вести список сообщений и каждый раз отправлять его целиком;</li>
         <li>пользоваться функциями <code>add_user_message</code>, <code>add_assistant_message</code> и <code>chat</code>.</li>
       </ul>
-      <h2>Каждый запрос сам по себе</h2>
-      <p class="duration">Видео и схемы урока.</p>
-            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287735" target="_blank" rel="noopener noreferrer">
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287735" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>Multi-turn conversations</span>
+        <span>Multi-Turn conversations · 8:54</span>
       </a>
 
-      <p>Claude не хранит историю разговора. Каждый запрос независим. Если нужен диалог, состояние держите вы.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-00-ersations_01.png" alt="Каждый запрос к API независим: история на стороне клиента.">
-        <figcaption>Каждый запрос к API независим: история на стороне клиента.</figcaption>
+      <p>При работе с Anthropic API нужно понять одну ключевую вещь: Claude не хранит историю вашего разговора. Каждый запрос полностью независим и ничего не знает о предыдущих.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api06-01.png" alt="Чат: пользователь спрашивает про квантовые вычисления, затем пишет «Write another sentence».">
+        <figcaption>Пользователь спрашивает «What's quantum computing? Answer in one sentence.», а затем пишет «Write another sentence».</figcaption>
       </figure>
+      <p>Значит, если вы хотите многоходовый разговор, где Claude помнит контекст прошлых сообщений, состояние разговора придётся вести самим.</p>
 
-      <h2>Что ломается без истории</h2>
-      <p>Спросили «What is quantum computing?», получили ответ, потом пишете «Write another sentence». Без прошлой реплики Claude не знает, к чему это «ещё одно предложение», и напишет что-то своё.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-01-ersations_02.png" alt="Второй вопрос без истории не ссылается на первый ответ.">
-        <figcaption>Второй вопрос без истории не ссылается на первый ответ.</figcaption>
+      <h2>Проблема запросов без состояния</h2>
+      <p>Допустим, вы спросили «What is quantum computing?» и получили хороший ответ. Потом пишете «Write another sentence» — и Claude понятия не имеет, о чём речь. Он напишет предложение на какую-то случайную тему, потому что не помнит разговора о квантовых вычислениях.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api06-02.png" alt="Anthropic API и Claude не хранят сообщения, поэтому для разговора нужны две вещи.">
+        <figcaption>Anthropic API и Claude не хранят сообщения — чтобы получился «разговор», нужны две вещи из списка ниже.</figcaption>
       </figure>
 
       <h2>Как устроен многоходовый разговор</h2>
-      <p>Нужны две вещи: самому держать список сообщений и каждый раз отправлять его целиком.</p>
-      <ol>
-        <li>Отправить первое сообщение пользователя.</li>
-        <li>Ответ Claude добавить в список как assistant.</li>
-        <li>Добавить следующий вопрос как user.</li>
-        <li>Отправить весь список.</li>
-      </ol>
-            <figure class="shot">
-        <img src="../../assets/api/slide-02-ersations_05.png" alt="В список по очереди попадают user и assistant.">
-        <figcaption>В список по очереди попадают user и assistant.</figcaption>
+      <p>Чтобы сохранить контекст, нужно:</p>
+      <ul>
+        <li>самим вести в коде список всех сообщений;</li>
+        <li>с каждым запросом отправлять всю историю целиком.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api06-03.png" alt="Сообщение user уходит к Claude, его ответ assistant добавляется в список сообщений.">
+        <figcaption>Сообщение пользователя уходит к Claude, а ответ ассистента («Quantum computing is a method…») добавляется в список.</figcaption>
+      </figure>
+      <p>Схема, которая работает:</p>
+      <ul>
+        <li>отправить Claude первое сообщение пользователя;</li>
+        <li>взять ответ Claude и добавить его в список как сообщение assistant;</li>
+        <li>добавить следующий вопрос как ещё одно сообщение user;</li>
+        <li>отправить Claude всю историю разговора.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api06-04.png" alt="В запросе одновременно уходят вопрос пользователя, ответ Claude и следующий вопрос.">
+        <figcaption>Сообщения в запросе: первый вопрос, ответ Claude и следующий вопрос уходят к Claude одним запросом.</figcaption>
       </figure>
 
-            <figure class="shot">
-        <img src="../../assets/api/slide-03-ersations_08.png" alt="Следующий запрос уходит со всей историей.">
-        <figcaption>Следующий запрос уходит со всей историей.</figcaption>
-      </figure>
-
-      <h2>Три функции из урока</h2>
+      <h2>Вспомогательные функции</h2>
+      <p>Чтобы управлять разговором было проще, можно завести три вспомогательные функции:</p>
       <pre>def add_user_message(messages, text):
     user_message = {"role": "user", "content": text}
     messages.append(user_message)
@@ -116,7 +121,9 @@ def chat(messages):
         messages=messages,
     )
     return message.content[0].text</pre>
-      <h2>Как ими пользоваться</h2>
+
+      <h2>Собираем всё вместе</h2>
+      <p>Вот как с их помощью вести разговор:</p>
       <pre># Start with an empty message list
 messages = []
 
@@ -134,10 +141,19 @@ add_user_message(messages, "Write another sentence")
 
 # Get the follow-up response with full context
 final_answer = chat(messages)</pre>
-      <p>Теперь «Write another sentence» продолжает определение квантовых вычислений: в запросе есть вся переписка.</p>
-      <p>Эти три функции курс использует и дальше.</p>
+      <p>Теперь Claude поймёт, что «Write another sentence» — это просьба продолжить определение квантовых вычислений: вы передали ему весь контекст разговора.</p>
+      <p>Эти функции пригодятся на протяжении всей работы с Claude: с ними гораздо проще строить приложения, которые ведут осмысленный разговор на много ходов.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>История стоит денег.</strong> Раз каждый запрос несёт всю переписку, входных токенов с каждым ходом становится больше: на десятом ходу вы снова платите за первые девять. Длинный разговор в итоге упирается в окно контекста модели. Позже в курсе появятся способы с этим жить: prompt caching (дешёвое повторное чтение одинакового начала запроса) и сокращение истории.</li>
+          <li><strong>Порядок ролей.</strong> Разговор начинается с сообщения <code>user</code>, а дальше роли обычно чередуются: user, assistant, user… Если два сообщения <code>user</code> идут подряд, API склеит их в один ход.</li>
+          <li><strong>Историю можно подделать.</strong> Claude видит только то, что вы прислали. Если положить в список сообщение <code>assistant</code>, которое Claude никогда не писал, он примет его за свою реплику. На этом построен приём prefill из урока про structured data.</li>
+        </ul>
+      </aside>
+
       <h2>Дальше</h2>
-      <p>Упражнение собирает из них цикл, который спрашивает ввод в ячейке ноутбука.</p>
+      <p>В упражнении из этих функций собирают цикл: маленький чат-бот прямо в ячейке ноутбука.</p>
             <div class="pager">
         <a class="ghost" href="05-making-a-request.html">Назад</a>
         <a class="next" href="07-chat-exercise.html">Дальше</a>

@@ -52,39 +52,53 @@
       </div>
     </aside>
     <main class="lesson">
-            <h1>System prompt</h1>
+      <h1>System prompt</h1>
       <div class="rule"></div>
       <p class="kicker">Чему научитесь</p>
-      <p class="estimate">Около 6 минут</p>
+      <p class="estimate">Видео 6:20 и текст урока</p>
       <p>К концу урока вы сможете:</p>
       <ul class="objectives">
-        <li>задать тон и роль отдельной строкой <code>system</code>;</li>
-        <li>увидеть разницу ответа с ней и без неё на одном и том же вопросе;</li>
-        <li>передавать <code>system</code> в <code>chat</code> только когда он есть.</li>
+        <li>объяснить, зачем нужен system prompt и что он меняет в ответах;</li>
+        <li>передать system prompt в <code>client.messages.create()</code>;</li>
+        <li>сделать функцию <code>chat</code>, которая принимает system prompt по желанию.</li>
       </ul>
-      <h2>Зачем он</h2>
-      <p class="duration">Видео и схемы урока.</p>
-            <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287733" target="_blank" rel="noopener noreferrer">
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287733" target="_blank" rel="noopener noreferrer">
         <strong>Смотреть урок на Skilljar</strong>
-        <span>System prompts</span>
+        <span>System prompts · 6:20</span>
       </a>
 
-      <p>System prompt меняет, как Claude отвечает: тон, стиль, подход. Без него ответы общие.</p>
-            <figure class="shot">
-        <img src="../../assets/api/slide-05-m_Prompts_05.png" alt="Один и тот же вопрос с system prompt и без него.">
-        <figcaption>Один и тот же вопрос с system prompt и без него.</figcaption>
+      <p>System prompt — мощный способ настроить, как Claude отвечает на ввод пользователя. Вместо общих ответов вы задаёте тон, стиль и подход Claude под свою задачу.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api08-01.png" alt="Math Tutor Specialist: каким должен и не должен быть ответ, рядом окно чата с вопросом про 5x + 2 = 3.">
+        <figcaption>Требования к «репетитору по математике» и чат, где ученик спрашивает, как решить 5x + 2 = 3.</figcaption>
       </figure>
 
-      <h2>Пример урока: репетитор</h2>
-      <p>Чат-репетитор по математике. Ученик спрашивает: «How do I solve 5x + 2 = 3 for x?» Нужен репетитор, а не калькулятор. Он должен:</p>
+      <h2>Зачем нужен system prompt</h2>
+      <p>Представьте чат-бот — репетитор по математике. Ученик спрашивает: «How do I solve 5x + 2 = 3 for x?» Вы хотите, чтобы Claude вёл себя как настоящий репетитор, а не просто выдавал ответ. Хороший репетитор должен:</p>
       <ul>
-        <li>сначала дать подсказку, а не полное решение;</li>
-        <li>вести по шагам;</li>
-        <li>показывать похожие примеры.</li>
+        <li>сначала давать подсказки, а не готовое решение;</li>
+        <li>терпеливо вести ученика по задаче шаг за шагом;</li>
+        <li>показывать решения похожих задач в качестве примеров.</li>
       </ul>
-      <p>Не должен сразу выдавать ответ и не должен отправлять к калькулятору.</p>
-      <h2>Как это передают</h2>
-      <p>System prompt — обычная строка. Её передают в <code>create</code>. Claude старается отвечать так, как ответил бы человек в этой роли, и легче держится задачи.</p>
+      <p>И точно не должен:</p>
+      <ul>
+        <li>сразу выдавать прямой ответ;</li>
+        <li>советовать ученику просто взять калькулятор.</li>
+      </ul>
+
+      <h2>Как работает system prompt</h2>
+      <figure class="shot">
+        <img src="../../assets/api/api08-02.png" alt="Три пользы system prompt и код репетитора по математике.">
+        <figcaption>System prompt настраивает тон и стиль ответа: три его пользы и код с промптом репетитора.</figcaption>
+      </figure>
+      <p>System prompt подсказывает Claude, как отвечать. Это обычная строка, которую передают в вызов <code>create</code>. Что он даёт:</p>
+      <ul>
+        <li>направляет Claude в том, как отвечать;</li>
+        <li>Claude старается отвечать так, как ответил бы человек в заданной роли;</li>
+        <li>помогает Claude не отходить от задачи.</li>
+      </ul>
+      <p>Базовая структура:</p>
       <pre>system_prompt = """
 You are a patient math tutor.
 Do not directly answer a student's questions.
@@ -97,10 +111,13 @@ client.messages.create(
     max_tokens=1000,
     system=system_prompt
 )</pre>
-      <h2>Разница на одном вопросе</h2>
-      <p>Без system prompt Claude сразу пишет полное решение. С промптом репетитора вместо решения появляется вопрос вроде «What do you think would be a good first step…».</p>
-      <h2>Функция chat с необязательным system</h2>
-      <p>Чтобы не зашивать роль в функцию, <code>system</code> делают аргументом. API не принимает <code>system=None</code>, поэтому ключ добавляют в словарь, только если строка передана.</p>
+
+      <h2>Видим разницу</h2>
+      <p>Без system prompt Claude сразу выдаёт полное пошаговое решение. Это может быть полезно, но не заставляет ученика думать самому.</p>
+      <p>С промптом репетитора ответ меняется кардинально. Вместо полного решения Claude задаёт наводящие вопросы вроде: «What do you think would be a good first step to isolate x? Consider what operation we might need to perform on both sides to start moving terms around.»</p>
+
+      <h2>Гибкая функция chat</h2>
+      <p>Вместо того чтобы зашивать system prompt в код, функцию <code>chat</code> можно сделать универсальной — пусть принимает system prompt параметром:</p>
       <pre>def chat(messages, system=None):
     params = {
         "model": model,
@@ -113,6 +130,8 @@ client.messages.create(
 
     message = client.messages.create(**params)
     return message.content[0].text</pre>
+      <p>Здесь учтена важная деталь: API Claude не принимает <code>system=None</code>, поэтому параметр <code>system</code> добавляют в запрос, только если он передан.</p>
+      <p>Теперь <code>chat</code> можно вызывать и с system prompt, и без него:</p>
       <pre># Without system prompt
 answer = chat(messages)
 
@@ -123,12 +142,18 @@ Do not directly answer a student's questions.
 Guide them to a solution step by step.
 """
 answer = chat(messages, system=system)</pre>
+      <p>System prompt незаменим, когда нужно, чтобы ИИ-приложение вело себя стабильно и уместно для своей задачи. Он превращает общие ответы ИИ в специализированные, соответствующие роли.</p>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Проверка <code>if system</code> в уроке нужна именно из-за <code>None</code>: пустую роль в API не отправляют. Сам текст роли в список <code>messages</code> не кладут.</p>
+        <ul>
+          <li><strong>System — не сообщение.</strong> Это отдельный параметр верхнего уровня, а не элемент списка <code>messages</code>; в этом курсе в <code>messages</code> бывают только роли <code>user</code> и <code>assistant</code>. (На самых новых моделях появились ещё и системные сообщения внутри <code>messages</code> — для инструкций посреди разговора, — но это отдельная возможность, курс её не использует.)</li>
+          <li><strong>Почему не <code>system=None</code>.</strong> API ждёт строку (или список текстовых блоков), а <code>None</code> — не строка, и запрос с ним не пройдёт проверку. Поэтому ключ добавляют в словарь <code>params</code> только при наличии промпта, а словарь распаковывают в вызов через <code>**params</code>.</li>
+          <li><strong>System prompt действует на весь разговор.</strong> Его отправляют с каждым запросом, как и историю. Правила, которые должны соблюдаться всегда (роль, тон, ограничения), кладут туда, а не в первое сообщение пользователя.</li>
+        </ul>
       </aside>
+
       <h2>Дальше</h2>
-      <p>Короткое упражнение: тем же приёмом сократить ответ с кодом.</p>
+      <p>Короткое упражнение: с помощью system prompt заставить Claude писать более лаконичный код.</p>
             <div class="pager">
         <a class="ghost" href="07-chat-exercise.html">Назад</a>
         <a class="next" href="09-system-prompts-exercise.html">Дальше</a>
