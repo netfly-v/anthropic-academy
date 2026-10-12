@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(./.study/**)"
+    ],
+    "deny": [
+      "Edit(./api/**)",
+      "Edit(./skills/**)",
+      "Edit(./js/**)",
+      "Edit(./css/**)",
+      "Edit(./assets/**)",
+      "Edit(./tools/**)",
+      "Edit(./index.html)",
+      "Edit(./CLAUDE.md)",
+      "Edit(./.claude/**)",
+      "Edit(./.gitignore)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}
