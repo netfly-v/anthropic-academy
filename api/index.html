@@ -44,10 +44,18 @@
           <li><a href="lessons/11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
           <li><a href="lessons/12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
           <li><a href="lessons/13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
-        </ul>
-        <p class="nav-group">Exam</p>
-        <ul class="lesson-nav">
           <li><a href="quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="lessons/15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="lessons/16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="lessons/17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="lessons/18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="lessons/19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="lessons/20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
         </ul>
       </div>
     </aside>
@@ -56,7 +64,7 @@
       <h1>Building with the Claude API</h1>
       <div class="rule"></div>
       <p class="overview-lead">Как встроить модели Claude в своё приложение через официальный API: от первого запроса до tools, RAG и агентов.</p>
-      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блок про доступ к API. Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
+      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки «Доступ к API» и «Оценка промптов». Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
       <ul class="card-list">
         <li><a href="lessons/01-welcome.html"><strong>1. Добро пожаловать</strong><span>Карта курса, что нужно заранее и как учиться · 2 мин 14 с</span></a></li>
         <li><a href="lessons/02-claude-models.html"><strong>2. Модели Claude</strong><span>Opus, Sonnet и Haiku: интеллект, скорость и цена · 3 мин 56 с</span></a></li>
@@ -71,9 +79,20 @@
         <li><a href="lessons/11-streaming.html"><strong>11. Потоковый ответ</strong><span>События потока и помощники SDK · 8 мин 23 с</span></a></li>
         <li><a href="lessons/12-structured-data.html"><strong>12. Структурированные данные</strong><span>Prefill и stop sequence для чистого JSON · 5 мин 59 с</span></a></li>
         <li><a href="lessons/13-structured-data-exercise.html"><strong>13. Упражнение: prefill</strong><span>Три команды AWS CLI без комментариев · 4 мин 57 с</span></a></li>
-        <li><a href="quiz.html"><strong>Practice exam</strong><span>16 вопросов по этому блоку, на английском</span></a></li>
+        <li><a href="quiz.html"><strong>Practice exam · Доступ к API</strong><span>16 вопросов по этому блоку, на английском</span></a></li>
+</ul>
+      <h2>Оценка промптов</h2>
+      <ul class="card-list">
+        <li><a href="lessons/14-prompt-evaluation.html"><strong>14. Оценка промптов</strong><span>Зачем измерять промпт, а не проверять на глаз · 1 мин 48 с</span></a></li>
+        <li><a href="lessons/15-eval-workflow.html"><strong>15. Типичный процесс оценки</strong><span>Пять шагов: промпт, датасет, Claude, грейдер, повтор · 4 мин 36 с</span></a></li>
+        <li><a href="lessons/16-test-datasets.html"><strong>16. Генерация тестового датасета</strong><span>Датасет задач для AWS-кода, сгенерированный Claude · 4 мин 44 с</span></a></li>
+        <li><a href="lessons/17-running-the-eval.html"><strong>17. Запуск оценки</strong><span>Конвейер run_prompt → run_test_case → run_eval · 6 мин 42 с</span></a></li>
+        <li><a href="lessons/18-model-grading.html"><strong>18. Оценка с помощью модели</strong><span>Типы грейдеров, критерии и грейдер на модели · 10 мин 1 с</span></a></li>
+        <li><a href="lessons/19-code-grading.html"><strong>19. Оценка с помощью кода</strong><span>Проверка синтаксиса JSON, Python, regex и общий балл · 7 мин 26 с</span></a></li>
+        <li><a href="lessons/20-evals-exercise.html"><strong>20. Упражнение: критерии для грейдера</strong><span>Критерии решения в датасете и в промпте грейдера · 4 мин 44 с</span></a></li>
+        <li><a href="quiz-evals.html"><strong>Practice exam · Оценка промптов</strong><span>16 вопросов по этому блоку, на английском</span></a></li>
       </ul>
-      <p>Опрос удовлетворённости из оригинала пропущен: в нём нет нового материала. Следующий большой раздел курса — оценка промптов.</p>
+      <p>Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала. Квизы Skilljar заменены своими пробными экзаменами. Следующий раздел курса — приёмы prompt engineering.</p>
       <p class="source">Оригинал курса: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api">Building with the Claude API</a>.</p>
     </main>
   </div>

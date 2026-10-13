@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Упражнение: критерии для грейдера</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html" aria-current="page"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Упражнение: критерии для грейдера</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:44</p>
+      <p>К концу упражнения вы сможете:</p>
+      <ul class="objectives">
+        <li>добавить в датасет критерии хорошего решения;</li>
+        <li>передать эти критерии грейдеру на модели.</li>
+      </ul>
+      <p class="duration">На странице урока только видео. Ниже — его содержание по субтитрам.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287738" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Exercise on prompt evals · 4:44</span>
+      </a>
+
+      <h2>Задача</h2>
+      <p>Упражнение на улучшение процесса оценки промпта. Нужно немного улучшить грейдер на модели — дать ему больше контекста о том, как должно выглядеть хорошее решение.</p>
+      <p>На первый взгляд это кажется сложным, но на деле достаточно двух шагов:</p>
+      <ul>
+        <li><strong>Шаг 1.</strong> Вернитесь к промпту, который генерирует датасет, и попросите включать в каждый тестовый случай критерии решения. В тестовых случаях должен появиться новый ключ <code>solution_criteria</code> — например, описание того, какими характеристиками должно обладать хорошее решение.</li>
+        <li><strong>Шаг 2.</strong> Подставьте эти критерии в промпт <code>grade_by_model</code>: найдите место, где в промпт попадает оцениваемое решение, и сразу после него добавьте сгенерированные критерии.</li>
+      </ul>
+      <p>Этого достаточно, чтобы грейдер лучше понимал, каким должно быть хорошее решение.</p>
+      <p>Здесь в ролике предлагают поставить видео на паузу и попробовать самим.</p>
+
+      <h2>Решение</h2>
+      <h3>Шаг 1. Критерии в датасете</h3>
+      <p>В ноутбуке находим функцию <code>generate_dataset</code> и большой промпт внутри неё. Там, где мы описываем каждый тестовый случай, говорим, что помимо задачи (<code>task</code>) и формата (<code>format</code>) нужны ещё и критерии решения, и даём строку-подсказку о том, что должно быть в этом ключе — ключевые критерии для оценки решения:</p>
+      <pre>Example output:
+```json
+[
+  {
+    "task": "Description of task",
+    "format": "python" or "json" or "regex",
+    "solution_criteria": "Key criteria for evaluating the solution"
+  },
+  ...additional
+]
+```</pre>
+      <p>Перезапускаем ячейку с функцией и ячейку генерации датасета. Через пару секунд в обновлённом <code>dataset.json</code> у задач по-прежнему есть формат, а теперь ещё и критерии решения. У вас они будут свои, но дают представление о том, каким должно быть хорошее решение.</p>
+
+      <h3>Шаг 2. Критерии в грейдере</h3>
+      <p>Находим функцию <code>grade_by_model</code> и промпт внутри неё. Туда уже подставляются исходная задача и сгенерированный ответ. Сразу после них добавляем фразу для модели — критерии, по которым нужно оценивать решение, — оборачиваем их в теги и подставляем из тестового случая значение <code>solution_criteria</code>:</p>
+      <pre>    eval_prompt = f"""
+    You are an expert code reviewer. Evaluate this AI-generated solution.
+
+    Task: {test_case["task"]}
+    Solution: {output}
+
+    Criteria you should use to evaluate the solution:
+    &lt;criteria&gt;
+    {test_case["solution_criteria"]}
+    &lt;/criteria&gt;
+
+    Provide your evaluation as a structured JSON object with:
+    ...
+    """</pre>
+      <p>Тестовый случай — это как раз такой объект из датасета, и в нём теперь есть ключ <code>solution_criteria</code>: его предложение мы и вставляем в промпт. Зачем теги, автор обещает объяснить в блоке про prompt engineering.</p>
+      <p>Перезапускаем ячейку, затем конвейер оценки — получаем обновлённый балл. Печатаем результаты (<code>print(json.dumps(results, indent=2))</code>): видим ответ модели, тестовый случай с задачей и критериями, балл (в ролике — 9) и, надеемся, более развёрнутое обоснование от грейдера, раз теперь у него есть критерии решения.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Код восстановлен по объяснению автора.</strong> На экране ролика он виден не целиком; формулировки строк в вашем ноутбуке могут отличаться.</li>
+          <li><strong>Зачем грейдеру критерии.</strong> Без них модель-оценщик судит по общему впечатлению — отсюда разброс и «средние» оценки. С критериями она сравнивает ответ с конкретным эталоном, и оценка становится ближе к тому, что вы на самом деле считаете хорошим решением. Это та же идея, что и рубрика: чем конкретнее описано «хорошо», тем надёжнее грейдер.</li>
+          <li><strong>Теги вокруг подставленных данных</strong> (<code>&lt;criteria&gt;…&lt;/criteria&gt;</code>) отделяют данные от инструкций — модели проще понять, где кончается одно и начинается другое. Подробно — в блоке про структурирование XML-тегами.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Блок пройден — можно проверить себя пробным экзаменом по оценке промптов.</p>
+            <div class="pager">
+        <a class="ghost" href="19-code-grading.html">Назад</a>
+        <a class="next" href="../quiz-evals.html">К тесту</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287738" target="_blank" rel="noopener noreferrer">Exercise on prompt evals</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>

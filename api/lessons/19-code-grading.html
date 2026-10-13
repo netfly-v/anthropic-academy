@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Оценка с помощью кода</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html" aria-current="page"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Оценка с помощью кода</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 7:26 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>проверять синтаксис JSON, Python и регулярных выражений кодом;</li>
+        <li>добавить в датасет ожидаемый формат ответа;</li>
+        <li>объединить баллы грейдера на коде и грейдера на модели.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287737" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Code based grading · 7:26</span>
+      </a>
+
+      <p>Когда вы оцениваете ИИ-модели, которые генерируют код, мало проверить, что ответ осмыслен. Нужно ещё убедиться, что сгенерированный код синтаксически корректен и имеет правильный формат. Для этого и нужна оценка с помощью кода.</p>
+
+      <h2>Как работает оценка кодом</h2>
+      <p>Оценка кодом проверяет две ключевые стороны ответа ИИ:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api19-01.png" alt="Format и Valid Syntax под грейдером на коде, Task Following под грейдером на модели.">
+        <figcaption>«Format» и «Valid Syntax» — за грейдером на коде, «Task Following» — за грейдером на модели.</figcaption>
+      </figure>
+      <ul>
+        <li><strong>Формат</strong> — ответ содержит только запрошенный вид кода (Python, JSON или Regex), без пояснений;</li>
+        <li><strong>Корректный синтаксис</strong> — сгенерированный код действительно разбирается как код нужного языка;</li>
+        <li><strong>Следование задаче</strong> — ответ прямо решает поставленную задачу и решает её точно.</li>
+      </ul>
+      <p>Первые два критерия проверяет грейдер на коде, а следование задаче оценивает грейдер на модели. Вместе они дают всестороннюю оценку.</p>
+
+      <h2>Функции проверки синтаксиса</h2>
+      <p>Чтобы проверить синтаксис сгенерированного кода, можно написать три вспомогательные функции, которые пытаются разобрать ответ:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api19-02.png" alt="Три валидатора: разбор как JSON, разбор в абстрактное синтаксическое дерево Python, компиляция как regex.">
+        <figcaption>Три валидатора: разбор как JSON, разбор в синтаксическое дерево Python (AST) и компиляция как регулярного выражения.</figcaption>
+      </figure>
+      <pre>def validate_json(text):
+    try:
+        json.loads(text.strip())
+        return 10
+    except json.JSONDecodeError:
+        return 0
+
+def validate_python(text):
+    try:
+        ast.parse(text.strip())
+        return 10
+    except SyntaxError:
+        return 0
+
+def validate_regex(text):
+    try:
+        re.compile(text.strip())
+        return 10
+    except re.error:
+        return 0</pre>
+      <p>Каждая функция пытается разобрать текст в своём формате. Если разбор удался, она возвращает высший балл 10. Если возникла ошибка — синтаксис неверный, и функция возвращает 0.</p>
+
+      <h2>Требования к датасету</h2>
+      <p>Чтобы грейдер на коде знал, какой валидатор применить, в тестовых случаях нужно указывать ожидаемый формат ответа:</p>
+      <pre>{
+    "task": "Create a Python function to validate an AWS IAM username",
+    "format": "python"
+}</pre>
+      <p>Промпт генерации датасета можно обновить, чтобы поле <code>format</code> появлялось автоматически: достаточно добавить его в пример структуры вывода.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Функция <code>grade_syntax</code>, которую урок вызывает ниже, в тексте не показана; в видео это небольшая функция, которая выбирает валидатор по полю <code>format</code> тестового случая. Например:</p>
+        <pre>import ast, json, re
+
+def grade_syntax(response, test_case):
+    format = test_case["format"]
+    if format == "json":
+        return validate_json(response)
+    elif format == "python":
+        return validate_python(response)
+    else:
+        return validate_regex(response)</pre>
+        <p>Валидатору важно, что строка совпадает с ожидаемым форматом, поэтому значения в датасете (<code>"json"</code>, <code>"python"</code>, <code>"regex"</code>) должны быть именно такими, как сравнивает код.</p>
+      </aside>
+
+      <h2>Делаем промпт яснее</h2>
+      <p>Чтобы модель отвечала лучше, сделайте указания о формате ответа в промпте конкретнее:</p>
+      <pre>* Respond only with Python, JSON, or a plain Regex
+* Do not add any comments or commentary or explanation</pre>
+      <p>Можно также предзаполнить сообщение ассистента блоком кода, чтобы модель возвращала только сам код:</p>
+      <pre>add_assistant_message(messages, "```code")</pre>
+      <p>Так Claude начнёт сразу с содержимого кода, и не придётся заранее указывать, будет ли это Python, JSON или Regex.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li>Prefill работает в паре со стоп-последовательностью: в <code>run_prompt</code> вызов должен быть <code>chat(messages, stop_sequences=["```"])</code>, иначе Claude допишет закрывающие кавычки и, возможно, пояснение после них.</li>
+          <li>На моделях Claude 4.6+ prefill недоступен (ошибка 400). Там «только код без пояснений» добиваются чёткой инструкцией в промпте или system prompt — как в двух строках выше, — а для JSON — structured outputs.</li>
+          <li>Обратите внимание: правка промпта ради формата — это и есть шаг «Change Prompt and Repeat». После неё перезапускают оценку и сравнивают средний балл.</li>
+        </ul>
+      </aside>
+
+      <h2>Объединяем баллы</h2>
+      <p>Последний шаг — объединить балл грейдера на модели с баллом грейдера на коде. Простой способ — взять среднее:</p>
+      <pre>model_grade = grade_by_model(test_case, output)
+model_score = model_grade["score"]
+syntax_score = grade_syntax(output, test_case)
+
+score = (model_score + syntax_score) / 2</pre>
+      <p>Так качество содержания и техническая корректность получают одинаковый вес. Веса можно менять в зависимости от того, что важнее в вашей задаче.</p>
+
+      <h2>Проверяем реализацию</h2>
+      <p>Добавив оценку кодом, запустите оценку и получите исходный балл. Сам по себе балл не хорош и не плох — важно, получится ли его улучшить, дорабатывая промпт. Это даёт количественный способ измерять прогресс в prompt engineering вместо субъективных впечатлений.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Когда что брать.</strong> Всё, что можно проверить детерминированно (формат, синтаксис, длина, наличие слов, точное совпадение с эталоном), проверяйте кодом: это быстро, бесплатно и без разброса. Модель-грейдер — для того, что требует суждения: точность, полнота, тон, следование инструкции. Люди — для калибровки и тонких случаев.</li>
+          <li><strong>Шкалы разные.</strong> Валидатор возвращает только 0 или 10, модель — 1–10. При усреднении синтаксическая ошибка сразу снимает половину максимума. Иногда разумнее считать синтаксис жёстким условием: невалидный код — итоговый балл 0, независимо от оценки модели.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>В упражнении грейдеру на модели дают больше контекста — критерии хорошего решения для каждой задачи.</p>
+            <div class="pager">
+        <a class="ghost" href="18-model-grading.html">Назад</a>
+        <a class="next" href="20-evals-exercise.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287737" target="_blank" rel="noopener noreferrer">Code based grading</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>

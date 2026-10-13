@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Генерация тестового датасета</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html" aria-current="page"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Генерация тестового датасета</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:44 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>сформулировать цель промпта, который будете оценивать;</li>
+        <li>сгенерировать датасет тестовых задач с помощью Claude;</li>
+        <li>сохранить датасет в файл для последующих прогонов.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287739" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Generating test datasets · 4:44</span>
+      </a>
+
+      <p>Собственный процесс оценки промпта начинается с хорошего промпта и генерации тестовых данных, на которых видно, насколько хорошо он работает. Разберём, как настроить систему оценки для промпта, который помогает пользователям писать код под AWS.</p>
+
+      <h2>Цель</h2>
+      <p>Наш промпт должен помогать пользователям получать три вида результата для задач AWS:</p>
+      <ul>
+        <li>код на Python;</li>
+        <li>конфигурационные файлы JSON;</li>
+        <li>регулярные выражения.</li>
+      </ul>
+      <p>Главное требование: когда пользователь просит помочь с задачей, мы возвращаем чистый результат в одном из этих форматов — без пояснений, заголовков и подписей.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api16-01.png" alt="Цель, вход и выход для промпта про код AWS и промпт с подписью Prompt v1.">
+        <figcaption>Цель, вход и выход промпта для кода под AWS и сам промпт — «Prompt v1».</figcaption>
+      </figure>
+      <p>Исходный промпт (версия 1):</p>
+      <pre>prompt = f"""
+Please provide a solution to the following task:
+{task}
+"""</pre>
+
+      <h2>Датасет для оценки</h2>
+      <p>Датасет для оценки содержит входные данные, которые мы будем подставлять в промпт. Для каждой пары «промпт + вход» мы запустим промпт и проанализируем результат.</p>
+      <p>Датасет будет массивом JSON-объектов, где у каждого объекта есть свойство <code>"task"</code> — описание того, что должен сделать Claude. Такой датасет можно составить вручную или сгенерировать автоматически с помощью Claude.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api16-02.png" alt="JSON-массив объектов task, например «Create a Python function to extract the AWS account ID from an ARN».">
+        <figcaption>Датасет — JSON-массив объектов с полем <code>task</code>, например «Create a Python function to extract the AWS account ID from an ARN».</figcaption>
+      </figure>
+      <p>Раз мы генерируем тестовые данные, это отличный повод взять более быструю модель — Haiku — вместо полноразмерной модели Claude.</p>
+
+      <h2>Генерируем тестовые данные кодом</h2>
+      <p>Напишем функцию, которая автоматически генерирует тестовый датасет. Сначала понадобятся вспомогательные функции для работы с Claude:</p>
+      <pre>def add_user_message(messages, text):
+    user_message = {"role": "user", "content": text}
+    messages.append(user_message)
+
+def add_assistant_message(messages, text):
+    assistant_message = {"role": "assistant", "content": text}
+    messages.append(assistant_message)
+
+def chat(messages, system=None, temperature=1.0, stop_sequences=[]):
+    params = {
+        "model": model,
+        "max_tokens": 1000,
+        "messages": messages,
+        "temperature": temperature
+    }
+    if system:
+        params["system"] = system
+    if stop_sequences:
+        params["stop_sequences"] = stop_sequences
+
+    response = client.messages.create(**params)
+    return response.content[0].text</pre>
+      <p>Теперь создадим функцию генерации датасета:</p>
+      <pre>def generate_dataset():
+    prompt = """
+Generate an evaluation dataset for a prompt evaluation. The dataset will be used to evaluate prompts that generate Python, JSON, or Regex specifically for AWS-related tasks. Generate an array of JSON objects, each representing task that requires Python, JSON, or a Regex to complete.
+
+Example output:
+```json
+[
+  {
+    "task": "Description of task",
+  },
+  ...additional
+]
+```
+
+* Focus on tasks that can be solved by writing a single Python function, a single JSON object, or a single regex
+* Focus on tasks that do not require writing much code
+
+Please generate 3 objects.
+"""</pre>
+      <p>Чтобы надёжно разобрать JSON из ответа, используем prefill и стоп-последовательности:</p>
+      <pre>    messages = []
+    add_user_message(messages, prompt)
+    add_assistant_message(messages, "```json")
+    text = chat(messages, stop_sequences=["```"])
+    return json.loads(text)</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Код курса на текущем стеке не запустится как есть.</strong> Функция <code>chat</code> всегда передаёт <code>temperature</code>, а Python SDK 1.x этот параметр убрал (<code>TypeError</code>, подробнее в уроке «Temperature»). Prefill <code>```json</code> на моделях Claude 4.6 и новее даёт ошибку 400. Prefill пока принимает <code>claude-haiku-4-5</code> (по странице <a href="https://platform.claude.com/docs/en/about-claude/model-deprecations" target="_blank" rel="noopener noreferrer">Model deprecations</a> активна не раньше чем до 15 октября 2026), но опираться на неё долго не получится.</li>
+          <li><strong>Современная замена — structured outputs.</strong> Модель гарантированно возвращает JSON по вашей схеме, prefill и стоп-последовательности не нужны. Работает на <code>claude-haiku-5-5</code>, <code>claude-haiku-4-5</code>, <code>claude-sonnet-4-6</code> и других текущих моделях:
+            <pre>schema = {
+    "type": "object",
+    "properties": {
+        "tasks": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {"task": {"type": "string"}},
+                "required": ["task"],
+                "additionalProperties": False,
+            },
+        }
+    },
+    "required": ["tasks"],
+    "additionalProperties": False,
+}
+
+response = client.messages.create(
+    model="claude-haiku-5-5",
+    max_tokens=4000,
+    messages=[{"role": "user", "content": prompt}],
+    output_config={"format": {"type": "json_schema", "schema": schema}},
+)
+text = next(b.text for b in response.content if b.type == "text")
+dataset = json.loads(text)["tasks"]</pre>
+            Корень схемы здесь — объект с полем <code>tasks</code>, а у каждого объекта обязательно <code>"additionalProperties": False</code> — этого требует API. Схема гарантирует форму JSON, но не при обрыве по <code>max_tokens</code>: проверяйте <code>stop_reason</code>.</li>
+          <li><strong>Не забудьте <code>import json</code></strong> — в коде курса он подразумевается.</li>
+        </ul>
+      </aside>
+
+      <h2>Проверяем генерацию</h2>
+      <p>Запустим функцию и посмотрим, какие тестовые случаи получатся:</p>
+      <pre>dataset = generate_dataset()
+print(dataset)</pre>
+      <p>Должны вернуться три разных тестовых случая, покрывающих нужные форматы: функции на Python, конфигурации JSON и регулярные выражения для задач AWS.</p>
+
+      <h2>Сохраняем датасет</h2>
+      <p>Получив датасет, сохраним его в файл, чтобы потом легко загружать при оценке:</p>
+      <pre>with open('dataset.json', 'w') as f:
+    json.dump(dataset, f, indent=2)</pre>
+      <p>В папке с ноутбуком появится файл <code>dataset.json</code> со списком задач, готовым для оценки промпта.</p>
+      <p>С этой основой у вас есть системный способ генерировать тестовые данные и проверять, насколько хорошо ваши промпты справляются с разными задачами по коду для AWS.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Почему датасет сохраняют в файл.</strong> Сравнивать версии промпта честно можно только на одном и том же наборе задач. Если генерировать датасет заново перед каждым прогоном, задачи будут каждый раз другими, и баллы перестанут быть сравнимыми.</li>
+          <li><strong>Три задачи — для учебного примера.</strong> Для реальной оценки нужно больше случаев и разнообразие: обычные запросы, пограничные, неоднозначные, некорректные. Сгенерированный датасет стоит просмотреть глазами — модель может выдать однотипные или слишком лёгкие задачи.</li>
+          <li><strong>Почему Haiku.</strong> Генерация данных — массовая и несложная работа, поэтому курс берёт самую быструю и дешёвую модель семейства. Сейчас это <code>claude-haiku-5-5</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок собирает основу конвейера: прогоняет каждый тестовый случай через промпт и собирает результаты.</p>
+            <div class="pager">
+        <a class="ghost" href="15-eval-workflow.html">Назад</a>
+        <a class="next" href="17-running-the-eval.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287739" target="_blank" rel="noopener noreferrer">Generating test datasets</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>

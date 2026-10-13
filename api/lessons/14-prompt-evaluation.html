@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Оценка промптов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html" aria-current="page"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Оценка промптов</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 1:48 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>отличить prompt engineering от prompt evaluation;</li>
+        <li>назвать три пути после написания промпта и их риски;</li>
+        <li>объяснить, зачем прогонять промпт через конвейер оценки.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287731" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Prompt evaluation · 1:48</span>
+      </a>
+
+      <p>Когда вы работаете с Claude, хороший промпт — это только начало. Чтобы строить надёжные ИИ-приложения, нужно понимать два ключевых понятия: prompt engineering и prompt evaluation. Prompt engineering даёт приёмы, как писать промпты лучше, а prompt evaluation помогает измерить, насколько хорошо эти промпты на самом деле работают.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api14-01.png" alt="Улучшение и оценка промптов: определения prompt engineering и prompt evaluation рядом.">
+        <figcaption>Улучшение и оценка промптов: что такое prompt engineering и что такое prompt evaluation.</figcaption>
+      </figure>
+
+      <h2>Prompt engineering и prompt evaluation</h2>
+      <p>Prompt engineering — ваш набор инструментов для составления эффективных промптов. В него входят приёмы вроде:</p>
+      <ul>
+        <li>multishot prompting (несколько примеров в промпте);</li>
+        <li>структурирование XML-тегами;</li>
+        <li>множество других рекомендаций.</li>
+      </ul>
+      <p>Эти приёмы помогают Claude точно понять, о чём вы просите и каким должен быть ответ.</p>
+      <p>Prompt evaluation устроена иначе. Речь не о том, как писать промпты, а о том, как измерять их эффективность с помощью автоматического тестирования. Можно:</p>
+      <ul>
+        <li>проверять ответы на соответствие ожидаемым;</li>
+        <li>сравнивать разные версии одного и того же промпта;</li>
+        <li>просматривать результаты в поисках ошибок.</li>
+      </ul>
+
+      <h2>Три пути после написания промпта</h2>
+      <p>Когда черновик промпта готов, обычно есть три варианта, что делать дальше:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api14-02.png" alt="Схема: от черновика промпта три варианта действий и их плюсы и минусы.">
+        <figcaption>От черновика промпта — три варианта дальнейших действий, у каждого свои плюсы и минусы.</figcaption>
+      </figure>
+      <p><strong>Вариант 1:</strong> один раз проверить промпт и решить, что этого достаточно. Велик риск, что в продакшене он сломается, когда пользователи пришлют неожиданный ввод.</p>
+      <p><strong>Вариант 2:</strong> проверить промпт несколько раз и подправить его под пару пограничных случаев. Это лучше первого варианта, но пользователи часто присылают совсем неожиданные вещи, о которых вы не подумали.</p>
+      <p><strong>Вариант 3:</strong> прогнать промпт через конвейер оценки (evaluation pipeline), получить балл и дорабатывать промпт, опираясь на объективные метрики. Это требует больше работы и затрат, но даёт гораздо больше уверенности в надёжности промпта.</p>
+
+      <h2>Почему инженеры попадают в ловушки тестирования</h2>
+      <p>Варианты 1 и 2 — типичные ловушки, в которые попадают все инженеры, включая автора курса. Естественно написать промпт для серьёзного приложения и протестировать его недостаточно. Мы склонны недооценивать, сколько пограничных случаев встретят реальные пользователи.</p>
+      <p>В действительности после выкладки промпта в продакшен пользователи будут взаимодействовать с ним так, как вы и не предполагали. Промпт, казавшийся надёжным на ваших немногих тестах, может быстро сломаться на всём разнообразии реального ввода.</p>
+
+      <h2>Подход «сначала оценка»</h2>
+      <p>Вариант 3 — более системный подход к разработке промптов. Прогоняя промпт через конвейер оценки, вы получаете объективные метрики его качества на более широком наборе тестовых случаев. Такой подход, основанный на данных, позволяет:</p>
+      <ul>
+        <li>находить слабые места до того, как они станут проблемами в продакшене;</li>
+        <li>объективно сравнивать версии промпта;</li>
+        <li>уверенно дорабатывать промпт по измеримым улучшениям;</li>
+        <li>строить более надёжные ИИ-приложения.</li>
+      </ul>
+      <p>Такой подход требует больше вложений времени и тестовой инфраструктуры на старте, но окупается надёжностью и устойчивостью итогового приложения. Цель — ловить проблемы во время разработки, а не после того, как на них наткнутся пользователи.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Оценка — это тесты для промпта.</strong> Аналогия с обычной разработкой: набор тестовых входов (датасет) плюс проверка результата (грейдер) дают число, которое можно сравнивать между версиями. Как и юнит-тесты, оценку перезапускают после каждой правки промпта и при смене модели — так ловят регрессии, когда улучшение в одном месте ломает другое.</li>
+          <li><strong>Сначала критерии успеха.</strong> Документация Anthropic советует до написания промпта сформулировать, что считается хорошим результатом, — конкретно и измеримо (например, «не больше X% ответов с неверным форматом на N случаях»). Без критериев не из чего построить грейдер.</li>
+          <li><strong>Prompt engineering и evaluation работают в паре.</strong> Приёмы из следующего блока курса (ясность, XML-теги, примеры) — это то, что меняют в промпте; оценка показывает, помогла ли правка.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок разбирает типичный процесс оценки по шагам — от черновика промпта до сравнения баллов.</p>
+            <div class="pager">
+        <a class="ghost" href="13-structured-data-exercise.html">Назад</a>
+        <a class="next" href="15-eval-workflow.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287731" target="_blank" rel="noopener noreferrer">Prompt evaluation</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>

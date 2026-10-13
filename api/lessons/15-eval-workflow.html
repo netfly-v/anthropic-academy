@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Типичный процесс оценки</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html" aria-current="page"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Типичный процесс оценки</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:36 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>перечислить пять шагов процесса оценки промпта;</li>
+        <li>объяснить роль датасета и грейдера;</li>
+        <li>сравнивать версии промпта по среднему баллу.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287736" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>A typical eval workflow · 4:36</span>
+      </a>
+
+      <p>Типичный процесс оценки промпта состоит из пяти ключевых шагов, которые помогают системно улучшать промпты через объективные измерения. Собрать такой процесс можно по-разному, и для этого есть множество открытых и платных инструментов, но понимание основы позволяет начать с малого и наращивать по мере надобности.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api15-01.png" alt="Пять шагов процесса оценки: от черновика промпта до правки промпта и повтора.">
+        <figcaption>Пять шагов процесса оценки — от черновика промпта до его правки и повторного прогона.</figcaption>
+      </figure>
+
+      <h2>Шаг 1. Черновик промпта</h2>
+      <p>Начните с первой версии промпта, которую хотите улучшить. Для примера возьмём простой промпт:</p>
+      <pre>prompt = f"""
+Please answer the user's question:
+
+{question}
+"""</pre>
+      <figure class="shot">
+        <img src="../../assets/api/api15-02.png" alt="Первый черновик промпта с пометкой, что его эффективность неизвестна, пока его не оценить.">
+        <figcaption>Черновик промпта: насколько он хорош, не узнать, пока не оценить его объективно.</figcaption>
+      </figure>
+      <p>Этот простой промпт станет точкой отсчёта (baseline) для тестов и улучшений.</p>
+
+      <h2>Шаг 2. Датасет для оценки</h2>
+      <p>Датасет для оценки содержит примеры входных данных — тех вопросов или запросов, с которыми промпт будет работать в продакшене. В датасете должны быть вопросы, которые будут подставляться в шаблон промпта.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api15-03.png" alt="Шаг Create an Eval Dataset: столбец Question с тремя вопросами.">
+        <figcaption>Шаг «Create an Eval Dataset»: столбец «Question» с тремя вопросами.</figcaption>
+      </figure>
+      <p>В этом примере в датасете три вопроса:</p>
+      <ul>
+        <li>«What's 2+2?»</li>
+        <li>«How do I make oatmeal?»</li>
+        <li>«How far away is the Moon?»</li>
+      </ul>
+      <p>В реальных оценках записей могут быть десятки, сотни и даже тысячи. Такие датасеты собирают вручную или генерируют с помощью Claude.</p>
+
+      <h2>Шаг 3. Прогон через Claude</h2>
+      <p>Возьмите каждый вопрос из датасета, подставьте его в шаблон промпта — получатся готовые промпты. Отправьте каждый Claude и получите ответы.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api15-04.png" alt="Шаблон с местом для вопроса, три тестовых вопроса и ответы Claude, например «2 + 2 = 4».">
+        <figcaption>Шаблон с подстановкой вопроса, три тестовых вопроса и ответы Claude — например, «2 + 2 = 4».</figcaption>
+      </figure>
+      <p>Например, первый вопрос превращается в:</p>
+      <pre>Please answer the user's question:
+What's 2+2?</pre>
+      <p>Claude может ответить «2 + 2 = 4» на вопрос по математике, дать инструкцию по приготовлению овсянки на второй вопрос и назвать расстояние до Луны на третий.</p>
+
+      <h2>Шаг 4. Прогон через грейдер</h2>
+      <p>Грейдер оценивает качество ответов Claude, глядя и на исходный вопрос, и на ответ. Этот шаг даёт объективную оценку — обычно по шкале от 1 до 10, где 10 — идеальный ответ, а меньшие баллы говорят, что есть что улучшать.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api15-05.png" alt="Этап грейдера: три пары вопрос–ответ получают оценки 10, 4 и 9.">
+        <figcaption>Этап грейдера: три пары «вопрос — ответ» получают 10, 4 и 9 баллов.</figcaption>
+      </figure>
+      <p>В нашем примере грейдер может поставить:</p>
+      <ul>
+        <li>вопрос по математике: 10 (идеальный ответ);</li>
+        <li>вопрос про овсянку: 4 (нужно улучшать);</li>
+        <li>вопрос про Луну: 9 (очень хороший ответ).</li>
+      </ul>
+      <p>Средний балл по всем вопросам — объективная мера: (10 + 4 + 9) ÷ 3 = 7.66.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Точнее, (10 + 4 + 9) ÷ 3 = 7.666…, то есть 7.67 при округлении; в курсе число просто обрезано до 7.66. Сам смысл не меняется: важен не абсолютный балл, а его сравнение между версиями промпта на одном и том же датасете и одном и том же грейдере.</p>
+      </aside>
+
+      <h2>Шаг 5. Правка промпта и повтор</h2>
+      <p>Теперь, когда есть исходный балл, можно изменить промпт и заново прогнать весь процесс, чтобы увидеть, улучшают ли правки результат.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api15-06.png" alt="Процесс оценки с выделенным последним шагом Change Prompt and Repeat и исправленным промптом.">
+        <figcaption>Последний шаг, «Change Prompt and Repeat», и исправленный промпт.</figcaption>
+      </figure>
+      <p>Например, можно добавить в промпт больше указаний:</p>
+      <pre>prompt = f"""
+Please answer the user's question:
+
+{question}
+
+Answer the question with ample detail
+"""</pre>
+      <p>После прогона улучшенного промпта через тот же процесс средний балл может вырасти, скажем, до 8.7 — значит, дополнительное указание помогло Claude отвечать лучше.</p>
+
+      <h2>Оценка промптов баллом</h2>
+      <p>Главная польза такого процесса — объективное измерение качества промпта. Можно:</p>
+      <ul>
+        <li>сравнивать версии промпта в цифрах;</li>
+        <li>брать версию с лучшим баллом;</li>
+        <li>продолжать итерации в поисках ещё лучших вариантов.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api15-07.png" alt="Промпт v1 набрал 7.66, промпт v2 с добавкой «Answer the question with ample detail» — 8.7.">
+        <figcaption>Промпт v1 — 7.66 балла, промпт v2 с добавкой «Answer the question with ample detail» — 8.7.</figcaption>
+      </figure>
+      <p>Такой системный подход убирает гадание из prompt engineering и даёт уверенность, что ваши правки — действительно улучшения, а не просто другие варианты.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Сравнивайте честно.</strong> Версии промпта сравнивают на одном и том же датасете и одним и тем же грейдером. Если поменять датасет или грейдер, баллы перестают быть сравнимыми.</li>
+          <li><strong>Разница должна быть больше шума.</strong> Ответы модели и оценки модели-грейдера немного разнятся от прогона к прогону. На трёх вопросах разница 7.66 против 8.7 может быть случайной; чем больше датасет, тем надёжнее вывод.</li>
+          <li><strong>Не переобучайте промпт на датасет.</strong> Если долго подгонять промпт под одни и те же случаи, он может стать хорош именно на них. Помогает разнообразный датасет и периодическая проверка на новых примерах.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Дальше курс строит такой процесс в коде для реальной задачи — начиная с генерации тестового датасета.</p>
+            <div class="pager">
+        <a class="ghost" href="14-prompt-evaluation.html">Назад</a>
+        <a class="next" href="16-test-datasets.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287736" target="_blank" rel="noopener noreferrer">A typical eval workflow</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>
