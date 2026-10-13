@@ -105,7 +105,7 @@
       </ul>
       <aside class="callout">
         <p class="callout-label">Пояснение</p>
-        <p>Имя <code>claude-3-sonnet</code> в уроке — просто пример, и сама эта модель уже снята с поддержки. В коде следующих уроков курс использует <code>claude-sonnet-4-0</code>. Актуальные модели на момент написания — <code>claude-opus-5-5</code>, <code>claude-sonnet-5-5</code>, <code>claude-haiku-5-5</code>; полный список отдаёт Models API (<code>client.models.list()</code>) и страница моделей в документации.</p>
+        <p>Имя <code>claude-3-sonnet</code> в уроке — просто пример. Сама модель снята 21 июля 2025 года. Модель из кода следующих уроков, <code>claude-sonnet-4-0</code>, тоже снята — 15 июня 2026 года; запросы к снятой модели завершаются ошибкой. Актуальные модели на октябрь 2026 — <code>claude-opus-5-5</code>, <code>claude-sonnet-5-5</code>, <code>claude-haiku-5-5</code>. Какую модель ставить в код курса, разобрано в пояснении к уроку «Первый запрос». Статус любой модели и даты снятия — на странице <a href="https://platform.claude.com/docs/en/about-claude/model-deprecations" target="_blank" rel="noopener noreferrer">Model deprecations</a>, список доступных моделей отдаёт <code>client.models.list()</code>.</p>
         <p>В HTTP-запросе ключ передаётся не в теле, а в заголовке <code>x-api-key</code>. SDK делает это сам.</p>
       </aside>
 
