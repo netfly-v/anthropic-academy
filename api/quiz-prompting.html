@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice exam · Prompt engineering</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="lessons/04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="lessons/05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="lessons/06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="lessons/07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="lessons/08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="lessons/09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="lessons/10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="lessons/11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="lessons/12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="lessons/13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="lessons/15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="lessons/16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="lessons/17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="lessons/18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="lessons/19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="lessons/20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="lessons/22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="lessons/23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="lessons/24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="lessons/25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="lessons/26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="quiz-prompting.html" aria-current="page"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Practice exam</h1>
+      <div class="rule"></div>
+      <p class="kicker">Prompt engineering techniques</p>
+      <p class="estimate">16 items · about 20 minutes · English</p>
+      <p>Scenario items for this block only. Choices are saved in this browser. The score and the reasons stay hidden until you press Submit. Clear the attempt with Очистить after the result.</p>
+      <div id="quiz-root"></div>
+    </main>
+  </div>
+  <script src="../js/api-prompting-quiz.js"></script>
+  <script src="../js/quiz.js"></script>
+</body>
+</html>

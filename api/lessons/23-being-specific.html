@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Конкретика</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html" aria-current="page"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Конкретика</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 5:14 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>различать указания о качестве ответа и шаги процесса;</li>
+        <li>решать, когда добавлять пошаговые инструкции;</li>
+        <li>сочетать оба вида конкретики в одном промпте.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287740" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Being specific · 5:14</span>
+      </a>
+
+      <p>Один из самых действенных способов улучшить результаты Claude — конкретно сказать, чего вы хотите. Вместо того чтобы оставлять всё на усмотрение модели, можно дать чёткие указания или шаги, которые направят Claude к нужному виду ответа.</p>
+      <p>Представьте: вы просите Claude «write a short story about a character who discovers a hidden talent». Вариантов бесконечно много. Рассказ может быть на 200 слов или на 2000. В нём может быть один персонаж или пять. Он может быть о любом сценарии открытия таланта.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api23-01.png" alt="Один и тот же промпт для рассказа: «Not Great» и «Better!» с тремя пронумерованными указаниями.">
+        <figcaption>Промпт для рассказа: «Not Great» без указаний и «Better!» — с тремя пронумерованными указаниями.</figcaption>
+      </figure>
+      <p>Добавляя конкретные указания, вы даёте Claude более чёткую цель. Это резко повышает и стабильность, и качество ответа.</p>
+
+      <h2>Два вида указаний</h2>
+      <p>Есть два основных способа добавить конкретики в промпт, и в профессиональных приложениях их часто используют вместе.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api23-02.png" alt="Промпт для рассказа дважды: со списком качеств ответа и с четырьмя шагами.">
+        <figcaption>Тот же промпт двумя способами: со списком качеств, которыми должен обладать ответ, и с четырьмя шагами, которым нужно следовать.</figcaption>
+      </figure>
+
+      <h3>Указания о качестве ответа</h3>
+      <p>Первый вид — перечислить качества, которыми должен обладать ответ. Такие указания помогают управлять:</p>
+      <ul>
+        <li>длиной ответа;</li>
+        <li>структурой и форматом;</li>
+        <li>конкретными свойствами или элементами, которые нужно включить;</li>
+        <li>требованиями к тону или стилю.</li>
+      </ul>
+      <p>Например, можно указать, что рассказ должен быть короче 1000 слов, содержать ясное действие, раскрывающее талант персонажа, и хотя бы одного второстепенного персонажа.</p>
+
+      <h3>Шаги процесса</h3>
+      <p>Второй вид — дать Claude конкретные шаги. Это особенно полезно, когда вы хотите, чтобы Claude системно продумал задачу или рассмотрел несколько точек зрения, прежде чем прийти к ответу.</p>
+      <p>Вместо того чтобы сразу писать, можно попросить Claude:</p>
+      <ul>
+        <li>придумать три таланта, которые создадут драматическое напряжение;</li>
+        <li>выбрать самый интересный;</li>
+        <li>набросать ключевую сцену, в которой талант раскрывается;</li>
+        <li>придумать типы второстепенных персонажей, которые усилят впечатление.</li>
+      </ul>
+
+      <h2>Эффект на практике</h2>
+      <p>Разница от конкретики огромная. При проверке промпта для плана питания добавление указаний подняло балл оценки с 3.92 до 7.86 — качество выросло более чем вдвое только за счёт того, что Claude прямо сказали, какие элементы включить.</p>
+      <pre>Guidelines:
+1. Include accurate daily calorie amount
+2. Show protein, fat, and carb amounts
+3. Specify when to eat each meal
+4. Use only foods that fit restrictions
+5. List all portion sizes in grams
+6. Keep budget-friendly if mentioned</pre>
+
+      <h2>Когда что использовать</h2>
+      <p>Практическое правило, когда использовать каждый вид конкретики:</p>
+      <h3>Указания о качестве — всегда</h3>
+      <p>Указания о качестве стоит добавлять почти в каждый промпт. Это ваша страховка, чтобы получать стабильные и полезные результаты.</p>
+      <h3>Шаги процесса — для сложных задач</h3>
+      <p>Добавляйте пошаговые инструкции, когда имеете дело с:</p>
+      <ul>
+        <li>поиском причин сложных проблем;</li>
+        <li>принятием решений;</li>
+        <li>задачами на критическое мышление;</li>
+        <li>любой ситуацией, где Claude должен рассмотреть вопрос с разных сторон.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api23-03.png" alt="Промпт для одностраничного отчёта о падении продаж команды на 30% с пятью пронумерованными шагами.">
+        <figcaption>Пример: одностраничный отчёт о причинах падения продаж на 30% — с пятью пронумерованными шагами анализа.</figcaption>
+      </figure>
+      <p>Например, если вы просите Claude разобраться, почему упали показатели отдела продаж, стоит провести его через анализ рыночных метрик, изменений в отрасли, результатов отдельных сотрудников, организационных изменений и отзывов клиентов — а не позволить сосредоточиться на одной возможной причине.</p>
+
+      <h2>Оба подхода вместе</h2>
+      <p>В профессиональных промптах часто используют обе техники сразу: указания управляют форматом и содержанием ответа, а шаги гарантируют, что Claude тщательно продумает задачу, прежде чем отвечать.</p>
+      <p>Такое сочетание даёт и стабильность результатов, и уверенность, что Claude учёл все важные факторы, прежде чем прийти к выводу.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Нумерованный список — когда важны порядок и полнота.</strong> Документация Anthropic советует оформлять инструкции последовательными шагами именно в этом случае. Нумерация помогает и вам: в отчёте оценки проще увидеть, какой пункт модель пропустила.</li>
+          <li><strong>Указания о качестве = критерии оценки.</strong> Заметьте, что шесть указаний для плана питания почти дословно повторяют <code>extra_criteria</code> из прошлого урока. Это нормальная практика: то, что проверяет грейдер, стоит прямо написать в промпте.</li>
+          <li><strong>Шаги и thinking.</strong> На современных моделях с адаптивным мышлением модель и сама продумывает сложные задачи. Шаги в промпте остаются полезны, когда нужно, чтобы она точно рассмотрела <em>определённые</em> стороны вопроса — как пять направлений анализа в примере с продажами.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий приём — структура: как XML-теги отделяют данные от инструкций в больших промптах.</p>
+            <div class="pager">
+        <a class="ghost" href="22-clear-and-direct.html">Назад</a>
+        <a class="next" href="24-xml-tags.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287740" target="_blank" rel="noopener noreferrer">Being specific</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>

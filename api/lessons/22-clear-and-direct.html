@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ясно и прямо</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html" aria-current="page"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Ясно и прямо</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:05 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, почему первая строка промпта — самая важная;</li>
+        <li>отличить «ясный» промпт от «прямого»;</li>
+        <li>переписать вопрос в инструкцию с глаголом действия.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287744" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Being clear and direct · 2:05</span>
+      </a>
+
+      <p>Первая строка промпта — самая важная часть всего запроса. Она задаёт рамку для всего, что идёт дальше, и если сформулировать её правильно, результат может заметно улучшиться.</p>
+
+      <h2>Ясно и прямо</h2>
+      <p>Формулируя эту ключевую первую строку, держитесь двух принципов: ясности и прямоты. То есть простой язык, не оставляющий двусмысленности в том, что Claude должен сделать.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api22-01.png" alt="Правила ясного и прямого промпта рядом, у каждого слабый промпт и улучшенный.">
+        <figcaption>Правила «ясного» и «прямого» промпта: к каждому — слабый вариант и улучшенный.</figcaption>
+      </figure>
+
+      <h2>Ясная формулировка</h2>
+      <p>Быть «ясным» значит:</p>
+      <ul>
+        <li>использовать простой язык, понятный любому;</li>
+        <li>говорить ровно то, что вы хотите, не ходя вокруг да около;</li>
+        <li>начинать с прямой формулировки задачи для Claude.</li>
+      </ul>
+      <p>Вместо расплывчатого «I need to know about those things people put on their roofs that use sun - those solar panel things, I think they're called» напишите прямо: «Write three paragraphs about how solar panels work.»</p>
+
+      <h2>Прямые инструкции</h2>
+      <p>Быть «прямым» — про то, как построен запрос:</p>
+      <ul>
+        <li>давайте инструкции, а не задавайте вопросы;</li>
+        <li>начинайте с глагола действия: «Write», «Create», «Generate».</li>
+      </ul>
+      <p>Вместо вопроса «I was reading about renewable energy and geothermal energy sounds neat. What countries use it?» попробуйте: «Identify three countries that use geothermal energy. Include generation stats for each.»</p>
+
+      <h2>На практике</h2>
+      <p>Посмотрим приём в действии. Начнём со слабого промпта, который просто спрашивал «What should this person eat?», и применим ясный и прямой подход.</p>
+      <p>Улучшенный вариант: «Generate a one-day meal plan for an athlete that meets their dietary restrictions.»</p>
+      <p>Такая формулировка сразу сообщает Claude:</p>
+      <ul>
+        <li>какое действие выполнить (generate);</li>
+        <li>что создать (план питания);</li>
+        <li>ключевые ограничения (на один день, для спортсмена, с учётом ограничений в питании).</li>
+      </ul>
+
+      <h2>Важен результат</h2>
+      <p>Такая простая правка может сильно повлиять на качество. В нашем примере балл оценки вырос с 2.32 до 3.92 — заметный рост только за счёт переделки первой строки.</p>
+      <p>Главный вывод: Claude лучше всего отвечает, когда вы обращаетесь с ним как с толковым ассистентом, которому нужно чёткое указание, а не как с тем, кто должен угадывать, чего вы хотите. Начинайте сильно — с глагола действия, конкретно называйте задачу, и результат станет лучше сразу.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>«Золотое правило» из документации Anthropic:</strong> покажите промпт коллеге, который почти не знает контекста задачи, и попросите его выполнить. Если он запутается — запутается и Claude. Документация советует думать о Claude как о блестящем, но новом сотруднике, который не знает ваших норм и процессов.</li>
+          <li><strong>Объясняйте «зачем».</strong> Та же документация рекомендует давать не только инструкцию, но и её причину: вместо «NEVER use ellipses» — «ответ будет зачитывать синтезатор речи, поэтому не используйте многоточия». Модель обобщает из объяснения и лучше попадает в цель.</li>
+          <li><strong>Нужно «больше» — так и скажите.</strong> Современные модели точно следуют инструкциям: если хотите развёрнутый, «сверх ожидаемого» результат, попросите об этом явно, а не надейтесь, что модель догадается.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий приём — конкретика: указания о качестве ответа и шаги, которым должен следовать Claude.</p>
+            <div class="pager">
+        <a class="ghost" href="21-prompt-engineering.html">Назад</a>
+        <a class="next" href="23-being-specific.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287744" target="_blank" rel="noopener noreferrer">Being clear and direct</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Структура через XML-теги</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html" aria-current="page"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Структура через XML-теги</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:00 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, зачем отделять данные от инструкций в промпте;</li>
+        <li>подбирать понятные имена тегов;</li>
+        <li>решать, когда XML-теги действительно нужны.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287741" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Structure with XML tags · 4:00</span>
+      </a>
+
+      <p>Когда в промпт попадает много содержимого, Claude иногда трудно понять, какие куски текста связаны между собой и что означает каждый раздел. XML-теги — простой способ добавить промпту структуру и ясность, особенно когда в него подставляются большие объёмы данных.</p>
+
+      <h2>Почему важна структура</h2>
+      <p>Представьте промпт, в котором нужно проанализировать 20 страниц записей о продажах. Без чётких границ Claude может с трудом отличать ваши инструкции от данных, которые нужно проанализировать.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api24-01.png" alt="Промпт без XML-тегов: просит отчёт для принятия решения, подставляет sales_records и перечисляет пять шагов.">
+        <figcaption>Промпт без XML-тегов: просьба об отчёте, подставленные записи о продажах и пять шагов — всё вперемешку.</figcaption>
+      </figure>
+      <p>Пример выше показывает, как размытые границы мешают Claude понять ваш замысел. Если обернуть записи о продажах в XML-теги вроде <code>&lt;sales_records&gt;</code> и <code>&lt;/sales_records&gt;</code>, появятся чёткие разделители, которые помогают Claude понять структуру промпта.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api24-02.png" alt="Тот же промпт про падение продаж на 30%: записи в тегах sales_records и пять шагов анализа.">
+        <figcaption>Тот же промпт, но записи о продажах обёрнуты в теги <code>&lt;sales_records&gt;</code>.</figcaption>
+      </figure>
+
+      <h2>Практический пример: код и документация</h2>
+      <p>Вот ещё более наглядный пример. Если вы просите Claude отладить код с помощью приложенной документации, а всё смешано в одну кучу, возникает путаница:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api24-03.png" alt="Один и тот же промпт для отладки: «Not Great» с кодом и документацией вперемешку и «Better» с тегами my_code и docs.">
+        <figcaption>Промпт для отладки: «Not Great» — код и документация вперемешку, «Better» — с тегами <code>&lt;my_code&gt;</code> и <code>&lt;docs&gt;</code>.</figcaption>
+      </figure>
+      <p>В варианте «Not Great» почти невозможно понять, где код, а где документация. Вариант «Better» использует теги <code>&lt;my_code&gt;</code> и <code>&lt;docs&gt;</code>, чтобы чётко разграничить содержимое.</p>
+
+      <h2>Свои имена тегов</h2>
+      <p>Специальные «официальные» XML-теги не нужны. Придумывайте описательные имена, которые подходят вашему содержимому:</p>
+      <ul>
+        <li><code>&lt;sales_records&gt;</code> лучше, чем <code>&lt;data&gt;</code>;</li>
+        <li><code>&lt;athlete_information&gt;</code> ясно обозначает данные пользователя;</li>
+        <li><code>&lt;my_code&gt;</code> и <code>&lt;docs&gt;</code> разделяют разные виды содержимого.</li>
+      </ul>
+      <p>Чем конкретнее и понятнее имена тегов, тем лучше Claude понимает назначение каждого раздела.</p>
+
+      <h2>Когда использовать XML-теги</h2>
+      <p>XML-теги полезнее всего, когда:</p>
+      <ul>
+        <li>в промпт включается много контекста или данных;</li>
+        <li>смешиваются разные виды содержимого (код, документация, данные);</li>
+        <li>вы хотите особенно чётко обозначить границы содержимого;</li>
+        <li>промпт сложный и в него подставляется несколько переменных.</li>
+      </ul>
+      <p>Даже для коротких фрагментов XML-теги могут служить разделителями, которые делают структуру промпта нагляднее для Claude.</p>
+
+      <h2>Применение на практике</h2>
+      <p>На практике промпт можно построить так:</p>
+      <pre>&lt;athlete_information&gt;
+- Height: 6'2"
+- Weight: 180 lbs
+- Goal: Build muscle
+- Dietary restrictions: Vegetarian
+&lt;/athlete_information&gt;
+
+Generate a meal plan based on the athlete information above.</pre>
+      <p>Так совершенно ясно, что рост, вес, цель и ограничения — это связанные данные о спортсмене, которые нужно учитывать вместе при составлении плана питания.</p>
+      <p>На простых промптах заметного эффекта может и не быть, но чем сложнее промпт и чем больше в нём разнородного содержимого, тем ценнее становятся XML-теги.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Это не настоящий XML.</strong> Схема, валидность и экранирование не нужны: теги — просто понятные модели разделители. Важно, чтобы имена были осмысленными и одинаковыми по всему промпту.</li>
+          <li><strong>Ссылайтесь на теги в инструкциях.</strong> «Проанализируй записи в <code>&lt;sales_records&gt;</code>» — так модель точно связывает инструкцию с нужным куском.</li>
+          <li><strong>Рекомендация документации.</strong> Оборачивайте каждый вид содержимого в свой тег — инструкции, контекст, примеры, входные данные (например, <code>&lt;instructions&gt;</code>, <code>&lt;context&gt;</code>, <code>&lt;input&gt;</code>) — и вкладывайте теги при естественной иерархии: несколько документов в <code>&lt;documents&gt;</code>, каждый в <code>&lt;document index="n"&gt;</code>.</li>
+          <li><strong>Данные пользователя — в тегах.</strong> Если в промпт попадает чужой текст (письмо, страница, документ), теги отделяют его от ваших инструкций; модели проще понять, что команды внутри этого текста — данные, а не указания ей.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Последний приём блока — примеры: one-shot и multi-shot prompting.</p>
+            <div class="pager">
+        <a class="ghost" href="23-being-specific.html">Назад</a>
+        <a class="next" href="25-examples.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287741" target="_blank" rel="noopener noreferrer">Structure with XML tags</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>

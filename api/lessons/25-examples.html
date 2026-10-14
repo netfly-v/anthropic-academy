@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Примеры в промпте</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html" aria-current="page"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Примеры в промпте</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 6:44 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>отличать one-shot и multi-shot prompting;</li>
+        <li>добавлять примеры для пограничных случаев;</li>
+        <li>брать удачные примеры из результатов оценки и объяснять, чем они хороши.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287746" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Providing examples · 6:44</span>
+      </a>
+
+      <p>Примеры в промпте — один из самых действенных приёмов prompt engineering. Этот подход называют one-shot или multi-shot prompting: вы даёте Claude пары «вход — выход», которые направляют его ответы.</p>
+
+      <h2>Как работают примеры</h2>
+      <p>Возьмём анализ тональности. Допустим, Claude должен определить, позитивный твит или негативный:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api25-01.png" alt="Промпт для твита: твит обёрнут в теги input_tweet, ответ — «Positive» или «Negative».">
+        <figcaption>Промпт: твит обёрнут в теги <code>&lt;input_tweet&gt;</code>, ответ — «Positive» или «Negative».</figcaption>
+      </figure>
+      <p>Сложность здесь — сарказм. Твит «Yeah, sure, that was the best movie I've seen since 'Plan 9 from Outer Space'» на первый взгляд позитивный, но на деле он саркастический и негативный (Plan 9 славится как один из худших фильмов в истории).</p>
+
+      <h2>Примеры для пограничных случаев</h2>
+      <p>Чтобы справиться с этим, можно добавить примеры, которые показывают Claude, как обращаться с трудными случаями:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api25-02.png" alt="Тот же промпт с двумя примерами: «Great game tonight!» → Positive и саркастический твит → Negative.">
+        <figcaption>Тот же промпт с двумя примерами: «Great game tonight!» → «Positive» и саркастический твит → «Negative».</figcaption>
+      </figure>
+      <p>В улучшенный промпт входят:</p>
+      <ul>
+        <li>ясный позитивный пример: «Great game tonight!» → «Positive»;</li>
+        <li>саркастический пример: «Oh yeah, I really needed a flight delay tonight! Excellent!» → «Negative»;</li>
+        <li>пояснение, почему к сарказму нужно относиться внимательно.</li>
+      </ul>
+      <p>Обратите внимание: примеры обёрнуты в XML-теги вроде <code>&lt;sample_input&gt;</code> и <code>&lt;ideal_output&gt;</code>. Такая структура делает совершенно ясным, что означает каждая часть.</p>
+
+      <h2>Когда использовать примеры</h2>
+      <p>Примеры особенно полезны, чтобы:</p>
+      <ul>
+        <li>покрыть пограничные и нестандартные случаи;</li>
+        <li>задать сложный формат ответа (например, конкретную структуру JSON);</li>
+        <li>показать нужный стиль или тон;</li>
+        <li>продемонстрировать, как обращаться с неоднозначным вводом.</li>
+      </ul>
+
+      <h2>One-shot и multi-shot</h2>
+      <p><strong>One-shot:</strong> один пример, задающий образец.</p>
+      <p><strong>Multi-shot:</strong> несколько примеров, покрывающих разные сценарии.</p>
+      <p>Используйте multi-shot, когда нужно обработать разные пограничные случаи или показать разные виды допустимых ответов.</p>
+
+      <h2>Хорошие примеры из результатов оценки</h2>
+      <p>Прогоняя оценку промпта, ищите ответы с самыми высокими баллами и используйте их как примеры:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api25-03.png" alt="Отчёт оценки: строки с тестовым случаем плана питания, критериями, ответом Claude и баллом 10 и 8.">
+        <figcaption>Отчёт оценки: тестовые случаи с планом питания, критерии, ответ Claude и баллы — здесь 10 и 8.</figcaption>
+      </figure>
+      <p>Найдите ответы с баллом 10 (или с максимальным из доступных) и используйте эти пары «вход — выход» как примеры в промпте. Так Claude поймёт, как выглядит «идеальный» ответ именно в вашей задаче.</p>
+
+      <h2>Контекст к примерам</h2>
+      <p>Не ограничивайтесь парой «вход — выход» — объясните, чем ответ хорош:</p>
+      <pre>&lt;ideal_output&gt;
+[Your example output here]
+&lt;/ideal_output&gt;
+
+This example is well-structured, provides detailed information
+on food choices and quantities, and aligns with the athlete's
+goals and restrictions.</pre>
+      <p>Дополнительный контекст помогает Claude понять логику хороших ответов, а не только их формат.</p>
+
+      <h2>Рекомендации</h2>
+      <ul>
+        <li>всегда оформляйте примеры XML-тегами;</li>
+        <li>прямо говорите, что показываете: «Here is an example input with an ideal response»;</li>
+        <li>включайте примеры на самые частые случаи ошибок;</li>
+        <li>объясняйте, почему ответы в примерах считаются идеальными;</li>
+        <li>держите примеры близкими к вашей задаче.</li>
+      </ul>
+      <p>Примеры особенно сильны тем, что показывают, а не рассказывают. Вместо того чтобы пытаться словами описать, чего вы хотите, вы демонстрируете это напрямую. Промпты становятся надёжнее, а Claude улавливает тонкие требования, которые трудно выразить одними инструкциями.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Сколько примеров.</strong> Документация Anthropic советует 3–5 примеров для лучшего результата и формулирует три требования: <em>relevant</em> (близки к реальной задаче), <em>diverse</em> (покрывают пограничные случаи и достаточно различаются), <em>structured</em> (обёрнуты в <code>&lt;example&gt;</code>, несколько — в <code>&lt;examples&gt;</code>). Имена тегов, как в уроке (<code>&lt;sample_input&gt;</code>, <code>&lt;ideal_output&gt;</code>), — тоже нормально, если они понятные и единообразные.</li>
+          <li><strong>Почему важно разнообразие.</strong> Если все примеры похожи (одна длина, одна структура, одни и те же слова), модель может перенять случайный шаблон — например, отвечать всегда «Positive» или копировать длину примера. Разные примеры показывают, что именно в них общее.</li>
+          <li><strong>Осторожно с примерами из оценки.</strong> Если взять в промпт пример из того же датасета, на котором вы потом оцениваете, балл на этом случае станет завышенным. Лучше брать примеры из отдельного набора или исключать их из оценки.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>В упражнении все приёмы блока применяют вместе — к промпту, который извлекает темы из научного текста.</p>
+            <div class="pager">
+        <a class="ghost" href="24-xml-tags.html">Назад</a>
+        <a class="next" href="26-prompting-exercise.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287746" target="_blank" rel="noopener noreferrer">Providing examples</a>.</p>
+
+    </main>
+  </div>
+</body>
+</html>
