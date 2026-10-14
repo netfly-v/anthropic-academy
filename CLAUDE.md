@@ -15,6 +15,7 @@ index.html                 каталог курсов
 <курс>/lessons/NN-*.html   уроки
 css/style.css              общие стили
 js/quiz.js                 движок экзаменов; js/<курс>-quiz.js — банки вопросов (window.QUIZ_BANK)
+js/sidebar.js              прокручивает меню к группе текущего урока (подключён на каждой странице с меню)
 assets/                    картинки из уроков (assets/api/ — курс API)
 tools/skilljar/            скрипт выгрузки уроков со Skilljar
 ```
