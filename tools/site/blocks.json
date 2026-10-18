@@ -1,7 +1,7 @@
 {
  "course": "claude-with-the-anthropic-api",
  "template_lesson": "13-structured-data-exercise.html",
- "next_section": "RAG and Agentic Search",
+ "next_section": "Features of Claude",
  "intro": [
   {
    "file": "01-welcome.html",
@@ -372,6 +372,75 @@
      "orig": "The web search tool",
      "note": "Серверный поиск, домены и цитаты",
      "dur": "7 мин 13 с"
+    }
+   ]
+  },
+  {
+   "title": "RAG и поиск",
+   "quiz": {
+    "file": "quiz-rag.html",
+    "page_title": "RAG",
+    "kicker": "RAG and Agentic Search",
+    "items": 16,
+    "minutes": 20,
+    "bank": "api-rag-quiz.js"
+   },
+   "lessons": [
+    {
+     "file": "39-intro-rag.html",
+     "nav": "Введение в RAG",
+     "sid": "287763",
+     "orig": "Introducing Retrieval Augmented Generation",
+     "note": "Зачем разбивать документы и искать нужное",
+     "dur": "5 мин 51 с"
+    },
+    {
+     "file": "40-chunking.html",
+     "nav": "Разбиение текста",
+     "sid": "287776",
+     "orig": "Text chunking strategies",
+     "note": "По размеру, по структуре, по смыслу, по предложениям",
+     "dur": "13 мин 8 с"
+    },
+    {
+     "file": "41-embeddings.html",
+     "nav": "Эмбеддинги",
+     "sid": "287759",
+     "orig": "Text embeddings",
+     "note": "Семантический поиск и Voyage AI",
+     "dur": "4 мин 2 с"
+    },
+    {
+     "file": "42-rag-flow.html",
+     "nav": "Полный поток RAG",
+     "sid": "287764",
+     "orig": "The full RAG flow",
+     "note": "Нормализация, векторная база, косинусное сходство",
+     "dur": "8 мин"
+    },
+    {
+     "file": "43-implementing-rag.html",
+     "nav": "Реализация RAG",
+     "sid": "287761",
+     "orig": "Implementing the RAG flow",
+     "note": "VectorIndex, add_vector и search",
+     "dur": "5 мин 12 с"
+    },
+    {
+     "file": "44-bm25.html",
+     "nav": "BM25",
+     "sid": "287767",
+     "orig": "BM25 lexical search",
+     "note": "Точные совпадения редких терминов",
+     "dur": "10 мин"
+    },
+    {
+     "file": "45-multi-index.html",
+     "nav": "Многоиндексный RAG",
+     "sid": "287766",
+     "orig": "A Multi-Index RAG pipeline",
+     "note": "Retriever и reciprocal rank fusion",
+     "dur": "6 мин 45 с"
     }
    ]
   }

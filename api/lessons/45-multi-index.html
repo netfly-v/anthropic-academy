@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Многоиндексный конвейер RAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">RAG и поиск</p>
+        <ul class="lesson-nav">
+          <li><a href="39-intro-rag.html"><span class="mark"></span>Введение в RAG</a></li>
+          <li><a href="40-chunking.html"><span class="mark"></span>Разбиение текста</a></li>
+          <li><a href="41-embeddings.html"><span class="mark"></span>Эмбеддинги</a></li>
+          <li><a href="42-rag-flow.html"><span class="mark"></span>Полный поток RAG</a></li>
+          <li><a href="43-implementing-rag.html"><span class="mark"></span>Реализация RAG</a></li>
+          <li><a href="44-bm25.html"><span class="mark"></span>BM25</a></li>
+          <li><a href="45-multi-index.html" aria-current="page"><span class="mark"></span>Многоиндексный RAG</a></li>
+          <li><a href="../quiz-rag.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Многоиндексный конвейер RAG</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 6:45 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объединить векторный и BM25-индексы в класс <code>Retriever</code>;</li>
+        <li>считать reciprocal rank fusion (RRF) вручную;</li>
+        <li>расширять конвейер новыми индексами через общий интерфейс.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287766" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>A Multi-Index RAG pipeline · 6:45</span>
+      </a>
+
+      <p>Мы сделали отдельные реализации семантического поиска (на векторных эмбеддингах) и лексического (на BM25). Пора объединить их в единый конвейер поиска, который использует сильные стороны обоих подходов.</p>
+
+      <h2>Многоиндексная архитектура</h2>
+      <p>У классов <code>VectorIndex</code> и <code>BM25Index</code> почти одинаковый API: у обоих есть методы <code>add_document()</code> и <code>search()</code>. Благодаря этому их легко обернуть в новый класс <code>Retriever</code>.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api45-01.png" alt="Вопрос уходит в семантический и лексический поиск, затем результаты объединяются.">
+        <figcaption>Вопрос уходит в оба поиска, результаты объединяются.</figcaption>
+      </figure>
+      <p><code>Retriever</code> — координатор: он передаёт запрос пользователя в оба индекса, собирает их результаты и объединяет методом reciprocal rank fusion (RRF).</p>
+
+      <h2>Что такое reciprocal rank fusion</h2>
+      <p>Объединить результаты разных методов поиска — не то же самое, что склеить списки. У каждого метода своя система оценок, поэтому нужен способ привести их рейтинги к общему знаменателю и честно объединить.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api45-02.png" alt="Таблицы рангов 1–3 от VectorIndex с оценками 0.234, 0.913, 1.327 и от BM25Index с 0.184, 0.414, 0.781.">
+        <figcaption>Ранги 1–3 от VectorIndex (оценки 0.234, 0.913, 1.327) и от BM25Index (0.184, 0.414, 0.781) — шкалы разные.</figcaption>
+      </figure>
+      <p>Разберём RRF на примере. Допустим, ищем информацию об «INC-2023-Q4-011» и получаем:</p>
+      <ul>
+        <li>VectorIndex: Section 2 (ранг 1), Section 7 (ранг 2), Section 6 (ранг 3);</li>
+        <li>BM25Index: Section 6 (ранг 1), Section 2 (ранг 2), Section 7 (ранг 3).</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api45-03.png" alt="Ранжированные списки VectorIndex и BM25Index сливаются в одну таблицу с рангом каждого фрагмента в обоих индексах.">
+        <figcaption>Два ранжированных списка сводятся в одну таблицу: ранг каждого фрагмента в обоих индексах.</figcaption>
+      </figure>
+      <p>Сводим их в одну таблицу с рангами каждого фрагмента в обоих индексах и применяем формулу RRF:</p>
+      <pre>RRF_score(d) = Σ(1 / (k + rank_i(d)))</pre>
+      <p>Здесь <code>k</code> — константа (часто 60, но мы возьмём 1, чтобы результаты были нагляднее), а <code>rank_i(d)</code> — ранг документа <code>d</code> в <code>i</code>-м рейтинге.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api45-04.png" alt="Таблица: ранги каждого фрагмента в векторном и BM25 поиске и оценка RRF; чем выше оценка, тем релевантнее фрагмент.">
+        <figcaption>Ранги в обоих поисках и оценка RRF: чем выше оценка, тем релевантнее фрагмент.</figcaption>
+      </figure>
+      <p>Для нашего примера:</p>
+      <ul>
+        <li>Section 2: 1.0/(1+1) + 1.0/(1+2) = 0.833;</li>
+        <li>Section 7: 1.0/(1+2) + 1.0/(1+3) = 0.583;</li>
+        <li>Section 6: 1.0/(1+3) + 1.0/(1+1) = 0.75.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api45-05.png" alt="Таблица трёх фрагментов: ранги, оценка RRF и итоговый ранг.">
+        <figcaption>Итоговая таблица: ранги, оценка RRF и итоговое место каждого фрагмента.</figcaption>
+      </figure>
+      <p>Итоговый рейтинг: Section 2 (0.833), Section 6 (0.75), Section 7 (0.583). Это интуитивно понятно: Section 2 хорошо показал себя в обоих индексах, поэтому поднимается наверх.</p>
+
+      <h2>Детали реализации</h2>
+      <p>Класс <code>Retriever</code> оборачивает несколько поисковых индексов и даёт единый интерфейс:</p>
+      <pre>class Retriever:
+    def __init__(self, *indexes: SearchIndex):
+        if len(indexes) == 0:
+            raise ValueError("At least one index must be provided")
+        self._indexes = list(indexes)
+
+    def add_document(self, document: Dict[str, Any]):
+        for index in self._indexes:
+            index.add_document(document)
+
+    def search(self, query_text: str, k: int = 1, k_rrf: int = 60):
+        # Get results from all indexes
+        all_results = []
+        for idx, results in enumerate(all_results):
+            for rank, (doc, _) in enumerate(results):
+                # Track document ranks across indexes
+                # Apply RRF scoring formula
+        # Return merged and sorted results</pre>
+      <p>Ключевая мысль: если разные реализации поиска имеют одинаковый API, их легко объединять без жёсткой связанности.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p><code>search</code> в уроке — набросок, а не рабочий код: список <code>all_results</code> так и остаётся пустым. Полная логика выглядит примерно так:</p>
+        <pre>    def search(self, query_text: str, k: int = 1, k_rrf: int = 60):
+        all_results = [index.search(query_text, k * 5) for index in self._indexes]
+
+        scores, docs = {}, {}
+        for results in all_results:
+            for rank, (doc, _) in enumerate(results, start=1):
+                key = id(doc)  # или стабильный id документа
+                docs[key] = doc
+                scores[key] = scores.get(key, 0) + 1 / (k_rrf + rank)
+
+        best = sorted(scores, key=scores.get, reverse=True)[:k]
+        return [(docs[key], scores[key]) for key in best]</pre>
+        <p>Для неё нужны <code>from typing import Any, Dict</code> и протокол <code>SearchIndex</code> из ноутбука курса. Обратите внимание: из каждого индекса берут больше кандидатов, чем <code>k</code>, — иначе документ, хороший в одном индексе и средний в другом, может не попасть в слияние.</p>
+      </aside>
+
+      <h2>Проверяем гибридный подход</h2>
+      <p>Помните прошлую проблему: поиск «what happened with INC-2023-Q4-011?» только по векторам давал неожиданные результаты. Инцидент по кибербезопасности (Section 10) шёл первым, но вторым оказывался финансовый анализ (Section 3) вместо более подходящего раздела о разработке ПО.</p>
+      <p>С гибридным <code>Retriever</code> результаты гораздо лучше:</p>
+      <ul>
+        <li>Section 10: Cybersecurity Analysis — Incident Response Report (самый подходящий);</li>
+        <li>Section 2: Software Engineering — Project Phoenix Stability Enhancements (второй);</li>
+        <li>Section 5: Legal Developments (третий).</li>
+      </ul>
+      <p>Это показывает, как сочетание семантического и лексического поиска преодолевает ограничения каждого подхода в отдельности.</p>
+
+      <h2>Расширяемость</h2>
+      <figure class="shot">
+        <img src="../../assets/api/api45-06.png" alt="Схема Retriever: вопрос уходит в VectorIndex и BM25Index, результаты объединяются; есть заглушка ???Index.">
+        <figcaption><code>Retriever</code>: вопрос уходит в VectorIndex и BM25Index, плюс место для нового индекса «???Index».</figcaption>
+      </figure>
+      <p>Красота этой архитектуры — в расширяемости. Поскольку все индексы реализуют один протокол <code>SearchIndex</code> с методами <code>add_document()</code> и <code>search()</code>, можно легко добавлять новые методы поиска:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api45-07.png" alt="Retriever оборачивает VectorIndex и BM25Index: вопрос про INC-2023-Q4-011 уходит в оба, результаты объединяются.">
+        <figcaption><code>Retriever</code> оборачивает оба индекса: вопрос про INC-2023-Q4-011 уходит в каждый, результаты сливаются.</figcaption>
+      </figure>
+      <p>Нужен индекс по ключевым словам? Поиск по графу? Специализированный индекс для предметной области? Достаточно реализовать тот же интерфейс, и <code>Retriever</code> автоматически включит его в слияние.</p>
+      <p>Модульный подход сохраняет каждую реализацию поиска сфокусированной и тестируемой и даёт чистый способ объединить их сильные стороны в итоговой системе.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Почему RRF, а не сумма оценок.</strong> Оценки векторного поиска и BM25 в разных шкалах, складывать их напрямую бессмысленно. RRF использует только <em>места</em> в рейтингах, поэтому шкалы не важны. Большое <code>k</code> (60) сглаживает разницу между первыми местами, маленькое (1, как в примере) сильнее награждает лидеров.</li>
+          <li><strong>Следующий шаг — Contextual Retrieval.</strong> В статье Anthropic о contextual retrieval к каждому фрагменту перед индексацией Claude дописывает короткий контекст из всего документа («это раздел о… из отчёта компании X за квартал Y»), и по нему строят и эмбеддинги, и BM25. По данным статьи, это сократило долю неудачных поисков (нужный фрагмент не в первых 20) на 49%, а с реранкингом — на 67%. Генерация контекста дешёвая благодаря prompt caching — о нём в следующем блоке.</li>
+          <li><strong>Реранкинг.</strong> Ещё одно популярное улучшение — после слияния пропустить кандидатов через модель-реранкер (например, <code>rerank-3</code> от Voyage), которая точнее оценивает релевантность пары «вопрос — фрагмент».</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Раздел о RAG пройден — проверьте себя пробным экзаменом. Официального квиза Skilljar у этого раздела нет. Следующий раздел курса — возможности Claude: thinking, изображения, PDF, цитаты и prompt caching.</p>
+            <div class="pager">
+        <a class="ghost" href="44-bm25.html">Назад</a>
+        <a class="next" href="../quiz-rag.html">К тесту</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287766" target="_blank" rel="noopener noreferrer">A Multi-Index RAG pipeline</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

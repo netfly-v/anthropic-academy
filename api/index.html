@@ -83,6 +83,17 @@
           <li><a href="lessons/38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
           <li><a href="quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
         </ul>
+        <p class="nav-group">RAG и поиск</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/39-intro-rag.html"><span class="mark"></span>Введение в RAG</a></li>
+          <li><a href="lessons/40-chunking.html"><span class="mark"></span>Разбиение текста</a></li>
+          <li><a href="lessons/41-embeddings.html"><span class="mark"></span>Эмбеддинги</a></li>
+          <li><a href="lessons/42-rag-flow.html"><span class="mark"></span>Полный поток RAG</a></li>
+          <li><a href="lessons/43-implementing-rag.html"><span class="mark"></span>Реализация RAG</a></li>
+          <li><a href="lessons/44-bm25.html"><span class="mark"></span>BM25</a></li>
+          <li><a href="lessons/45-multi-index.html"><span class="mark"></span>Многоиндексный RAG</a></li>
+          <li><a href="quiz-rag.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
       </div>
     </aside>
     <main class="lesson">
@@ -90,7 +101,7 @@
       <h1>Building with the Claude API</h1>
       <div class="rule"></div>
       <p class="overview-lead">Как встроить модели Claude в своё приложение через официальный API: от первого запроса до tools, RAG и агентов.</p>
-      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки «Доступ к API», «Оценка промптов», «Приёмы промптинга» и «Инструменты». Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
+      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки «Доступ к API», «Оценка промптов», «Приёмы промптинга», «Инструменты» и «RAG и поиск». Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
       <ul class="card-list">
         <li><a href="lessons/01-welcome.html"><strong>1. Добро пожаловать</strong><span>Карта курса, что нужно заранее и как учиться · 2 мин 14 с</span></a></li>
         <li><a href="lessons/02-claude-models.html"><strong>2. Модели Claude</strong><span>Opus, Sonnet и Haiku: интеллект, скорость и цена · 3 мин 56 с</span></a></li>
@@ -144,7 +155,18 @@
         <li><a href="lessons/38-web-search-tool.html"><strong>38. Веб-поиск</strong><span>Серверный поиск, домены и цитаты · 7 мин 13 с</span></a></li>
         <li><a href="quiz-tools.html"><strong>Practice exam · Инструменты</strong><span>18 вопросов по этому блоку, на английском</span></a></li>
       </ul>
-      <p>У блоков в оригинале есть официальные квизы Skilljar: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289117" target="_blank" rel="noopener noreferrer">Quiz on accessing Claude with the API</a> (8 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289118" target="_blank" rel="noopener noreferrer">Quiz on prompt evaluation</a> (6 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289121" target="_blank" rel="noopener noreferrer">Quiz on prompt engineering techniques</a> (5 вопросов) и <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289122" target="_blank" rel="noopener noreferrer">Quiz on tool use with Claude</a> (7 вопросов). Они проходятся на Skilljar и засчитываются в курс; наши Practice exam — отдельные тренировочные тесты. Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала. Следующий раздел курса — RAG and Agentic Search.</p>
+      <h2>RAG и поиск</h2>
+      <ul class="card-list">
+        <li><a href="lessons/39-intro-rag.html"><strong>39. Введение в RAG</strong><span>Зачем разбивать документы и искать нужное · 5 мин 51 с</span></a></li>
+        <li><a href="lessons/40-chunking.html"><strong>40. Стратегии разбиения текста</strong><span>По размеру, по структуре, по смыслу, по предложениям · 13 мин 8 с</span></a></li>
+        <li><a href="lessons/41-embeddings.html"><strong>41. Эмбеддинги текста</strong><span>Семантический поиск и Voyage AI · 4 мин 2 с</span></a></li>
+        <li><a href="lessons/42-rag-flow.html"><strong>42. Полный поток RAG</strong><span>Нормализация, векторная база, косинусное сходство · 8 мин</span></a></li>
+        <li><a href="lessons/43-implementing-rag.html"><strong>43. Реализация RAG</strong><span>VectorIndex, add_vector и search · 5 мин 12 с</span></a></li>
+        <li><a href="lessons/44-bm25.html"><strong>44. Лексический поиск BM25</strong><span>Точные совпадения редких терминов · 10 мин</span></a></li>
+        <li><a href="lessons/45-multi-index.html"><strong>45. Многоиндексный конвейер RAG</strong><span>Retriever и reciprocal rank fusion · 6 мин 45 с</span></a></li>
+        <li><a href="quiz-rag.html"><strong>Practice exam · RAG и поиск</strong><span>16 вопросов по этому блоку, на английском</span></a></li>
+      </ul>
+      <p>У блоков в оригинале есть официальные квизы Skilljar: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289117" target="_blank" rel="noopener noreferrer">Quiz on accessing Claude with the API</a> (8 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289118" target="_blank" rel="noopener noreferrer">Quiz on prompt evaluation</a> (6 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289121" target="_blank" rel="noopener noreferrer">Quiz on prompt engineering techniques</a> (5 вопросов) и <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289122" target="_blank" rel="noopener noreferrer">Quiz on tool use with Claude</a> (7 вопросов). Они проходятся на Skilljar и засчитываются в курс; наши Practice exam — отдельные тренировочные тесты. Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала. Следующий раздел курса — Features of Claude.</p>
       <p class="source">Оригинал курса: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api">Building with the Claude API</a>.</p>
     </main>
   </div>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Полный поток RAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">RAG и поиск</p>
+        <ul class="lesson-nav">
+          <li><a href="39-intro-rag.html"><span class="mark"></span>Введение в RAG</a></li>
+          <li><a href="40-chunking.html"><span class="mark"></span>Разбиение текста</a></li>
+          <li><a href="41-embeddings.html"><span class="mark"></span>Эмбеддинги</a></li>
+          <li><a href="42-rag-flow.html" aria-current="page"><span class="mark"></span>Полный поток RAG</a></li>
+          <li><a href="43-implementing-rag.html"><span class="mark"></span>Реализация RAG</a></li>
+          <li><a href="44-bm25.html"><span class="mark"></span>BM25</a></li>
+          <li><a href="45-multi-index.html"><span class="mark"></span>Многоиндексный RAG</a></li>
+          <li><a href="../quiz-rag.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Полный поток RAG</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 8:00 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>пройти все шаги RAG от фрагментов до итогового промпта;</li>
+        <li>объяснить нормализацию и роль векторной базы данных;</li>
+        <li>считать и интерпретировать косинусное сходство и косинусное расстояние.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287764" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>The full RAG flow · 8:00</span>
+      </a>
+
+      <p>Основы RAG, разбиение текста и эмбеддинги разобраны — пройдём весь конвейер RAG шаг за шагом. Пример покажет, как все части работают вместе, чтобы найти нужную информацию и сгенерировать ответ.</p>
+
+      <h2>Шаг 1. Разбиваем исходный текст</h2>
+      <p>Сначала берём исходный документ и делим его на удобные фрагменты. В примере — два простых раздела:</p>
+      <ul>
+        <li><strong>Раздел 1, медицинские исследования:</strong> «This year saw significant strides in our understanding of XDR-47, a 'bug' we have not seen before.»</li>
+        <li><strong>Раздел 2, разработка ПО:</strong> «This division dedicated significant effort to studying various infection vectors in our distributed systems»</li>
+      </ul>
+
+      <h2>Шаг 2. Генерируем эмбеддинги</h2>
+      <p>Затем превращаем каждый фрагмент в числовой эмбеддинг с помощью модели эмбеддингов. Для простоты представим идеальную модель, которая всегда возвращает ровно два числа, и мы знаем, что означает каждое.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-01.png" alt="Два фрагмента проходят через воображаемую модель эмбеддингов, выдающую эмбеддинги из двух чисел.">
+        <figcaption>Два фрагмента проходят через воображаемую модель, которая выдаёт эмбеддинги из двух чисел.</figcaption>
+      </figure>
+      <p>В нашей воображаемой модели:</p>
+      <ul>
+        <li>первое число — насколько текст о медицине;</li>
+        <li>второе число — насколько текст о разработке ПО.</li>
+      </ul>
+      <p>Для медицинского раздела получится, скажем, [0.97, 0.34] — в основном о медицине, но с долей программного из-за слова «bug». Для раздела о разработке — [0.30, 0.97]: в основном о ПО, но с медицинским оттенком из-за «infection vectors».</p>
+
+      <h2>Нормализация</h2>
+      <p>API эмбеддингов обычно выполняет нормализацию: масштабирует каждый вектор так, чтобы его длина была 1.0. Вникать в математику не нужно — это делается автоматически. Получаем нормализованные векторы вроде [0.944, 0.331] и [0.295, 0.955].</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-02.png" alt="Единичная окружность: Medical Research направлен к медицине, Software Engineering — к ПО, каждая стрелка длиной 1.0.">
+        <figcaption>Единичная окружность: стрелка Medical Research направлена к «медицине», Software Engineering — к «ПО»; длина каждой — 1.0.</figcaption>
+      </figure>
+      <p>Эти эмбеддинги можно изобразить на единичной окружности: каждая точка — один фрагмент текста.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-03.png" alt="Эмбеддинги 0.944, 0.331 и 0.295, 0.955 поступают в векторную базу данных.">
+        <figcaption>Эмбеддинги [0.944, 0.331] и [0.295, 0.955] отправляются в векторную базу данных.</figcaption>
+      </figure>
+
+      <h2>Шаг 3. Сохраняем в векторной базе данных</h2>
+      <p>Сохраняем эмбеддинги в векторной базе данных — специализированной базе, оптимизированной для хранения, сравнения и поиска по длинным спискам чисел вроде наших эмбеддингов.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-04.png" alt="Воображаемая модель эмбеддит вопрос пользователя как 0.1, 0.89 — немного о медицине, но в основном о ПО.">
+        <figcaption>Вопрос пользователя в той же модели: [0.1, 0.89] — немного о медицине, в основном о ПО.</figcaption>
+      </figure>
+      <p>На этом пауза. Всё, что сделано до сих пор, — предобработка, которая выполняется заранее. Теперь ждём, пока пользователь задаст вопрос.</p>
+
+      <h2>Шаг 4. Обрабатываем вопрос пользователя</h2>
+      <p>Когда пользователь спрашивает, например, «I'm curious about the company. In particular, what did the software engineering dept do this year?», мы пропускаем вопрос через ту же модель эмбеддингов.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-05.png" alt="Этап эмбеддинга вопроса и поиска ближайших эмбеддингов; Company слегка относится к медицине, но вопрос о ПО.">
+        <figcaption>Эмбеддинг вопроса и поиск ближайших: «Company» слегка тянет к медицине, но вопрос — о разработке.</figcaption>
+      </figure>
+      <p>Вопрос превращается во что-то вроде [0.1, 0.89] — мало медицины, много разработки ПО. После нормализации — [0.112, 0.993].</p>
+
+      <h2>Шаг 5. Ищем похожие эмбеддинги</h2>
+      <p>Отправляем эмбеддинг вопроса в векторную базу и просим найти самые похожие из сохранённых.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-06.png" alt="Единичная окружность: вектор вопроса почти совпадает с Software Engineering и далёк от Medical Research.">
+        <figcaption>Вектор вопроса почти совпадает с Software Engineering и далёк от Medical Research.</figcaption>
+      </figure>
+      <p>База возвращает раздел о разработке ПО — он ближе всего к тому, о чём спросил пользователь.</p>
+
+      <h2>Как измеряется сходство: косинусное сходство</h2>
+      <p>Векторная база определяет самые похожие эмбеддинги по косинусному сходству (cosine similarity) — косинусу угла между двумя векторами.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-07.png" alt="Единичная окружность с углом a от вопроса до Software Engineering и b до Medical Research и формулами косинуса.">
+        <figcaption>Угол <em>a</em> — от вопроса до Software Engineering, угол <em>b</em> — до Medical Research; рядом формулы косинуса.</figcaption>
+      </figure>
+      <p>Главное о косинусном сходстве:</p>
+      <ul>
+        <li>результат лежит в диапазоне от −1 до 1;</li>
+        <li>значения около 1 — высокое сходство;</li>
+        <li>значения около −1 — тексты сильно различаются;</li>
+        <li>0 — векторы перпендикулярны (связи нет).</li>
+      </ul>
+      <p>В нашем примере косинусное сходство вопроса и фрагмента о разработке — 0.983, очень высокое. С медицинским фрагментом — всего 0.398, намного ниже.</p>
+
+      <h2>Косинусное расстояние</h2>
+      <p>В документации векторных баз часто встречается «косинусное расстояние» (cosine distance). Оно считается просто как 1 − косинусное сходство. Для косинусного расстояния:</p>
+      <ul>
+        <li>значения около 0 — высокое сходство;</li>
+        <li>чем больше значение, тем меньше сходство.</li>
+      </ul>
+      <p>Такая поправка во многих случаях делает числа нагляднее.</p>
+
+      <h2>Шаг 6. Собираем итоговый промпт</h2>
+      <p>Наконец, берём вопрос пользователя и самый подходящий найденный фрагмент, объединяем в промпт и отправляем Claude за ответом.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api42-08.png" alt="Вопрос пользователя и найденный фрагмент о разработке подставляются в шаблон промпта.">
+        <figcaption>Вопрос пользователя и найденный фрагмент о разработке подставляются в шаблон промпта.</figcaption>
+      </figure>
+      <p>Промпт может выглядеть так:</p>
+      <pre>Answer the user's question about the financial document.
+
+&lt;user_question&gt;
+How many bugs did engineers fix this year?
+&lt;/user_question&gt;
+
+&lt;report&gt;
+## Section 2: Software Engineering
+This division dedicated significant effort to studying various infection vectors in our distributed systems
+&lt;/report&gt;</pre>
+      <p>Это весь конвейер RAG! Система нашла самую релевантную информацию по смысловому сходству и передала её как контекст для точного ответа.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Почему нормализация упрощает расчёт.</strong> Косинусное сходство — это скалярное произведение векторов, делённое на произведение их длин. Если длины равны 1, остаётся одно скалярное произведение: для [0.112, 0.993] и [0.295, 0.955] это 0.112·0.295 + 0.993·0.955 ≈ 0.98. Поэтому для нормализованных эмбеддингов (как у Voyage) сходство по скалярному произведению и косинусное сходство совпадают.</li>
+          <li><strong>Векторная база в реальности.</strong> Это может быть отдельный сервис (Pinecone, Qdrant, Weaviate) или расширение обычной базы (например, pgvector для PostgreSQL). На больших объёмах они ищут приближённо (ANN), жертвуя крошечной точностью ради скорости.</li>
+          <li><strong>Один и тот же «движок» для документов и вопросов.</strong> Вопрос нужно эмбеддить той же моделью, что и фрагменты, — векторы разных моделей несравнимы.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок реализует этот поток в коде: векторное хранилище, добавление фрагментов и поиск.</p>
+            <div class="pager">
+        <a class="ghost" href="41-embeddings.html">Назад</a>
+        <a class="next" href="43-implementing-rag.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287764" target="_blank" rel="noopener noreferrer">The full RAG flow</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

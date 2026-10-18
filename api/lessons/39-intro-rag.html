@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Введение в RAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">RAG и поиск</p>
+        <ul class="lesson-nav">
+          <li><a href="39-intro-rag.html" aria-current="page"><span class="mark"></span>Введение в RAG</a></li>
+          <li><a href="40-chunking.html"><span class="mark"></span>Разбиение текста</a></li>
+          <li><a href="41-embeddings.html"><span class="mark"></span>Эмбеддинги</a></li>
+          <li><a href="42-rag-flow.html"><span class="mark"></span>Полный поток RAG</a></li>
+          <li><a href="43-implementing-rag.html"><span class="mark"></span>Реализация RAG</a></li>
+          <li><a href="44-bm25.html"><span class="mark"></span>BM25</a></li>
+          <li><a href="45-multi-index.html"><span class="mark"></span>Многоиндексный RAG</a></li>
+          <li><a href="../quiz-rag.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Введение в RAG</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 5:51 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, какую проблему решает Retrieval Augmented Generation;</li>
+        <li>сравнить подходы «всё в промпт» и «фрагменты + поиск»;</li>
+        <li>назвать плюсы и сложности RAG и решить, когда он нужен.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287763" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Introducing Retrieval Augmented Generation · 5:51</span>
+      </a>
+
+      <p>Retrieval Augmented Generation (RAG) — приём для работы с большими документами, которые не помещаются в один промпт. Вместо того чтобы впихивать всё в огромный промпт, RAG разбивает документы на фрагменты (chunks) и при ответе на вопрос включает в промпт только самые подходящие из них.</p>
+
+      <h2>Проблема больших документов</h2>
+      <p>Представьте финансовый документ на 800 страниц, по которому вы хотите задавать Claude конкретные вопросы — например, «What risk factors does this company have?». Нужную информацию из документа как-то надо передать Claude, но объём текста, который можно включить в промпт, ограничен.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api39-01.png" alt="Документ закрытый, Claude не знает его содержимого: разделы вроде Executive Summary и Risk Factors.">
+        <figcaption>Документ закрытый, Claude не знает его содержимого — разделы вроде Executive Summary и Risk Factors.</figcaption>
+      </figure>
+
+      <h2>Вариант 1. Всё в промпт</h2>
+      <p>Первый подход прямолинейный: извлечь весь текст документа и положить его в промпт вместе с вопросом пользователя. Промпт может выглядеть так:</p>
+      <pre>Answer the user's question about the financial document.
+
+&lt;user_question&gt;
+{user_question}
+&lt;/user_question&gt;
+
+&lt;financial_document&gt;
+{financial_document}
+&lt;/financial_document&gt;</pre>
+      <figure class="shot">
+        <img src="../../assets/api/api39-02.png" alt="Весь финансовый отчёт целиком в промпте с пометкой «Possibly not the best solution».">
+        <figcaption>Весь отчёт целиком в промпте — «Possibly not the best solution». Ограничения — ниже.</figcaption>
+      </figure>
+      <p>У этого подхода серьёзные ограничения:</p>
+      <ul>
+        <li>длина промпта жёстко ограничена — документ может не поместиться;</li>
+        <li>на очень длинных промптах Claude работает хуже;</li>
+        <li>большие промпты дороже обрабатывать;</li>
+        <li>большие промпты дольше обрабатываются.</li>
+      </ul>
+
+      <h2>Вариант 2. Разбить документ на фрагменты</h2>
+      <p>RAG действует умнее. Сначала, на этапе предобработки, документ разбивают на небольшие фрагменты. Затем, когда пользователь задаёт вопрос, находят фрагменты, наиболее подходящие к вопросу, и включают в промпт только их.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api39-03.png" alt="Финансовый отчёт, разбитый на шесть фрагментов: Strategy Outlook, Balance Sheet, Auditor's Report и другие.">
+        <figcaption>Отчёт разбит на шесть фрагментов: Strategy Outlook, Balance Sheet, Auditor's Report и другие.</figcaption>
+      </figure>
+      <p>Как это работает: если кто-то спрашивает «What risks does this company face?», вы ищете по фрагментам, находите раздел «Risk Factors» и включаете в промпт только этот подходящий фрагмент.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api39-04.png" alt="Шесть фрагментов; вопрос пользователя и один фрагмент попадают в промпт.">
+        <figcaption>Из шести фрагментов в промпт вместе с вопросом попадает только подходящий.</figcaption>
+      </figure>
+
+      <h2>Плюсы RAG</h2>
+      <ul>
+        <li>Claude может сосредоточиться только на самом подходящем содержимом;</li>
+        <li>подход масштабируется на очень большие документы;</li>
+        <li>работает с несколькими документами;</li>
+        <li>промпты меньше — дешевле и быстрее.</li>
+      </ul>
+
+      <h2>Сложности RAG</h2>
+      <ul>
+        <li>нужен этап предобработки, чтобы разбить документы на фрагменты;</li>
+        <li>нужен механизм поиска «подходящих» фрагментов;</li>
+        <li>во включённых фрагментах может не оказаться всего контекста, нужного Claude;</li>
+        <li>разбивать текст можно многими способами — какой лучше?</li>
+      </ul>
+      <p>Например, документ можно разделить на части равного размера, а можно — по структуре: по заголовкам и разделам. У каждого подхода свои компромиссы, которые нужно оценить для своей задачи.</p>
+
+      <h2>Когда использовать RAG</h2>
+      <p>RAG требует многих технических решений и больше работы, чем просто положить всё в промпт. Нужно оценить, перевешивают ли преимущества сложность в вашем приложении. Особенно он ценен для очень больших документов, нескольких документов или когда важно оптимизировать стоимость и скорость.</p>
+      <p>Ключевая мысль: RAG меняет простоту на масштабируемость и эффективность. Он требует больше работы на старте, зато позволяет работать с коллекциями документов, которые невозможно обработать, просто положив всё в промпт.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Порог «можно без RAG» вырос.</strong> У текущих моделей Claude окно контекста — 1 миллион токенов (у Haiku 4.5 — 200 тысяч), а в статье Anthropic о contextual retrieval сказано, что базу знаний меньше примерно 200 тысяч токенов можно просто включить в промпт целиком. С prompt caching (блок «Возможности Claude») повторная отправка того же документа становится намного дешевле. Ограничения урока при этом остаются верными: длинный промпт стоит дороже, отвечает дольше, а внимание модели к нужному месту в огромном тексте хуже.</li>
+          <li><strong>Агентный поиск.</strong> В названии раздела курса — «RAG and Agentic Search»: кроме заранее подготовленного индекса, модель может сама искать нужное инструментами (веб-поиск, поиск по файлам, свои инструменты поиска) — как в блоке про инструменты.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Первый шаг RAG — разбить текст на фрагменты. Следующий урок сравнивает стратегии разбиения.</p>
+            <div class="pager">
+        <a class="ghost" href="38-web-search-tool.html">Назад</a>
+        <a class="next" href="40-chunking.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287763" target="_blank" rel="noopener noreferrer">Introducing Retrieval Augmented Generation</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
