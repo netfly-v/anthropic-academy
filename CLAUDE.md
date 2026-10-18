@@ -46,5 +46,5 @@ tools/site/                сборка курса API: blocks.json (блоки,
 1. Выгрузить уроки: `~/.academy-browser/venv/bin/python tools/skilljar/skilljar.py dump claude-with-the-anthropic-api --from A --to B`.
 2. Картинки — в `assets/api/apiNN-KK.png` (NN — номер страницы урока на сайте), по порядку из дампа.
 3. Написать фрагменты `<main>` уроков в отдельной папке (`NN.html`: h1, «Чему научитесь», перевод, «Пояснение», «Дальше») и банк экзамена `js/api-<блок>-quiz.js`.
-4. Добавить блок в `tools/site/blocks.json` (уроки, экзамен, официальный квиз) и обновить `next_section`.
+4. Добавить блок в `tools/site/blocks.json` (уроки, экзамен, официальный квиз). Курс переведён целиком (уроки 01–76), поэтому `next_section` убран; последняя группа «Итог курса» — урок 76 и итоговый экзамен `api/quiz-final.html` (необязательные поля экзамена: `nav`, `h1`, `intro`, `card_label`, `card_note`; у блока — `no_intro_mention`; ссылка на Final Assessment — `final_assessment`).
 5. `python tools/site/build_api_block.py --frags <папка>` — создаст страницы уроков и экзамена, пересоберёт меню на всех страницах и `api/index.html`. Без `--frags` только пересобирает меню и страницу курса; существующие уроки не трогает.

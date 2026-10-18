@@ -37,7 +37,7 @@ def sidebar(lp, rp, current):
     for b in DATA["blocks"]:
         out += [f'        <p class="nav-group">{b["title"]}</p>', '        <ul class="lesson-nav">']
         out += [li(lp + l["file"], l["nav"]) for l in b["lessons"]]
-        out += [li(rp + b["quiz"]["file"], "Practice exam"), "        </ul>"]
+        out += [li(rp + b["quiz"]["file"], b["quiz"].get("nav", "Practice exam")), "        </ul>"]
     return "\n".join(out) + "\n"
 
 
@@ -81,7 +81,9 @@ def create_quizzes():
         page = API / q["file"]
         if page.exists():
             continue
-        t = re.sub(r"<title>Practice exam · [^<]+</title>", lambda m: f"<title>Practice exam · {q['page_title']}</title>", tpl, count=1)
+        h1 = q.get("h1", "Practice exam")
+        t = re.sub(r"<title>Practice exam · [^<]+</title>", lambda m: f"<title>{h1} · {q['page_title']}</title>", tpl, count=1)
+        t = t.replace("<h1>Practice exam</h1>", f"<h1>{h1}</h1>", 1)
         t = re.sub(r'<p class="kicker">[^<]+</p>', lambda m: f'<p class="kicker">{q["kicker"]}</p>', t, count=1)
         t = re.sub(r"\d+ items · about \d+ minutes", f"{q['items']} items · about {q['minutes']} minutes", t, count=1)
         t = re.sub(r'<script src="\.\./js/api-[^"]+-quiz\.js"></script>', f'<script src="../js/{q["bank"]}"></script>', t, count=1)
@@ -110,7 +112,7 @@ def build_index():
     t = p.read_text()
     titles = [f"«{b['title']}»" for b in DATA["blocks"] if not b.get("no_intro_mention")]
     blocks_text = ", ".join(titles[:-1]) + " и " + titles[-1] if len(titles) > 1 else titles[0]
-    lines = [f"      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки {blocks_text}. "
+    lines = [f"      <p>На Skilljar это длинный видеокурс. Здесь весь курс: вводные уроки, блоки {blocks_text}, итоговый урок и итоговый экзамен. "
              "Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. "
              "Видео остаются на Skilljar и открываются в новой вкладке.</p>",
              '      <ul class="card-list">']
@@ -124,6 +126,9 @@ def build_index():
                for b in DATA["blocks"] if b.get("official_quiz")]
     quiz_list = ", ".join(quizzes[:-1]) + " и " + quizzes[-1] if len(quizzes) > 1 else quizzes[0]
     tail = f" Следующий раздел курса — {DATA['next_section']}." if DATA.get("next_section") else ""
+    fa = DATA.get("final_assessment")
+    if fa:
+        tail += f" Итоговый тест курса — {link(fa['id'], fa['title'])} ({fa['questions_text']}), тоже на Skilljar."
     lines.append(f"      <p>У блоков в оригинале есть официальные квизы Skilljar: {quiz_list}. "
                  "Они проходятся на Skilljar и засчитываются в курс; наши Practice exam — отдельные тренировочные тесты. "
                  f"Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала.{tail}</p>")

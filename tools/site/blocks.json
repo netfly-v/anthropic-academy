@@ -1,7 +1,6 @@
 {
  "course": "claude-with-the-anthropic-api",
  "template_lesson": "13-structured-data-exercise.html",
- "next_section": "Course Wrap Up и Final Assessment",
  "intro": [
   {
    "file": "01-welcome.html",
@@ -750,6 +749,38 @@
      "dur": "2 мин"
     }
    ]
+  },
+  {
+   "title": "Итог курса",
+   "no_intro_mention": true,
+   "quiz": {
+    "file": "quiz-final.html",
+    "nav": "Final exam",
+    "h1": "Final exam",
+    "page_title": "Building with the Claude API",
+    "kicker": "Building with the Claude API · all blocks",
+    "items": 36,
+    "minutes": 45,
+    "bank": "api-final-quiz.js",
+    "intro": "Mixed scenario items from all nine blocks of the course, from API access to agents. Choices are saved in this browser. The score, the per-block breakdown and the reasons stay hidden until you press Submit. Clear the attempt with Очистить after the result.",
+    "card_label": "Final exam · весь курс",
+    "card_note": "36 вопросов по всем блокам курса, на английском, с разбивкой по блокам"
+   },
+   "lessons": [
+    {
+     "file": "76-course-wrap-up.html",
+     "nav": "Подведение итогов",
+     "sid": "287802",
+     "orig": "Course Wrap Up",
+     "note": "Что прошли и что изучать дальше",
+     "dur": "3 мин 12 с"
+    }
+   ]
   }
- ]
+ ],
+ "final_assessment": {
+  "id": "290899",
+  "title": "Final Assessment",
+  "questions_text": "23 вопроса"
+ }
 }
