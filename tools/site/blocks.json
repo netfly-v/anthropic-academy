@@ -1,0 +1,379 @@
+{
+ "course": "claude-with-the-anthropic-api",
+ "template_lesson": "13-structured-data-exercise.html",
+ "next_section": "RAG and Agentic Search",
+ "intro": [
+  {
+   "file": "01-welcome.html",
+   "note": "Карта курса, что нужно заранее и как учиться",
+   "dur": "2 мин 14 с"
+  },
+  {
+   "file": "02-claude-models.html",
+   "note": "Opus, Sonnet и Haiku: интеллект, скорость и цена",
+   "dur": "3 мин 56 с"
+  }
+ ],
+ "blocks": [
+  {
+   "title": "Доступ к API",
+   "quiz": {
+    "file": "quiz.html",
+    "page_title": "Accessing the API",
+    "kicker": "Accessing Claude with the API",
+    "items": 16,
+    "minutes": 20,
+    "bank": "api-accessing-quiz.js"
+   },
+   "official_quiz": {
+    "id": "289117",
+    "title": "Quiz on accessing Claude with the API",
+    "questions": 8
+   },
+   "lessons": [
+    {
+     "file": "03-accessing-the-api.html",
+     "nav": "Как устроен запрос",
+     "sid": "287726",
+     "orig": "Accessing the API",
+     "note": "Пять шагов запроса, стадии обработки и причины остановки",
+     "dur": "5 мин 18 с"
+    },
+    {
+     "file": "04-api-key.html",
+     "nav": "Ключ API",
+     "sid": "296766",
+     "orig": "Getting an API key",
+     "note": "Пять шагов в консоли: создать и сохранить ключ",
+     "dur": null
+    },
+    {
+     "file": "05-making-a-request.html",
+     "nav": "Первый запрос",
+     "sid": "287725",
+     "orig": "Making a request",
+     "note": ".env, клиент и три обязательных параметра",
+     "dur": "6 мин 2 с"
+    },
+    {
+     "file": "06-multi-turn.html",
+     "nav": "Диалог из нескольких ходов",
+     "sid": "287735",
+     "orig": "Multi-turn conversations",
+     "note": "Историю храните вы, не модель",
+     "dur": "8 мин 54 с"
+    },
+    {
+     "file": "07-chat-exercise.html",
+     "nav": "Упражнение: чат",
+     "sid": "287727",
+     "orig": "Chat exercise",
+     "note": "Чат-бот в цикле с сохранением истории",
+     "dur": "3 мин 54 с"
+    },
+    {
+     "file": "08-system-prompts.html",
+     "nav": "System prompt",
+     "sid": "287733",
+     "orig": "System prompts",
+     "note": "Роль и тон ответа отдельно от реплик",
+     "dur": "6 мин 20 с"
+    },
+    {
+     "file": "09-system-prompts-exercise.html",
+     "nav": "Упражнение: system prompt",
+     "sid": "287724",
+     "orig": "System prompts exercise",
+     "note": "Одной ролью добиться лаконичного кода",
+     "dur": "1 мин 25 с"
+    },
+    {
+     "file": "10-temperature.html",
+     "nav": "Temperature",
+     "sid": "287728",
+     "orig": "Temperature",
+     "note": "Разброс ответа, а не его ум",
+     "dur": "6 мин 7 с"
+    },
+    {
+     "file": "11-streaming.html",
+     "nav": "Потоковый ответ",
+     "sid": "287734",
+     "orig": "Response streaming",
+     "note": "События потока и помощники SDK",
+     "dur": "8 мин 23 с"
+    },
+    {
+     "file": "12-structured-data.html",
+     "nav": "Структурированные данные",
+     "sid": "287732",
+     "orig": "Structured data",
+     "note": "Prefill и stop sequence для чистого JSON",
+     "dur": "5 мин 59 с"
+    },
+    {
+     "file": "13-structured-data-exercise.html",
+     "nav": "Упражнение: prefill",
+     "sid": "287729",
+     "orig": "Structured data exercise",
+     "note": "Три команды AWS CLI без комментариев",
+     "dur": "4 мин 57 с"
+    }
+   ]
+  },
+  {
+   "title": "Оценка промптов",
+   "quiz": {
+    "file": "quiz-evals.html",
+    "page_title": "Prompt evaluation",
+    "kicker": "Prompt evaluation",
+    "items": 16,
+    "minutes": 20,
+    "bank": "api-evals-quiz.js"
+   },
+   "official_quiz": {
+    "id": "289118",
+    "title": "Quiz on prompt evaluation",
+    "questions": 6
+   },
+   "lessons": [
+    {
+     "file": "14-prompt-evaluation.html",
+     "nav": "Оценка промптов",
+     "sid": "287731",
+     "orig": "Prompt evaluation",
+     "note": "Зачем измерять промпт, а не проверять на глаз",
+     "dur": "1 мин 48 с"
+    },
+    {
+     "file": "15-eval-workflow.html",
+     "nav": "Типичный процесс оценки",
+     "sid": "287736",
+     "orig": "A typical eval workflow",
+     "note": "Пять шагов: промпт, датасет, Claude, грейдер, повтор",
+     "dur": "4 мин 36 с"
+    },
+    {
+     "file": "16-test-datasets.html",
+     "nav": "Генерация датасета",
+     "sid": "287739",
+     "orig": "Generating test datasets",
+     "note": "Датасет задач для AWS-кода, сгенерированный Claude",
+     "dur": "4 мин 44 с"
+    },
+    {
+     "file": "17-running-the-eval.html",
+     "nav": "Запуск оценки",
+     "sid": "287743",
+     "orig": "Running the eval",
+     "note": "Конвейер run_prompt → run_test_case → run_eval",
+     "dur": "6 мин 42 с"
+    },
+    {
+     "file": "18-model-grading.html",
+     "nav": "Оценка моделью",
+     "sid": "287742",
+     "orig": "Model based grading",
+     "note": "Типы грейдеров, критерии и грейдер на модели",
+     "dur": "10 мин 1 с"
+    },
+    {
+     "file": "19-code-grading.html",
+     "nav": "Оценка кодом",
+     "sid": "287737",
+     "orig": "Code based grading",
+     "note": "Проверка синтаксиса JSON, Python, regex и общий балл",
+     "dur": "7 мин 26 с"
+    },
+    {
+     "file": "20-evals-exercise.html",
+     "nav": "Упражнение: критерии",
+     "sid": "287738",
+     "orig": "Exercise on prompt evals",
+     "note": "Критерии решения в датасете и в промпте грейдера",
+     "dur": "4 мин 44 с"
+    }
+   ]
+  },
+  {
+   "title": "Приёмы промптинга",
+   "quiz": {
+    "file": "quiz-prompting.html",
+    "page_title": "Prompt engineering",
+    "kicker": "Prompt engineering techniques",
+    "items": 16,
+    "minutes": 20,
+    "bank": "api-prompting-quiz.js"
+   },
+   "official_quiz": {
+    "id": "289121",
+    "title": "Quiz on prompt engineering techniques",
+    "questions": 5
+   },
+   "lessons": [
+    {
+     "file": "21-prompt-engineering.html",
+     "nav": "Prompt engineering",
+     "sid": "287745",
+     "orig": "Prompt engineering",
+     "note": "Цикл улучшения промпта и PromptEvaluator",
+     "dur": "10 мин 50 с"
+    },
+    {
+     "file": "22-clear-and-direct.html",
+     "nav": "Ясно и прямо",
+     "sid": "287744",
+     "orig": "Being clear and direct",
+     "note": "Первая строка: инструкция с глаголом действия",
+     "dur": "2 мин 5 с"
+    },
+    {
+     "file": "23-being-specific.html",
+     "nav": "Конкретика",
+     "sid": "287740",
+     "orig": "Being specific",
+     "note": "Указания о качестве и шаги процесса",
+     "dur": "5 мин 14 с"
+    },
+    {
+     "file": "24-xml-tags.html",
+     "nav": "XML-теги",
+     "sid": "287741",
+     "orig": "Structure with XML tags",
+     "note": "Теги отделяют данные от инструкций",
+     "dur": "4 мин"
+    },
+    {
+     "file": "25-examples.html",
+     "nav": "Примеры в промпте",
+     "sid": "287746",
+     "orig": "Providing examples",
+     "note": "One-shot, multi-shot и примеры из оценки",
+     "dur": "6 мин 44 с"
+    },
+    {
+     "file": "26-prompting-exercise.html",
+     "nav": "Упражнение: промпт",
+     "sid": "287748",
+     "orig": "Exercise on prompting",
+     "note": "Извлечение тем из научного текста в JSON",
+     "dur": "5 мин 22 с"
+    }
+   ]
+  },
+  {
+   "title": "Инструменты",
+   "quiz": {
+    "file": "quiz-tools.html",
+    "page_title": "Tool use",
+    "kicker": "Tool use with Claude",
+    "items": 18,
+    "minutes": 25,
+    "bank": "api-tools-quiz.js"
+   },
+   "official_quiz": {
+    "id": "289122",
+    "title": "Quiz on tool use with Claude",
+    "questions": 7
+   },
+   "lessons": [
+    {
+     "file": "27-introducing-tool-use.html",
+     "nav": "Введение в tool use",
+     "sid": "287747",
+     "orig": "Introducing tool use",
+     "note": "Зачем Claude инструменты и четыре шага обмена",
+     "dur": "2 мин 54 с"
+    },
+    {
+     "file": "28-project-overview.html",
+     "nav": "Обзор проекта",
+     "sid": "287751",
+     "orig": "Project overview",
+     "note": "Проект с напоминаниями и три инструмента",
+     "dur": "2 мин 23 с"
+    },
+    {
+     "file": "29-tool-functions.html",
+     "nav": "Функции-инструменты",
+     "sid": "287756",
+     "orig": "Tool functions",
+     "note": "Функция get_current_datetime и проверка входа",
+     "dur": "5 мин 22 с"
+    },
+    {
+     "file": "30-tool-schemas.html",
+     "nav": "Схемы инструментов",
+     "sid": "287753",
+     "orig": "Tool schemas",
+     "note": "name, description, input_schema и ToolParam",
+     "dur": "4 мин 39 с"
+    },
+    {
+     "file": "31-message-blocks.html",
+     "nav": "Блоки сообщения",
+     "sid": "287757",
+     "orig": "Handling message blocks",
+     "note": "Ответ из блоков text и tool_use",
+     "dur": "5 мин 44 с"
+    },
+    {
+     "file": "32-tool-results.html",
+     "nav": "Отправка результатов",
+     "sid": "287752",
+     "orig": "Sending tool results",
+     "note": "Блок tool_result и совпадающие ID",
+     "dur": "9 мин 22 с"
+    },
+    {
+     "file": "33-multi-turn-tools.html",
+     "nav": "Диалог с инструментами",
+     "sid": "287750",
+     "orig": "Multi-turn conversations with tools",
+     "note": "Цикл разговора и новые вспомогательные функции",
+     "dur": "9 мин 11 с"
+    },
+    {
+     "file": "34-implementing-turns.html",
+     "nav": "Реализация цикла",
+     "sid": "287758",
+     "orig": "Implementing multiple turns",
+     "note": "stop_reason, run_tools, ошибки и маршрутизация",
+     "dur": "16 мин 25 с"
+    },
+    {
+     "file": "35-multiple-tools.html",
+     "nav": "Несколько инструментов",
+     "sid": "287749",
+     "orig": "Using multiple tools",
+     "note": "Шаблон добавления нового инструмента",
+     "dur": "3 мин 38 с"
+    },
+    {
+     "file": "36-fine-grained.html",
+     "nav": "Fine-grained tool calling",
+     "sid": "313160",
+     "orig": "Fine grained tool calling",
+     "note": "Поток аргументов и невалидный JSON",
+     "dur": "10 мин 56 с"
+    },
+    {
+     "file": "37-text-editor-tool.html",
+     "nav": "Текстовый редактор",
+     "sid": "287760",
+     "orig": "The text edit tool",
+     "note": "Встроенная схема, своя реализация",
+     "dur": "8 мин 41 с"
+    },
+    {
+     "file": "38-web-search-tool.html",
+     "nav": "Веб-поиск",
+     "sid": "287755",
+     "orig": "The web search tool",
+     "note": "Серверный поиск, домены и цитаты",
+     "dur": "7 мин 13 с"
+    }
+   ]
+  }
+ ]
+}
