@@ -129,6 +129,17 @@
           <li><a href="lessons/68-claude-code-mcp.html"><span class="mark"></span>MCP-серверы в Claude Code</a></li>
           <li><a href="quiz-apps.html"><span class="mark"></span>Practice exam</a></li>
         </ul>
+        <p class="nav-group">Агенты и workflows</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/69-agents-and-workflows.html"><span class="mark"></span>Агенты и workflows</a></li>
+          <li><a href="lessons/70-parallelization.html"><span class="mark"></span>Параллелизация</a></li>
+          <li><a href="lessons/71-chaining.html"><span class="mark"></span>Цепочки</a></li>
+          <li><a href="lessons/72-routing.html"><span class="mark"></span>Маршрутизация</a></li>
+          <li><a href="lessons/73-agents-and-tools.html"><span class="mark"></span>Агенты и инструменты</a></li>
+          <li><a href="lessons/74-environment-inspection.html"><span class="mark"></span>Проверка окружения</a></li>
+          <li><a href="lessons/75-workflows-vs-agents.html"><span class="mark"></span>Workflow или агент</a></li>
+          <li><a href="quiz-agents.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
       </div>
     </aside>
     <main class="lesson">
@@ -136,7 +147,7 @@
       <h1>Building with the Claude API</h1>
       <div class="rule"></div>
       <p class="overview-lead">Как встроить модели Claude в своё приложение через официальный API: от первого запроса до tools, RAG и агентов.</p>
-      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки «Доступ к API», «Оценка промптов», «Приёмы промптинга», «Инструменты», «RAG и поиск», «Возможности Claude», «MCP» и «Claude Code». Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
+      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки «Доступ к API», «Оценка промптов», «Приёмы промптинга», «Инструменты», «RAG и поиск», «Возможности Claude», «MCP», «Claude Code» и «Агенты и workflows». Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
       <ul class="card-list">
         <li><a href="lessons/01-welcome.html"><strong>1. Добро пожаловать</strong><span>Карта курса, что нужно заранее и как учиться · 2 мин 14 с</span></a></li>
         <li><a href="lessons/02-claude-models.html"><strong>2. Модели Claude</strong><span>Opus, Sonnet и Haiku: интеллект, скорость и цена · 3 мин 56 с</span></a></li>
@@ -236,7 +247,18 @@
         <li><a href="lessons/68-claude-code-mcp.html"><strong>68. MCP-серверы в Claude Code</strong><span>claude mcp add и популярные MCP-серверы · 2 мин 30 с</span></a></li>
         <li><a href="quiz-apps.html"><strong>Practice exam · Claude Code</strong><span>17 вопросов по этому блоку, на английском</span></a></li>
       </ul>
-      <p>У блоков в оригинале есть официальные квизы Skilljar: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289117" target="_blank" rel="noopener noreferrer">Quiz on accessing Claude with the API</a> (8 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289118" target="_blank" rel="noopener noreferrer">Quiz on prompt evaluation</a> (6 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289121" target="_blank" rel="noopener noreferrer">Quiz on prompt engineering techniques</a> (5 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289122" target="_blank" rel="noopener noreferrer">Quiz on tool use with Claude</a> (7 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289124" target="_blank" rel="noopener noreferrer">Quiz on features of Claude</a> (7 вопросов) и <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289126" target="_blank" rel="noopener noreferrer">Quiz on Model Context Protocol</a> (6 вопросов). Они проходятся на Skilljar и засчитываются в курс; наши Practice exam — отдельные тренировочные тесты. Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала. Следующий раздел курса — Agents and workflows.</p>
+      <h2>Агенты и workflows</h2>
+      <ul class="card-list">
+        <li><a href="lessons/69-agents-and-workflows.html"><strong>69. Агенты и рабочие процессы</strong><span>Когда workflow, когда агент; паттерн evaluator-optimizer · 4 мин 22 с</span></a></li>
+        <li><a href="lessons/70-parallelization.html"><strong>70. Параллельные рабочие процессы</strong><span>Независимые подзадачи параллельно и агрегация · 3 мин 44 с</span></a></li>
+        <li><a href="lessons/71-chaining.html"><strong>71. Цепочки</strong><span>Последовательные шаги и запрос на доработку · 4 мин 37 с</span></a></li>
+        <li><a href="lessons/72-routing.html"><strong>72. Маршрутизация</strong><span>Классификация запроса и специализированный конвейер · 3 мин 17 с</span></a></li>
+        <li><a href="lessons/73-agents-and-tools.html"><strong>73. Агенты и инструменты</strong><span>Абстрактные, комбинируемые инструменты · 5 мин 2 с</span></a></li>
+        <li><a href="lessons/74-environment-inspection.html"><strong>74. Проверка окружения</strong><span>Как агент видит результат своих действий · 3 мин 5 с</span></a></li>
+        <li><a href="lessons/75-workflows-vs-agents.html"><strong>75. Workflow или агент</strong><span>Плюсы, минусы и что выбирать · 2 мин</span></a></li>
+        <li><a href="quiz-agents.html"><strong>Practice exam · Агенты и workflows</strong><span>17 вопросов по этому блоку, на английском</span></a></li>
+      </ul>
+      <p>У блоков в оригинале есть официальные квизы Skilljar: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289117" target="_blank" rel="noopener noreferrer">Quiz on accessing Claude with the API</a> (8 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289118" target="_blank" rel="noopener noreferrer">Quiz on prompt evaluation</a> (6 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289121" target="_blank" rel="noopener noreferrer">Quiz on prompt engineering techniques</a> (5 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289122" target="_blank" rel="noopener noreferrer">Quiz on tool use with Claude</a> (7 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289124" target="_blank" rel="noopener noreferrer">Quiz on features of Claude</a> (7 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289126" target="_blank" rel="noopener noreferrer">Quiz on Model Context Protocol</a> (6 вопросов) и <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289130" target="_blank" rel="noopener noreferrer">Quiz on Agents and Workflows</a> (7 вопросов). Они проходятся на Skilljar и засчитываются в курс; наши Practice exam — отдельные тренировочные тесты. Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала. Следующий раздел курса — Course Wrap Up и Final Assessment.</p>
       <p class="source">Оригинал курса: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api">Building with the Claude API</a>.</p>
     </main>
   </div>

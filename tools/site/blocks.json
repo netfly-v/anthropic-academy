@@ -1,7 +1,7 @@
 {
  "course": "claude-with-the-anthropic-api",
  "template_lesson": "13-structured-data-exercise.html",
- "next_section": "Agents and workflows",
+ "next_section": "Course Wrap Up и Final Assessment",
  "intro": [
   {
    "file": "01-welcome.html",
@@ -674,6 +674,80 @@
      "orig": "Enhancements with MCP servers",
      "note": "claude mcp add и популярные MCP-серверы",
      "dur": "2 мин 30 с"
+    }
+   ]
+  },
+  {
+   "title": "Агенты и workflows",
+   "quiz": {
+    "file": "quiz-agents.html",
+    "page_title": "Agents and workflows",
+    "kicker": "Agents and workflows",
+    "items": 17,
+    "minutes": 20,
+    "bank": "api-agents-quiz.js"
+   },
+   "official_quiz": {
+    "id": "289130",
+    "title": "Quiz on Agents and Workflows",
+    "questions": 7
+   },
+   "lessons": [
+    {
+     "file": "69-agents-and-workflows.html",
+     "nav": "Агенты и workflows",
+     "sid": "287796",
+     "orig": "Agents and workflows",
+     "note": "Когда workflow, когда агент; паттерн evaluator-optimizer",
+     "dur": "4 мин 22 с"
+    },
+    {
+     "file": "70-parallelization.html",
+     "nav": "Параллелизация",
+     "sid": "287804",
+     "orig": "Parallelization workflows",
+     "note": "Независимые подзадачи параллельно и агрегация",
+     "dur": "3 мин 44 с"
+    },
+    {
+     "file": "71-chaining.html",
+     "nav": "Цепочки",
+     "sid": "287800",
+     "orig": "Chaining workflows",
+     "note": "Последовательные шаги и запрос на доработку",
+     "dur": "4 мин 37 с"
+    },
+    {
+     "file": "72-routing.html",
+     "nav": "Маршрутизация",
+     "sid": "287801",
+     "orig": "Routing workflows",
+     "note": "Классификация запроса и специализированный конвейер",
+     "dur": "3 мин 17 с"
+    },
+    {
+     "file": "73-agents-and-tools.html",
+     "nav": "Агенты и инструменты",
+     "sid": "287803",
+     "orig": "Agents and tools",
+     "note": "Абстрактные, комбинируемые инструменты",
+     "dur": "5 мин 2 с"
+    },
+    {
+     "file": "74-environment-inspection.html",
+     "nav": "Проверка окружения",
+     "sid": "287798",
+     "orig": "Environment inspection",
+     "note": "Как агент видит результат своих действий",
+     "dur": "3 мин 5 с"
+    },
+    {
+     "file": "75-workflows-vs-agents.html",
+     "nav": "Workflow или агент",
+     "sid": "287794",
+     "orig": "Workflows vs agents",
+     "note": "Плюсы, минусы и что выбирать",
+     "dur": "2 мин"
     }
    ]
   }
