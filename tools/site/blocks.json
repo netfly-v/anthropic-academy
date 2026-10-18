@@ -1,7 +1,7 @@
 {
  "course": "claude-with-the-anthropic-api",
  "template_lesson": "13-structured-data-exercise.html",
- "next_section": "Anthropic apps — Claude Code and computer use",
+ "next_section": "Agents and workflows",
  "intro": [
   {
    "file": "01-welcome.html",
@@ -629,6 +629,51 @@
      "orig": "MCP review",
      "note": "Кто управляет инструментами, ресурсами и промптами",
      "dur": "4 мин 12 с"
+    }
+   ]
+  },
+  {
+   "title": "Claude Code",
+   "quiz": {
+    "file": "quiz-apps.html",
+    "page_title": "Claude Code",
+    "kicker": "Anthropic apps — Claude Code и computer use",
+    "items": 17,
+    "minutes": 20,
+    "bank": "api-apps-quiz.js"
+   },
+   "lessons": [
+    {
+     "file": "65-anthropic-apps.html",
+     "nav": "Приложения Anthropic",
+     "sid": "287787",
+     "orig": "Anthropic apps",
+     "note": "Claude Code и Computer Use как примеры агентов",
+     "dur": "43 с"
+    },
+    {
+     "file": "66-claude-code-setup.html",
+     "nav": "Установка Claude Code",
+     "sid": "287788",
+     "orig": "Claude Code setup",
+     "note": "Инструменты Claude Code, установка и вход",
+     "dur": "1 мин 33 с"
+    },
+    {
+     "file": "67-claude-code-in-action.html",
+     "nav": "Claude Code в работе",
+     "sid": "287805",
+     "orig": "Claude Code in action",
+     "note": "/init, CLAUDE.md, контекст → план → реализация, TDD",
+     "dur": "10 мин 29 с"
+    },
+    {
+     "file": "68-claude-code-mcp.html",
+     "nav": "MCP-серверы в Claude Code",
+     "sid": "287792",
+     "orig": "Enhancements with MCP servers",
+     "note": "claude mcp add и популярные MCP-серверы",
+     "dur": "2 мин 30 с"
     }
    ]
   }

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP-серверы в Claude Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">RAG и поиск</p>
+        <ul class="lesson-nav">
+          <li><a href="39-intro-rag.html"><span class="mark"></span>Введение в RAG</a></li>
+          <li><a href="40-chunking.html"><span class="mark"></span>Разбиение текста</a></li>
+          <li><a href="41-embeddings.html"><span class="mark"></span>Эмбеддинги</a></li>
+          <li><a href="42-rag-flow.html"><span class="mark"></span>Полный поток RAG</a></li>
+          <li><a href="43-implementing-rag.html"><span class="mark"></span>Реализация RAG</a></li>
+          <li><a href="44-bm25.html"><span class="mark"></span>BM25</a></li>
+          <li><a href="45-multi-index.html"><span class="mark"></span>Многоиндексный RAG</a></li>
+          <li><a href="../quiz-rag.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Возможности Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="46-extended-thinking.html"><span class="mark"></span>Extended thinking</a></li>
+          <li><a href="47-images.html"><span class="mark"></span>Изображения</a></li>
+          <li><a href="48-pdf.html"><span class="mark"></span>PDF</a></li>
+          <li><a href="49-citations.html"><span class="mark"></span>Цитаты</a></li>
+          <li><a href="50-prompt-caching.html"><span class="mark"></span>Prompt caching</a></li>
+          <li><a href="51-caching-rules.html"><span class="mark"></span>Правила кеширования</a></li>
+          <li><a href="52-caching-in-action.html"><span class="mark"></span>Кеширование в коде</a></li>
+          <li><a href="53-code-execution-files.html"><span class="mark"></span>Код и Files API</a></li>
+          <li><a href="../quiz-features.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="54-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="55-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+          <li><a href="56-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="57-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="58-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+          <li><a href="59-mcp-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="60-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="61-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="62-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="63-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+          <li><a href="64-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+          <li><a href="../quiz-mcp.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="65-anthropic-apps.html"><span class="mark"></span>Приложения Anthropic</a></li>
+          <li><a href="66-claude-code-setup.html"><span class="mark"></span>Установка Claude Code</a></li>
+          <li><a href="67-claude-code-in-action.html"><span class="mark"></span>Claude Code в работе</a></li>
+          <li><a href="68-claude-code-mcp.html" aria-current="page"><span class="mark"></span>MCP-серверы в Claude Code</a></li>
+          <li><a href="../quiz-apps.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>MCP-серверы в Claude Code</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:30 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>подключить свой MCP-сервер к Claude Code командой <code>claude mcp add</code>;</li>
+        <li>назвать популярные MCP-серверы для разработки;</li>
+        <li>собрать рабочий процесс из нескольких MCP-серверов.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287792" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Enhancements with MCP servers · 2:30</span>
+      </a>
+
+      <p>В Claude Code встроен MCP-клиент, поэтому к нему можно подключать MCP-серверы и этим резко расширять возможности Claude. Это открывает очень мощные варианты настройки рабочего процесса разработки.</p>
+
+      <h2>Как MCP расширяет Claude</h2>
+      <p>Model Context Protocol позволяет Claude Code подключаться к внешним сервисам и инструментам через MCP-серверы. Вместо того чтобы ограничиваться встроенными возможностями Claude, можно добавить свою функциональность, подключив серверы с нужными инструментами, ресурсами или интеграциями.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api68-01.png" alt="MCP-клиент внутри Claude Code подключён к двум MCP-серверам, каждый из которых обращается к своему внешнему сервису.">
+        <figcaption>MCP-клиент внутри Claude Code и два MCP-сервера, у каждого — свой внешний сервис.</figcaption>
+      </figure>
+      <p>Каждый MCP-сервер может давать Claude разные виды функциональности через три основных компонента: инструменты (Tools — для действий), промпты (Prompts — для шаблонов) и ресурсы (Resources — для доступа к данным).</p>
+
+      <h2>Подключение MCP-сервера</h2>
+      <p>Добавить MCP-сервер в Claude Code просто. Сервер регистрируется из командной строки:</p>
+      <pre>claude mcp add [server-name] [command-to-start-server]</pre>
+      <p>Например, если у вас есть сервер обработки документов, который запускается командой <code>uv run main.py</code>, выполните:</p>
+      <pre>claude mcp add documents uv run main.py</pre>
+      <p>После регистрации Claude Code будет автоматически подключаться к серверу при запуске.</p>
+
+      <h2>Пример: обработка документов</h2>
+      <p>Практический пример — инструмент, который позволяет Claude читать документы PDF и Word. Если сделать MCP-сервер с инструментом <code>document_path_to_markdown</code>, можно просить Claude переводить содержимое документов в формат Markdown.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api68-02.png" alt="Claude Code содержит MCP-клиент, который вызывает инструмент document_path_to_markdown, только что написанный на нашем MCP-сервере.">
+        <figcaption>MCP-клиент Claude Code вызывает инструмент <code>document_path_to_markdown</code> нашего MCP-сервера.</figcaption>
+      </figure>
+      <p>Если попросить Claude «Convert the tests/fixtures/mcp_docs.docx file to markdown», он сам воспользуется вашим инструментом, прочитает документ и вернёт сконвертированное содержимое.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api68-03.png" alt="Markdown в терминале: таблица — промпты управляются пользователем, ресурсы — приложением, инструменты — моделью.">
+        <figcaption>Результат конвертации: таблица примитивов MCP — Prompts (пользователь), Resources (приложение), Tools (модель).</figcaption>
+      </figure>
+
+      <h2>Популярные MCP-интеграции</h2>
+      <p>В экосистеме MCP есть серверы для многих распространённых инструментов и сервисов разработки:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api68-04.png" alt="Таблица шести популярных MCP-серверов и того, что каждый добавляет Claude; список ниже.">
+        <figcaption>Шесть популярных MCP-серверов и что они добавляют Claude.</figcaption>
+      </figure>
+      <ul>
+        <li><strong>sentry-mcp</strong> — находить и исправлять ошибки, залогированные в Sentry;</li>
+        <li><strong>playwright-mcp</strong> — даёт Claude автоматизацию браузера для тестирования и отладки;</li>
+        <li><strong>figma-context-mcp</strong> — открывает Claude доступ к макетам Figma;</li>
+        <li><strong>mcp-atlassian</strong> — даёт Claude доступ к Confluence и Jira;</li>
+        <li><strong>firecrawl-mcp-server</strong> — добавляет Claude сбор данных с веб-страниц (веб-скрейпинг);</li>
+        <li><strong>slack-mcp</strong> — позволяет Claude публиковать сообщения и отвечать в конкретных тредах.</li>
+      </ul>
+
+      <h2>Собираем свой рабочий процесс</h2>
+      <p>Настоящая сила — в сочетании нескольких MCP-серверов под ваш конкретный процесс разработки. Например, можно подключить:</p>
+      <ul>
+        <li>сервер Sentry — получать подробности об ошибках в продакшене;</li>
+        <li>сервер Jira — читать требования из задач;</li>
+        <li>сервер Slack — сообщать команде, когда работа готова;</li>
+        <li>собственные серверы для ваших внутренних инструментов и API.</li>
+      </ul>
+      <p>Так получается среда разработки, где Claude свободно работает со всеми инструментами и сервисами, которыми вы уже пользуетесь, — и становится гораздо более мощным помощником, настроенным под ваш процесс.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Актуальный синтаксис</strong> — с разделителем <code>--</code>: <code>claude mcp add [options] &lt;name&gt; -- &lt;command&gt; [args...]</code>, то есть пример урока сейчас пишут так: <code>claude mcp add documents -- uv run main.py</code>. Всё после <code>--</code> передаётся серверу как есть; без разделителя Claude Code может принять флаги сервера за свои.</li>
+          <li><strong>Удалённые серверы</strong> подключаются по HTTP: <code>claude mcp add --transport http &lt;name&gt; &lt;url&gt;</code>. Транспорт SSE устарел — используйте HTTP (это Streamable HTTP из блока MCP).</li>
+          <li><strong>Области действия</strong> — как у <code>CLAUDE.md</code>: <code>local</code> (по умолчанию, только у вас и только в этом проекте), <code>project</code> (файл <code>.mcp.json</code> в корне, коммитится для всей команды) и <code>user</code> (во всех ваших проектах). Задаются флагом <code>--scope</code>.</li>
+          <li><strong>Управление.</strong> <code>claude mcp list</code>, <code>claude mcp get &lt;name&gt;</code>, <code>claude mcp remove &lt;name&gt;</code> — из терминала; внутри сессии <code>/mcp</code> показывает статус серверов и помогает пройти OAuth-авторизацию.</li>
+          <li><strong>Связь с блоком MCP.</strong> Здесь Claude Code играет роль того самого MCP-клиента, который мы писали руками: он получает список инструментов сервера и вызывает их, когда Claude решает, что это нужно.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Раздел про приложения Anthropic пройден. Проверьте себя пробным экзаменом по Claude Code; официального квиза Skilljar у этого раздела нет. Следующий раздел — агенты и рабочие процессы (workflows).</p>
+            <div class="pager">
+        <a class="ghost" href="67-claude-code-in-action.html">Назад</a>
+        <a class="next" href="../quiz-apps.html">К тесту</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287792" target="_blank" rel="noopener noreferrer">Enhancements with MCP servers</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
