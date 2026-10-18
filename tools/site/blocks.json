@@ -1,7 +1,7 @@
 {
  "course": "claude-with-the-anthropic-api",
  "template_lesson": "13-structured-data-exercise.html",
- "next_section": "Model Context Protocol",
+ "next_section": "Anthropic apps — Claude Code and computer use",
  "intro": [
   {
    "file": "01-welcome.html",
@@ -523,6 +523,112 @@
      "orig": "Code execution and the Files API",
      "note": "Анализ данных в контейнере и загрузка файлов",
      "dur": "11 мин 7 с"
+    }
+   ]
+  },
+  {
+   "title": "MCP",
+   "quiz": {
+    "file": "quiz-mcp.html",
+    "page_title": "MCP",
+    "kicker": "Model Context Protocol",
+    "items": 16,
+    "minutes": 20,
+    "bank": "api-mcp-quiz.js"
+   },
+   "official_quiz": {
+    "id": "289126",
+    "title": "Quiz on Model Context Protocol",
+    "questions": 6
+   },
+   "lessons": [
+    {
+     "file": "54-intro-mcp.html",
+     "nav": "Введение в MCP",
+     "sid": "287780",
+     "orig": "Introducing MCP",
+     "note": "Зачем MCP-серверы и чем MCP отличается от tool use",
+     "dur": "4 мин 40 с"
+    },
+    {
+     "file": "55-mcp-clients.html",
+     "nav": "MCP-клиенты",
+     "sid": "287775",
+     "orig": "MCP clients",
+     "note": "Транспорты и полный поток сообщений",
+     "dur": "4 мин 56 с"
+    },
+    {
+     "file": "56-project-setup.html",
+     "nav": "Подготовка проекта",
+     "sid": "287785",
+     "orig": "Project setup",
+     "note": "CLI-чат, клиент и сервер документов",
+     "dur": "3 мин 9 с"
+    },
+    {
+     "file": "57-mcp-tools.html",
+     "nav": "Инструменты в MCP",
+     "sid": "287797",
+     "orig": "Defining tools with MCP",
+     "note": "FastMCP, @mcp.tool и Field",
+     "dur": "7 мин 3 с"
+    },
+    {
+     "file": "58-inspector.html",
+     "nav": "MCP Inspector",
+     "sid": "287781",
+     "orig": "The server inspector",
+     "note": "Проверка сервера в браузере",
+     "dur": "3 мин 52 с"
+    },
+    {
+     "file": "59-mcp-client-impl.html",
+     "nav": "Реализация клиента",
+     "sid": "287793",
+     "orig": "Implementing a client",
+     "note": "ClientSession, list_tools и call_tool",
+     "dur": "7 мин 26 с"
+    },
+    {
+     "file": "60-resources.html",
+     "nav": "Ресурсы",
+     "sid": "287782",
+     "orig": "Defining resources",
+     "note": "Прямые и шаблонные ресурсы",
+     "dur": "9 мин 45 с"
+    },
+    {
+     "file": "61-reading-resources.html",
+     "nav": "Чтение ресурсов",
+     "sid": "287783",
+     "orig": "Accessing resources",
+     "note": "read_resource и разбор по MIME-типу",
+     "dur": "4 мин 38 с"
+    },
+    {
+     "file": "62-mcp-prompts.html",
+     "nav": "Промпты в MCP",
+     "sid": "287784",
+     "orig": "Defining prompts",
+     "note": "@mcp.prompt и проверенные шаблоны",
+     "dur": "7 мин 44 с"
+    },
+    {
+     "file": "63-prompts-client.html",
+     "nav": "Промпты в клиенте",
+     "sid": "287786",
+     "orig": "Prompts in the client",
+     "note": "list_prompts, get_prompt и слэш-команды",
+     "dur": "3 мин 1 с"
+    },
+    {
+     "file": "64-mcp-review.html",
+     "nav": "Обзор MCP",
+     "sid": "287790",
+     "orig": "MCP review",
+     "note": "Кто управляет инструментами, ресурсами и промптами",
+     "dur": "4 мин 12 с"
     }
    ]
   }

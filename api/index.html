@@ -106,6 +106,21 @@
           <li><a href="lessons/53-code-execution-files.html"><span class="mark"></span>Код и Files API</a></li>
           <li><a href="quiz-features.html"><span class="mark"></span>Practice exam</a></li>
         </ul>
+        <p class="nav-group">MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/54-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="lessons/55-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+          <li><a href="lessons/56-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="lessons/57-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="lessons/58-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+          <li><a href="lessons/59-mcp-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="lessons/60-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="lessons/61-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="lessons/62-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="lessons/63-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+          <li><a href="lessons/64-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+          <li><a href="quiz-mcp.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
       </div>
     </aside>
     <main class="lesson">
@@ -113,7 +128,7 @@
       <h1>Building with the Claude API</h1>
       <div class="rule"></div>
       <p class="overview-lead">Как встроить модели Claude в своё приложение через официальный API: от первого запроса до tools, RAG и агентов.</p>
-      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки «Доступ к API», «Оценка промптов», «Приёмы промптинга», «Инструменты», «RAG и поиск» и «Возможности Claude». Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
+      <p>На Skilljar это длинный видеокурс. Здесь вводные уроки и блоки «Доступ к API», «Оценка промптов», «Приёмы промптинга», «Инструменты», «RAG и поиск», «Возможности Claude» и «MCP». Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим API. Видео остаются на Skilljar и открываются в новой вкладке.</p>
       <ul class="card-list">
         <li><a href="lessons/01-welcome.html"><strong>1. Добро пожаловать</strong><span>Карта курса, что нужно заранее и как учиться · 2 мин 14 с</span></a></li>
         <li><a href="lessons/02-claude-models.html"><strong>2. Модели Claude</strong><span>Opus, Sonnet и Haiku: интеллект, скорость и цена · 3 мин 56 с</span></a></li>
@@ -190,7 +205,22 @@
         <li><a href="lessons/53-code-execution-files.html"><strong>53. Выполнение кода и Files API</strong><span>Анализ данных в контейнере и загрузка файлов · 11 мин 7 с</span></a></li>
         <li><a href="quiz-features.html"><strong>Practice exam · Возможности Claude</strong><span>16 вопросов по этому блоку, на английском</span></a></li>
       </ul>
-      <p>У блоков в оригинале есть официальные квизы Skilljar: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289117" target="_blank" rel="noopener noreferrer">Quiz on accessing Claude with the API</a> (8 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289118" target="_blank" rel="noopener noreferrer">Quiz on prompt evaluation</a> (6 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289121" target="_blank" rel="noopener noreferrer">Quiz on prompt engineering techniques</a> (5 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289122" target="_blank" rel="noopener noreferrer">Quiz on tool use with Claude</a> (7 вопросов) и <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289124" target="_blank" rel="noopener noreferrer">Quiz on features of Claude</a> (7 вопросов). Они проходятся на Skilljar и засчитываются в курс; наши Practice exam — отдельные тренировочные тесты. Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала. Следующий раздел курса — Model Context Protocol.</p>
+      <h2>MCP</h2>
+      <ul class="card-list">
+        <li><a href="lessons/54-intro-mcp.html"><strong>54. Введение в MCP</strong><span>Зачем MCP-серверы и чем MCP отличается от tool use · 4 мин 40 с</span></a></li>
+        <li><a href="lessons/55-mcp-clients.html"><strong>55. MCP-клиенты</strong><span>Транспорты и полный поток сообщений · 4 мин 56 с</span></a></li>
+        <li><a href="lessons/56-project-setup.html"><strong>56. Подготовка проекта</strong><span>CLI-чат, клиент и сервер документов · 3 мин 9 с</span></a></li>
+        <li><a href="lessons/57-mcp-tools.html"><strong>57. Инструменты в MCP</strong><span>FastMCP, @mcp.tool и Field · 7 мин 3 с</span></a></li>
+        <li><a href="lessons/58-inspector.html"><strong>58. MCP Inspector</strong><span>Проверка сервера в браузере · 3 мин 52 с</span></a></li>
+        <li><a href="lessons/59-mcp-client-impl.html"><strong>59. Реализация клиента</strong><span>ClientSession, list_tools и call_tool · 7 мин 26 с</span></a></li>
+        <li><a href="lessons/60-resources.html"><strong>60. Ресурсы</strong><span>Прямые и шаблонные ресурсы · 9 мин 45 с</span></a></li>
+        <li><a href="lessons/61-reading-resources.html"><strong>61. Чтение ресурсов</strong><span>read_resource и разбор по MIME-типу · 4 мин 38 с</span></a></li>
+        <li><a href="lessons/62-mcp-prompts.html"><strong>62. Промпты в MCP</strong><span>@mcp.prompt и проверенные шаблоны · 7 мин 44 с</span></a></li>
+        <li><a href="lessons/63-prompts-client.html"><strong>63. Промпты в клиенте</strong><span>list_prompts, get_prompt и слэш-команды · 3 мин 1 с</span></a></li>
+        <li><a href="lessons/64-mcp-review.html"><strong>64. Обзор MCP</strong><span>Кто управляет инструментами, ресурсами и промптами · 4 мин 12 с</span></a></li>
+        <li><a href="quiz-mcp.html"><strong>Practice exam · MCP</strong><span>16 вопросов по этому блоку, на английском</span></a></li>
+      </ul>
+      <p>У блоков в оригинале есть официальные квизы Skilljar: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289117" target="_blank" rel="noopener noreferrer">Quiz on accessing Claude with the API</a> (8 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289118" target="_blank" rel="noopener noreferrer">Quiz on prompt evaluation</a> (6 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289121" target="_blank" rel="noopener noreferrer">Quiz on prompt engineering techniques</a> (5 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289122" target="_blank" rel="noopener noreferrer">Quiz on tool use with Claude</a> (7 вопросов), <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289124" target="_blank" rel="noopener noreferrer">Quiz on features of Claude</a> (7 вопросов) и <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/289126" target="_blank" rel="noopener noreferrer">Quiz on Model Context Protocol</a> (6 вопросов). Они проходятся на Skilljar и засчитываются в курс; наши Practice exam — отдельные тренировочные тесты. Опрос удовлетворённости из блока «Доступ к API» пропущен: в нём нет учебного материала. Следующий раздел курса — Anthropic apps — Claude Code and computer use.</p>
       <p class="source">Оригинал курса: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api">Building with the Claude API</a>.</p>
     </main>
   </div>
