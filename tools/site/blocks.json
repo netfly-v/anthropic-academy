@@ -1,7 +1,7 @@
 {
  "course": "claude-with-the-anthropic-api",
  "template_lesson": "13-structured-data-exercise.html",
- "next_section": "Features of Claude",
+ "next_section": "Model Context Protocol",
  "intro": [
   {
    "file": "01-welcome.html",
@@ -441,6 +441,88 @@
      "orig": "A Multi-Index RAG pipeline",
      "note": "Retriever и reciprocal rank fusion",
      "dur": "6 мин 45 с"
+    }
+   ]
+  },
+  {
+   "title": "Возможности Claude",
+   "quiz": {
+    "file": "quiz-features.html",
+    "page_title": "Features of Claude",
+    "kicker": "Features of Claude",
+    "items": 16,
+    "minutes": 20,
+    "bank": "api-features-quiz.js"
+   },
+   "official_quiz": {
+    "id": "289124",
+    "title": "Quiz on features of Claude",
+    "questions": 7
+   },
+   "lessons": [
+    {
+     "file": "46-extended-thinking.html",
+     "nav": "Extended thinking",
+     "sid": "287773",
+     "orig": "Extended thinking",
+     "note": "Рассуждения, signature и adaptive thinking",
+     "dur": "7 мин 1 с"
+    },
+    {
+     "file": "47-images.html",
+     "nav": "Изображения",
+     "sid": "287778",
+     "orig": "Image support",
+     "note": "Блок image, лимиты и промпты для анализа",
+     "dur": "10 мин 16 с"
+    },
+    {
+     "file": "48-pdf.html",
+     "nav": "PDF",
+     "sid": "287768",
+     "orig": "PDF support",
+     "note": "Блок document для PDF",
+     "dur": "1 мин 29 с"
+    },
+    {
+     "file": "49-citations.html",
+     "nav": "Цитаты",
+     "sid": "287771",
+     "orig": "Citations",
+     "note": "Ссылки на страницы и фрагменты источника",
+     "dur": "5 мин 19 с"
+    },
+    {
+     "file": "50-prompt-caching.html",
+     "nav": "Prompt caching",
+     "sid": "287772",
+     "orig": "Prompt caching",
+     "note": "Зачем переиспользовать работу над входом",
+     "dur": "3 мин 35 с"
+    },
+    {
+     "file": "51-caching-rules.html",
+     "nav": "Правила кеширования",
+     "sid": "287770",
+     "orig": "Rules of prompt caching",
+     "note": "Точки кеша, порядок, минимум токенов",
+     "dur": "6 мин 41 с"
+    },
+    {
+     "file": "52-caching-in-action.html",
+     "nav": "Кеширование в коде",
+     "sid": "287774",
+     "orig": "Prompt caching in action",
+     "note": "Кеш инструментов и system prompt, usage",
+     "dur": "7 мин 21 с"
+    },
+    {
+     "file": "53-code-execution-files.html",
+     "nav": "Код и Files API",
+     "sid": "287777",
+     "orig": "Code execution and the Files API",
+     "note": "Анализ данных в контейнере и загрузка файлов",
+     "dur": "11 мин 7 с"
     }
    ]
   }
