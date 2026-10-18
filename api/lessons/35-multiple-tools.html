@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Несколько инструментов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html" aria-current="page"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Несколько инструментов</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:38 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>подключить в разговор несколько инструментов;</li>
+        <li>расширить маршрутизатор <code>run_tool</code>;</li>
+        <li>применять четырёхшаговый шаблон добавления нового инструмента.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287749" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Using multiple tools · 3:38</span>
+      </a>
+
+      <p>Когда основная инфраструктура для работы с инструментами готова, добавлять новые инструменты просто. Этот урок показывает, как подключить дополнительные инструменты по простому шаблону.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api35-01.png" alt="Три нужных инструмента: текущие дата и время, прибавление длительности к дате, установка напоминания.">
+        <figcaption>Три инструмента проекта: текущие дата и время, прибавление длительности, установка напоминания.</figcaption>
+      </figure>
+
+      <h2>Какие инструменты добавляем</h2>
+      <p>Для системы напоминаний нужны три возможности:</p>
+      <ul>
+        <li><strong>Текущие дата и время</strong> — Claude должен знать текущие дату и время;</li>
+        <li><strong>Прибавить длительность к дате</strong> — Claude не идеален в сложении дат;</li>
+        <li><strong>Поставить напоминание</strong> — нужен способ ставить напоминания.</li>
+      </ul>
+      <p>Хорошая новость: бо́льшая часть работы уже сделана. Функции <code>add_duration_to_datetime</code> и <code>set_reminder</code> даны готовыми вместе со схемами.</p>
+
+      <h2>Добавляем инструменты в разговор</h2>
+      <p>Сначала обновите функцию <code>run_conversation</code>, добавив новые схемы в список инструментов:</p>
+      <pre>response = chat(messages, tools=[
+    get_current_datetime_schema,
+    add_duration_to_datetime_schema,
+    set_reminder_schema
+])</pre>
+      <p>Так Claude узнаёт обо всех трёх инструментах, доступных в разговоре.</p>
+
+      <h2>Обновляем маршрутизатор</h2>
+      <p>Затем измените функцию <code>run_tool</code>, чтобы она обрабатывала новые вызовы. Добавьте ветку <code>elif</code> для каждого нового инструмента:</p>
+      <pre>def run_tool(tool_name, tool_input):
+    if tool_name == "get_current_datetime":
+        return get_current_datetime(**tool_input)
+    elif tool_name == "add_duration_to_datetime":
+        return add_duration_to_datetime(**tool_input)
+    elif tool_name == "set_reminder":
+        return set_reminder(**tool_input)</pre>
+      <p>Шаблон простой: проверить имя инструмента, вызвать соответствующую функцию с переданными аргументами и вернуть результат.</p>
+
+      <h2>Проверяем работу нескольких инструментов</h2>
+      <p>Для проверки дайте запрос, которому нужно несколько инструментов: «Set a reminder for my doctors appointment. Its 177 days after Jan 1st, 2050.»</p>
+      <p>Этот запрос заставляет Claude:</p>
+      <ul>
+        <li>вычислить дату (через <code>add_duration_to_datetime</code>);</li>
+        <li>поставить напоминание (через <code>set_reminder</code>).</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api35-02.png" alt="Вывод ноутбука: set_reminder печатает Setting the following reminder for 2050-06-27T00:00:00: Doctor's appointment.">
+        <figcaption>Вывод ноутбука: <code>set_reminder</code> печатает «Setting the following reminder for 2050-06-27T00:00:00: Doctor's appointment».</figcaption>
+      </figure>
+      <p>Claude сначала объясняет, что собирается сделать, а затем по очереди вызывает нужные инструменты. В разговоре видно, как Claude вычисляет дату — 27 июня 2050 года — и ставит на неё напоминание.</p>
+
+      <h2>Как устроен поток сообщений</h2>
+      <p>Если посмотреть историю разговора, видна полная структура сообщений:</p>
+      <ul>
+        <li>сообщение пользователя с запросом;</li>
+        <li>сообщение ассистента с текстом и блоками вызова инструментов;</li>
+        <li>сообщения с результатами инструментов;</li>
+        <li>последующие сообщения ассистента.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api35-03.png" alt="Каждое сообщение ассистента объединяет TextBlock и ToolUseBlock; результат инструмента — Monday, June 27, 2050 12:00:00 AM.">
+        <figcaption>Каждое сообщение ассистента — текст плюс вызов инструмента; результат одного из вызовов — «Monday, June 27, 2050 12:00:00 AM».</figcaption>
+      </figure>
+      <p>Это показывает, что Claude может включать в одно сообщение несколько блоков — пояснительный текст вместе с запросами инструментов.</p>
+
+      <h2>Простой шаблон добавления инструментов</h2>
+      <p>Когда основная инфраструктура для инструментов есть, новый инструмент добавляется так:</p>
+      <ul>
+        <li>написать реализацию функции-инструмента;</li>
+        <li>описать схему инструмента;</li>
+        <li>добавить схему в список инструментов в <code>run_conversation</code>;</li>
+        <li>добавить ветку для инструмента в <code>run_tool</code>.</li>
+      </ul>
+      <p>Такой модульный подход позволяет расширять возможности ИИ-ассистента без перестройки существующего кода. Каждый новый инструмент встраивается в текущий ход разговора и логику обработки инструментов.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Словарь вместо цепочки <code>elif</code>.</strong> Когда инструментов много, удобнее хранить их в словаре: <code>TOOLS = {"get_current_datetime": get_current_datetime, ...}</code> и вызывать <code>TOOLS[tool_name](**tool_input)</code>. Неизвестное имя тогда даст <code>KeyError</code>, который превратится в результат с <code>is_error</code>.</li>
+          <li><strong>Последовательные и параллельные вызовы.</strong> В этом примере вызовы идут по очереди: результат первого (дата) нужен для второго (напоминание). Независимые вызовы, как 10 + 10 и 30 + 30, Claude может запросить сразу в одном ответе.</li>
+          <li><strong>Много инструментов — больше токенов.</strong> Описания всех инструментов попадают во входные токены каждого запроса. Для очень больших наборов в API есть tool search с отложенной загрузкой описаний (<code>defer_loading</code>) — за рамками курса.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — потоковая передача вызовов инструментов и fine-grained tool calling.</p>
+            <div class="pager">
+        <a class="ghost" href="34-implementing-turns.html">Назад</a>
+        <a class="next" href="36-fine-grained.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287749" target="_blank" rel="noopener noreferrer">Using multiple tools</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

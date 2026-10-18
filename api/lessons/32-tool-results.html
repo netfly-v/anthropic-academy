@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Отправка результатов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html" aria-current="page"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Отправка результатов</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 9:22 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>выполнить функцию с аргументами из блока <code>tool_use</code>;</li>
+        <li>собрать блок <code>tool_result</code> с правильным <code>tool_use_id</code>;</li>
+        <li>сделать итоговый запрос и получить ответ с результатом инструмента.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287752" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Sending tool results · 9:22</span>
+      </a>
+
+      <p>Когда Claude запросил вызов инструмента, нужно выполнить функцию и отправить результат обратно. Это завершает цикл tool use: Claude получает запрошенную информацию.</p>
+
+      <h2>Запускаем функцию-инструмент</h2>
+      <p>Когда Claude отвечает блоком вызова инструмента, вы извлекаете входные параметры и вызываете свою функцию. Параметры инструмента лежат здесь:</p>
+      <pre>response.content[1].input</pre>
+      <p>Это словарь аргументов, которые Claude хочет передать функции. Функция ждёт именованные аргументы, а не словарь, поэтому используем распаковку Python:</p>
+      <pre>get_current_datetime(**response.content[1].input)</pre>
+      <figure class="shot">
+        <img src="../../assets/api/api32-01.png" alt="Ячейка ноутбука с вызовом через распаковку, возвращающая строку времени 14:41:05.">
+        <figcaption>Вызов с распаковкой аргументов возвращает строку времени «14:41:05».</figcaption>
+      </figure>
+
+      <h2>Блок tool_result</h2>
+      <p>Выполнив функцию, нужно отправить результат Claude в блоке результата инструмента (tool result). Этот блок кладётся в сообщение пользователя и сообщает Claude, что произошло при выполнении инструмента.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api32-02.png" alt="Пример JSON результата инструмента: type tool_result, content 12:47:13, is_error False и совпадающий tool_use_id.">
+        <figcaption>Блок результата: <code>type: "tool_result"</code>, <code>content: "12:47:13"</code>, <code>is_error: False</code> и совпадающий <code>tool_use_id</code>.</figcaption>
+      </figure>
+      <p>Важные свойства блока результата:</p>
+      <ul>
+        <li><code>tool_use_id</code> — должен совпадать с <code>id</code> блока ToolUse, на который отвечает этот результат;</li>
+        <li><code>content</code> — вывод инструмента, сериализованный в строку;</li>
+        <li><code>is_error</code> — <code>True</code>, если произошла ошибка.</li>
+      </ul>
+
+      <h2>Несколько вызовов инструментов</h2>
+      <p>Claude может запросить несколько вызовов в одном ответе. Например, на вопрос «What's 10 + 10 and what's 30 + 30?» Claude может ответить двумя отдельными блоками ToolUse.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api32-03.png" alt="Claude отправляет блоки вызова калькулятора ab3 для 10 + 10 и po9 для 30 + 30; результаты возвращаются как po9 = 60, затем ab3 = 20.">
+        <figcaption>Два вызова калькулятора: <code>ab3</code> (10 + 10) и <code>po9</code> (30 + 30). Результаты приходят в другом порядке: сначала <code>po9</code> = 60, потом <code>ab3</code> = 20.</figcaption>
+      </figure>
+      <p>У каждого вызова свой уникальный ID, и при отправке результатов нужно указывать эти ID. Так Claude знает, какой результат к какому запросу относится, даже если результаты пришли в другом порядке.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api32-04.png" alt="Claude возвращает вызовы ab3 и po9; сервер отвечает результатом po9 = 60, затем ab3 = 20.">
+        <figcaption>Сервер отвечает на оба вызова; связь держится на совпадении ID, а не на порядке.</figcaption>
+      </figure>
+
+      <h2>Собираем следующий запрос</h2>
+      <p>Следующий запрос к Claude должен содержать всю историю разговора плюс новый результат инструмента. Структура такая:</p>
+      <pre>messages.append({
+    "role": "user",
+    "content": [{
+        "type": "tool_result",
+        "tool_use_id": response.content[1].id,
+        "content": "15:04:22",
+        "is_error": False
+    }]
+})</pre>
+      <p>Теперь история сообщений содержит:</p>
+      <ul>
+        <li>исходное сообщение пользователя;</li>
+        <li>сообщение ассистента с блоком вызова инструмента;</li>
+        <li>сообщение пользователя с блоком результата.</li>
+      </ul>
+
+      <h2>Итоговый запрос</h2>
+      <p>В следующем запросе нужно по-прежнему передавать схему инструмента, даже если вы не ждёте, что Claude снова его вызовет. Схема нужна Claude, чтобы понимать ссылки на инструмент в истории разговора.</p>
+      <pre>client.messages.create(
+    model=model,
+    max_tokens=1000,
+    messages=messages,
+    tools=[get_current_datetime_schema]
+)</pre>
+      <figure class="shot">
+        <img src="../../assets/api/api32-05.png" alt="Сервер отправляет Claude схему инструмента, вопрос Whats the current time?, блоки вызова и результата.">
+        <figcaption>Итоговый запрос: схема инструмента, вопрос «Whats the current time?», блок вызова и блок результата.</figcaption>
+      </figure>
+      <p>Claude ответит итоговым сообщением, которое включает результаты инструмента в естественный ответ для пользователя. Цикл tool use завершён — вы дали Claude доступ к информации в реальном времени через свою функцию.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong><code>content[1]</code> — только для этого примера.</strong> Здесь первым блоком идёт текст, вторым — вызов. Это не гарантировано: текста может не быть, вызовов может быть несколько. В рабочем коде блоки <code>tool_use</code> ищут по типу (см. урок «Реализация цикла»).</li>
+          <li><strong>Строгие правила формата</strong> (по документации):
+            <ul>
+              <li>сообщение с результатами должно идти <em>сразу</em> после сообщения ассистента с вызовами — между ними ничего вставлять нельзя;</li>
+              <li>в этом сообщении блоки <code>tool_result</code> идут <em>первыми</em>, текст — только после них; текст перед результатами даёт ошибку 400;</li>
+              <li>при параллельных вызовах все результаты возвращают <em>в одном</em> сообщении пользователя. Если разнести их по разным сообщениям, Claude со временем перестаёт делать параллельные вызовы.</li>
+            </ul></li>
+          <li><strong><code>content</code> — не только строка.</strong> Результат может быть и списком блоков: текст, изображение, документ.</li>
+          <li><strong>Безопасность.</strong> Результаты инструментов часто содержат чужой текст (веб-страницы, письма, файлы), и в нём могут быть внедрённые инструкции (prompt injection). Документация советует держать такой контент именно в <code>tool_result</code>, а не переносить в system prompt.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Дальше — разговоры, в которых Claude вызывает несколько инструментов подряд, прежде чем ответить.</p>
+            <div class="pager">
+        <a class="ghost" href="31-message-blocks.html">Назад</a>
+        <a class="next" href="33-multi-turn-tools.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287752" target="_blank" rel="noopener noreferrer">Sending tool results</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

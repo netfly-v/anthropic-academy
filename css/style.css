@@ -302,6 +302,11 @@ p code, li code, h2 code, h3 code {
   border-radius: 4px;
 }
 
+/* Длинный встроенный код и URL переносятся, а не растягивают страницу на телефоне. */
+p code, li code, figcaption code, p a, li a {
+  overflow-wrap: anywhere;
+}
+
 .terminal-label {
   margin: 1.1rem 0 0.35rem;
   font-family: var(--sans);

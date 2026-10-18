@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Введение в tool use</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html" aria-current="page"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Введение в tool use</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:54 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, зачем Claude нужны инструменты;</li>
+        <li>описать четыре шага обмена сообщениями при tool use;</li>
+        <li>назвать, какие задачи решает tool use.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287747" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Introducing tool use · 2:54</span>
+      </a>
+
+      <p>Инструменты (tools) дают Claude доступ к информации из внешнего мира и расширяют его возможности за пределы того, чему он научился при обучении. По умолчанию Claude знает только то, что было в его обучающих данных, и не имеет доступа к текущим событиям, данным в реальном времени или внешним системам. Tool use решает это ограничение: появляется структурированный способ, которым Claude запрашивает и получает свежую информацию.</p>
+
+      <h2>Проблема без инструментов</h2>
+      <p>Когда пользователь просит у Claude актуальную информацию, тот упирается в стену. Например, на вопрос «What's the weather in San Francisco, California?» Claude приходится ответить что-то вроде «I'm sorry, but I don't have access to up-to-date weather information.»</p>
+      <figure class="shot">
+        <img src="../../assets/api/api27-01.png" alt="Чат спрашивает Claude о погоде в Сан-Франциско, Claude отвечает, что у него нет актуальных данных о погоде.">
+        <figcaption>Вопрос о погоде в Сан-Франциско — и ответ Claude, что актуальных данных о погоде у него нет.</figcaption>
+      </figure>
+      <p>Пользователю это неудобно: ему нужны данные в реальном времени, с которыми Claude мог бы помочь, будь у него доступ к актуальной информации.</p>
+
+      <h2>Как работает tool use</h2>
+      <p>Tool use идёт по определённой схеме обмена сообщениями между вашим приложением и Claude. Полный цикл такой:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api27-02.png" alt="Четыре сообщения между нашим сервером и Claude при tool use.">
+        <figcaption>Четыре сообщения между вашим сервером и Claude при tool use — по шагам ниже.</figcaption>
+      </figure>
+      <ul>
+        <li><strong>Первый запрос:</strong> вы отправляете Claude вопрос вместе с инструкциями, как получить дополнительные данные из внешних источников;</li>
+        <li><strong>Запрос инструмента:</strong> Claude анализирует вопрос, решает, что ему нужна дополнительная информация, и уточняет, какие именно данные ему нужны;</li>
+        <li><strong>Получение данных:</strong> ваш сервер выполняет код и получает запрошенную информацию из внешних API или баз данных;</li>
+        <li><strong>Итоговый ответ:</strong> вы отправляете полученные данные обратно Claude, и он составляет полный ответ, опираясь и на исходный вопрос, и на свежие данные.</li>
+      </ul>
+
+      <h2>Пример с погодой</h2>
+      <p>Посмотрим, как это работает с вопросом о погоде. Процесс становится конкретнее:</p>
+      <figure class="shot">
+        <img src="../../assets/api/api27-03.png" alt="Те же четыре сообщения для запроса о погоде.">
+        <figcaption>Те же четыре сообщения на примере вопроса о погоде.</figcaption>
+      </figure>
+      <p>Когда пользователь спрашивает о текущей погоде, вы добавляете в промпт инструкции, как получить данные о погоде. Claude понимает, что ему нужна актуальная информация, и запрашивает погоду для конкретного места. Ваш сервер обращается к API погоды за текущими условиями и отправляет данные обратно Claude. Наконец, Claude объединяет свежие данные о погоде с вопросом пользователя и даёт точный актуальный ответ.</p>
+
+      <h2>Главные преимущества</h2>
+      <ul>
+        <li><strong>Информация в реальном времени:</strong> доступ к данным, которых не было при обучении Claude;</li>
+        <li><strong>Интеграция с внешними системами:</strong> подключение Claude к базам данных, API и другим сервисам;</li>
+        <li><strong>Динамические ответы:</strong> ответы на основе самой свежей информации;</li>
+        <li><strong>Структурированное взаимодействие:</strong> Claude точно знает, какая информация ему нужна и как её запросить.</li>
+      </ul>
+      <p>Tool use превращает Claude из статичной базы знаний в динамичного ассистента, который работает с живыми данными. Это открывает дорогу приложениям, которым нужна актуальная информация, — будь то погода, котировки акций, запросы к базе данных или любые другие данные в реальном времени.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Claude сам ничего не вызывает.</strong> В этом и следующих уроках инструменты — <em>клиентские</em>: Claude только просит вызвать функцию (блок <code>tool_use</code>), а выполняет её ваш код и возвращает результат (блок <code>tool_result</code>). Модель не имеет доступа к вашему серверу.</li>
+          <li><strong>Два вида инструментов.</strong> Документация делит их на <em>client tools</em> (выполняет ваше приложение — как в этом проекте) и <em>server tools</em> (выполняет Anthropic, например веб-поиск из последнего урока блока).</li>
+          <li><strong>Причина остановки.</strong> Когда Claude просит вызвать инструмент, ответ заканчивается с <code>stop_reason: "tool_use"</code> — по этому полю код и понимает, что нужно выполнить инструмент.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Дальше — обзор учебного проекта: Claude будет ставить напоминания, а для этого ему понадобятся три инструмента.</p>
+            <div class="pager">
+        <a class="ghost" href="26-prompting-exercise.html">Назад</a>
+        <a class="next" href="28-project-overview.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287747" target="_blank" rel="noopener noreferrer">Introducing tool use</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

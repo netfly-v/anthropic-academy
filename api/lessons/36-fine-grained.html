@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fine-grained tool calling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html" aria-current="page"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Fine-grained tool calling</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 10:56 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>обрабатывать события <code>InputJsonEvent</code> при потоковой передаче вызовов;</li>
+        <li>объяснить, почему аргументы инструмента приходят рывками;</li>
+        <li>решать, когда включать fine-grained tool calling и как обрабатывать невалидный JSON.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/313160" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Fine grained tool calling · 10:56</span>
+      </a>
+
+      <p>Если совместить tool use с потоковой передачей, вы получаете обновления в реальном времени, пока Claude генерирует аргументы инструмента. Интерфейс становится отзывчивее, но есть важные детали того, как это устроено внутри.</p>
+
+      <h2>Потоковая передача вызовов</h2>
+      <p>При включённом потоке Claude присылает события разных типов. Вы уже знаете события вроде ContentBlockDelta для обычного текста. Для вызовов инструментов понадобится обрабатывать ещё один тип событий — <code>InputJsonEvent</code>.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api36-01.png" alt="События потока Claude по порядку от MessageStart до MessageStop; текст — в событиях ContentBlockDelta.">
+        <figcaption>События потока по порядку, от MessageStart до MessageStop; текст приходит в ContentBlockDelta.</figcaption>
+      </figure>
+      <p>У каждого <code>InputJsonEvent</code> два ключевых свойства:</p>
+      <ul>
+        <li><code>partial_json</code> — кусок JSON с частью аргументов инструмента;</li>
+        <li><code>snapshot</code> — накопленный JSON из всех полученных к этому моменту кусков.</li>
+      </ul>
+      <p>Вот как обрабатывать эти события в потоке:</p>
+      <pre>for chunk in stream:
+    if chunk.type == "input_json":
+        # Process the partial JSON chunk
+        print(chunk.partial_json)
+        # Or use the complete snapshot so far
+        current_args = chunk.snapshot</pre>
+      <figure class="shot">
+        <img src="../../assets/api/api36-02.png" alt="При потоке три InputJsonEvent, чьи куски partial_json складываются в snapshot с заголовком Vector Storage.">
+        <figcaption>Три события <code>InputJsonEvent</code>: куски <code>partial_json</code> складываются в <code>snapshot</code> с заголовком «Vector Storage».</figcaption>
+      </figure>
+
+      <h2>Как работает проверка JSON</h2>
+      <p>Вот что интересно: Anthropic API не присылает вам каждый кусок сразу, как только Claude его сгенерировал. Вместо этого API накапливает куски и сначала их проверяет.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api36-03.png" alt="Сервер отправляет save_article_schema и сообщение пользователя; в Anthropic API куски abstract, This paper и pre.">
+        <figcaption>Сервер отправляет <code>save_article_schema</code> и сообщение; в API приходят куски «abstract», «This paper», «pre»…</figcaption>
+      </figure>
+      <p>API ждёт полной пары «ключ — значение» верхнего уровня, прежде чем что-то отправить. Например, если инструмент ожидает такую структуру:</p>
+      <pre>{
+  "abstract": "This paper presents a novel...",
+  "meta": {
+    "word_count": 847,
+    "review": "This paper introduces QuanNet..."
+  }
+}</pre>
+      <p>API:</p>
+      <ul>
+        <li>дождётся, пока значение <code>abstract</code> будет полностью сгенерировано;</li>
+        <li>проверит эту пару по вашей схеме;</li>
+        <li>отправит все накопленные куски <code>abstract</code> разом;</li>
+        <li>повторит то же для объекта <code>meta</code>.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/api/api36-04.png" alt="Четыре накопленных куска объединяются в один ключ abstract со значением, который API сверяет с save_article_schema.">
+        <figcaption>Четыре накопленных куска складываются в пару «abstract — значение», и API сверяет её со схемой.</figcaption>
+      </figure>
+      <p>Эта проверка объясняет, почему даже при включённом потоке вы видите паузы, а потом всплески текста: куски придерживаются, пока не будет готова полная валидная пара верхнего уровня.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api36-05.png" alt="API держит четыре куска, пока пара abstract верхнего уровня не станет валидной, затем отправляет все четыре на сервер.">
+        <figcaption>API держит куски, пока пара <code>abstract</code> не станет валидной, а потом отправляет все разом.</figcaption>
+      </figure>
+
+      <h2>Fine-grained tool calling</h2>
+      <p>Если нужен более быстрый и дробный поток — например, чтобы сразу показывать пользователю обновления или быстрее начать обрабатывать частичные результаты, — можно включить fine-grained tool calling.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api36-06.png" alt="Anthropic API отправляет серверу группы кусков частичного JSON, каждая группа обрывается посреди значения, а не на ключе.">
+        <figcaption>С fine-grained tool calling API отправляет куски группами, которые обрываются посреди значения, а не на границе ключа.</figcaption>
+      </figure>
+      <p>Fine-grained tool calling делает одно главное: отключает проверку JSON на стороне API. Это значит:</p>
+      <ul>
+        <li>вы получаете куски сразу, как Claude их сгенерировал;</li>
+        <li>нет задержек на накопление между ключами верхнего уровня;</li>
+        <li>поток ведёт себя привычнее;</li>
+        <li><strong>важно:</strong> проверка JSON отключена — ваш код должен обрабатывать невалидный JSON.</li>
+      </ul>
+      <p>Включается добавлением <code>fine_grained=True</code> в вызов:</p>
+      <pre>run_conversation(
+    messages,
+    tools=[save_article_schema],
+    fine_grained=True
+)</pre>
+      <p>С fine-grained tool calling значение <code>word_count</code> может прийти гораздо раньше, не дожидаясь, пока будет готов весь объект <code>meta</code>.</p>
+
+      <h2>Обработка невалидного JSON</h2>
+      <p>С fine-grained tool calling Claude может сгенерировать невалидный JSON вроде <code>"word_count": undefined</code> вместо нормального числа. Приложение должно корректно обрабатывать такие случаи:</p>
+      <pre>try:
+    parsed_args = json.loads(chunk.snapshot)
+except json.JSONDecodeError:
+    # Handle invalid JSON appropriately
+    print("Received invalid JSON, continuing...")</pre>
+      <p>Без fine-grained tool calling проверка на стороне API поймала бы такую ошибку и, возможно, обернула бы проблемные значения в строки, которые могут не совпасть с ожидаемой схемой.</p>
+
+      <h2>Когда использовать fine-grained tool calling</h2>
+      <p>Имеет смысл включать его, когда:</p>
+      <ul>
+        <li>нужно показывать пользователям прогресс генерации аргументов в реальном времени;</li>
+        <li>хочется как можно быстрее начать обрабатывать частичные результаты;</li>
+        <li>задержки на накопление портят пользовательский опыт;</li>
+        <li>вы готовы реализовать надёжную обработку ошибок JSON.</li>
+      </ul>
+      <p>Для большинства приложений поведения по умолчанию с проверкой вполне достаточно. Но когда нужна дополнительная отзывчивость, fine-grained tool calling позволяет получать куски так быстро, как Claude их генерирует.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong><code>fine_grained=True</code> — параметр функции курса</strong>, а не API. Сейчас, по документации, fine-grained стриминг включается полем <code>"eager_input_streaming": true</code> в описании нужного инструмента (плюс включённый поток). Старый способ — бета-заголовок <code>fine-grained-tool-streaming-2025-05-14</code> — заменён этим полем. Пример:
+            <pre>save_article_schema = {
+    "name": "save_article",
+    "description": "...",
+    "eager_input_streaming": True,
+    "input_schema": {...},
+}</pre></li>
+          <li><strong>Как вернуть невалидный JSON модели.</strong> Документация советует не выполнять инструмент, а ответить блоком <code>tool_result</code> с <code>"is_error": true</code> и содержимым вида <code>{"INVALID_JSON": "&lt;то, что пришло&gt;"}</code> (собранным через JSON-библиотеку, чтобы кавычки экранировались правильно).</li>
+          <li><strong>Обрыв по <code>max_tokens</code></strong> тоже может оставить аргументы недописанными — проверяйте <code>stop_reason</code>.</li>
+          <li><strong>Принудительный вызов в видео.</strong> Чтобы гарантированно получить невалидный JSON, автор принудительно заставляет модель вызвать инструмент (<code>tool_choice</code> с конкретным инструментом). На Claude Opus 5.5, Sonnet 5.5 и Fable 5.1 принудительный <code>tool_choice</code> (<code>"any"</code> или <code>"tool"</code>) возвращает ошибку 400; там используют <code>"auto"</code> с указанием в промпте, а для гарантированной формы аргументов — <code>strict: true</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — встроенный инструмент текстового редактора: схему знает Claude, а реализацию пишете вы.</p>
+            <div class="pager">
+        <a class="ghost" href="35-multiple-tools.html">Назад</a>
+        <a class="next" href="37-text-editor-tool.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/313160" target="_blank" rel="noopener noreferrer">Fine grained tool calling</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

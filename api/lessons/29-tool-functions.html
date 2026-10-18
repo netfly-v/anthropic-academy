@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Функции-инструменты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../index.html" aria-current="page">API</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Building with the Claude API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+        </ul>
+        <p class="nav-group">Обзор Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-models.html"><span class="mark"></span>Модели Claude</a></li>
+        </ul>
+        <p class="nav-group">Доступ к API</p>
+        <ul class="lesson-nav">
+          <li><a href="03-accessing-the-api.html"><span class="mark"></span>Как устроен запрос</a></li>
+          <li><a href="04-api-key.html"><span class="mark"></span>Ключ API</a></li>
+          <li><a href="05-making-a-request.html"><span class="mark"></span>Первый запрос</a></li>
+          <li><a href="06-multi-turn.html"><span class="mark"></span>Диалог из нескольких ходов</a></li>
+          <li><a href="07-chat-exercise.html"><span class="mark"></span>Упражнение: чат</a></li>
+          <li><a href="08-system-prompts.html"><span class="mark"></span>System prompt</a></li>
+          <li><a href="09-system-prompts-exercise.html"><span class="mark"></span>Упражнение: system prompt</a></li>
+          <li><a href="10-temperature.html"><span class="mark"></span>Temperature</a></li>
+          <li><a href="11-streaming.html"><span class="mark"></span>Потоковый ответ</a></li>
+          <li><a href="12-structured-data.html"><span class="mark"></span>Структурированные данные</a></li>
+          <li><a href="13-structured-data-exercise.html"><span class="mark"></span>Упражнение: prefill</a></li>
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Оценка промптов</p>
+        <ul class="lesson-nav">
+          <li><a href="14-prompt-evaluation.html"><span class="mark"></span>Оценка промптов</a></li>
+          <li><a href="15-eval-workflow.html"><span class="mark"></span>Типичный процесс оценки</a></li>
+          <li><a href="16-test-datasets.html"><span class="mark"></span>Генерация датасета</a></li>
+          <li><a href="17-running-the-eval.html"><span class="mark"></span>Запуск оценки</a></li>
+          <li><a href="18-model-grading.html"><span class="mark"></span>Оценка моделью</a></li>
+          <li><a href="19-code-grading.html"><span class="mark"></span>Оценка кодом</a></li>
+          <li><a href="20-evals-exercise.html"><span class="mark"></span>Упражнение: критерии</a></li>
+          <li><a href="../quiz-evals.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Приёмы промптинга</p>
+        <ul class="lesson-nav">
+          <li><a href="21-prompt-engineering.html"><span class="mark"></span>Prompt engineering</a></li>
+          <li><a href="22-clear-and-direct.html"><span class="mark"></span>Ясно и прямо</a></li>
+          <li><a href="23-being-specific.html"><span class="mark"></span>Конкретика</a></li>
+          <li><a href="24-xml-tags.html"><span class="mark"></span>XML-теги</a></li>
+          <li><a href="25-examples.html"><span class="mark"></span>Примеры в промпте</a></li>
+          <li><a href="26-prompting-exercise.html"><span class="mark"></span>Упражнение: промпт</a></li>
+          <li><a href="../quiz-prompting.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+        <p class="nav-group">Инструменты</p>
+        <ul class="lesson-nav">
+          <li><a href="27-introducing-tool-use.html"><span class="mark"></span>Введение в tool use</a></li>
+          <li><a href="28-project-overview.html"><span class="mark"></span>Обзор проекта</a></li>
+          <li><a href="29-tool-functions.html" aria-current="page"><span class="mark"></span>Функции-инструменты</a></li>
+          <li><a href="30-tool-schemas.html"><span class="mark"></span>Схемы инструментов</a></li>
+          <li><a href="31-message-blocks.html"><span class="mark"></span>Блоки сообщения</a></li>
+          <li><a href="32-tool-results.html"><span class="mark"></span>Отправка результатов</a></li>
+          <li><a href="33-multi-turn-tools.html"><span class="mark"></span>Диалог с инструментами</a></li>
+          <li><a href="34-implementing-turns.html"><span class="mark"></span>Реализация цикла</a></li>
+          <li><a href="35-multiple-tools.html"><span class="mark"></span>Несколько инструментов</a></li>
+          <li><a href="36-fine-grained.html"><span class="mark"></span>Fine-grained tool calling</a></li>
+          <li><a href="37-text-editor-tool.html"><span class="mark"></span>Текстовый редактор</a></li>
+          <li><a href="38-web-search-tool.html"><span class="mark"></span>Веб-поиск</a></li>
+          <li><a href="../quiz-tools.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Функции-инструменты</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 5:22 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое функция-инструмент;</li>
+        <li>применять правила хорошей функции: имена, проверка входа, сообщения об ошибках;</li>
+        <li>написать функцию <code>get_current_datetime</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287756" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Tool functions · 5:22</span>
+      </a>
+
+      <p>В приложениях на Claude часто нужно дать модели доступ к информации в реальном времени или возможность выполнять действия. Для этого и нужны функции-инструменты (tool functions) — функции на Python, которые Claude может вызывать, когда ему нужны дополнительные данные, чтобы помочь пользователю.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api29-01.png" alt="Claude нужно знать текущие дату и время, он не идеален в сложении дат, и нужен способ ставить напоминания.">
+        <figcaption>Три задачи для инструментов: текущие дата и время, сложение дат, установка напоминания.</figcaption>
+      </figure>
+      <p>На картинке выше — три инструмента, которые мы будем реализовывать: получение текущих даты и времени, прибавление длительности к дате и установка напоминаний. Начнём с первого.</p>
+
+      <h2>Что такое функция-инструмент</h2>
+      <p>Функция-инструмент — обычная функция на Python, которая выполняется автоматически, когда Claude решает, что ему нужна дополнительная информация, чтобы помочь пользователю. Например, если кто-то спросит «What time is it?», Claude вызовет ваш инструмент даты и времени, чтобы узнать текущее время.</p>
+      <figure class="shot">
+        <img src="../../assets/api/api29-02.png" alt="Функция get_weather: выбрасывает ValueError при пустом location, затем вызывает API погоды и возвращает JSON.">
+        <figcaption>Функция <code>get_weather</code>: при пустом <code>location</code> выбрасывает <code>ValueError</code>, затем обращается к API погоды и возвращает JSON.</figcaption>
+      </figure>
+      <p>Вот пример функции-инструмента для погоды. Обратите внимание, как она проверяет входные данные и выдаёт понятные сообщения об ошибках — это важные рекомендации.</p>
+
+      <h2>Как писать функции-инструменты</h2>
+      <p>При написании функций-инструментов следуйте этим правилам:</p>
+      <ul>
+        <li><strong>Говорящие имена:</strong> и имя функции, и имена параметров должны ясно показывать их назначение;</li>
+        <li><strong>Проверка входных данных:</strong> проверяйте, что обязательные параметры не пустые и не некорректные, и выбрасывайте ошибку, если это так;</li>
+        <li><strong>Понятные сообщения об ошибках:</strong> Claude видит сообщения об ошибках и может повторить вызов функции с исправленными параметрами.</li>
+      </ul>
+      <p>Проверка особенно важна, потому что Claude учится на ошибках. Если вы выбросите понятную ошибку вроде «Location cannot be empty», Claude может снова вызвать функцию, уже с нормальным значением местоположения.</p>
+
+      <h2>Первая функция-инструмент</h2>
+      <p>Напишем функцию, которая возвращает текущие дату и время. Она принимает параметр формата даты, чтобы Claude мог запросить время в разных форматах:</p>
+      <pre>def get_current_datetime(date_format="%Y-%m-%d %H:%M:%S"):
+    if not date_format:
+        raise ValueError("date_format cannot be empty")
+    return datetime.now().strftime(date_format)</pre>
+      <p>Функция берёт текущее время через модуль <code>datetime</code> и форматирует его по переданной строке формата. Формат по умолчанию — год-месяц-день часы:минуты:секунды.</p>
+      <p>Проверить её можно с разными форматами:</p>
+      <pre># Default format: "2024-01-15 14:30:25"
+get_current_datetime()
+
+# Just hour and minute: "14:30"
+get_current_datetime("%H:%M")</pre>
+      <p>Проверка не даёт Claude передать пустую строку в качестве формата. Сама эта ошибка маловероятна, но она показывает приём: проверять входные данные и выдавать полезные сообщения, на которых Claude может учиться.</p>
+
+      <h2>Следующие шаги</h2>
+      <p>Функция — только первый шаг. Дальше нужно написать JSON-схему, которая описывает функцию для Claude, и встроить её в чат. Такой подход с функциями-инструментами даёт Claude большие возможности, а ваш код остаётся упорядоченным и удобным в поддержке.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Импорт.</strong> Для кода урока нужен <code>from datetime import datetime</code>.</li>
+          <li><strong>Как ошибка попадает к Claude.</strong> Сама по себе ошибка Python до модели не доходит. В уроке «Реализация цикла» код перехватывает исключение и отправляет его текст обратно в блоке <code>tool_result</code> с <code>"is_error": true</code>. Документация советует писать такие сообщения инструктивно: не просто «failed», а что пошло не так и что попробовать дальше — тогда Claude может исправиться (обычно он делает 2–3 попытки, прежде чем извиниться перед пользователем).</li>
+          <li><strong>Возвращайте только нужное.</strong> Чем компактнее и понятнее ответ инструмента, тем меньше он занимает в контексте и тем проще модели с ним работать.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — JSON-схема, по которой Claude узнаёт, что делает инструмент и какие у него аргументы.</p>
+            <div class="pager">
+        <a class="ghost" href="28-project-overview.html">Назад</a>
+        <a class="next" href="30-tool-schemas.html">Дальше</a>
+      </div>
+
+            <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-with-the-anthropic-api/287756" target="_blank" rel="noopener noreferrer">Tool functions</a>.</p>
+
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
