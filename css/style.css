@@ -553,3 +553,28 @@ p code, li code, figcaption code, p a, li a {
   .lesson { padding: 1.5rem 1.1rem 3rem; }
   .header-nav { gap: 0.9rem; }
 }
+
+.quiz-switch {
+  display: inline-flex;
+  margin: 0 0 1.2rem;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  overflow: hidden;
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.quiz-switch a {
+  padding: 0.45rem 1.1rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.quiz-switch a + a {
+  border-left: 1px solid var(--ink);
+}
+
+.quiz-switch a[aria-current="page"] {
+  background: #1c1c1a;
+  color: #faf9f5;
+}

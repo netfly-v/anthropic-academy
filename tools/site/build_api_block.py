@@ -5,7 +5,12 @@
 
 DIR — папка с фрагментами <main> уроков: файл NN.html на урок api/lessons/NN-*.html
 (всё содержимое <main> до блока «Назад/Дальше»: h1, «Чему научитесь», текст, «Пояснение», «Дальше»).
-Существующие страницы уроков и экзаменов не перезаписываются: меняются только меню и api/index.html.
+Существующие страницы уроков и экзаменов не перезаписываются: меняются только меню, переключатель
+Old/New на страницах экзаменов и api/index.html.
+
+У блока может быть второй, сложный экзамен (поле hard_quiz: file, items, minutes, bank, intro?).
+Тогда на обеих страницах экзамена блока появляется переключатель «Old · базовый / New · сложный»;
+ссылки из меню, карточки курса и «К тесту» по-прежнему ведут на базовую страницу.
 """
 
 import argparse
@@ -19,6 +24,11 @@ LES = API / "lessons"
 DATA = json.loads((pathlib.Path(__file__).parent / "blocks.json").read_text())
 SJ = f"https://anthropic.skilljar.com/{DATA['course']}/"
 SIDEBAR_RE = re.compile(r'        <p class="nav-group">Доступ к API</p>\n.*?(?=      </div>\n    </aside>)', re.S)
+SWITCH_RE = re.compile(r'      <nav class="quiz-switch".*?      </nav>\n', re.S)
+SWITCH_ANCHOR = '      <div class="rule"></div>\n'
+HARD_INTRO = ("Harder scenario items for this block: each one describes a situation and asks for the best decision, "
+              "the likely cause or the first step. Choices are saved in this browser, separately from the basic exam. "
+              "The score and the reasons stay hidden until you press Submit. Clear the attempt with Очистить after the result.")
 
 
 def link(sid, title):
@@ -45,6 +55,28 @@ def set_sidebar(text, lp, rp, current):
     new, n = SIDEBAR_RE.subn(lambda m: sidebar(lp, rp, current), text)
     assert n == 1, "sidebar not found"
     return new
+
+
+def quiz_pages(b):
+    """Страницы экзаменов блока: (файл, описание), базовый и, если есть, сложный."""
+    pages = [(b["quiz"]["file"], b["quiz"])]
+    if b.get("hard_quiz"):
+        pages.append((b["hard_quiz"]["file"], b["hard_quiz"]))
+    return pages
+
+
+def set_switch(text, b, current):
+    """Переключатель Old/New под заголовком страницы экзамена (убирается, если сложного экзамена нет)."""
+    text = SWITCH_RE.sub("", text)
+    if not b.get("hard_quiz"):
+        return text
+    def a(href, label):
+        cur = ' aria-current="page"' if href == current else ""
+        return f'        <a href="{href}"{cur}>{label}</a>\n'
+    nav = ('      <nav class="quiz-switch" aria-label="Вариант экзамена">\n'
+           + a(b["quiz"]["file"], "Old · базовый") + a(b["hard_quiz"]["file"], "New · сложный") + "      </nav>\n")
+    i = text.index(SWITCH_ANCHOR) + len(SWITCH_ANCHOR)
+    return text[:i] + nav + text[i:]
 
 
 def create_lessons(frags):
@@ -77,20 +109,24 @@ def create_quizzes():
     tpl = (API / "quiz.html").read_text()
     created = []
     for b in DATA["blocks"]:
-        q = b["quiz"]
-        page = API / q["file"]
-        if page.exists():
-            continue
-        h1 = q.get("h1", "Practice exam")
-        t = re.sub(r"<title>Practice exam · [^<]+</title>", lambda m: f"<title>{h1} · {q['page_title']}</title>", tpl, count=1)
-        t = t.replace("<h1>Practice exam</h1>", f"<h1>{h1}</h1>", 1)
-        t = re.sub(r'<p class="kicker">[^<]+</p>', lambda m: f'<p class="kicker">{q["kicker"]}</p>', t, count=1)
-        t = re.sub(r"\d+ items · about \d+ minutes", f"{q['items']} items · about {q['minutes']} minutes", t, count=1)
-        t = re.sub(r'<script src="\.\./js/api-[^"]+-quiz\.js"></script>', f'<script src="../js/{q["bank"]}"></script>', t, count=1)
-        if q.get("intro"):
-            t = re.sub(r"<p>Scenario items for this block only\.[^<]*</p>", lambda m: f"<p>{q['intro']}</p>", t, count=1)
-        page.write_text(t)
-        created.append(page.name)
+        base = b["quiz"]
+        h1 = base.get("h1", "Practice exam")
+        for file, q in quiz_pages(b):
+            page = API / file
+            if page.exists():
+                continue
+            hard = q is not base
+            title = f"{h1} · New · {base['page_title']}" if hard else f"{h1} · {base['page_title']}"
+            intro = q.get("intro", HARD_INTRO if hard else None)
+            t = re.sub(r"<title>Practice exam · [^<]+</title>", lambda m: f"<title>{title}</title>", tpl, count=1)
+            t = t.replace("<h1>Practice exam</h1>", f"<h1>{h1}</h1>", 1)
+            t = re.sub(r'<p class="kicker">[^<]+</p>', lambda m: f'<p class="kicker">{base["kicker"]}</p>', t, count=1)
+            t = re.sub(r"\d+ items · about \d+ minutes", f"{q['items']} items · about {q['minutes']} minutes", t, count=1)
+            t = re.sub(r'<script src="\.\./js/api-[^"]+-quiz\.js"></script>', f'<script src="../js/{q["bank"]}"></script>', t, count=1)
+            if intro:
+                t = re.sub(r"<p>Scenario items for this block only\.[^<]*</p>", lambda m: f"<p>{intro}</p>", t, count=1)
+            page.write_text(t)
+            created.append(page.name)
     return created
 
 
@@ -103,7 +139,10 @@ def card(l):
 def quiz_card(b):
     q = b["quiz"]
     label = q.get("card_label", f"Practice exam · {b['title']}")
-    note = q.get("card_note", f"{q['items']} вопросов по этому блоку, на английском")
+    h = b.get("hard_quiz")
+    default_note = (f"Old · базовый ({q['items']} вопросов) и New · сложный ({h['items']} вопросов), на английском" if h
+                    else f"{q['items']} вопросов по этому блоку, на английском")
+    note = q.get("card_note", default_note)
     return f'        <li><a href="{q["file"]}"><strong>{label}</strong><span>{note}</span></a></li>'
 
 
@@ -148,9 +187,11 @@ def main():
     for page in sorted(LES.glob("*.html")):
         page.write_text(set_sidebar(page.read_text(), "", "../", page.name))
     for b in DATA["blocks"]:
-        page = API / b["quiz"]["file"]
-        if page.exists():
-            page.write_text(set_sidebar(page.read_text(), "lessons/", "", b["quiz"]["file"]))
+        for file, _ in quiz_pages(b):
+            page = API / file
+            if page.exists():
+                text = set_sidebar(page.read_text(), "lessons/", "", b["quiz"]["file"])
+                page.write_text(set_switch(text, b, file))
     build_index()
     print("sidebars and api/index.html rebuilt")
 

@@ -384,6 +384,12 @@
     "minutes": 20,
     "bank": "api-rag-quiz.js"
    },
+   "hard_quiz": {
+    "file": "quiz-rag-hard.html",
+    "items": 17,
+    "minutes": 30,
+    "bank": "api-rag-hard-quiz.js"
+   },
    "lessons": [
     {
      "file": "39-intro-rag.html",
