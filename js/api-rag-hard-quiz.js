@@ -1,6 +1,7 @@
 window.QUIZ_BANK = {
   id: "api-rag-hard",
   passPercent: 70,
+  hideDomains: true,
   questions: [
     {
       id: "rh01",

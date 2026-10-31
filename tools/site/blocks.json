@@ -459,6 +459,12 @@
     "minutes": 20,
     "bank": "api-features-quiz.js"
    },
+   "hard_quiz": {
+    "file": "quiz-features-hard.html",
+    "items": 17,
+    "minutes": 30,
+    "bank": "api-features-hard-quiz.js"
+   },
    "official_quiz": {
     "id": "289124",
     "title": "Quiz on features of Claude",
@@ -540,6 +546,12 @@
     "items": 16,
     "minutes": 20,
     "bank": "api-mcp-quiz.js"
+   },
+   "hard_quiz": {
+    "file": "quiz-mcp-hard.html",
+    "items": 17,
+    "minutes": 30,
+    "bank": "api-mcp-hard-quiz.js"
    },
    "official_quiz": {
     "id": "289126",
@@ -647,6 +659,12 @@
     "minutes": 20,
     "bank": "api-apps-quiz.js"
    },
+   "hard_quiz": {
+    "file": "quiz-apps-hard.html",
+    "items": 17,
+    "minutes": 30,
+    "bank": "api-apps-hard-quiz.js"
+   },
    "lessons": [
     {
      "file": "65-anthropic-apps.html",
@@ -691,6 +709,12 @@
     "items": 17,
     "minutes": 20,
     "bank": "api-agents-quiz.js"
+   },
+   "hard_quiz": {
+    "file": "quiz-agents-hard.html",
+    "items": 17,
+    "minutes": 30,
+    "bank": "api-agents-hard-quiz.js"
    },
    "official_quiz": {
     "id": "289130",
@@ -770,7 +794,14 @@
     "bank": "api-final-quiz.js",
     "intro": "Mixed scenario items from all nine blocks of the course, from API access to agents. Choices are saved in this browser. The score, the per-block breakdown and the reasons stay hidden until you press Submit. Clear the attempt with Очистить after the result.",
     "card_label": "Final exam · весь курс",
-    "card_note": "36 вопросов по всем блокам курса, на английском, с разбивкой по блокам"
+    "card_note": "Old · базовый и New · сложный, по 36 вопросов по всем блокам курса, на английском, с разбивкой по блокам"
+   },
+   "hard_quiz": {
+    "file": "quiz-final-hard.html",
+    "items": 36,
+    "minutes": 60,
+    "bank": "api-final-hard-quiz.js",
+    "intro": "Harder mixed scenario items from all nine blocks of the course: each one describes a situation and asks for the best decision, the likely cause or the first step. Choices are saved in this browser, separately from the basic exam. The score, the per-block breakdown and the reasons stay hidden until you press Submit. Clear the attempt with Очистить after the result."
    },
    "lessons": [
     {

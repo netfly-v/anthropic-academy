@@ -10,6 +10,7 @@
 """
 
 import json
+from math import comb
 import re
 import subprocess
 import sys
@@ -48,6 +49,8 @@ def check(path):
     problems += [f"duplicate id {i}" for i, n in ids.items() if n > 1]
     letters = Counter()
     longest_correct = 0
+    shortest_correct = 0
+    shortest_chance = 0.0
     echo_correct = 0
     spread_bad = []
     markers = []
@@ -64,6 +67,11 @@ def check(path):
         longest = max(lens, key=lens.get)
         if longest in q["correct"]:
             longest_correct += 1
+        k = len(q["correct"])
+        shortest = sorted(lens, key=lens.get)[:k]
+        if sorted(shortest) == sorted(q["correct"]):
+            shortest_correct += 1
+        shortest_chance += 1 / comb(len(lens), k)
         if sorted(echo_pick(q)) == sorted(q["correct"]):
             echo_correct += 1
         mean = sum(lens.values()) / len(lens)
@@ -79,6 +87,7 @@ def check(path):
     print(f"questions: {n}, multi-select: {multi} ({multi / n:.0%})")
     print("correct letters:", ", ".join(f"{k}={letters[k]}" for k in "abcd"))
     print(f"correct is the longest option: {longest_correct}/{n} ({longest_correct / n:.0%})")
+    print(f"correct is the shortest option(s): {shortest_correct}/{n} ({shortest_correct / n:.0%}; chance ≈ {shortest_chance / n:.0%})")
     print(f"option length spread > ±20%: {len(spread_bad)}/{n}" + (f"  [{', '.join(spread_bad)}]" if spread_bad else ""))
     print(f"always/never in options: {len(markers)}" + (f"  [{', '.join(markers)}]" if markers else ""))
     print(f"stem-echo heuristic guesses right: {echo_correct}/{n} ({echo_correct / n:.0%})")

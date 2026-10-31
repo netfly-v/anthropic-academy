@@ -129,9 +129,10 @@
     }).join("");
     var why = submitted ? '<p class="q-why">' + (ok ? "Correct. " : "Incorrect. ") + escapeHtml(q.why) + "</p>" : "";
     var status = submitted ? (ok ? "Correct" : "Incorrect") : "Item " + (index + 1);
+    var meta = bank.hideDomains && !submitted ? status : status + " · " + q.domain;
     return (
       '<li class="q-item">' +
-      '<p class="q-meta">' + escapeHtml(status) + " · " + escapeHtml(q.domain) + "</p>" +
+      '<p class="q-meta">' + escapeHtml(meta) + "</p>" +
       '<p class="q-stem">' + escapeHtml(q.stem) + "</p>" +
       '<p class="q-pick">' + prompt + "</p>" +
       '<div class="q-options">' + options + "</div>" +

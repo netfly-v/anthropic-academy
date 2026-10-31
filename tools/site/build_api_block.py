@@ -1,7 +1,8 @@
 """Сборка курса Building with the Claude API из tools/site/blocks.json.
 
   python tools/site/build_api_block.py                      # пересобрать меню и страницу курса
-  python tools/site/build_api_block.py --frags DIR          # + создать недостающие страницы уроков и экзаменов
+  python tools/site/build_api_block.py --frags DIR          # + создать недостающие страницы уроков
+Недостающие страницы экзаменов (обычных и сложных) создаются при каждом запуске.
 
 DIR — папка с фрагментами <main> уроков: файл NN.html на урок api/lessons/NN-*.html
 (всё содержимое <main> до блока «Назад/Дальше»: h1, «Чему научитесь», текст, «Пояснение», «Дальше»).
@@ -183,7 +184,9 @@ def main():
     args = ap.parse_args()
     if args.frags:
         print("lessons created:", create_lessons(args.frags))
-        print("quizzes created:", create_quizzes())
+    created = create_quizzes()
+    if created:
+        print("quizzes created:", created)
     for page in sorted(LES.glob("*.html")):
         page.write_text(set_sidebar(page.read_text(), "", "../", page.name))
     for b in DATA["blocks"]:
