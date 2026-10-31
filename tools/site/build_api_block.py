@@ -124,6 +124,12 @@ def create_quizzes():
             t = re.sub(r'<p class="kicker">[^<]+</p>', lambda m: f'<p class="kicker">{base["kicker"]}</p>', t, count=1)
             t = re.sub(r"\d+ items · about \d+ minutes", f"{q['items']} items · about {q['minutes']} minutes", t, count=1)
             t = re.sub(r'<script src="\.\./js/api-[^"]+-quiz\.js"></script>', f'<script src="../js/{q["bank"]}"></script>', t, count=1)
+            # Basic banks keep their Russian `why` translations in js/why-ru/<bank> (the bank files stay untouched);
+            # hard banks carry them inline as `why_ru`.
+            t = re.sub(r'  <script src="\.\./js/why-ru/[^"]+"></script>\n', "", t)
+            if (ROOT / "js" / "why-ru" / q["bank"]).exists():
+                tag = f'<script src="../js/{q["bank"]}"></script>\n'
+                t = t.replace(tag, tag + f'  <script src="../js/why-ru/{q["bank"]}"></script>\n', 1)
             if intro:
                 t = re.sub(r"<p>Scenario items for this block only\.[^<]*</p>", lambda m: f"<p>{intro}</p>", t, count=1)
             page.write_text(t)

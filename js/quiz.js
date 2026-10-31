@@ -127,7 +127,11 @@
         "<span>" + escapeHtml(opt.text) + "</span></label>"
       );
     }).join("");
-    var why = submitted ? '<p class="q-why">' + (ok ? "Correct. " : "Incorrect. ") + escapeHtml(q.why) + "</p>" : "";
+    var whyRu = q.why_ru || (window.QUIZ_WHY_RU && window.QUIZ_WHY_RU[q.id]) || "";
+    var why = submitted
+      ? '<p class="q-why">' + (ok ? "Correct. " : "Incorrect. ") + escapeHtml(q.why) + "</p>" +
+        (whyRu ? '<p class="q-why q-why-ru">' + (ok ? "Верно. " : "Неверно. ") + escapeHtml(whyRu) + "</p>" : "")
+      : "";
     var status = submitted ? (ok ? "Correct" : "Incorrect") : "Item " + (index + 1);
     var meta = bank.hideDomains && !submitted ? status : status + " · " + q.domain;
     return (

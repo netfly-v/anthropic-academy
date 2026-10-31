@@ -487,6 +487,13 @@ p code, li code, figcaption code, p a, li a {
   font-size: 0.95rem;
 }
 
+.q-why-ru {
+  margin-top: 0.45rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--line);
+  color: var(--ink-soft);
+}
+
 .score-banner {
   margin: 0 0 1.4rem;
   padding: 1rem 1.1rem;
