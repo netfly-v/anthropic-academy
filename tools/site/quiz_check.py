@@ -54,7 +54,9 @@ def check(path):
     echo_correct = 0
     spread_bad = []
     markers = []
+    stem_words = []
     for q in qs:
+        stem_words.append((q["id"], len(re.sub(r"\(Choose \w+\.?\)", "", q["stem"]).split())))
         oids = [o["id"] for o in q["options"]]
         if not set(q["correct"]) <= set(oids):
             problems.append(f"{q['id']}: correct not in options")
@@ -86,10 +88,13 @@ def check(path):
     print(f"== {path}  ({bank['id']})")
     print(f"questions: {n}, multi-select: {multi} ({multi / n:.0%})")
     print("correct letters:", ", ".join(f"{k}={letters[k]}" for k in "abcd"))
-    print(f"correct is the longest option: {longest_correct}/{n} ({longest_correct / n:.0%})")
+    print(f"correct is the longest option: {longest_correct}/{n} ({longest_correct / n:.0%}; target 20–30%)")
     print(f"correct is the shortest option(s): {shortest_correct}/{n} ({shortest_correct / n:.0%}; chance ≈ {shortest_chance / n:.0%})")
     print(f"option length spread > ±20%: {len(spread_bad)}/{n}" + (f"  [{', '.join(spread_bad)}]" if spread_bad else ""))
     print(f"always/never in options: {len(markers)}" + (f"  [{', '.join(markers)}]" if markers else ""))
+    words = [w for _, w in stem_words]
+    off = [f"{i} {w}" for i, w in stem_words if not 25 <= w <= 50]
+    print(f"stem words: mean {sum(words) / n:.0f}, min {min(words)}, max {max(words)}; outside 25–50: {len(off)}" + (f"  [{', '.join(off)}]" if off else ""))
     print(f"stem-echo heuristic guesses right: {echo_correct}/{n} ({echo_correct / n:.0%})")
     print("PROBLEMS:", "; ".join(problems) if problems else "none")
     print()

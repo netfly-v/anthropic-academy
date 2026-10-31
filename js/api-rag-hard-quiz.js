@@ -1,5 +1,5 @@
 window.QUIZ_BANK = {
-  id: "api-rag-hard",
+  id: "api-rag-hard-v2",
   passPercent: 70,
   hideDomains: true,
   questions: [
@@ -7,21 +7,21 @@ window.QUIZ_BANK = {
       id: "rh01",
       domain: "RAG basics",
       select: 1,
-      stem: "A two-person legal-tech team wants Claude to answer questions about individual contracts. Each contract is 30–40 pages, is uploaded by one user, and is usually queried two or three times before being discarded. The team has a one-week deadline. Which approach fits best?",
+      stem: "A team wants Claude to answer questions about individual contracts. Each contract is 30–40 pages, uploaded by one user and queried two or three times before it is discarded. Which approach fits best?",
       options: [
-        { id: "a", text: "Chunk each contract by its clause headings and retrieve the matching clauses, since contracts are well structured" },
-        { id: "b", text: "Send the contract once, then answer follow-ups in later turns with the contract dropped from the history to save tokens" },
-        { id: "c", text: "Index each contract with BM25 rather than embeddings, since clause numbers and defined terms call for exact matching" },
-        { id: "d", text: "Place the whole contract in the prompt together with the question and skip retrieval for these documents" }
+        { id: "a", text: "Chunk each contract by its clause headings and retrieve the matching clauses for every question" },
+        { id: "b", text: "Send the contract with the first question only, and answer the follow-ups without it to save tokens" },
+        { id: "c", text: "Index each contract with BM25 rather than embeddings, since clause numbers call for exact matches" },
+        { id: "d", text: "Place the whole contract in the prompt with each question and skip retrieval for these documents" }
       ],
       correct: ["d"],
-      why: "Lesson 'Introducing RAG': RAG trades simplicity for scalability and pays off for very large documents, many documents, or when cost and speed must be optimized; its objections to the full-text prompt (a hard length limit, weaker attention in very long prompts, higher cost and latency) are framed around an 800-page document, and the lesson note puts the 'just include it' threshold at roughly 200k tokens. A 30–40-page contract sent two or three times is nowhere near that, so the preprocessing step, the search mechanism and the chunking decisions of RAG add complexity without a payoff. Options a and c are valid retrieval techniques for a problem this team does not have (a also assumes a guaranteed structure that user uploads lack; c treats BM25 as a replacement, while the BM25 lesson presents it as a complement). Option b forgets the multi-turn lesson: the model keeps no memory between requests, so a contract dropped from the history is gone."
+      why: "Lesson 39, Introducing Retrieval Augmented Generation: RAG 'involves many technical decisions and requires more work than simply including everything in a prompt', and it is 'especially valuable when working with very large documents, multiple documents, or when you need to optimize for cost and performance'; the limits of the full-text prompt are shown on an 800-page document. A 30–40-page contract asked about two or three times is none of those cases, so the simple approach works and a retrieval pipeline would add work that pays nothing back (d). Option a is a sound chunking method, but it adds the preprocessing and search steps the team does not need. Option b drops the document the answers depend on: the lesson's point is that the relevant text has to reach Claude in the prompt with the question. Option c is still retrieval; Lesson 44, BM25 lexical search, presents BM25 as a complement to semantic search, not as a reason to index small documents."
     },
     {
       id: "rh02",
       domain: "RAG basics",
       select: 1,
-      stem: "A support team replaced prompt-stuffing a 900-page maintenance manual with a RAG pipeline that retrieves the single best chunk. Answers got cheaper and faster, but for questions about a fault code Claude now describes the code and never mentions the recovery steps, which sit in a separate 'Recovery procedures' section that lists the steps for each fault code. Per-question cost must stay far below what the full-manual prompts used to cost. What should the team change first?",
+      stem: "A support team replaced prompt-stuffing a 900-page manual with a RAG pipeline that retrieves the single best chunk. Fault-code answers now describe the code but omit its recovery steps, which sit in a separate section. Cost per question must stay low. What should they change first?",
       options: [
         { id: "a", text: "Retrieve several top-ranked chunks instead of one, so that related sections reach the prompt" },
         { id: "b", text: "Return to sending the full manual for fault-code questions, since those need the whole context" },
@@ -29,217 +29,217 @@ window.QUIZ_BANK = {
         { id: "d", text: "Add a system prompt rule telling Claude to describe recovery steps whenever it sees a fault code" }
       ],
       correct: ["a"],
-      why: "Lesson 'Introducing RAG' lists this exact challenge: the included chunks might not contain all the context Claude needs, and its transcript gives the same example (a risk question whose answer is partly in another section). 'Implementing the RAG flow' already asks the store for the two most relevant chunks rather than one, and the BM25 lesson asks for three. Option b might restore the missing section but breaks the cost constraint: the lesson says larger prompts cost more and take longer, and a 900-page manual is the extreme case. Option c makes chunks smaller, but a single smaller chunk still cannot contain a separate section. Option d instructs the generation step, which cannot reliably describe steps that never reached the prompt."
+      why: "Lesson 39, Introducing Retrieval Augmented Generation, lists this challenge of RAG: 'Included chunks might not contain all the context Claude needs'. Retrieving several chunks lets the related section reach the prompt while the prompt stays far smaller than the manual, and Lesson 43, Implementing the RAG flow, itself searches for the two most relevant chunks (a). Option b may restore the missing steps but breaks the cost constraint: Lesson 39 says larger prompts cost more and take longer, and a 900-page manual is the extreme case. Option c makes chunks smaller, but one smaller chunk still cannot contain a separate section. Option d works on the generation step, and Claude cannot describe steps that never reached the prompt."
     },
     {
       id: "rh03",
       domain: "RAG basics",
       select: 1,
-      stem: "After moving a help desk to RAG over 2,000 product manuals, a product manager writes four statements into the launch notes. Which statement should the engineer strike out as unsupported by the course's description of RAG?",
+      stem: "An assistant answers questions over 150 pages of policies, all pasted into every prompt. The text fits within the prompt limit and cost is not a concern, yet answers to detailed questions got worse as more policies were added. What should the team do?",
       options: [
-        { id: "a", text: "Requests now carry a few retrieved chunks instead of a manual, so they cost less and return faster" },
-        { id: "b", text: "Adding a manual is a preprocessing task: it is chunked and embedded into the index, with no change to the question flow" },
-        { id: "c", text: "Because the search step matches on meaning, chunk size mainly affects cost rather than answer quality" },
-        { id: "d", text: "Claude works from a handful of relevant passages rather than scanning an entire manual per question" }
+        { id: "a", text: "Keep the full-text prompt, since the policies fit within the limit and the cost has been accepted" },
+        { id: "b", text: "Add a rule asking Claude to read every policy carefully before it answers a detailed question" },
+        { id: "c", text: "Move to RAG, so that each prompt carries only the policy sections relevant to the question" },
+        { id: "d", text: "Move the policies into the system prompt, so that Claude treats them as standing background" }
       ],
       correct: ["c"],
-      why: "Benefits listed in 'Introducing RAG': smaller prompts cost less and run faster (a); the approach scales to very large and multiple documents, which are chunked and embedded in the preprocessing step while the question flow stays the same (b); Claude can focus on only the most relevant content (d). Chunking, however, is called one of the most critical steps in 'Text chunking strategies': a poor split puts irrelevant context into the prompt and produces wrong answers, and 'Introducing RAG' lists the choice of chunking approach ('many ways to chunk text — which approach is best?') among the open challenges — and the chunking video shows the defaults (150/20) and 500/150 producing chunks of visibly different usefulness — so chunk size and strategy still drive answer quality, not only cost (c is unsupported)."
+      why: "Lesson 39, Introducing Retrieval Augmented Generation, lists among the limits of putting everything in the prompt that 'Claude becomes less effective with very long prompts', and among the benefits of RAG that 'Claude can focus on only the most relevant content'. With the length limit and cost ruled out as problems, effectiveness is the reason left, and RAG addresses it by sending only the relevant sections (c). Keeping the full-text prompt (a) treats the hard length limit as the only limit, which the lesson does not. A rule to read carefully (b) and moving the text into the system prompt (d) leave the prompt just as long, so they do not touch the cause."
     },
     {
       id: "rh04",
       domain: "Chunking",
       select: 1,
-      stem: "A document-ingestion service receives customer uploads of three kinds: Markdown reports, plain-text exports and source files. Two designs are on the table. Design 1 splits on '\\n## ' headers and falls back to size-based chunks with overlap whenever a file yields fewer than three sections. Design 2 uses size-based chunks with overlap for everything. The team has found that lines starting with '## ' also occur inside source files and plain-text exports (comment banners, quoted Markdown) and that a file's structure cannot be validated before indexing; the chunking step must be one function with no per-type branches. Which design should the team choose?",
+      stem: "An ingestion service chunks uploads: Markdown reports, plain-text exports and source code. Design 1 splits on headers, falling back to size-based chunks when few appear. Design 2 uses size-based chunks with overlap everywhere. Header-like lines also occur in code and in some of the exports. Which design fits best?",
       options: [
         { id: "a", text: "Design 1, because structure-based chunks are cleaner whenever headers exist and the fallback covers the rest" },
         { id: "b", text: "Design 2, because one strategy with no assumptions about format holds up across all three kinds of upload" },
-        { id: "c", text: "Design 1, with the fallback threshold raised to five sections so that stray '## ' lines in code do not count" },
-        { id: "d", text: "Design 2, but switching to sentence-based chunks for the plain-text exports, the middle ground for most text" }
+        { id: "c", text: "Design 1, with the fallback threshold raised so that header-like lines in code no longer count as sections" },
+        { id: "d", text: "Design 2 without the overlap, since overlap repeats text across chunks and only makes the index larger" }
       ],
       correct: ["b"],
-      why: "'Text chunking strategies': structure-based chunking 'only works when you have guarantees about your document structure', and the video adds that for user-provided documents with no formatting guarantees chunk by section 'is probably not going to work out in the long run'. Here stray '## ' lines can turn a source file into three or more bogus 'sections', so Design 1's fallback does not fire when it should and the file is split at comment banners (a); a higher threshold (c) only moves the point at which the same thing happens, and nothing can tell the two cases apart before indexing. Size-based chunking with overlap is 'often the go-to choice in production because it's simple, reliable, and works with any document type', including code (b). Option d adds the per-type branch the constraint forbids; the lesson does call sentence-based chunking a good middle ground for most text, but that does not make a type-specific branch admissible here."
+      why: "Lesson 40, Text chunking strategies: structure-based chunking 'only works when you have guarantees about your document structure', while size-based chunking with overlap is 'often the go-to choice in production because it's simple, reliable, and works with any document type', the 'most reliable fallback that works with any content type, including code' (b). Header-like lines in code and exports mean the uploads give no structural guarantee, so Design 1 splits some files in the wrong places and its fallback does not fire when it should (a); raising the threshold (c) only moves the point where that happens, because nothing tells real headers from the others. Dropping the overlap (d) brings back the problems the lesson lists for plain size-based chunks: words cut off mid-sentence and chunks that lose context from the surrounding text."
     },
     {
       id: "rh05",
       domain: "Chunking",
-      select: 1,
-      stem: "A RAG system over the course's report.md uses chunk_by_char with chunk_size=500 and chunk_overlap=150. The overlap was added after cut-off words appeared, and that symptom is gone. A new complaint: for questions about the legal section, the prompt usually also contains the opening sentences of the cybersecurity section, which confuses the answer. The reports are the team's own, all generated from one internal template. What is the best change?",
+      select: 2,
+      stem: "A team splits plain-text call transcripts into fixed-length chunks with no overlap. Retrieved chunks often begin or end partway through a speaker's remark, so answers miss its point. Which two changes address this? (Choose two.)",
       options: [
-        { id: "a", text: "Increase chunk_overlap further so that each chunk carries its whole neighbouring section" },
-        { id: "b", text: "Reduce chunk_overlap to zero, since overlap is what pulls the next section into each chunk" },
-        { id: "c", text: "Switch to chunk_by_sentence with five sentences per chunk, so that chunks end at sentence boundaries" },
-        { id: "d", text: "Split on the section headers instead, so that each chunk is a single section of the report" }
+        { id: "a", text: "Switch to structure-based chunks with overlap, so that the chunks follow the sections and headings of each call" },
+        { id: "b", text: "Add overlap between neighbouring chunks, so that each one also carries some text from those around it" },
+        { id: "c", text: "Make the chunks much shorter, so that each one holds less of a remark that a boundary could cut" },
+        { id: "d", text: "Split the text into whole sentences and group consecutive sentences into each chunk" }
       ],
-      correct: ["d"],
-      why: "'Text chunking strategies': structure-based chunking 'gives you the cleanest, most meaningful chunks because each one represents a complete section', and it is the best choice 'when you control document formatting (like internal company reports)' — a template-generated report is exactly that, and the video shows chunk_by_section on report.md producing one section per chunk (d). More overlap (a) pulls in more of the neighbour. Removing overlap (b) shrinks the bleed but brings back the cut-off words it was added for, and size-based boundaries still fall inside sections. Sentence boundaries (c) are not section boundaries: the video liked chunk_by_sentence on report.md, but a five-sentence chunk still straddles two sections, only less often."
+      correct: ["b", "d"],
+      why: "Lesson 40, Text chunking strategies: plain size-based chunks cut words off mid-sentence and lose context from the surrounding text; adding overlap 'means each chunk includes some characters from the neighboring chunks, providing better context and ensuring complete words and sentences' (b). Sentence-based chunking splits the text into individual sentences and groups them into chunks, and the lesson calls it a 'good middle ground for most text documents'; a chunk then never ends inside a sentence (d). Structure-based chunking needs headers and sections and 'only works when you have guarantees about your document structure'; the lesson notes that many real-world documents are plain text 'without clear structural markers', as call transcripts are, so adding overlap does not rescue it (a). Much shorter chunks (c) make the problem worse: every extra boundary is another place where a remark is cut, and each chunk keeps even less of the context around it."
     },
     {
       id: "rh06",
       domain: "Chunking",
-      select: 2,
-      stem: "A developer runs chunk_by_char with its defaults (chunk_size=150, chunk_overlap=20) on report.md and gets chunks that start and end mid-sentence and answer no question at all. Which two moves are consistent with the lesson? Choose two.",
+      select: 1,
+      stem: "An engineering firm indexes ten years of free-form field notes, exported as plain text. Retrieval quality is the only priority: ingestion time, compute cost and implementation effort do not matter. Which chunking strategy should the firm choose?",
       options: [
-        { id: "a", text: "Keep the defaults, since the embedding model compensates for fragmentary chunks when it scores the meaning" },
-        { id: "b", text: "Raise chunk_size and chunk_overlap well above the defaults and inspect whether whole sections start to form" },
-        { id: "c", text: "Compare the chunks that several strategies produce on the real documents, since the right one depends on them" },
-        { id: "d", text: "Inspect each strategy's output and keep the one with the fewest chunks, since fewer boundaries mean fewer cut sections" }
+        { id: "a", text: "Size-based chunks with overlap, since overlap keeps sentences whole and preserves the surrounding context" },
+        { id: "b", text: "Sentence-based chunks with overlap, since whole sentences and shared context keep each idea intact" },
+        { id: "c", text: "Structure-based chunks, since splitting at each note's natural sections keeps every entry complete" },
+        { id: "d", text: "Semantic-based chunks, since grouping sentences by how closely they relate keeps each topic together" }
       ],
-      correct: ["b", "c"],
-      why: "'Text chunking strategies' (video): the default settings 'do not produce very good chunks', so the instructor changes them to a chunk length of 500 with an overlap of 150 and sees 'the formation of actual individual sections' (b); the lesson closes with 'there's no single best chunking strategy' — the right one depends on your documents — and the notebook tries all three strategies on report.md to compare them (c). Embeddings represent the meaning of the text they are given, so a fragment stays a fragment (a). Chunk count says nothing about chunk quality: the lesson judges chunks by reading them, and the video's 500/150 chunks still separate headers from their text while producing fewer chunks than the defaults (d)."
+      correct: ["d"],
+      why: "Lesson 40, Text chunking strategies: semantic-based chunking 'is computationally expensive but produces the most relevant chunks', and it is more complex to implement than the other strategies; with quality the only priority, its costs do not count against it (d). Size-based chunking with overlap (a) is the reliable production choice, but the lesson says it 'may not give perfect results'. Sentence-based chunking (b), even with overlap, is the 'good middle ground' — a compromise this firm has no reason to make. Structure-based chunking (c) gives the cleanest chunks only when 'you have guarantees about your document structure', and free-form notes exported as plain text have no such markers."
     },
     {
       id: "rh07",
       domain: "Embeddings",
       select: 1,
-      stem: "A team embeds both its stored chunks and the incoming user questions by calling the lesson's generate_embedding function, whose input_type has a single default value for everything, with its default arguments. Retrieval quality is mediocre. Following the input_type guidance referenced in the lesson notes, what should change?",
+      stem: "A product manager wants to filter retrieved chunks by tone. The plan is to treat one of the numbers in each chunk's embedding as a tone score, since every number in an embedding lies between -1 and +1. Will the plan work?",
       options: [
-        { id: "a", text: "Mark the chunks as documents when indexing them and keep the default for the questions" },
-        { id: "b", text: "Mark both the chunks and the questions as documents, since the stored side is the larger one" },
-        { id: "c", text: "Mark the questions as documents and the chunks as queries, since the longer text is the reference" },
-        { id: "d", text: "Keep both sides on the default, since using the same model on both sides is what matters" }
+        { id: "a", text: "Yes, if the team uses the number the provider documents as tone, since each one scores a known quality" },
+        { id: "b", text: "No, because embeddings capture only the topic of a text, so tone leaves no trace in any of the numbers" },
+        { id: "c", text: "Yes, if the team takes the first number, since a model orders its features by how much they matter" },
+        { id: "d", text: "No, because no single number has a known meaning, so none of them can be read off as a tone score on its own" }
       ],
-      correct: ["a"],
-      why: "The lesson's generate_embedding defaults to input_type='query' for everything. The note in 'Text embeddings' relays the input_type rule from the embeddings documentation: for retrieval, say what is being embedded — 'query' for the question and 'document' for the stored chunks — so only the indexing side changes (a). Marking both sides as documents (b) removes the distinction the guidance relies on, and swapping the two (c) inverts it. Using the same model on both sides (d) is necessary but not the point: the guidance is about input_type, and the default marks the chunks as queries."
+      correct: ["d"],
+      why: "Lesson 41, Text embeddings: each number is 'essentially a score for some quality of the input text', but 'we don't know precisely what each number represents'; the meaning of each dimension 'is learned by the model during training and isn't directly interpretable by humans', and ideas such as 'how happy the text is' are only conceptual examples (d). Options a and c assume a known meaning for particular numbers, which the lesson says nobody has. Option b rejects the plan for a reason the lesson does not give: the numbers 'represent different qualities or features of the input text', and nothing says tone is left out — what is unknown is which number holds what."
     },
     {
       id: "rh08",
       domain: "Embeddings",
       select: 1,
-      stem: "After a configuration change, a search service embeds user questions with voyage-4-large instead of voyage-3-large. The nightly job that re-embeds the chunk store is reported green by the scheduler, but its last successful run predates the change. Since the change, the top results look unrelated to the questions. What is the most likely cause?",
+      stem: "After a configuration change, a search service embeds user questions with a newer embedding model. The job that re-embeds the stored chunks has not run since the change. Top results now look unrelated to the questions. What is the most likely cause?",
       options: [
-        { id: "a", text: "The questions are now embedded as documents by default, so each query lands far from its own chunks" },
+        { id: "a", text: "The newer model's vectors skip normalization, so cosine similarity now ranks the longest chunks first" },
         { id: "b", text: "The stored chunks were not re-chunked for the newer model, so they are now too long for it to represent" },
         { id: "c", text: "Question and chunk vectors now come from different models, so they are not comparable with each other" },
         { id: "d", text: "The newer model calls for a different similarity function, so cosine similarity ranks the wrong neighbours" }
       ],
       correct: ["c"],
-      why: "'The full RAG flow' runs the user's query through the same embedding model as the chunks, and the lesson note states the rule directly: vectors from different models are not comparable, so similarity scores between them carry no meaning — the stored vectors still come from voyage-3-large because the re-embedding job has not completed since the change, so the fix is to get that job running again (the store keeps the chunk text, or a reference to it, so the chunks can be re-embedded). Option a describes an input_type slip that a model change does not cause. Option b confuses chunk length with the model change: the stored vectors were never recomputed, so the new model never saw the chunks. Option d is wrong because the vector database's cosine similarity does not depend on which model produced the vectors, as long as it is the same model on both sides."
+      why: "Lesson 42, The full RAG flow: the user's query is run 'through the same embedding model' as the chunks and only then compared with the stored embeddings. Since the re-embedding job has not run, the stored vectors still come from the old model, so questions and chunks are now compared across two different models (c); the fix is to embed the stored chunks again with the new model. Option a misreads cosine similarity, which 'measures the cosine of the angle between two vectors', so vector length does not decide the ranking. Option b blames chunk length, but the new model has never seen the chunks; their vectors were never recomputed. Option d has no support in the lessons: they present cosine similarity as the vector database's measure and never tie it to a particular model; what changed is that only the questions moved to the new model."
     },
     {
       id: "rh09",
       domain: "Embeddings",
       select: 1,
-      stem: "A report was split one line per chunk. For the question 'How many bugs did engineers fix this year?', semantic search with k=1 ranks this chunk first: 'This year saw significant strides in our understanding of XDR-47, a \"bug\" we have not seen before.' A colleague concludes that embeddings 'just match keywords'. What is the better reading?",
+      stem: "A report was chunked one line per chunk. For 'How many bugs did engineers fix this year?', semantic search ranks first the medical line 'This year saw significant strides in our understanding of XDR-47, a \"bug\" we have not seen before.' What is the most likely cause?",
       options: [
-        { id: "a", text: "Retrieval did its job: that chunk is the only one containing 'bug', so the prompt should tell Claude to ignore off-topic context" },
-        { id: "b", text: "The embedding model was trained mostly on software text, so it reads 'bug' in the engineering sense unless the context is strongly medical" },
-        { id: "c", text: "The question was embedded in the wrong vocabulary: phrased in the report's own terms, it would land on the engineering section" },
-        { id: "d", text: "The chunk has no other signal to balance the word; chunks that keep the section header with its sentences carry the medical meaning" }
+        { id: "a", text: "Retrieval worked: the line is the only one containing 'bug', so Claude should be told to ignore off-topic text" },
+        { id: "b", text: "The embedding model leans toward software text, so it reads 'bug' in the engineering sense unless context is clearly medical" },
+        { id: "c", text: "One-line chunks are too short for a reliable embedding, so the search fell back to matching the literal word 'bug'" },
+        { id: "d", text: "The one-line chunk lost its section context, so the word 'bug' outweighs the meaning a whole section would carry" }
       ],
       correct: ["d"],
-      why: "'Text chunking strategies' uses this exact example: chunking line by line yields a medical line that contains 'bug', so it looks like it is about software engineering, and 'The full RAG flow' shows that with the header and the sentence together the medical signal outweighs the word — in the lesson's imaginary model the section embeds as [0.97, 0.34], 'with some software elements due to the word bug'. Chunking, not the embedding model, caused the error, and the lesson's remedy is better chunks (d). Option a moves the fix to generation, where with k=1 Claude never sees the right chunk. Option b blames training data for what the chunk boundary did. Option c rewrites the query without restoring the missing section context."
+      why: "Lesson 40, Text chunking strategies, uses this example: 'If you chunk poorly, a user asking \"How many bugs did engineers fix this year?\" might get information about medical research instead of software engineering, simply because the medical section happened to contain the word \"bug\" in a different context.' The lesson opens with the rule this example illustrates — 'A poor chunking strategy can lead to irrelevant context being inserted into your prompts' — and says structure-based chunks are 'the cleanest, most meaningful chunks because each one represents a complete section'. A single line carries none of its section's context, so one word can dominate; the fix is better chunks (d). Option a moves the fix to generation, where Claude never sees the right section. Option b blames the model for what the chunking did. Option c blames the right thing for the wrong reason: semantic search has no keyword fallback — Lesson 41, Text embeddings, contrasts it with 'keyword-based search that looks for exact word matches' — it compared meanings, and the one-line chunk simply carried too little of the medical meaning."
     },
     {
       id: "rh10",
       domain: "Similarity",
       select: 1,
-      stem: "The team moves from the course's in-memory VectorIndex to a hosted vector database whose documentation describes its score as 'cosine similarity'. They keep the client code that takes the result with the lowest score as the best match. Now the top answer is consistently the least relevant of the returned chunks. What went wrong?",
+      stem: "A team moves from the course's in-memory vector index to a hosted vector database whose score is documented as 'cosine similarity'. The client still takes the lowest score as the best match, and the top answer is now consistently the least relevant chunk. What went wrong?",
       options: [
-        { id: "a", text: "The hosted database returns results already ordered best-first, so the client should stop sorting and take the first element" },
+        { id: "a", text: "The hosted database returns results already ordered best-first, so the client should stop sorting and take the first one" },
         { id: "b", text: "The hosted database's score is highest for the closest vectors, so the client must take the highest score instead" },
         { id: "c", text: "The hosted database reports cosine distance under the name 'similarity', so taking the lowest score is still the right rule" },
         { id: "d", text: "The hosted database normalizes the stored vectors on insert, so distances computed by the client no longer line up" }
       ],
       correct: ["b"],
-      why: "'The full RAG flow': cosine similarity ranges from −1 to 1 with values near 1 meaning high similarity, while cosine distance is 1 − similarity with values near 0 meaning high similarity. 'Implementing the RAG flow' prints distances from the course's VectorIndex (0.71 beat 0.72), so 'lowest wins' was right there and is wrong for a similarity score (b). Option a would work as a procedure on a best-first list, but it does not explain the symptom: taking the lowest score gives the same result on sorted and unsorted input, and only the direction of the scale explains a consistent inversion. Option c contradicts the database's own documentation, and lowest-wins on a true distance would surface the most relevant chunk, not the least. Option d changes neither cosine scores nor their order — cosine ignores vector length — and the client here never computes distances itself."
+      why: "Lesson 42, The full RAG flow: cosine similarity ranges from -1 to 1, and 'values close to 1 mean high similarity'; cosine distance is 1 minus cosine similarity, and with it 'values close to 0 mean high similarity'. The course's index in Lesson 43, Implementing the RAG flow, returns cosine distances, where 'lower distance values indicate higher similarity', so lowest-wins was right there and is backwards for a similarity score (b). Option a would not explain a consistent inversion: taking the lowest score gives the same pick on a sorted or an unsorted list. Option c contradicts the database's own documentation, and lowest-wins on a real distance would return the most relevant chunk, not the least. Option d changes nothing: Lesson 42 says the embedding API typically normalizes vectors anyway, and cosine similarity depends on the angle, which normalization does not change."
     },
     {
       id: "rh11",
       domain: "Similarity",
       select: 1,
-      stem: "For 'What did the software engineering dept do last year?', the course's vector store returns Section 2 at distance 0.71 and the Methodology section at 0.72. The team plans to ship with the top-1 result as is. What does the near-tie most likely indicate?",
+      stem: "A developer notices that long chunks often rank high in semantic search and suspects their embeddings carry more weight than those of short chunks. Before the team caps chunk length, what should it know?",
       options: [
-        { id: "a", text: "The ranking is fragile: a question worded slightly differently could put an unrelated section at the top of the list" },
-        { id: "b", text: "Methodology shares vocabulary with most questions, so a gap this small is normal and needs no action" },
-        { id: "c", text: "The embedding model has too few dimensions to separate the two sections, so it should be swapped for a larger one" },
-        { id: "d", text: "The two sections are near-duplicates in meaning, so either one would answer the question about equally well" }
+        { id: "a", text: "Longer text yields an embedding with larger numbers, so capping chunk length evens out the scores" },
+        { id: "b", text: "Embeddings are scaled to length 1 and cosine similarity compares angles, so size gives no extra weight" },
+        { id: "c", text: "Cosine distance removes a length effect that cosine similarity has, so the store should switch to it" },
+        { id: "d", text: "Long chunks contain more of the question's words, so semantic search counts more matches for them" }
       ],
-      correct: ["a"],
-      why: "'Implementing the RAG flow' shows these numbers and immediately warns that there are scenarios where the approach does not perform as expected; the lesson note points out that the gap between the right section and an unrelated one is tiny. The next lessons show semantic ranking putting an irrelevant section above a relevant one on a different query — for the incident ID, Section 10 came first but Section 3 outranked Section 2 — and add BM25 and hybrid search to make the ranking more robust (a). Option b treats the near-tie as harmless, which is the opposite of the lesson's warning. Option c blames the model's size without evidence. Option d is wrong: Methodology and Software Engineering are different sections of report.md, and nothing in the lesson suggests they share content."
+      correct: ["b"],
+      why: "Lesson 42, The full RAG flow: the embedding API 'typically performs a normalization step that scales each vector to have a magnitude of 1.0', and cosine similarity 'measures the cosine of the angle between two vectors'. A long chunk does not get a bigger vector to win with, so capping chunk length would not remove any weight (b). Option a assumes vector size grows with the text, which normalization rules out. Option c cannot change a ranking: cosine distance is 1 minus cosine similarity, so it orders chunks the same way. Option d describes keyword matching; Lesson 41, Text embeddings, contrasts semantic search with 'keyword-based search that looks for exact word matches'."
     },
     {
       id: "rh12",
       domain: "Similarity",
       select: 2,
-      stem: "Two storage designs are proposed for the course's vector store. Design 1 keeps the full chunk text inside each entry next to the vector. Design 2 keeps only a chunk id next to the vector and stores the text in a separate document table. Which two statements are consistent with the lessons? Choose two.",
+      stem: "To save storage, a team keeps only the embeddings in its vector database and discards the chunk text entirely, with no reference to it anywhere. Which two steps of the RAG flow still work as before? (Choose two.)",
       options: [
-        { id: "a", text: "Design 2 works for the pipeline, since an id that points back to the chunk text is enough to assemble the prompt" },
-        { id: "b", text: "Design 2 returns what the lesson calls not useful, since a hit without the chunk text in the entry is just embedding numbers" },
-        { id: "c", text: "Either design has to keep the vector next to the text that produced it, since a chunk's embedding cannot be recomputed later" },
-        { id: "d", text: "Design 1 gains nothing in retrieval, since the store compares only the vectors and returns the text as metadata" }
+        { id: "a", text: "Embedding the user's question so that it can be compared with the stored embeddings" },
+        { id: "b", text: "Building the final prompt from the question and the chunks behind the closest embeddings" },
+        { id: "c", text: "Finding the stored embeddings that are most similar to the question's embedding" },
+        { id: "d", text: "Matching the question's exact terms with a BM25 index, as the team's hybrid retriever does" }
       ],
-      correct: ["a", "d"],
-      why: "'Implementing the RAG flow': getting back just the embedding numbers 'isn't useful', so you include the original chunk text 'or at least a reference to it' alongside each embedding — the video says 'or at least the ID of the chunk' (a). 'The full RAG flow' describes the vector database as optimized for storing, comparing and searching long lists of numbers, and the course's VectorIndex scores them by cosine distance; the {\"content\": chunk} dictionary of 'Implementing the RAG flow' is metadata returned with the match, not something the search compares (d). Option b quotes the lesson against itself: the 'isn't useful' case is a hit with no text and no reference at all. Option c is wrong on both counts: Design 2 keeps the vector next to an id, not the text, and an embedding can be recomputed from the stored text at any time — the lesson's generate_embedding does exactly that."
+      correct: ["a", "c"],
+      why: "Lesson 42, The full RAG flow: the user's query is run through the embedding model, and the vector database finds the most similar stored embeddings using cosine similarity — both steps work on numbers only, so they still run (a, c). Lesson 43, Implementing the RAG flow: 'we store both the embedding and the original text content. This is crucial because when we search later, we need to return the actual text, not just the numerical embedding values'; 'getting back just the embedding numbers isn't useful. We need the actual text that was used to generate those embeddings'. Without the text or a reference to it, there is nothing to put into the final prompt (b). BM25 matching (d) needs the words of each chunk: Lesson 44, BM25 lexical search, counts how often each term appears across the documents, and with the text discarded there is nothing left to count — embeddings carry no words."
     },
     {
       id: "rh13",
       domain: "Lexical search",
       select: 1,
-      stem: "An e-commerce team replaced its semantic search with pure BM25 so that SKU lookups such as 'PX-4471-B' would work. They do, but descriptive questions like 'something to power my laptop on the road' now return nothing useful. The embedding index they used before is still maintained, and no new model (a reranker or a different embedding model) can be added this quarter. Descriptive queries still return hits, just irrelevant ones. What should the team do?",
+      stem: "An e-commerce team replaced semantic search with pure BM25 so that SKU lookups like 'PX-4471-B' work. They do, but descriptive queries like 'something to power my laptop on the road' now return irrelevant hits. The old embedding index is still maintained. What should the team do?",
       options: [
-        { id: "a", text: "Add synonym lists to the BM25 tokenizer so that descriptive queries expand into product terms" },
-        { id: "b", text: "Rescore the BM25 result list with a reranking model so that descriptive queries are ordered by meaning" },
-        { id: "c", text: "Query the vector index alongside the BM25 index and fuse the two result lists for every query" },
-        { id: "d", text: "Query the BM25 index first and consult the vector index only when it returns no hits" }
+        { id: "a", text: "Add synonym lists to the BM25 index so that descriptive queries expand into the product terms it knows" },
+        { id: "b", text: "Switch every query back to the vector index, since descriptive questions outnumber the SKU lookups" },
+        { id: "c", text: "Query the vector index alongside the BM25 index and fuse the two result lists into one for every query" },
+        { id: "d", text: "Query the BM25 index first and consult the vector index only when BM25 returns no hits at all" }
       ],
       correct: ["c"],
-      why: "'BM25 lexical search': the two methods have complementary strengths — semantic search understands context and meaning, lexical search ensures exact terms such as IDs are not missed — and the recommended design runs both in parallel and merges the results, which 'A Multi-Index RAG pipeline' implements with the Retriever and reciprocal rank fusion (c); the existing embedding index is not a new model, so the constraint does not touch it. Synonym lists (a) stay lexical: they expand known words, and cannot keep up with open-ended paraphrases such as 'power my laptop on the road' — the meaning that embeddings capture. A reranker (b) would rescore by meaning, but it is the new model the constraint rules out, and it can only reorder what BM25 already returned. A fallback (d) runs the two searches in sequence instead of merging them, and it never fires here: BM25 still matches common words such as 'laptop' and 'power', so it returns a list, just not the chargers."
+      why: "Lesson 44, BM25 lexical search: 'both search methods have complementary strengths. Semantic search understands context and meaning, while lexical search ensures you don't miss exact term matches', and the recommended strategy is to 'run both semantic and lexical searches in parallel, then merge the results', which Lesson 45, A Multi-Index RAG pipeline, implements with reciprocal rank fusion (c). Synonym lists (a) keep the search lexical: BM25 'focuses on term frequency rather than semantic meaning', so any paraphrase without a list entry still misses. Switching back (b) loses the exact matches that semantic search misses, the problem that led to BM25. A fallback (d) never fires here: the stem says BM25 already returns hits for these queries, just irrelevant ones, and the lesson runs both searches in parallel rather than one as a backup for the other."
     },
     {
       id: "rh14",
       domain: "Lexical search",
       select: 1,
-      stem: "A BM25 index over the course report is queried with 'What happened with INC-2023-Q4-011?'. A colleague is alarmed that the long Methodology section — which never mentions the incident ID but uses 'what', 'happened' and 'with' many times — appears in the top 3, and asks whether the index is broken. What does the lesson's description of BM25 predict?",
+      stem: "A printer maker indexes support tickets with BM25. 'printer' appears in almost every ticket and 'jam' in many. For 'printer duplex jam', the top hits are the few tickets about setting up duplex printing, none mentioning a jam. An engineer reports this as a bug. What is the right response?",
       options: [
-        { id: "a", text: "The tokenizer splits the ID into 'INC', '2023', 'Q4' and '011', so Methodology matches on the common '2023' token" },
-        { id: "b", text: "Common words carry little weight, so the Methodology section ranks below the sections that hold the rare ID" },
-        { id: "c", text: "BM25 corrects for document length, so Methodology's many common-word hits weigh no more than a single mention of the ID" },
-        { id: "d", text: "The query's common words were not removed, so Methodology outranks the sections that mention the ID only once" }
+        { id: "a", text: "This is expected: terms found in most tickets weigh little, while a rare term such as 'duplex' weighs far more" },
+        { id: "b", text: "This is a bug: BM25 should rank first the tickets that repeat the first word of the query most often" },
+        { id: "c", text: "This is expected: BM25 compares meanings, and 'duplex' is the word closest in meaning to a paper jam" },
+        { id: "d", text: "This is a bug: a word used across more of the tickets should count for more, so 'printer' should decide the top hits" }
       ],
-      correct: ["b"],
-      why: "'BM25 lexical search' describes four steps: tokenize, count how often each term appears across the documents, give rare terms high importance and common ones low, then return the documents with more of the high-weight terms. The rare ID dominates, and the video shows exactly this ranking: Software Engineering and Cybersecurity first, Methodology third, with 'what happened with' described as low-weight terms (b). The lesson's own example tokenizes 'a INC-2023-Q4-011' into ['a', 'INC-2023-Q4-011'], so the ID stays one rare term (a). The length correction mentioned in the lesson note dampens repeated hits; it is step 3 — rarity — that makes one mention of the ID outweigh many common words, so c names the wrong mechanism. Option d contradicts step 3: unremoved common words carry little weight, so they cannot lift Methodology above the ID-bearing sections."
+      correct: ["a"],
+      why: "Lesson 44, BM25 lexical search: BM25 counts how often each term appears across the documents and weights terms by importance, so 'terms that appear less frequently get higher importance scores', and it returns the documents that contain more instances of the higher-weighted terms. 'printer' is in almost every ticket and 'jam' in many, so they carry little weight, and the rare 'duplex' decides the ranking even for tickets that never mention a jam (a). Option d inverts that rule. Option b invents a position rule; BM25 weights a term by how rare it is, not by where it sits in the query. Option c describes semantic search: BM25 'focuses on term frequency rather than semantic meaning'."
     },
     {
       id: "rh15",
       domain: "Hybrid retrieval",
       select: 1,
-      stem: "A Retriever fuses a vector index and a BM25 index with reciprocal rank fusion. With k=3 it asks each index for three results. For an incident-ID query, the chunk that contains the ID is BM25's first result and the vector index's fourth, and in the fused ranking it ends up below a chunk that both indexes placed third. What is the most direct fix?",
+      stem: "After adding BM25 next to vector search and fusing the two lists, the right chunk now tops the merged list for incident-ID questions. Answers to those questions are still often wrong. Where should the team look next?",
       options: [
-        { id: "a", text: "Set k=1 so that only the top result of each index reaches the fusion step" },
-        { id: "b", text: "Raise k_rrf well above its default so that rank differences matter less" },
-        { id: "c", text: "Request more candidates than k from each index before fusing the two rankings" },
-        { id: "d", text: "Register the BM25 index first so that its ranks are processed before the vector ranks" }
+        { id: "a", text: "At the fusion step, since the constant k decides which chunk ends up first in the merged list" },
+        { id: "b", text: "At the BM25 index, since the ID's high weight there crowds out the chunks that explain the incident" },
+        { id: "c", text: "At the prompt built from the question and the retrieved chunks, since Claude answers from that prompt" },
+        { id: "d", text: "At the embedding model, since vector search alone missed these chunks before BM25 was added" }
       ],
       correct: ["c"],
-      why: "RRF adds 1/(k_rrf + rank) for every list in which a document appears, so a chunk present in one list gets a single term while a chunk present in both gets two. The lesson note on 'A Multi-Index RAG pipeline' makes the point: each index should return more candidates than k, otherwise a document that is strong in one index and middling in the other loses the fusion. Once the vector index returns four or more candidates, the ID chunk is scored from both lists: with the default k_rrf=60 and ranks counted from 1 as in the lesson's worked example, that is 1/61 + 1/64 ≈ 0.0320, which narrowly beats the (3, 3) chunk's 2/63 ≈ 0.0317 (c); a chunk ranked second by both indexes would still win, which is the fusion working as intended. With k=1 (a) the ID chunk and the vector index's top chunk each get one first place — a tie, and the rest of the ranking is lost. A larger k_rrf (b) shrinks every term alike; the chunk is still scored from one list. Index order (d) does not change a sum."
+      why: "Lesson 42, The full RAG flow, ends with a separate step: 'we take the user's question and the most relevant text chunk we found, combine them into a prompt, and send it to Claude'. The merged list already puts the right chunk first — Lesson 45, A Multi-Index RAG pipeline, shows that 'combining semantic and lexical search can overcome the limitations of either approach used alone' — so the search stages have done their job, and the wrong answers come from the step after them (c). Tuning fusion (a), reweighting BM25 (b) or changing the embedding model (d) all change retrieval, which is the part that now works."
     },
     {
       id: "rh16",
       domain: "Hybrid retrieval",
       select: 2,
-      stem: "A team adds a third index to the course's Retriever. Its search() returns (doc, score) pairs sorted by score ascending, where a higher score means a better match. Nothing else was changed. Which two statements are correct? Choose two.",
+      stem: "A hybrid retriever gets two lists: chunk A is second in both the vector list and the BM25 list, while chunk B is first in BM25 but absent from the vector list. Reciprocal rank fusion ranks A above B. Which two statements explain this? (Choose two.)",
       options: [
-        { id: "a", text: "RRF reads the new index's list in the wrong order, so its best documents receive the smallest contribution" },
-        { id: "b", text: "The SearchIndex protocol fixes the method names and signatures, not the order of results, so the mismatch raises no error" },
-        { id: "c", text: "The new index's top documents are over-weighted, because RRF sums the raw scores and its scale is the largest" },
-        { id: "d", text: "The Retriever re-sorts each index's results by score before assigning ranks, so the ascending order is corrected first" }
+        { id: "a", text: "Fusion adds a share for every list a chunk appears in, so a chunk that both indexes rank well collects more" },
+        { id: "b", text: "Fusion looks only at rank positions, so B's strong BM25 score counts for no more than its first place" },
+        { id: "c", text: "Fusion trusts the vector index more than BM25, so a chunk that only the BM25 list found ranks lower" },
+        { id: "d", text: "Fusion halves the score of a chunk absent from one list, as a penalty that ranks it below the others" }
       ],
       correct: ["a", "b"],
-      why: "'A Multi-Index RAG pipeline': the Retriever's search() walks each index's results with enumerate, taking the position as the rank and discarding the score ('for rank, (doc, _) in enumerate(results)'); a list sorted worst-first therefore gives its best documents the largest rank and the smallest 1/(k + rank) term (a). The indexes are combined through the shared add_document()/search() interface, which says nothing about result order, so the mismatch is silent (b). The lesson's phrase 'normalize and combine their rankings' refers to ranks: RRF never sums or compares raw scores, so the new scale cannot over-weight anything (c is wrong), and the Retriever never re-sorts by score — enumerate assigns ranks in the order the index returned (d is wrong)."
+      why: "Lesson 45, A Multi-Index RAG pipeline: reciprocal rank fusion scores a chunk by its rank in each list and adds the parts up, as in the lesson's example where Section 2 gets 1/(1+1) from one index plus 1/(1+2) from the other; 'Section 2 performed well in both indexes, so it rises to the top' (a). It works on ranks because 'each method uses different scoring systems', so how high B's raw BM25 score was does not enter the fusion, only its first place does (b). The formula has no weight per index (c) and no penalty for a missing list (d): a chunk that one index did not return simply gets one share instead of two."
     },
     {
       id: "rh17",
       domain: "Hybrid retrieval",
       select: 1,
-      stem: "A hybrid pipeline indexes dozens of quarterly reports from different companies. Many chunks read like 'revenue grew 3% this quarter' without naming the company or the quarter; that information sits only in the report title, dozens of pages earlier. Retrieval keeps mixing up companies. Which improvement addresses this most directly?",
+      stem: "A team's retriever fuses a vector index and a BM25 index. They now want to add a third, graph-based index without changing the retriever or its fusion step. What does the new index need?",
       options: [
-        { id: "a", text: "Increase chunk_overlap so that each chunk carries more of the surrounding text" },
-        { id: "b", text: "Rerank the fused candidates with a model that scores each question–chunk pair" },
-        { id: "c", text: "Index each report's title as a chunk of its own so that BM25 can match the company name" },
-        { id: "d", text: "Have Claude prepend a short document-level context to each chunk before indexing" }
+        { id: "a", text: "The same operations for adding documents and for searching that the vector and BM25 indexes already offer" },
+        { id: "b", text: "A search that returns only chunks the other two indexes did not find, so the fused list gains new ones" },
+        { id: "c", text: "An embedding for every chunk it holds, so that the retriever can compare its results by cosine similarity" },
+        { id: "d", text: "Results that are already merged with the vector and BM25 lists, so the retriever can pass them straight on" }
       ],
-      correct: ["d"],
-      why: "The notes on 'A Multi-Index RAG pipeline' describe Anthropic's contextual retrieval (an extension beyond the official lesson): before indexing, Claude writes a short context for each chunk from the whole document ('this section is from company X's report for quarter Y'), and both the embeddings and the BM25 index are built from that enriched text — exactly the information missing here. Overlap (a) reaches only the neighbouring text, not a title dozens of pages away. A reranker (b) scores the same context-free chunk text. A title chunk (c) makes the company name findable, but it is not attached to the revenue chunks the question needs."
+      correct: ["a"],
+      why: "Lesson 45, A Multi-Index RAG pipeline: the Retriever can wrap the vector and BM25 indexes because they 'share nearly identical APIs' for adding documents and searching, and 'since all indexes implement the same SearchIndex protocol ... you can easily add new search methodologies'; a graph-based search is one of the lesson's own examples, and 'the Retriever will automatically incorporate it into the fusion process' (a). The retriever 'forwards user queries to both indexes, collects their results, and merges them', so a new index neither has to avoid chunks the others found (b) nor pre-merge its results (d). The retriever merges ranked lists; it does not compare results by embeddings (c)."
     }
   ]
 };
