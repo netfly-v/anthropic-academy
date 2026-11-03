@@ -8,6 +8,7 @@ window.QUIZ_BANK = {
       domain: "Workflows vs agents",
       select: 1,
       stem: "An agent processes supplier invoices with four tools: extract the fields, look up the purchase order, compare the totals, post a ledger entry. Every invoice needs those four steps in that order. Some runs end with no entry, each failing along a different path. What is the best next step?",
+      stem_ru: "Агент обрабатывает счета поставщиков с помощью четырёх инструментов: извлечь поля, найти заказ на закупку, сравнить итоговые суммы, сделать проводку в учётной книге. Каждому счёту нужны эти четыре шага именно в этом порядке. Некоторые прогоны заканчиваются без проводки, причём каждый из них приходит к сбою своим, отличным от других путём. Какой следующий шаг лучше всего?",
       options: [
         { id: "a", text: "Wrap each run in a grader call that checks for the ledger entry and re-runs the agent whenever it is missing" },
         { id: "b", text: "List the four steps in order in the agent's system prompt and instruct it to finish each before the next" },
@@ -23,6 +24,7 @@ window.QUIZ_BANK = {
       domain: "Workflows vs agents",
       select: 1,
       stem: "A product-description workflow is reliable and must stay so. Merchants now also send open-ended requests it cannot handle, such as rewrites in a campaign's voice or comparisons with a competitor's listing, and the kinds change weekly. A manager proposes rebuilding everything as an agent. What should the team do?",
+      stem_ru: "Workflow для описаний товаров работает надёжно и должен таким остаться. Теперь продавцы присылают ещё и открытые запросы, с которыми он не справляется, например переписать текст в тоне рекламной кампании или сравнить с карточкой товара конкурента, причём виды таких запросов меняются каждую неделю. Менеджер предлагает переделать всё в агента. Что следует сделать команде?",
       options: [
         { id: "a", text: "Have the drafting step of the workflow handle the open-ended requests through added prompt instructions" },
         { id: "b", text: "Leave the standard workflow as it is and route each merchant request to a new workflow built for its type" },
@@ -38,6 +40,7 @@ window.QUIZ_BANK = {
       domain: "Workflows vs agents",
       select: 1,
       stem: "An analyst agent answers open-ended requests with search and spreadsheet tools. Its regression tests assert the exact sequence of tool calls, and many fail although the answers are correct, because the agent reaches them by different paths. The suite must still catch wrong answers. What is the best change?",
+      stem_ru: "Агент-аналитик отвечает на открытые запросы с помощью инструментов поиска и работы с таблицами. Его регрессионные тесты проверяют точную последовательность вызовов инструментов, и многие из них падают, хотя ответы верные, потому что агент приходит к ним разными путями. Набор тестов по-прежнему должен ловить неверные ответы. Какое изменение лучше всего?",
       options: [
         { id: "a", text: "Check each case's final answer and end state, whatever route the agent took to get there" },
         { id: "b", text: "Fix the order of tool calls in the system prompt so that every run follows the sequence the tests expect" },
@@ -53,6 +56,7 @@ window.QUIZ_BANK = {
       domain: "Workflows vs agents",
       select: 2,
       stem: "An insurer replaced a claims-letter workflow, in which staff filled in a form and four narrow Claude calls drafted the letter, with one agent that reads the customer's email as it is. Staff prefer skipping the form, but letters now contain more factual slips. Which two statements explain these observations? (Choose two.)",
+      stem_ru: "Страховая компания заменила одним агентом, который читает электронное письмо клиента как есть, прежний workflow для писем по страховым случаям: в нём сотрудники заполняли форму, а четыре узких вызова Claude составляли письмо. Сотрудникам больше нравится обходиться без формы, но в письмах теперь больше фактических ошибок. Какие два утверждения объясняют эти наблюдения? (Выберите два.)",
       options: [
         { id: "a", text: "Staff no longer have to supply the exact inputs the workflow required up front, so their work is less constrained" },
         { id: "b", text: "The workflow demanded more upfront planning and design work, a burden that fell on the staff who used it" },
@@ -68,6 +72,7 @@ window.QUIZ_BANK = {
       domain: "Evaluator-optimizer",
       select: 1,
       stem: "A wireframe-to-HTML loop has Claude describe the wireframe, write HTML from that description, render a screenshot, then grade the screenshot against the description, sending notes back until it passes. Accepted pages often lack small elements that the description left out. What is the best fix?",
+      stem_ru: "В цикле wireframe → HTML Claude описывает wireframe, пишет HTML по этому описанию, рендерит скриншот, а затем оценивает скриншот по описанию и отправляет замечания обратно, пока результат не пройдёт проверку. На принятых страницах часто не хватает мелких элементов, которые описание упустило. Какое исправление лучше всего?",
       options: [
         { id: "a", text: "Allow more feedback rounds, so that the HTML step gets more chances to add the elements that are missing" },
         { id: "b", text: "Send the grader's notes back to the describing step as well, and regenerate the description every round" },
@@ -83,6 +88,7 @@ window.QUIZ_BANK = {
       domain: "Parallelization",
       select: 1,
       stem: "A shipping tool sends one request per transport mode in parallel, each with its own criteria, then a final request returns the recommended mode. Audits find every per-mode analysis accurate, yet the recommendation often names a mode its own analysis rated unsuitable. Which stage should the team fix?",
+      stem_ru: "Инструмент для отправки грузов параллельно отправляет по одному запросу на каждый вид транспорта, у каждого запроса свои критерии, а затем финальный запрос возвращает рекомендуемый вид транспорта. Аудиты показывают, что анализ по каждому виду транспорта точен, однако в рекомендации часто назван вид транспорта, который его собственный анализ признал неподходящим. Какой этап следует исправить команде?",
       options: [
         { id: "a", text: "The per-mode requests, which should each rank every mode so that the final request has less to weigh" },
         { id: "b", text: "The parallel run, which should become a chain so that each analysis can build on the one before it" },
@@ -98,6 +104,7 @@ window.QUIZ_BANK = {
       domain: "Parallelization",
       select: 1,
       stem: "A trip planner runs four requests in parallel, choosing the flights, the hotel, daily activities and restaurants, then an aggregation call assembles the itinerary. Each request performs well when tested alone, yet the activities and restaurants are routinely across the city from the hotel. What is the most likely cause?",
+      stem_ru: "Планировщик поездок параллельно запускает четыре запроса, которые выбирают авиарейсы, отель, занятия на каждый день и рестораны, а затем вызов агрегации собирает маршрут поездки. Каждый запрос хорошо работает, когда его тестируют отдельно, однако занятия и рестораны регулярно оказываются на другом конце города от отеля. Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "The four requests use different prompts and tools, so each one makes its own assumptions about the trip" },
         { id: "b", text: "The activity and restaurant requests depend on the hotel choice, which is made in a request beside them" },
@@ -113,6 +120,7 @@ window.QUIZ_BANK = {
       domain: "Parallelization",
       select: 1,
       stem: "A loan screener runs six parallel evaluations, each built from a shared template of the applicant's form answers plus its own criteria block. Five are validated. The fraud evaluation keeps saying it cannot judge without the device and session data, which the platform records. What is the best fix?",
+      stem_ru: "Система предварительной проверки заявок на кредит запускает шесть параллельных оценок; каждая собирается из общего шаблона с ответами заявителя в анкете и собственного блока критериев. Пять оценок прошли проверку. Оценка на мошенничество раз за разом сообщает, что не может вынести суждение без данных об устройстве и сессии, а платформа эти данные записывает. Какое исправление лучше всего?",
       options: [
         { id: "a", text: "Add the device and session data to the aggregation call, so that it can weigh them against the fraud analysis" },
         { id: "b", text: "Add the device and session data to the shared template, so that every evaluation works from the same inputs" },
@@ -128,6 +136,7 @@ window.QUIZ_BANK = {
       domain: "Chaining",
       select: 1,
       stem: "A chain runs four separate requests, each from its own template: pick a topic, research it, write a script, title it. The research is rich. The script template holds the style guide, the topic and 'Using your research, write the script.' Scripts come out generic. What is the likely cause?",
+      stem_ru: "Цепочка выполняет четыре отдельных запроса, каждый по своему шаблону: выбрать тему, исследовать её, написать сценарий, придумать название. Исследование получается содержательным. В шаблоне сценария есть руководство по стилю, тема и фраза «Using your research, write the script.» Сценарии выходят шаблонными. Какова вероятная причина?",
       options: [
         { id: "a", text: "The script request does not contain the research, so its instruction points to text Claude does not receive" },
         { id: "b", text: "The research is too long to fit in the script request, so it is left out and Claude writes from what it knows" },
@@ -143,6 +152,7 @@ window.QUIZ_BANK = {
       domain: "Chaining",
       select: 1,
       stem: "A two-step chain drafts product descriptions, then a second request revises each draft to remove prices and names from a competitor list. Only about one draft in ten contains either, yet the revision doubles the cost. Quality must not drop. What is the best change?",
+      stem_ru: "Цепочка из двух шагов составляет черновики описаний товаров, а затем второй запрос дорабатывает каждый черновик, чтобы убрать цены и названия из списка конкурентов. Лишь примерно в одном черновике из десяти есть что-то из этого, но доработка удваивает стоимость. Качество не должно снизиться. Какое изменение лучше всего?",
       options: [
         { id: "a", text: "Drop the revision request and add worked examples of compliant descriptions to the drafting prompt" },
         { id: "b", text: "Scan each draft with simple code for the banned items, and pass just the ones it flags on to the revision step" },
@@ -158,6 +168,7 @@ window.QUIZ_BANK = {
       domain: "Routing",
       select: 1,
       stem: "A support router sends each ticket to one pipeline: billing (invoice tools), technical (incident-record tools) or account (profile tools). Requests for an outage credit on the next invoice, whose amount depends on the incident record, are labelled 'billing' as designed and get wrong amounts. What is the best fix?",
+      stem_ru: "Маршрутизатор поддержки отправляет каждый тикет в один конвейер: billing (инструменты для счетов), technical (инструменты для записей об инцидентах) или account (инструменты для профиля). Запросы на компенсацию за сбой в следующем счёте, сумма которой зависит от записи об инциденте, как и задумано, получают метку «billing», и суммы в ответах на них выходят неверными. Какое исправление лучше всего?",
       options: [
         { id: "a", text: "Add examples to the classification prompt so that credit requests are labelled 'technical' from now on" },
         { id: "b", text: "Send tickets that mention both an outage and an invoice to the billing and the technical pipelines, then merge" },
@@ -173,6 +184,7 @@ window.QUIZ_BANK = {
       domain: "Routing",
       select: 2,
       stem: "A team proposes a router for its video-script tool: one Claude call labels each topic with one of six genres, and each genre gets its own pipeline. Reviewers insist that every extra call be justified. Which two statements about this design are correct? (Choose two.)",
+      stem_ru: "Команда предлагает добавить маршрутизатор в свой инструмент для сценариев видео: один вызов Claude присваивает каждой теме один из шести жанров, и у каждого жанра свой конвейер. Рецензенты требуют, чтобы каждый дополнительный вызов был обоснован. Какие два утверждения об этой схеме верны? (Выберите два.)",
       options: [
         { id: "a", text: "A shared template with the genre filled in works as well as per-genre templates, since the router has already chosen the genre" },
         { id: "b", text: "Routing usually costs more than it returns here, since the classification call adds to the cost of every script" },
@@ -188,6 +200,7 @@ window.QUIZ_BANK = {
       domain: "Agents & tools",
       select: 1,
       stem: "An overnight agent handles each refund email in a single pass, with order-lookup and refund tools. When a customer with several orders omits the order number and nothing else in the email identifies it, the agent refunds the latest order, often wrongly. Where is the design at fault?",
+      stem_ru: "Агент, работающий ночью, обрабатывает каждое письмо с просьбой о возврате денег за один проход, используя инструменты поиска заказа и возврата. Когда у клиента несколько заказов, он не указал номер заказа и ничто другое в письме не позволяет его определить, агент возвращает деньги за последний заказ, часто ошибочно. Где ошибка в проектировании?",
       options: [
         { id: "a", text: "In the run design, since it gives the agent no chance to check with the sender which purchase they have in mind" },
         { id: "b", text: "In the lookup tool, since it cannot filter a customer's orders by item or by date to narrow down the match" },
@@ -203,6 +216,7 @@ window.QUIZ_BANK = {
       domain: "Agents & tools",
       select: 1,
       stem: "A video agent's make_video tool generates the cover image, the voice-over and the final clip in one call. Customers now want to step in at different points: choosing between two covers, approving the voice-over first, or redoing only the voice-over. The points vary by request. What should change?",
+      stem_ru: "Инструмент make_video у агента для видео за один вызов генерирует обложку, озвучку и итоговый ролик. Теперь клиенты хотят вмешиваться в разных точках: выбирать из двух обложек, сначала утверждать озвучку или переделывать только озвучку. В каждом запросе эти точки свои. Что нужно изменить?",
       options: [
         { id: "a", text: "Add a review flag to make_video so that it pauses after the cover image, the voice-over and the clip for approval" },
         { id: "b", text: "Replace make_video with image, speech and FFmpeg-through-bash tools, so that the agent decides where to pause" },
@@ -218,6 +232,7 @@ window.QUIZ_BANK = {
       domain: "Environment inspection",
       select: 1,
       stem: "A video agent calls post_media two or three times per video, each time saying it will try again, and the platform shows duplicate posts. Traces show that each call returned the platform's reply as the tool result: an empty body. What is the most likely cause?",
+      stem_ru: "Агент для видео вызывает post_media два-три раза на каждое видео, каждый раз сообщая, что попробует ещё раз, и на платформе появляются дубли публикаций. Трассировки показывают, что каждый вызов вернул в качестве результата инструмента ответ платформы — пустое тело. Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "The system prompt lacks a rule that post_media is called once per video, so the agent repeats the call to be safe" },
         { id: "b", text: "The empty tool result gives Claude no evidence that the upload went through, so it treats the action as not done" },
@@ -233,6 +248,7 @@ window.QUIZ_BANK = {
       domain: "Environment inspection",
       select: 1,
       stem: "A dependency-upgrade agent works on customer repositories with only write_file and run_tests tools. It keeps overwriting configuration files and dropping settings they already held. Repositories differ by customer and cannot be described in advance. What should the team add first?",
+      stem_ru: "Агент для обновления зависимостей работает с репозиториями клиентов, и у него есть только инструменты write_file и run_tests. Он раз за разом перезаписывает конфигурационные файлы и теряет настройки, которые в них уже были. Репозитории у всех клиентов разные, и описать их заранее нельзя. Что команде следует добавить в первую очередь?",
       options: [
         { id: "a", text: "Add a grader that checks each configuration file the agent writes against the test results and sends it back" },
         { id: "b", text: "Add tools that let the agent list, search and read the code of whichever project it is working on" },
@@ -248,6 +264,7 @@ window.QUIZ_BANK = {
       domain: "Environment inspection",
       select: 2,
       stem: "A reporting agent writes a script that builds a PDF, runs it, checks the console output and confirms the file exists, then emails it. Customers find overlapping, unreadable chart labels and missing requested sections. Which two changes let the agent catch these defects before emailing? (Choose two.)",
+      stem_ru: "Агент для отчётов пишет скрипт, собирающий PDF, запускает его, проверяет вывод в консоли, убеждается, что файл существует, и затем отправляет файл по электронной почте. Клиенты обнаруживают, что подписи на графиках накладываются друг на друга и не читаются, а запрошенных разделов не хватает. Какие два изменения позволят агенту выявить эти дефекты до отправки письма? (Выберите два.)",
       options: [
         { id: "a", text: "Tell the agent to render each page to an image and look at those images before it emails the report" },
         { id: "b", text: "Tell the agent to list the customer's requested sections in a comment at the top of the script before writing it" },

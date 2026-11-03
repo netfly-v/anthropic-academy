@@ -8,6 +8,7 @@ window.QUIZ_BANK = {
       domain: "Anthropic apps",
       select: 2,
       stem: "A team's coding assistant reads a bug report and returns, in one reply, the shell commands and code edits a developer should apply by hand. The team wants it to act as an agent the way Claude Code does. Which two changes get it there? (Choose two.)",
+      stem_ru: "Помощник команды по программированию читает отчёт об ошибке и одним ответом возвращает shell-команды и правки кода, которые разработчик должен применить вручную. Команда хочет, чтобы он работал как агент — так, как это делает Claude Code. Какие два изменения к этому приведут? (Выберите два.)",
       options: [
         { id: "a", text: "Let Claude ask clarifying questions about the bug before it proposes any commands or edits" },
         { id: "b", text: "Give Claude tools that run commands and edit files, so that it carries out each step itself" },
@@ -23,6 +24,7 @@ window.QUIZ_BANK = {
       domain: "Anthropic apps",
       select: 1,
       stem: "A logistics firm wants Claude to re-key shipment records into a native Windows program that has no API. Each record type opens a differently laid-out entry screen, so whoever enters the data has to look at the screen first. Which approach lets Claude do the job?",
+      stem_ru: "Логистическая компания хочет, чтобы Claude заново вводил записи об отправках в нативную программу для Windows, у которой нет API. Для каждого типа записи открывается экран ввода с другим расположением полей, поэтому тот, кто вводит данные, сначала должен посмотреть на экран. Какой подход позволит Claude выполнить эту работу?",
       options: [
         { id: "a", text: "The Playwright MCP server, added to Claude Code so that Claude can work through each record in turn" },
         { id: "b", text: "Claude Code's terminal access, which lets Claude run a command for each record from the conversation" },
@@ -38,6 +40,7 @@ window.QUIZ_BANK = {
       domain: "Anthropic apps",
       select: 1,
       stem: "A team wants an agent that bumps a library version in a repository, runs the test suite and fixes whatever breaks. One engineer proposes computer use, since it 'takes Claude's capabilities much further'. Which choice fits the task best?",
+      stem_ru: "Команде нужен агент, который поднимает версию библиотеки в репозитории, запускает набор тестов и исправляет всё, что сломалось. Один инженер предлагает Computer Use, поскольку он «takes Claude's capabilities much further». Какой вариант лучше всего подходит для этой задачи?",
       options: [
         { id: "a", text: "Computer use, since driving an editor and a terminal window on the desktop covers every step of the task" },
         { id: "b", text: "Claude Code, since each step is a file edit or a command, which its built-in tools carry out directly" },
@@ -53,6 +56,7 @@ window.QUIZ_BANK = {
       domain: "Setup",
       select: 1,
       stem: "A platform team sorts the requests developers will make in Claude Code's first week: some work with the built-in tools, others need an MCP server registered first. Which request do the built-in tools serve on their own?",
+      stem_ru: "Платформенная команда сортирует запросы, которые разработчики будут делать в первую неделю работы с Claude Code: одни можно выполнить встроенными инструментами, для других сначала нужно зарегистрировать MCP-сервер. Какой запрос встроенные инструменты выполнят сами?",
       options: [
         { id: "a", text: "Read the design decision recorded for the feature in the team's Confluence space before planning" },
         { id: "b", text: "Read the spacing and colour values of one frame in the design team's Figma file before coding" },
@@ -68,6 +72,7 @@ window.QUIZ_BANK = {
       domain: "Setup",
       select: 2,
       stem: "A team wants Claude Code to look up orders in the company's in-house order service, which has only an internal REST API. Which two steps give Claude Code this capability as a tool of its own? (Choose two.)",
+      stem_ru: "Команда хочет, чтобы Claude Code искал заказы во внутреннем сервисе заказов компании, у которого есть только внутренний REST API. Какие два шага дадут Claude Code эту возможность в виде собственного инструмента? (Выберите два.)",
       options: [
         { id: "a", text: "Build an MCP client for Claude Code, so that it can open a connection to the order service" },
         { id: "b", text: "List the order service as an MCP server in CLAUDE.md, so that Claude Code adds its tools" },
@@ -83,6 +88,7 @@ window.QUIZ_BANK = {
       domain: "Setup",
       select: 1,
       stem: "On a fresh Linux laptop, a developer runs the lesson's install command, npm install -g @anthropic-ai/claude-code, before she has logged in to any Anthropic account. The shell answers that npm is not found. What went wrong?",
+      stem_ru: "На новом ноутбуке с Linux разработчица запускает команду установки из урока, npm install -g @anthropic-ai/claude-code, до того как вошла в какой-либо аккаунт Anthropic. Оболочка отвечает, что npm не найден. Что пошло не так?",
       options: [
         { id: "a", text: "She skipped the first step, installing Node.js, which provides the npm command the install step uses" },
         { id: "b", text: "She skipped logging in to her Anthropic account, which the install step needs before it can download" },
@@ -98,6 +104,7 @@ window.QUIZ_BANK = {
       domain: "CLAUDE.md",
       select: 1,
       stem: "Every Claude Code session on a team's repository follows a rule, 'prefer pathlib over os.path', that no one can find in the code or the README. A developer added it weeks ago with a shortcut typed during a session. Where should the team look to change it?",
+      stem_ru: "Каждая сессия Claude Code в репозитории команды следует правилу «prefer pathlib over os.path», которое никто не может найти ни в коде, ни в README. Несколько недель назад его добавил разработчик быстрой командой, набранной во время сессии. Где команде искать это правило, чтобы его изменить?",
       options: [
         { id: "a", text: "In CLAUDE.md, since notes added with the # command are written into that file and can be edited there" },
         { id: "b", text: "In the conversation history of the session where the note was added, since later sessions build on it" },
@@ -113,6 +120,7 @@ window.QUIZ_BANK = {
       domain: "CLAUDE.md",
       select: 1,
       stem: "A consultant works in many client repositories, each with a committed CLAUDE.md she may not change. She wants to set up her personal commit-message rule once and have Claude Code follow it in every repository she opens, including future clients'. Where should the rule go?",
+      stem_ru: "Консультант работает во многих репозиториях клиентов, и в каждом есть закоммиченный CLAUDE.md, который ей нельзя менять. Она хочет один раз настроить своё личное правило для сообщений коммитов, чтобы Claude Code следовал ему в каждом репозитории, который она открывает, включая репозитории будущих клиентов. Куда поместить это правило?",
       options: [
         { id: "a", text: "In one repository's local CLAUDE.md, since local memory is personal and follows her across projects" },
         { id: "b", text: "In her user-level CLAUDE.md, since user memory is used across all of the projects she works on" },
@@ -128,6 +136,7 @@ window.QUIZ_BANK = {
       domain: "CLAUDE.md",
       select: 1,
       stem: "A team runs /init on a large service. The generated CLAUDE.md captures the build commands and coding style well but says almost nothing about the billing module's strict rules, which matter most to the team. What would have made the generated file cover them?",
+      stem_ru: "Команда запускает /init на большом сервисе. Созданный CLAUDE.md хорошо отражает команды сборки и стиль кода, но почти ничего не говорит о строгих правилах модуля биллинга, которые для команды важнее всего. Что нужно было сделать, чтобы созданный файл их охватил?",
       options: [
         { id: "a", text: "Running /init with a special direction about the billing module, so Claude attends to that area" },
         { id: "b", text: "Running /clear right before /init, so that the scan is not shaped by earlier chat about other modules" },
@@ -143,6 +152,7 @@ window.QUIZ_BANK = {
       domain: "CLAUDE.md",
       select: 1,
       stem: "Months after a team ran /init, it moved the project from pip to uv and from unittest to pytest. Claude Code still proposes pip install and python -m unittest whenever it sets up or tests the project. Which action fixes the cause?",
+      stem_ru: "Через несколько месяцев после того, как команда запустила /init, она перевела проект с pip на uv и с unittest на pytest. Claude Code по-прежнему предлагает pip install и python -m unittest всякий раз, когда настраивает или тестирует проект. Какое действие устраняет причину?",
       options: [
         { id: "a", text: "Run /clear before each request, so that every conversation starts from an empty context" },
         { id: "b", text: "Correct the commands in the README and commit it, so that the project's own documentation shows them" },
@@ -158,6 +168,7 @@ window.QUIZ_BANK = {
       domain: "Workflows",
       select: 1,
       stem: "A developer has Claude Code plan a PDF-and-Word-to-markdown tool without writing code, then has it implement that plan. The tool works but duplicates a conversion helper in document.py and is registered unlike the existing tool in math.py. Which earlier step would have prevented both problems?",
+      stem_ru: "Разработчик просит Claude Code спланировать без написания кода инструмент для конвертации PDF и Word в markdown, а затем реализовать этот план. Инструмент работает, но дублирует вспомогательную функцию конвертации из document.py и зарегистрирован не так, как существующий инструмент в math.py. Какой более ранний шаг предотвратил бы обе проблемы?",
       options: [
         { id: "a", text: "Having Claude brainstorm test cases for the conversion tool and write them as tests first" },
         { id: "b", text: "Having Claude read and analyze the source files that the new feature is meant to build on" },
@@ -173,6 +184,7 @@ window.QUIZ_BANK = {
       domain: "Workflows",
       select: 1,
       stem: "A team builds a CSV importer with the test-driven workflow. After Claude reads the relevant files, tests are brainstormed and all of them are written; Claude then iterates until they pass. In production the importer fails on empty files. Why did Claude consider the importer finished?",
+      stem_ru: "Команда делает импортёр CSV по рабочему процессу через тесты. После того как Claude читает нужные файлы, придумывают тесты и пишут их все; затем Claude дорабатывает код, пока они не пройдут. В продакшене импортёр падает на пустых файлах. Почему Claude счёл импортёр готовым?",
       options: [
         { id: "a", text: "Its success criteria were the written tests, and none checked empty files, so passing them all meant done" },
         { id: "b", text: "It had read the relevant files, and none of them showed any other part of the codebase handling empty input" },
@@ -188,6 +200,7 @@ window.QUIZ_BANK = {
       domain: "Workflows",
       select: 1,
       stem: "A developer had Claude Code implement a feature, stashed the changes so the working tree is clean, and asked Claude in the same session to build it again with the test-driven workflow. The second implementation repeats the first almost line for line. What is the most likely cause?",
+      stem_ru: "Разработчик попросил Claude Code реализовать функцию, убрал изменения в stash, чтобы рабочее дерево стало чистым, и в той же сессии попросил Claude сделать её заново по рабочему процессу через тесты. Вторая реализация почти строка в строку повторяет первую. Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "Claude Code reloads the files it edited earlier from disk, so it still sees the first implementation there" },
         { id: "b", text: "The first implementation is still in the conversation history, so Claude ends up reusing its earlier answer" },
@@ -203,6 +216,7 @@ window.QUIZ_BANK = {
       domain: "Workflows",
       select: 2,
       stem: "A team wants to run the lesson's workflows for new features as unattended scripts, with no developer involved. Which two of these parts of the work does the lesson leave to the developer, so that the scripts would need a replacement for them? (Choose two.)",
+      stem_ru: "Команда хочет запускать рабочие процессы из урока для новых функций как скрипты, работающие без присмотра и без участия разработчика. Какие две из этих частей работы урок оставляет разработчику, так что скриптам понадобилась бы для них замена? (Выберите два.)",
       options: [
         { id: "a", text: "Picking which of the candidate test cases are worth writing as real tests" },
         { id: "b", text: "Coming up with candidate test cases that might validate the new feature" },
@@ -218,6 +232,7 @@ window.QUIZ_BANK = {
       domain: "MCP in Claude Code",
       select: 1,
       stem: "A team is building an MCP server for Claude Code. Claude should be able to create new tickets in the team's tracker, and developers want a reusable 'triage this bug report' request with a fixed structure that they can start from. How should the server expose the two?",
+      stem_ru: "Команда делает MCP-сервер для Claude Code. Claude должен уметь создавать новые тикеты в трекере команды, а разработчики хотят повторно используемый запрос «triage this bug report» с фиксированной структурой, с которого они могли бы начинать. Как серверу предоставить и то, и другое?",
       options: [
         { id: "a", text: "Creating tickets as a resource, and the triage request as a prompt for developers to start from" },
         { id: "b", text: "Creating tickets as a resource Claude writes to, and the triage request as a tool Claude can call" },
@@ -233,6 +248,7 @@ window.QUIZ_BANK = {
       domain: "MCP in Claude Code",
       select: 1,
       stem: "After setting up the documents server, a developer asks Claude Code to convert report.docx to markdown. Claude calls the server's document_path_to_markdown tool and gets back an error: 'unsupported file type'. Converting PDF files through the same tool works. Which component should she check first?",
+      stem_ru: "Настроив сервер documents, разработчица просит Claude Code конвертировать report.docx в markdown. Claude вызывает инструмент сервера document_path_to_markdown и получает ошибку: «unsupported file type». Конвертация PDF-файлов через тот же инструмент работает. Какой компонент ей стоит проверить первым?",
       options: [
         { id: "a", text: "Claude Code's MCP client, which may pass Word files to the server in a form the tool cannot read" },
         { id: "b", text: "Claude's tool arguments, which may give a path to a file that does not exist on her machine" },
@@ -248,6 +264,7 @@ window.QUIZ_BANK = {
       domain: "MCP in Claude Code",
       select: 1,
       stem: "A developer starts a Claude Code session in the morning. At noon she adds the documents server to Claude Code in a second terminal, then asks the morning session to convert a .docx fixture to markdown. Claude replies that it has no tool for Word files. What explains this?",
+      stem_ru: "Разработчица утром запускает сессию Claude Code. В полдень она добавляет сервер documents в Claude Code во втором терминале, а затем просит утреннюю сессию конвертировать фикстуру .docx в markdown. Claude отвечает, что у него нет инструмента для файлов Word. Чем это объясняется?",
       options: [
         { id: "a", text: "The registration takes effect only after /clear, which reloads the tools the session can use" },
         { id: "b", text: "The session's context has grown since the morning, so the new tool's definitions were left out" },

@@ -8,6 +8,7 @@ window.QUIZ_BANK = {
       domain: "Thinking",
       select: 1,
       stem: "A classifier prefills Claude's reply with an opening brace, stops on a closing-brace stop sequence and uses temperature 0. After evals missed the target, the team enabled extended thinking, with max_tokens well above the budget. Every request is now rejected before any output. What is the most likely cause?",
+      stem_ru: "Классификатор делает prefill ответа Claude открывающей фигурной скобкой, останавливается на stop sequence с закрывающей фигурной скобкой и использует temperature 0. Когда результаты оценок не достигли цели, команда включила extended thinking, задав max_tokens намного больше бюджета. Теперь каждый запрос отклоняется ещё до какого-либо вывода. Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "The closing-brace stop sequence now matches a brace inside the thinking, so each response ends before its label" },
         { id: "b", text: "A max_tokens value far above the thinking budget is a gap the API treats as inconsistent, so it refuses the request" },
@@ -23,6 +24,7 @@ window.QUIZ_BANK = {
       domain: "Thinking",
       select: 1,
       stem: "A research assistant uses extended thinking. The team raised the thinking budget to just below max_tokens. Many answers now break off mid-sentence or are missing entirely, although the thinking itself reads as complete. What explains the symptom?",
+      stem_ru: "Исследовательский ассистент использует extended thinking. Команда подняла бюджет рассуждений до значения чуть ниже max_tokens. Теперь многие ответы обрываются на полуслове или отсутствуют вовсе, хотя сами рассуждения выглядят законченными. Чем объясняется этот симптом?",
       options: [
         { id: "a", text: "max_tokens covers the reasoning as well as the answer, so each token the thinking uses is one the answer cannot use" },
         { id: "b", text: "The budget is a minimum Claude must spend on reasoning, so the answer only gets what max_tokens has left after it" },
@@ -38,6 +40,7 @@ window.QUIZ_BANK = {
       domain: "Thinking",
       select: 2,
       stem: "A lending team must show reviewers how its assistant reached each credit decision. The assistant already meets its accuracy target, and cost and latency are no concern for this overnight batch. Which two statements support turning on extended thinking? (Choose two.)",
+      stem_ru: "Команда кредитного отдела должна показывать проверяющим, как её ассистент пришёл к каждому решению по кредиту. Ассистент уже достигает целевой точности, а стоимость и задержка для этой ночной пакетной обработки не важны. Какие два утверждения говорят в пользу включения extended thinking? (Выберите два.)",
       options: [
         { id: "a", text: "Thinking keeps the reply a single block of text, so the review system's response handling can stay as it is" },
         { id: "b", text: "The thinking block shows the reasoning that leads to each decision, which is exactly what the reviewers need to see" },
@@ -53,6 +56,7 @@ window.QUIZ_BANK = {
       domain: "Thinking",
       select: 1,
       stem: "A report generator takes the first content block of each response as the answer. After the team enabled extended thinking for its hardest report type, that helper returns no usable answer on every such request, though each response completes normally. What is the most likely cause?",
+      stem_ru: "Генератор отчётов считает ответом первый content block каждого ответа API. После того как команда включила extended thinking для самого сложного типа отчётов, эта вспомогательная функция на каждом таком запросе не возвращает пригодного ответа, хотя каждый ответ API завершается штатно. Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "The first block is now a redacted thinking block holding encrypted data, which the helper cannot read as answer text" },
         { id: "b", text: "The first block is now a thinking block with the reasoning, and the answer arrives in a text block that follows it" },
@@ -68,6 +72,7 @@ window.QUIZ_BANK = {
       domain: "Vision",
       select: 1,
       stem: "A warehouse app sends Claude a 12-megapixel photo of each pallet to flag crushed corners, broken slats and torn wrap. The damage fills much of each frame, and almost all input tokens come from the images. Which change lowers the image cost the most?",
+      stem_ru: "Складское приложение отправляет Claude 12-мегапиксельную фотографию каждого поддона, чтобы отмечать смятые углы, сломанные планки и порванную плёнку. Повреждения занимают значительную часть каждого кадра, и почти все входные токены приходятся на изображения. Какое изменение сильнее всего снизит стоимость изображений?",
       options: [
         { id: "a", text: "Re-encode each photo as a low-quality JPEG that still shows the damage, so that far fewer bytes are sent" },
         { id: "b", text: "Convert each photo to grayscale, which still shows the damage, so that each pixel carries one channel" },
@@ -83,6 +88,7 @@ window.QUIZ_BANK = {
       domain: "Vision",
       select: 1,
       stem: "A support bot lets users attach a screenshot to any message and resends the whole conversation each turn. Long sessions now fail with an error saying the request holds too many images, though each message carries one small screenshot. Sessions must stay long. What should the team change?",
+      stem_ru: "Бот поддержки позволяет пользователям прикрепить скриншот к любому сообщению и на каждом ходу заново отправляет весь разговор. Теперь длинные сессии завершаются ошибкой о том, что в запросе слишком много изображений, хотя в каждом сообщении по одному небольшому скриншоту. Сессии должны оставаться длинными. Что следует изменить команде?",
       options: [
         { id: "a", text: "Keep recent screenshots as images and swap older ones for Claude's own descriptions, so that fewer images are resent" },
         { id: "b", text: "Downscale every screenshot before it is uploaded, so that a long history of screenshots stays within the request limits" },
@@ -98,6 +104,7 @@ window.QUIZ_BANK = {
       domain: "PDF",
       select: 1,
       stem: "A review screen must open each report at the page a quoted figure came from, using only the data returned with each citation. Design 1 sends the extracted text as a plain-text document, Design 2 sends the PDF itself, both with citations enabled. Which design fits, and why?",
+      stem_ru: "Экран проверки должен открывать каждый отчёт на той странице, откуда взята процитированная цифра, используя только данные, которые возвращаются с каждой цитатой. Design 1 отправляет извлечённый текст как документ с обычным текстом, Design 2 — сам PDF; в обоих цитаты включены. Какой вариант подходит и почему?",
       options: [
         { id: "a", text: "Design 1, because a plain-text document keeps the report's page breaks, so each citation carries the page it starts on" },
         { id: "b", text: "Design 1, because each plain-text citation returns character positions, which the screen can turn into the page itself" },
@@ -113,6 +120,7 @@ window.QUIZ_BANK = {
       domain: "PDF",
       select: 2,
       stem: "An analytics app extracts the text layer of quarterly-report PDFs with a parsing library and sends Claude only that text. Questions about figures the reports show only as bar heights in charts come back as 'not stated in the report'. Which two changes would let Claude answer them? (Choose two.)",
+      stem_ru: "Аналитическое приложение извлекает текстовый слой из PDF квартальных отчётов с помощью библиотеки для разбора и отправляет Claude только этот текст. На вопросы о показателях, которые в отчётах представлены только высотой столбцов на графиках, приходит ответ «not stated in the report». Какие два изменения позволят Claude на них ответить? (Выберите два.)",
       options: [
         { id: "a", text: "Run each chart image through Claude once with a prompt to transcribe only its caption, and add the captions to the text" },
         { id: "b", text: "Send each report to Claude as a PDF in a document block, so that it reads the charts along with the text" },
@@ -128,6 +136,7 @@ window.QUIZ_BANK = {
       domain: "Citations",
       select: 2,
       stem: "A firm's assistant answers from uploaded contracts with citations enabled. Reviewers now reread the whole contract for every answer, and the firm wants to cut that time without letting a misread clause reach a client. Which two review practices fit what citations provide? (Choose two.)",
+      stem_ru: "Ассистент фирмы отвечает по загруженным договорам, цитаты включены. Сейчас проверяющие перечитывают весь договор для каждого ответа, и фирма хочет сократить это время, не допустив, чтобы до клиента дошёл неверно прочитанный пункт. Какие два способа проверки соответствуют тому, что дают цитаты? (Выберите два.)",
       options: [
         { id: "a", text: "Have reviewers go straight to the passage a claim cites, rather than working through the contract to find it" },
         { id: "b", text: "Have reviewers skip the claims that carry a citation, since a cited claim is already backed by the contract" },
@@ -143,6 +152,7 @@ window.QUIZ_BANK = {
       domain: "Citations",
       select: 1,
       stem: "A Q&A app sends PDFs as document blocks with citations enabled. Its logged API responses carry citation data, yet users see answers with no source markers. What is the most likely cause?",
+      stem_ru: "Приложение вопросов и ответов отправляет PDF как блоки document с включёнными цитатами. В записанных в лог ответах API есть данные цитат, но пользователи видят ответы без маркеров источников. Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "A citation does not say which document it comes from, so the app cannot match any citation to the PDFs it sent" },
         { id: "b", text: "The citation information comes with each claim as structured data, and the app renders only the answer's text" },
@@ -158,6 +168,7 @@ window.QUIZ_BANK = {
       domain: "Prompt caching",
       select: 1,
       stem: "A scheduling assistant caches its long system prompt with a breakpoint, yet usage shows a cache write on every request and never a read. The prompt opens with the current time, to the second, which the assistant needs exactly. What should the team change?",
+      stem_ru: "Ассистент по планированию кеширует свой длинный system prompt с помощью cache breakpoint, но usage показывает запись в кеш на каждом запросе и ни одного чтения. Промпт начинается с текущего времени с точностью до секунды, и ассистенту нужно именно точное время. Что следует изменить команде?",
       options: [
         { id: "a", text: "Move the time into the newest user message, which sits after the last breakpoint in the request" },
         { id: "b", text: "Move the time to the end of the cached system block, so that the stable instructions come first in it" },
@@ -173,6 +184,7 @@ window.QUIZ_BANK = {
       domain: "Prompt caching",
       select: 1,
       stem: "A tutoring chatbot caches only its system prompt. Each request repeats the previous request plus the newest exchange, over forty or more turns. Cache reads stay small while input tokens climb. No history may be dropped. What should the team change?",
+      stem_ru: "Чат-бот-репетитор кеширует только свой system prompt. Каждый запрос повторяет предыдущий запрос плюс самый новый обмен репликами, и так на протяжении сорока и более ходов. Чтения из кеша остаются небольшими, а число входных токенов растёт. Ничего из истории отбрасывать нельзя. Что следует изменить команде?",
       options: [
         { id: "a", text: "Add a breakpoint on the first user message, so that each conversation's opening is cached with the system prompt" },
         { id: "b", text: "Copy the history into the system prompt, so that the whole conversation is cached together with the instructions" },
@@ -188,6 +200,7 @@ window.QUIZ_BANK = {
       domain: "Prompt caching",
       select: 1,
       stem: "A one-time job summarizes 50,000 distinct letters. Each request sends a short fixed instruction and then one letter, with a cache breakpoint on the letter block. The input bill came out no lower than an estimate made without caching. What is the most likely explanation?",
+      stem_ru: "Разовая задача составляет краткое содержание 50 000 разных писем. Каждый запрос отправляет короткую неизменную инструкцию, а затем одно письмо, с cache breakpoint на блоке письма. Счёт за входные токены оказался не ниже оценки, сделанной без кеширования. Каково наиболее вероятное объяснение?",
       options: [
         { id: "a", text: "The cache entries expired between requests, so each entry was gone before a later request could read it" },
         { id: "b", text: "Each request's content up to its breakpoint was new, so no earlier entry existed for that request to match" },
@@ -203,6 +216,7 @@ window.QUIZ_BANK = {
       domain: "Prompt caching",
       select: 1,
       stem: "An agent's large tool list changes monthly; its long system prompt, which ends with a cache breakpoint, is edited a few times a day. After each edit, usage shows the tools and the prompt both written to the cache again. What change keeps the tools read after an edit?",
+      stem_ru: "Большой список инструментов агента меняется раз в месяц; его длинный system prompt, который заканчивается cache breakpoint, правят несколько раз в день. После каждой правки usage показывает, что и инструменты, и промпт снова записываются в кеш. Какое изменение позволит после правки по-прежнему читать инструменты из кеша?",
       options: [
         { id: "a", text: "Edit only the end of the system prompt, so that the part before each edit is still read from the cache" },
         { id: "b", text: "Send the system prompt before the tools, so that edits to the prompt no longer touch the cached tools" },
@@ -218,6 +232,7 @@ window.QUIZ_BANK = {
       domain: "Prompt caching",
       select: 1,
       stem: "A product manager expects prompt caching to make an FAQ bot answer a word-for-word repeat of an earlier question instantly, with no output tokens billed. The bot's long system prompt, shared by every question, has a cache breakpoint. What will that cache do for a repeated question?",
+      stem_ru: "Продакт-менеджер ожидает, что благодаря prompt caching FAQ-бот будет мгновенно отвечать на дословный повтор ранее заданного вопроса и выходные токены не будут оплачиваться. В длинном system prompt бота, общем для всех вопросов, есть cache breakpoint. Что этот кеш сделает для повторного вопроса?",
       options: [
         { id: "a", text: "A repeat is served the reply that was cached on its first ask, so its output is billed on that first ask and not again" },
         { id: "b", text: "A repeat reads the shared prompt only when the same user asks it again, since cache entries are kept per end user" },
@@ -233,6 +248,7 @@ window.QUIZ_BANK = {
       domain: "Code execution & Files",
       select: 1,
       stem: "An analyst asks dozens of questions about one large PDF. The app resends the conversation history with each request and also attaches the PDF as base64 in a document block, so the file crosses a metered uplink per question. What should change so it crosses once?",
+      stem_ru: "Аналитик задаёт десятки вопросов об одном большом PDF. Приложение с каждым запросом заново отправляет историю разговора и вдобавок прикладывает PDF в base64 в блоке document, так что на каждый вопрос файл проходит через исходящий канал с оплатой за трафик. Что нужно изменить, чтобы файл проходил через этот канал один раз?",
       options: [
         { id: "a", text: "Upload the PDF through the Files API, and set its file_id as the source of each question's document block" },
         { id: "b", text: "Keep the base64 PDF and add a cache breakpoint on its document block, so that later questions read it from the cache" },
@@ -248,6 +264,7 @@ window.QUIZ_BANK = {
       domain: "Code execution & Files",
       select: 1,
       stem: "A team has Claude run code in its isolated container to turn uploaded CSV exports into an Excel workbook. Claude says the workbook was created and the code ran cleanly, but the response holds no workbook data to save. Users need a download. What should the team do?",
+      stem_ru: "Команда поручает Claude выполнить код в его изолированном контейнере, чтобы превратить загруженные выгрузки CSV в книгу Excel. Claude сообщает, что книга создана и код выполнился без ошибок, но в ответе нет данных книги, которые можно было бы сохранить. Пользователям нужно её скачать. Что следует сделать команде?",
       options: [
         { id: "a", text: "Have Claude's code send the workbook from the container to the app's storage URL, so that the app can serve it" },
         { id: "b", text: "Add a container upload block with the workbook's name to the next request, so that the Files API sends the file back" },

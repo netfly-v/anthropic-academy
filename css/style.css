@@ -487,6 +487,40 @@ p code, li code, figcaption code, p a, li a {
   font-size: 0.95rem;
 }
 
+.stem-ru-toggle {
+  margin: 0.1rem 0 0.6rem;
+  padding: 0.2rem 0.6rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.stem-ru-toggle:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.q-stem-ru {
+  margin: 0 0 0.8rem;
+  padding-left: 0.75rem;
+  border-left: 3px solid var(--line);
+  color: var(--ink-soft);
+  font-family: var(--sans);
+  font-size: 0.95rem;
+}
+
+.peek-mark {
+  margin-left: 0.5rem;
+  padding: 0 0.4rem;
+  border-radius: 4px;
+  background: var(--chip);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.peek-count { margin: 0.3rem 0 0.6rem; }
+
 .q-why-ru {
   margin-top: 0.45rem;
   padding-left: 0.75rem;

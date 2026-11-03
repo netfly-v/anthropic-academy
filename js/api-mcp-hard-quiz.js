@@ -8,6 +8,7 @@ window.QUIZ_BANK = {
       domain: "MCP basics",
       select: 1,
       stem: "A team's chatbot will connect its MCP client to servers from five vendors, each wrapping a different service. Why can the team write the client's logic for listing and calling tools once, rather than once per vendor?",
+      stem_ru: "Чат-бот команды будет подключать свой MCP-клиент к серверам пяти поставщиков, каждый из которых служит обёрткой над своим сервисом. Почему команда может написать логику клиента для получения списка инструментов и их вызова один раз, а не отдельно для каждого поставщика?",
       options: [
         { id: "a", text: "Each vendor ships a client for its own server, so the app only has to call whichever client matches" },
         { id: "b", text: "Every server answers the same MCP message types, so the requests to list and run tools match for each" },
@@ -23,6 +24,7 @@ window.QUIZ_BANK = {
       domain: "MCP basics",
       select: 1,
       stem: "A company's ticketing system has a REST API. Engineers want Claude to work with tickets from three chat tools that already support MCP; the company will not build an assistant of its own. Following the course's advice for real projects, what should the team build?",
+      stem_ru: "У тикет-системы компании есть REST API. Инженеры хотят, чтобы Claude работал с тикетами из трёх чат-инструментов, которые уже поддерживают MCP; компания не будет создавать собственного ассистента. Что должна построить команда, если следовать совету курса для реальных проектов?",
       options: [
         { id: "a", text: "An MCP client that wraps the ticketing API, which each of those tools then loads to reach the tickets" },
         { id: "b", text: "An MCP server and an MCP client shipped as a pair, so that each of those tools gets both halves" },
@@ -38,6 +40,7 @@ window.QUIZ_BANK = {
       domain: "MCP basics",
       select: 2,
       stem: "An assistant switched to a provider's MCP server that lists 120 tools, of which it uses about 10. Input tokens per request have roughly tripled, though conversations are as long as before. Which two statements about the growth and its fix are accurate? (Choose two.)",
+      stem_ru: "Ассистент перешёл на MCP-сервер поставщика, в списке которого 120 инструментов, а ассистент пользуется примерно 10 из них. Число входных токенов на запрос выросло примерно втрое, хотя разговоры той же длины, что и раньше. Какие два утверждения об этом росте и его устранении верны? (Выберите два.)",
       options: [
         { id: "a", text: "The client can name the tools it needs in its list request, so the server returns just those definitions" },
         { id: "b", text: "Each listed tool reaches Claude as a definition in every request, so the full list adds to every call" },
@@ -53,6 +56,7 @@ window.QUIZ_BANK = {
       domain: "Clients & transport",
       select: 1,
       stem: "A CLI assistant answers 'which tickets are assigned to me?' with a raw JSON dump. Tracing shows the app has the client run the tool Claude requested, then prints the CallToolResult. The team wants a sentence like 'You have three tickets'. What should the app do instead?",
+      stem_ru: "CLI-ассистент отвечает на «which tickets are assigned to me?» сырым дампом JSON. Трассировка показывает, что приложение поручает клиенту выполнить инструмент, запрошенный Claude, а затем выводит CallToolResult. Команда хочет видеть фразу вроде «You have three tickets». Что приложение должно делать вместо этого?",
       options: [
         { id: "a", text: "Return it to Claude as the tool result in a follow-up message, so the user is shown Claude's reply" },
         { id: "b", text: "Ask the MCP server to render the result for the user, since the tool's author knows what it looks like" },
@@ -68,6 +72,7 @@ window.QUIZ_BANK = {
       domain: "Clients & transport",
       select: 1,
       stem: "A document chat app's requests to Claude list only the read tool, so Claude says it cannot edit documents. The server's ListToolsResult, logged as it arrives at the client, also has only the read tool, though the server's code has an edit function. Where is the fault?",
+      stem_ru: "Чат-приложение для работы с документами указывает в запросах к Claude только инструмент чтения, поэтому Claude говорит, что не может править документы. ListToolsResult сервера, записанный в лог в момент прихода к клиенту, тоже содержит только инструмент чтения, хотя в коде сервера есть функция правки. Где ошибка?",
       options: [
         { id: "a", text: "In the app's request to Claude, which should add the edit tool to the tools that the client returned" },
         { id: "b", text: "In the client's list method, which should return every function on the server, not just the listed tools" },
@@ -83,6 +88,7 @@ window.QUIZ_BANK = {
       domain: "Clients & transport",
       select: 1,
       stem: "Tracing a 'list my open pull requests' request, a developer logs every request the app's MCP client sends, expecting to see the call to GitHub's API. The log shows a ListToolsRequest and a CallToolRequest with Claude's arguments, but no GitHub call. What explains the missing GitHub call?",
+      stem_ru: "Отслеживая запрос «list my open pull requests», разработчик записывает в лог каждый запрос, который отправляет MCP-клиент приложения, и ожидает увидеть вызов API GitHub. В логе есть ListToolsRequest и CallToolRequest с аргументами от Claude, но вызова GitHub нет. Чем объясняется отсутствие вызова GitHub?",
       options: [
         { id: "a", text: "The call left through the session's transport, not the client class, so the app's logging sits one layer too high" },
         { id: "b", text: "The server reaches GitHub itself once it is handed the tool call, so that traffic appears only in the server's own records" },
@@ -98,6 +104,7 @@ window.QUIZ_BANK = {
       domain: "Server",
       select: 1,
       stem: "A document server's read and edit tools work in the MCP Inspector. Asked in the chat app to change X to Y in plan.md, Claude only describes the edit; every request carries both tools with the schemas the inspector lists. What does the inspector result tell the team?",
+      stem_ru: "Инструменты чтения и правки сервера документов работают в MCP Inspector. Когда в чат-приложении Claude просят заменить X на Y в plan.md, он только описывает правку; в каждом запросе передаются оба инструмента со схемами, которые показывает инспектор. О чём команде говорит результат в инспекторе?",
       options: [
         { id: "a", text: "The server works; the inspector validated the definitions Claude gets, so the edit tool's description can be ruled out" },
         { id: "b", text: "The server works; the inspector showed the server's own schemas, so the client's rebuilt schemas should be compared with them" },
@@ -113,6 +120,7 @@ window.QUIZ_BANK = {
       domain: "Server",
       select: 1,
       stem: "Every stored document ID is the name plus '.pdf', but users give just the name, so Claude's first read call fails with not-found and a retry with '.pdf' succeeds. The team wants the first read call to succeed without any extra tool call. What should the server's author change?",
+      stem_ru: "Каждый сохранённый ID документа — это имя плюс «.pdf», но пользователи называют только имя, поэтому первый вызов чтения у Claude завершается ошибкой not-found, а повторная попытка с «.pdf» проходит успешно. Команда хочет, чтобы первый вызов чтения проходил успешно без каких-либо дополнительных вызовов инструментов. Что должен изменить автор сервера?",
       options: [
         { id: "a", text: "Add the stored IDs to the read tool's not-found error, so that Claude's retry picks the right ID at once" },
         { id: "b", text: "Expose each document as a templated resource keyed by its full ID, extension included, so Claude reads it by URI" },
@@ -128,6 +136,7 @@ window.QUIZ_BANK = {
       domain: "Server",
       select: 2,
       stem: "Claude asks a document server's find-and-replace edit tool to change 'Status: Draft' to 'Status: Final' in plan.md, which reads 'Status - Draft'. The tool returns its usual success message, yet a later read through the same server still shows 'Status - Draft'. Which two statements explain this? (Choose two.)",
+      stem_ru: "Claude просит инструмент правки сервера документов, который выполняет поиск и замену, заменить «Status: Draft» на «Status: Final» в plan.md, где написано «Status - Draft». Инструмент возвращает своё обычное сообщение об успехе, но последующее чтение через тот же сервер по-прежнему показывает «Status - Draft». Какие два утверждения это объясняют? (Выберите два.)",
       options: [
         { id: "a", text: "Claude's find text differs from the line in plan.md, so the replace step had nothing to change" },
         { id: "b", text: "The later read returned a copy cached before the edit, not the document as the server holds it now" },
@@ -143,6 +152,7 @@ window.QUIZ_BANK = {
       domain: "Resources",
       select: 1,
       stem: "A CRM desktop app shows, in a side panel, the open orders of the customer whose record is open. It shows one customer at a time, and new customers are added all day. How should the CRM's MCP server expose the open orders?",
+      stem_ru: "Десктопное приложение CRM показывает на боковой панели открытые заказы покупателя, чья карточка сейчас открыта. Оно показывает одного покупателя за раз, а новые покупатели добавляются весь день. Как MCP-сервер CRM должен отдавать открытые заказы?",
       options: [
         { id: "a", text: "As a direct resource for each customer, with that customer's ID fixed in the resource's URI" },
         { id: "b", text: "As a prompt that takes the customer ID and returns the open orders as messages" },
@@ -158,6 +168,7 @@ window.QUIZ_BANK = {
       domain: "Resources",
       select: 1,
       stem: "When a user mentions @plan.md, Claude answers as if it had never seen the document. Logs show the app's request to Claude going out first, and then a resource read for plan.md that the server answers with its full text. Which component should be fixed?",
+      stem_ru: "Когда пользователь упоминает @plan.md, Claude отвечает так, будто никогда не видел этот документ. Логи показывают, что сначала уходит запрос приложения к Claude, а затем идёт чтение ресурса plan.md, на которое сервер отвечает его полным текстом. Какой компонент нужно исправить?",
       options: [
         { id: "a", text: "The server's resource, which has to answer reads faster so that the text can still join the request" },
         { id: "b", text: "The app's mention handling, which must fetch the file before it builds the prompt and sends it to Claude" },
@@ -173,6 +184,7 @@ window.QUIZ_BANK = {
       domain: "Resources",
       select: 1,
       stem: "A developer moved the code that wraps an @-mentioned document's text for the prompt ('The user referenced report.pdf: …') into the MCP client's resource-reading function. The app's document preview panel now shows that wrapper text too. Where does the wrapping code belong?",
+      stem_ru: "Разработчик перенёс код, который оборачивает текст документа, упомянутого через @, для промпта («The user referenced report.pdf: …»), в функцию чтения ресурсов MCP-клиента. Теперь панель предпросмотра документов в приложении тоже показывает этот текст-обёртку. Где должен находиться код обёртки?",
       options: [
         { id: "a", text: "In the server, as a second templated resource that returns each document already wrapped for a prompt" },
         { id: "b", text: "In the MCP client, as a second read function for prompt use, beside the plain one the panel calls" },
@@ -188,6 +200,7 @@ window.QUIZ_BANK = {
       domain: "Prompts",
       select: 1,
       stem: "A document server's 'summarize' prompt takes a document ID and writes it into its message, like the course's 'format' prompt. One client sends Claude the prompt's messages without any of the server's tools; there the summaries come back vague and generic. What should the server's author change?",
+      stem_ru: "Промпт «summarize» на сервере документов принимает ID документа и вписывает его в своё сообщение, как промпт «format» из курса. Один из клиентов отправляет Claude сообщения промпта без каких-либо инструментов сервера; у этого клиента резюме получаются расплывчатыми и общими. Что должен изменить автор сервера?",
       options: [
         { id: "a", text: "Have the prompt function put the document's ID and title in the first message, so Claude knows which one to summarize" },
         { id: "b", text: "Have the prompt function add an assistant message that opens the summary, so Claude continues it from the document" },
@@ -203,6 +216,7 @@ window.QUIZ_BANK = {
       domain: "Prompts",
       select: 1,
       stem: "A server team has a tested 'release notes' prompt that three client apps from other teams should offer as a command. Any copy would use the same tested text, but the team revises it every few weeks and will add more such commands later. Where should the prompt live?",
+      stem_ru: "У разработчиков сервера есть проверенный промпт «release notes», который три клиентских приложения, сделанные другими командами, должны предлагать как команду. В любой копии был бы тот же проверенный текст, но разработчики сервера правят его раз в несколько недель и позже добавят ещё такие команды. Где должен находиться этот промпт?",
       options: [
         { id: "a", text: "In each client app, as the text behind its command, which that app's team updates after each revision" },
         { id: "b", text: "In a shared library behind each app's command, which the three apps pick up when they next upgrade it" },
@@ -218,6 +232,7 @@ window.QUIZ_BANK = {
       domain: "Primitives",
       select: 2,
       stem: "A user types '/', picks the server's 'format' prompt and then plan.md. The server's log then shows, in order, a get-prompt request for 'format', a tool-list request, a read-tool request and an edit-tool request. Which two of these requests did Claude ask for? (Choose two.)",
+      stem_ru: "Пользователь вводит «/», выбирает промпт сервера «format», а затем plan.md. После этого в логе сервера по порядку видны: запрос get-prompt для «format», запрос списка инструментов, запрос к инструменту чтения и запрос к инструменту правки. Какие два из этих запросов были отправлены по просьбе Claude? (Выберите два.)",
       options: [
         { id: "a", text: "The read-tool request that fetched the text of plan.md" },
         { id: "b", text: "The get-prompt request for 'format' with plan.md" },
@@ -233,6 +248,7 @@ window.QUIZ_BANK = {
       domain: "Primitives",
       select: 2,
       stem: "Claude issues refunds when a support rep asks; the server exposes them as a resource whose read issues one. The app adds the returns policy to prompts while the returns tab is open; the server exposes it as a tool. Which two changes match the primitives to these uses? (Choose two.)",
+      stem_ru: "Claude оформляет возврат денег, когда об этом просит сотрудник поддержки; на сервере возвраты денег сделаны ресурсом, чтение которого оформляет возврат. Приложение добавляет правила возврата в промпты, пока открыта вкладка возвратов; на сервере эти правила сделаны инструментом. Какие два изменения приводят примитивы в соответствие с этими сценариями использования? (Выберите два.)",
       options: [
         { id: "a", text: "Expose refunds as a tool, since issuing one alters data instead of returning it" },
         { id: "b", text: "Expose the returns policy as a resource, since the app decides when the policy is added" },
@@ -248,6 +264,7 @@ window.QUIZ_BANK = {
       domain: "Primitives",
       select: 1,
       stem: "A document server's tools are called well by Claude, but its tested 'brief' prompt is rarely used. Users who try it like the results; interviews show that in the '/' menu they cannot tell what 'brief' produces. What should the server's author change?",
+      stem_ru: "Claude хорошо вызывает инструменты сервера документов, но проверенным промптом этого сервера «brief» пользуются редко. Тем, кто его пробует, результаты нравятся; интервью показывают, что в меню «/» пользователи не могут понять, что выдаёт «brief». Что должен изменить автор сервера?",
       options: [
         { id: "a", text: "The prompt's name and description, which are the text people read while picking among the commands" },
         { id: "b", text: "The prompt's first message, opening it with a line that tells users what the brief will contain" },

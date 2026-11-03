@@ -5,6 +5,7 @@
   var root = document.getElementById("quiz-root");
   var key = "academy-quiz-" + bank.id;
   var state = load();
+  var open = {};
 
   render();
 
@@ -15,6 +16,7 @@
       var parsed = JSON.parse(raw);
       if (!parsed || typeof parsed.answers !== "object") return blank();
       parsed.submitted = Boolean(parsed.submitted);
+      if (!parsed.peeked || typeof parsed.peeked !== "object") parsed.peeked = {};
       return parsed;
     } catch (err) {
       return blank();
@@ -22,7 +24,7 @@
   }
 
   function blank() {
-    return { answers: {}, submitted: false };
+    return { answers: {}, submitted: false, peeked: {} };
   }
 
   function save() {
@@ -31,6 +33,14 @@
 
   function selected(id) {
     return state.answers[id] ? state.answers[id].slice() : [];
+  }
+
+  function stemRu(q) {
+    return q.stem_ru || (window.QUIZ_STEM_RU && window.QUIZ_STEM_RU[q.id]) || "";
+  }
+
+  function peekedCount() {
+    return bank.questions.filter(function (q) { return state.peeked[q.id]; }).length;
   }
 
   function same(a, b) {
@@ -78,6 +88,9 @@
     }
     root.innerHTML = html;
 
+    root.querySelectorAll(".stem-ru-toggle").forEach(function (button) {
+      button.addEventListener("click", onStemToggle);
+    });
     if (!submitted) {
       root.querySelectorAll("input[data-qid]").forEach(function (input) {
         input.addEventListener("change", onChange);
@@ -94,6 +107,10 @@
     var pct = Math.round((result.correct / result.total) * 100);
     var passed = pct >= bank.passPercent;
     var rows = "";
+    var hasStemRu = bank.questions.some(function (q) { return stemRu(q); });
+    var peekLine = hasStemRu
+      ? '<p class="peek-count">Перевод условия открыт в ' + peekedCount() + " из " + result.total + " вопросов.</p>"
+      : "";
     Object.keys(result.domains).forEach(function (name) {
       var row = result.domains[name];
       rows += "<li><span>" + escapeHtml(name) + "</span><span>" + row.correct + " / " + row.total + "</span></li>";
@@ -102,6 +119,7 @@
       '<section class="score-banner ' + (passed ? "pass" : "fail") + '">' +
       "<h2>" + (passed ? "Pass" : "Not yet") + " · " + pct + "%</h2>" +
       "<p>" + result.correct + " of " + result.total + " items. Practice threshold is " + bank.passPercent + "%. This is not the official certification scale.</p>" +
+      peekLine +
       '<ul class="domain-list">' + rows + "</ul></section>"
     );
   }
@@ -134,10 +152,23 @@
       : "";
     var status = submitted ? (ok ? "Correct" : "Incorrect") : "Item " + (index + 1);
     var meta = bank.hideDomains && !submitted ? status : status + " · " + q.domain;
+    var ru = stemRu(q);
+    var peekMark = submitted && state.peeked[q.id] ? '<span class="peek-mark">перевод условия открыт</span>' : "";
+    var stemBlock = "";
+    if (ru) {
+      var isOpen = Boolean(open[q.id]);
+      var enabled = submitted || picks.length > 0 || state.peeked[q.id];
+      stemBlock =
+        '<button type="button" class="stem-ru-toggle" data-qid="' + q.id + '" aria-expanded="' + isOpen + '"' +
+        (enabled ? "" : ' disabled title="Сначала выберите ответ"') + ">" +
+        (isOpen ? "Скрыть перевод условия" : "Показать перевод условия") + "</button>" +
+        '<p class="q-stem-ru" lang="ru"' + (isOpen ? "" : " hidden") + ">" + escapeHtml(ru) + "</p>";
+    }
     return (
-      '<li class="q-item">' +
-      '<p class="q-meta">' + escapeHtml(meta) + "</p>" +
+      '<li class="q-item' + (state.peeked[q.id] ? " is-peeked" : "") + '" data-qid="' + q.id + '">' +
+      '<p class="q-meta">' + escapeHtml(meta) + peekMark + "</p>" +
       '<p class="q-stem">' + escapeHtml(q.stem) + "</p>" +
+      stemBlock +
       '<p class="q-pick">' + prompt + "</p>" +
       '<div class="q-options">' + options + "</div>" +
       why + "</li>"
@@ -164,12 +195,33 @@
     sync(q);
   }
 
+  function onStemToggle(event) {
+    var button = event.currentTarget;
+    var qid = button.getAttribute("data-qid");
+    var text = button.nextElementSibling;
+    open[qid] = !open[qid];
+    if (open[qid] && !state.submitted && !state.peeked[qid]) {
+      state.peeked[qid] = true;
+      save();
+    }
+    text.hidden = !open[qid];
+    button.setAttribute("aria-expanded", String(open[qid]));
+    button.textContent = open[qid] ? "Скрыть перевод условия" : "Показать перевод условия";
+  }
+
   function sync(q) {
     var picks = {};
     selected(q.id).forEach(function (id) { picks[id] = true; });
     root.querySelectorAll('input[data-qid="' + q.id + '"]').forEach(function (input) {
       input.checked = Boolean(picks[input.getAttribute("data-oid")]);
     });
+    var toggle = root.querySelector('.stem-ru-toggle[data-qid="' + q.id + '"]');
+    if (toggle) {
+      var enabled = Object.keys(picks).length > 0 || state.peeked[q.id];
+      toggle.disabled = !enabled;
+      if (enabled) toggle.removeAttribute("title");
+      else toggle.setAttribute("title", "Сначала выберите ответ");
+    }
   }
 
   function onSubmit() {
@@ -181,6 +233,7 @@
 
   function onRetry() {
     state = blank();
+    open = {};
     localStorage.removeItem(key);
     render();
     root.scrollIntoView();

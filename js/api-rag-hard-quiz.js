@@ -8,6 +8,7 @@ window.QUIZ_BANK = {
       domain: "RAG basics",
       select: 1,
       stem: "A team wants Claude to answer questions about individual contracts. Each contract is 30–40 pages, uploaded by one user and queried two or three times before it is discarded. Which approach fits best?",
+      stem_ru: "Команда хочет, чтобы Claude отвечал на вопросы об отдельных договорах. Каждый договор занимает 30–40 страниц, его загружает один пользователь, по нему задают два-три вопроса, после чего договор удаляется. Какой подход здесь уместнее всего?",
       options: [
         { id: "a", text: "Chunk each contract by its clause headings and retrieve the matching clauses for every question" },
         { id: "b", text: "Send the contract with the first question only, and answer the follow-ups without it to save tokens" },
@@ -23,6 +24,7 @@ window.QUIZ_BANK = {
       domain: "RAG basics",
       select: 1,
       stem: "A support team replaced prompt-stuffing a 900-page manual with a RAG pipeline that retrieves the single best chunk. Fault-code answers now describe the code but omit its recovery steps, which sit in a separate section. Cost per question must stay low. What should they change first?",
+      stem_ru: "Команда поддержки раньше целиком вставляла в промпт руководство на 900 страниц, а теперь заменила это конвейером RAG, который извлекает один наиболее подходящий фрагмент. Ответы о кодах ошибок теперь описывают сам код, но опускают шаги восстановления для него, которые находятся в отдельном разделе. Стоимость одного вопроса должна оставаться низкой. Что им следует изменить в первую очередь?",
       options: [
         { id: "a", text: "Retrieve several top-ranked chunks instead of one, so that related sections reach the prompt" },
         { id: "b", text: "Return to sending the full manual for fault-code questions, since those need the whole context" },
@@ -38,6 +40,7 @@ window.QUIZ_BANK = {
       domain: "RAG basics",
       select: 1,
       stem: "An assistant answers questions over 150 pages of policies, all pasted into every prompt. The text fits within the prompt limit and cost is not a concern, yet answers to detailed questions got worse as more policies were added. What should the team do?",
+      stem_ru: "Ассистент отвечает на вопросы по 150 страницам политик, и все они вставляются в каждый промпт. Текст укладывается в лимит промпта, стоимость не проблема, однако по мере добавления новых политик ответы на детальные вопросы стали хуже. Что следует сделать команде?",
       options: [
         { id: "a", text: "Keep the full-text prompt, since the policies fit within the limit and the cost has been accepted" },
         { id: "b", text: "Add a rule asking Claude to read every policy carefully before it answers a detailed question" },
@@ -53,6 +56,7 @@ window.QUIZ_BANK = {
       domain: "Chunking",
       select: 1,
       stem: "An ingestion service chunks uploads: Markdown reports, plain-text exports and source code. Design 1 splits on headers, falling back to size-based chunks when few appear. Design 2 uses size-based chunks with overlap everywhere. Header-like lines also occur in code and in some of the exports. Which design fits best?",
+      stem_ru: "Сервис загрузки разбивает поступающие файлы на фрагменты: отчёты в Markdown, выгрузки в виде обычного текста и исходный код. Design 1 разбивает по заголовкам, а если заголовков мало, переходит на фрагменты по размеру. Design 2 везде использует фрагменты по размеру с перекрытием. Строки, похожие на заголовки, встречаются также в коде и в части выгрузок. Какой вариант подходит лучше всего?",
       options: [
         { id: "a", text: "Design 1, because structure-based chunks are cleaner whenever headers exist and the fallback covers the rest" },
         { id: "b", text: "Design 2, because one strategy with no assumptions about format holds up across all three kinds of upload" },
@@ -68,6 +72,7 @@ window.QUIZ_BANK = {
       domain: "Chunking",
       select: 2,
       stem: "A team splits plain-text call transcripts into fixed-length chunks with no overlap. Retrieved chunks often begin or end partway through a speaker's remark, so answers miss its point. Which two changes address this? (Choose two.)",
+      stem_ru: "Команда разбивает расшифровки звонков в виде обычного текста на фрагменты фиксированной длины без перекрытия. Извлечённые фрагменты часто начинаются или заканчиваются посреди реплики говорящего, и ответы упускают её смысл. Какие два изменения решают эту проблему? (Выберите два.)",
       options: [
         { id: "a", text: "Switch to structure-based chunks with overlap, so that the chunks follow the sections and headings of each call" },
         { id: "b", text: "Add overlap between neighbouring chunks, so that each one also carries some text from those around it" },
@@ -83,6 +88,7 @@ window.QUIZ_BANK = {
       domain: "Chunking",
       select: 1,
       stem: "An engineering firm indexes ten years of free-form field notes, exported as plain text. Retrieval quality is the only priority: ingestion time, compute cost and implementation effort do not matter. Which chunking strategy should the firm choose?",
+      stem_ru: "Инженерная фирма индексирует полевые заметки в свободной форме за десять лет, выгруженные как обычный текст. Единственный приоритет — качество поиска: время загрузки, стоимость вычислений и трудоёмкость реализации значения не имеют. Какую стратегию разбиения на фрагменты следует выбрать фирме?",
       options: [
         { id: "a", text: "Size-based chunks with overlap, since overlap keeps sentences whole and preserves the surrounding context" },
         { id: "b", text: "Sentence-based chunks with overlap, since whole sentences and shared context keep each idea intact" },
@@ -98,6 +104,7 @@ window.QUIZ_BANK = {
       domain: "Embeddings",
       select: 1,
       stem: "A product manager wants to filter retrieved chunks by tone. The plan is to treat one of the numbers in each chunk's embedding as a tone score, since every number in an embedding lies between -1 and +1. Will the plan work?",
+      stem_ru: "Продакт-менеджер хочет фильтровать извлечённые фрагменты по тону. План — считать одно из чисел в эмбеддинге каждого фрагмента оценкой тона, поскольку каждое число в эмбеддинге лежит в диапазоне от -1 до +1. Сработает ли этот план?",
       options: [
         { id: "a", text: "Yes, if the team uses the number the provider documents as tone, since each one scores a known quality" },
         { id: "b", text: "No, because embeddings capture only the topic of a text, so tone leaves no trace in any of the numbers" },
@@ -113,6 +120,7 @@ window.QUIZ_BANK = {
       domain: "Embeddings",
       select: 1,
       stem: "After a configuration change, a search service embeds user questions with a newer embedding model. The job that re-embeds the stored chunks has not run since the change. Top results now look unrelated to the questions. What is the most likely cause?",
+      stem_ru: "После изменения конфигурации поисковый сервис строит эмбеддинги вопросов пользователей более новой моделью эмбеддингов. Задача, которая заново строит эмбеддинги сохранённых фрагментов, с момента изменения не запускалась. Первые результаты выдачи теперь выглядят не связанными с вопросами. Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "The newer model's vectors skip normalization, so cosine similarity now ranks the longest chunks first" },
         { id: "b", text: "The stored chunks were not re-chunked for the newer model, so they are now too long for it to represent" },
@@ -128,6 +136,7 @@ window.QUIZ_BANK = {
       domain: "Embeddings",
       select: 1,
       stem: "A report was chunked one line per chunk. For 'How many bugs did engineers fix this year?', semantic search ranks first the medical line 'This year saw significant strides in our understanding of XDR-47, a \"bug\" we have not seen before.' What is the most likely cause?",
+      stem_ru: "Отчёт разбили на фрагменты по одной строке. По вопросу «How many bugs did engineers fix this year?» семантический поиск ставит на первое место медицинскую строку «This year saw significant strides in our understanding of XDR-47, a \"bug\" we have not seen before.» Какова наиболее вероятная причина?",
       options: [
         { id: "a", text: "Retrieval worked: the line is the only one containing 'bug', so Claude should be told to ignore off-topic text" },
         { id: "b", text: "The embedding model leans toward software text, so it reads 'bug' in the engineering sense unless context is clearly medical" },
@@ -143,6 +152,7 @@ window.QUIZ_BANK = {
       domain: "Similarity",
       select: 1,
       stem: "A team moves from the course's in-memory vector index to a hosted vector database whose score is documented as 'cosine similarity'. The client still takes the lowest score as the best match, and the top answer is now consistently the least relevant chunk. What went wrong?",
+      stem_ru: "Команда переходит с векторного индекса в памяти, который использовался в курсе, на облачную векторную базу данных, чья оценка в документации названа «cosine similarity». Клиент по-прежнему считает лучшим совпадением наименьшую оценку, и теперь первым результатом стабильно оказывается наименее релевантный фрагмент. Что пошло не так?",
       options: [
         { id: "a", text: "The hosted database returns results already ordered best-first, so the client should stop sorting and take the first one" },
         { id: "b", text: "The hosted database's score is highest for the closest vectors, so the client must take the highest score instead" },
@@ -158,6 +168,7 @@ window.QUIZ_BANK = {
       domain: "Similarity",
       select: 1,
       stem: "A developer notices that long chunks often rank high in semantic search and suspects their embeddings carry more weight than those of short chunks. Before the team caps chunk length, what should it know?",
+      stem_ru: "Разработчик замечает, что длинные фрагменты часто оказываются высоко в результатах семантического поиска, и подозревает, что их эмбеддинги имеют больший вес, чем эмбеддинги коротких фрагментов. Что команде следует знать, прежде чем ограничивать длину фрагментов?",
       options: [
         { id: "a", text: "Longer text yields an embedding with larger numbers, so capping chunk length evens out the scores" },
         { id: "b", text: "Embeddings are scaled to length 1 and cosine similarity compares angles, so size gives no extra weight" },
@@ -173,6 +184,7 @@ window.QUIZ_BANK = {
       domain: "Similarity",
       select: 2,
       stem: "To save storage, a team keeps only the embeddings in its vector database and discards the chunk text entirely, with no reference to it anywhere. Which two steps of the RAG flow still work as before? (Choose two.)",
+      stem_ru: "Чтобы сэкономить место, команда хранит в векторной базе данных только эмбеддинги, а текст фрагментов полностью удаляет, нигде не оставляя ссылки на него. Какие два шага потока RAG по-прежнему работают как раньше? (Выберите два.)",
       options: [
         { id: "a", text: "Embedding the user's question so that it can be compared with the stored embeddings" },
         { id: "b", text: "Building the final prompt from the question and the chunks behind the closest embeddings" },
@@ -188,6 +200,7 @@ window.QUIZ_BANK = {
       domain: "Lexical search",
       select: 1,
       stem: "An e-commerce team replaced semantic search with pure BM25 so that SKU lookups like 'PX-4471-B' work. They do, but descriptive queries like 'something to power my laptop on the road' now return irrelevant hits. The old embedding index is still maintained. What should the team do?",
+      stem_ru: "Команда интернет-магазина заменила семантический поиск чистым BM25, чтобы работал поиск по артикулам вроде «PX-4471-B». Он работает, но описательные запросы вроде «something to power my laptop on the road» теперь возвращают нерелевантные результаты. Старый индекс эмбеддингов по-прежнему поддерживается. Что следует сделать команде?",
       options: [
         { id: "a", text: "Add synonym lists to the BM25 index so that descriptive queries expand into the product terms it knows" },
         { id: "b", text: "Switch every query back to the vector index, since descriptive questions outnumber the SKU lookups" },
@@ -203,6 +216,7 @@ window.QUIZ_BANK = {
       domain: "Lexical search",
       select: 1,
       stem: "A printer maker indexes support tickets with BM25. 'printer' appears in almost every ticket and 'jam' in many. For 'printer duplex jam', the top hits are the few tickets about setting up duplex printing, none mentioning a jam. An engineer reports this as a bug. What is the right response?",
+      stem_ru: "Производитель принтеров индексирует тикеты поддержки с помощью BM25. Слово «printer» встречается почти в каждом тикете, а «jam» — во многих. По запросу «printer duplex jam» первыми идут немногочисленные тикеты о настройке двусторонней печати, и ни в одном из них не упоминается замятие. Инженер сообщает об этом как об ошибке. Как правильно на это отреагировать?",
       options: [
         { id: "a", text: "This is expected: terms found in most tickets weigh little, while a rare term such as 'duplex' weighs far more" },
         { id: "b", text: "This is a bug: BM25 should rank first the tickets that repeat the first word of the query most often" },
@@ -218,6 +232,7 @@ window.QUIZ_BANK = {
       domain: "Hybrid retrieval",
       select: 1,
       stem: "After adding BM25 next to vector search and fusing the two lists, the right chunk now tops the merged list for incident-ID questions. Answers to those questions are still often wrong. Where should the team look next?",
+      stem_ru: "После того как рядом с векторным поиском добавили BM25 и стали объединять два списка, по вопросам с идентификатором инцидента нужный фрагмент теперь стоит первым в объединённом списке. Ответы на эти вопросы по-прежнему часто неверны. Куда команде следует посмотреть дальше?",
       options: [
         { id: "a", text: "At the fusion step, since the constant k decides which chunk ends up first in the merged list" },
         { id: "b", text: "At the BM25 index, since the ID's high weight there crowds out the chunks that explain the incident" },
@@ -233,6 +248,7 @@ window.QUIZ_BANK = {
       domain: "Hybrid retrieval",
       select: 2,
       stem: "A hybrid retriever gets two lists: chunk A is second in both the vector list and the BM25 list, while chunk B is first in BM25 but absent from the vector list. Reciprocal rank fusion ranks A above B. Which two statements explain this? (Choose two.)",
+      stem_ru: "Гибридный retriever получает два списка: фрагмент A стоит вторым и в векторном списке, и в списке BM25, а фрагмент B — первый в BM25, но отсутствует в векторном списке. Reciprocal rank fusion ставит A выше B. Какие два утверждения это объясняют? (Выберите два.)",
       options: [
         { id: "a", text: "Fusion adds a share for every list a chunk appears in, so a chunk that both indexes rank well collects more" },
         { id: "b", text: "Fusion looks only at rank positions, so B's strong BM25 score counts for no more than its first place" },
@@ -248,6 +264,7 @@ window.QUIZ_BANK = {
       domain: "Hybrid retrieval",
       select: 1,
       stem: "A team's retriever fuses a vector index and a BM25 index. They now want to add a third, graph-based index without changing the retriever or its fusion step. What does the new index need?",
+      stem_ru: "Retriever команды объединяет векторный индекс и индекс BM25. Теперь команда хочет добавить третий индекс, основанный на графе, не меняя ни retriever, ни его шаг слияния. Что нужно новому индексу?",
       options: [
         { id: "a", text: "The same operations for adding documents and for searching that the vector and BM25 indexes already offer" },
         { id: "b", text: "A search that returns only chunks the other two indexes did not find, so the fused list gains new ones" },
