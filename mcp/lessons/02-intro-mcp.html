@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Введение в MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html" aria-current="page"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Введение в MCP</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:40 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое Model Context Protocol и какую проблему он решает;</li>
+        <li>описать, как MCP перекладывает описание и выполнение инструментов на MCP-серверы;</li>
+        <li>ответить на частые вопросы: кто пишет MCP-серверы, чем MCP отличается от прямого вызова API и от tool use.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296689" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Introducing MCP · 4:40</span>
+      </a>
+
+      <p>Model Context Protocol (MCP) — коммуникационный слой, который даёт Claude контекст и инструменты и избавляет вас от написания массы рутинного интеграционного кода. Можно считать его способом переложить описание и выполнение инструментов с вашего сервера на специализированные MCP-серверы.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp02-01.png" alt="Схема архитектуры MCP: MCP-клиент на нашем сервере подключён к двум MCP-серверам с инструментами, промптами и ресурсами, и каждый сервер ведёт к своему внешнему сервису.">
+        <figcaption>Базовая архитектура MCP: MCP-клиент, MCP-серверы и внешние сервисы.</figcaption>
+      </figure>
+      <p>Впервые знакомясь с MCP, вы увидите схемы базовой архитектуры: MCP-клиент (ваш сервер) подключается к MCP-серверам, которые содержат инструменты (tools), промпты (prompts) и ресурсы (resources). Каждый MCP-сервер служит интерфейсом к какому-то внешнему сервису.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Клиент и хост.</strong> Схема урока упрощена: в терминах MCP приложение — это хост (MCP host), и для каждого MCP-сервера он создаёт отдельный MCP-клиент с выделенным соединением: один клиент — один сервер.</li>
+          <li><strong>Не только внешние сервисы.</strong> По документации MCP-сервер — любая программа, которая даёт контекст MCP-клиентам, удалённая или локальная. Например, за локальным сервером файловой системы нет никакого внешнего сервиса.</li>
+        </ul>
+      </aside>
+
+      <h2>Какую проблему решает MCP</h2>
+      <p>Допустим, вы делаете чат, в котором пользователи могут спрашивать Claude о своих данных на GitHub. Пользователь может спросить: «Какие pull request’ы открыты во всех моих репозиториях?» Чтобы ответить, Claude нужны инструменты для доступа к API GitHub.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp02-02.png" alt="Слайд «Sample App»: чат, где пользователь спрашивает об открытых pull request’ах во всех своих репозиториях, а Claude для ответа нужны инструменты доступа к аккаунту GitHub.">
+        <figcaption>Учебное приложение: чат с Claude о данных пользователя на GitHub.</figcaption>
+      </figure>
+      <p>Функциональность GitHub огромна: репозитории, pull request’ы, issues, проекты и многое другое. Без MCP вам пришлось бы написать невероятное количество схем и функций инструментов, чтобы охватить все возможности GitHub.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp02-03.png" alt="Слайд «Tool Functions»: на нашем сервере восемь инструментов GitHub — get_repos, list_repos, create_repos, search_issues, update_issue, create_issue, get_issue, create_file, — у каждого своя схема и функция.">
+        <figcaption>Восемь инструментов GitHub на вашем сервере, и у каждого — схема и функция.</figcaption>
+      </figure>
+      <p>Значит, весь этот интеграционный код вам придётся писать, тестировать и поддерживать самим. Это много работы и постоянное бремя сопровождения.</p>
+
+      <h2>Как работает MCP</h2>
+      <p>MCP снимает с вас это бремя: описание и выполнение инструментов переезжают с вашего сервера на отдельные MCP-серверы. Вместо того чтобы вы сами писали все эти инструменты GitHub, этим занимается MCP-сервер для GitHub.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp02-04.png" alt="Слайд «Model Context Protocol»: инструмент get_repos со схемой и функцией пока находится на нашем сервере, который связан с пустым MCP-сервером и с Claude.">
+        <figcaption>MCP перекладывает описание и выполнение инструментов на MCP-серверы.</figcaption>
+      </figure>
+      <p>MCP-сервер упаковывает множество возможностей GitHub и предоставляет их в виде стандартизированного набора инструментов. Ваше приложение подключается к этому MCP-серверу, а не реализует всё с нуля.</p>
+
+      <h2>Что такое MCP-серверы</h2>
+      <p>MCP-серверы дают доступ к данным или функциональности, которые реализованы внешними сервисами. Это специализированные интерфейсы, которые стандартным образом предоставляют инструменты, промпты и ресурсы.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp02-05.png" alt="Слайд «MCP Servers»: наш сервер связан с Claude и с MCP-сервером для GitHub, внутри которого инструмент get_repos со схемой и функцией обращается к GitHub.">
+        <figcaption>Инструмент <code>get_repos</code> теперь живёт в MCP-сервере для GitHub.</figcaption>
+      </figure>
+      <p>В нашем примере MCP-сервер для GitHub содержит инструменты вроде <code>get_repos()</code> и обращается напрямую к API GitHub. Ваш сервер общается с MCP-сервером, а тот берёт на себя все детали реализации, специфичные для GitHub.</p>
+
+      <h2>Частые вопросы</h2>
+      <h3>Кто пишет MCP-серверы?</h3>
+      <p>Создать реализацию MCP-сервера может кто угодно. Часто сами поставщики сервисов выпускают свои официальные MCP-серверы. Например, AWS может выпустить официальный MCP-сервер с инструментами для разных своих сервисов.</p>
+      <h3>Чем это отличается от прямого вызова API?</h3>
+      <p>MCP-серверы дают уже готовые схемы и функции инструментов. Если вы хотите вызывать API напрямую, описания инструментов придётся писать самим. MCP избавляет вас от этой работы по реализации.</p>
+      <h3>Разве MCP — не то же самое, что tool use?</h3>
+      <p>Это распространённое заблуждение. MCP-серверы и tool use дополняют друг друга, но это разные понятия. MCP-серверы дают уже готовые схемы и функции инструментов, а tool use отвечает за то, как Claude эти инструменты на самом деле вызывает. Главное различие в том, кто делает работу: с MCP инструменты за вас уже реализовал кто-то другой.</p>
+      <p>Выгода очевидна: вместо того чтобы самим поддерживать сложный набор интеграций, вы можете опереться на MCP-серверы, которые берут на себя основную работу по подключению к внешним сервисам.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Когда MCP-клиент — ваше приложение, как в этом курсе, Claude по-прежнему видит обычные инструменты (имя, описание, схема входных данных) и отвечает блоками <code>tool_use</code>. Приложение собирает список инструментов у MCP-серверов (<code>tools/list</code>), передаёт вызов Claude нужному серверу (<code>tools/call</code>) и возвращает результат в диалог. MCP меняет не механизм tool use, а то, кто пишет и выполняет инструменты.</p>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «MCP-клиенты»: как клиент связывает ваш сервер с MCP-серверами и какими сообщениями они обмениваются.</p>
+      <div class="pager">
+        <a class="ghost" href="01-welcome.html">Назад</a>
+        <a class="next" href="03-mcp-clients.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296689" target="_blank" rel="noopener noreferrer">Introducing MCP</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

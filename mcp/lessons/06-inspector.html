@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP Inspector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html" aria-current="page"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>MCP Inspector</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:52 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>запустить MCP Inspector командой <code>mcp dev</code> и подключить к нему свой сервер;</li>
+        <li>вызывать инструменты сервера вручную и проверять их результат;</li>
+        <li>проверять цепочки вызовов — например, правку документа и его повторное чтение.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296693" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>The server inspector · 3:52</span>
+      </a>
+
+      <p>Создавая MCP-серверы, нужно как-то проверять их работу без подключения к полноценному приложению. В Python MCP SDK есть встроенный инспектор, который работает в браузере: с ним сервер можно отлаживать и тестировать в реальном времени.</p>
+
+      <h2>Запуск инспектора</h2>
+      <p>Сначала убедитесь, что окружение Python активировано (точная команда — в README вашего проекта). Затем запустите инспектор:</p>
+      <pre>mcp dev mcp_server.py</pre>
+      <p>Команда запускает сервер разработки и выводит локальный адрес — обычно что-то вроде <code>http://127.0.0.1:6274</code>. Откройте этот адрес в браузере, чтобы попасть в MCP Inspector.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Инспектор — не часть Python SDK.</strong> Вопреки уроку, это отдельная программа на Node.js (пакет <code>@modelcontextprotocol/inspector</code>) для серверов на любом языке; <code>mcp dev</code> лишь запускает её через <code>npx</code>, поэтому нужен Node.js.</li>
+          <li><strong>Порт 6277 из видео</strong> — прокси старого инспектора. В инспекторе 2.x (на ноябрь 2026) прокси нет: всё работает на <code>127.0.0.1:6274</code>, а команда выводит адрес с токеном и обычно сама открывает его в браузере.</li>
+        </ul>
+      </aside>
+
+      <h2>Работа с интерфейсом инспектора</h2>
+      <p>Интерфейс инспектора активно развивается, поэтому у вас он может выглядеть иначе. Но основные возможности остаются прежними. Найдите ключевые элементы:</p>
+      <ul>
+        <li>кнопку <strong>Connect</strong>, которая запускает MCP-сервер;</li>
+        <li>вкладки навигации по <strong>Resources</strong>, <strong>Tools</strong>, <strong>Prompts</strong> и другим возможностям;</li>
+        <li>панель со списком инструментов и формой для их проверки.</li>
+      </ul>
+      <p>Сначала нажмите кнопку Connect, чтобы инициализировать сервер. Статус подключения сменится с «Disconnected» на «Connected».</p>
+
+      <h2>Проверка инструментов</h2>
+      <p>Перейдите в раздел Tools и нажмите «List Tools» — появятся все инструменты вашего сервера. Если выбрать инструмент, на правой панели откроются сведения о нём и поля ввода.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp06-01.png" alt="Вкладка Tools в MCP Inspector v0.10.2 после подключения: в списке инструменты read_doc_contents и edit_document, справа — форма read_doc_contents с полем doc_id и кнопкой Run Tool.">
+        <figcaption>Вкладка Tools: выбран <code>read_doc_contents</code>, справа — поле <code>doc_id</code> и кнопка «Run Tool».</figcaption>
+      </figure>
+      <p>Например, чтобы проверить инструмент чтения документа:</p>
+      <ol>
+        <li>выберите инструмент <code>read_doc_contents</code>;</li>
+        <li>введите ID документа (скажем, «deposition.md»);</li>
+        <li>нажмите «Run Tool»;</li>
+        <li>проверьте результат: вызов прошёл успешно и вернул то, что ожидалось.</li>
+      </ol>
+      <p>Инспектор показывает и сообщение об успехе, и фактически возвращённые данные, так что легко убедиться, что инструмент работает правильно.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Интерфейс сейчас.</strong> На ноябрь 2026 сервер подключают на вкладке Servers, вкладки Tools, Prompts и Resources появляются, только если сервер заявил эти возможности, а списки загружаются сами при подключении.</li>
+          <li><strong>Состояние.</strong> Правки хранит не инспектор: словарь <code>docs</code> живёт в памяти процесса сервера, а при stdio этот процесс работает, пока инспектор подключён. После переподключения он запускается заново, и документы возвращаются к исходному тексту.</li>
+        </ul>
+      </aside>
+
+      <h2>Проверка взаимодействия инструментов</h2>
+      <p>Можно проверять несколько инструментов подряд, чтобы убедиться, что работают сложные сценарии. Например, изменив документ инструментом правки, сразу запустите инструмент чтения и проверьте, что изменения применились правильно.</p>
+      <p>Инспектор сохраняет состояние сервера между вызовами инструментов: правки не пропадают, и можно проверить всю функциональность MCP-сервера.</p>
+
+      <h2>Процесс разработки</h2>
+      <p>MCP Inspector становится неотъемлемой частью разработки. Вместо того чтобы писать отдельные тестовые скрипты или подключаться к полноценным приложениям, вы можете:</p>
+      <ul>
+        <li>быстро дорабатывать реализацию инструментов;</li>
+        <li>тестировать граничные случаи и ситуации с ошибками;</li>
+        <li>проверять взаимодействие инструментов и работу с состоянием;</li>
+        <li>отлаживать проблемы в реальном времени.</li>
+      </ul>
+      <p>Такая мгновенная обратная связь делает разработку MCP-серверов гораздо эффективнее и помогает находить проблемы на ранних этапах.</p>
+
+      <h2>Дальше</h2>
+      <p>Сервер готов — в следующем уроке, «Реализация клиента», мы напишем клиентскую сторону. Анкету удовлетворённости курсом, которая в оригинале идёт после этого урока, здесь пропускаем.</p>
+      <div class="pager">
+        <a class="ghost" href="05-mcp-tools.html">Назад</a>
+        <a class="next" href="07-client-impl.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296693" target="_blank" rel="noopener noreferrer">The server inspector</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

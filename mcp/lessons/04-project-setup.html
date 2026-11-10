@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Подготовка проекта</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html" aria-current="page"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Подготовка проекта</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:09</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>описать учебный проект: CLI-чат-бот, MCP-клиент и собственный MCP-сервер с двумя инструментами для документов;</li>
+        <li>объяснить, почему в реальных проектах обычно пишут что-то одно — MCP-клиент или MCP-сервер;</li>
+        <li>подготовить и запустить стартовый проект — с UV или без него.</li>
+      </ul>
+      <p class="duration">На странице урока только видео. Ниже — его содержание по субтитрам.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296694" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Project setup · 3:09</span>
+      </a>
+
+      <p>Чтобы лучше разобраться в некоторых аспектах MCP, мы начнём писать собственный чат-бот с интерфейсом командной строки (CLI). Так станет понятнее, как клиенты и серверы на самом деле работают вместе. В этом видео мы немного подготовим проект и разберём, что именно будем делать.</p>
+      <p>На экране — подробное описание того, что мы построим. Разбирать его будем постепенно, а пока достаточно общего представления.</p>
+
+      <h2>Что строим</h2>
+      <p>Как уже говорилось, это будет чат-бот для командной строки. Пользователи смогут работать с набором документов. Документы ненастоящие — они просто хранятся в памяти.</p>
+      <p>Мы напишем небольшой MCP-клиент, который подключается к нашему собственному MCP-серверу. Пока на сервере будут два инструмента:</p>
+      <ul>
+        <li>один читает содержимое документа;</li>
+        <li>другой обновляет содержимое документа.</li>
+      </ul>
+      <p>Сами документы показаны на схеме справа. Все они ненастоящие, поэтому хранятся только в памяти. Вот и всё.</p>
+
+      <h2>Важное замечание</h2>
+      <p>Прежде чем идти дальше, сделаем очень важное замечание обо всём этом процессе — его стоит как следует понять. В обычном проекте, как правило, реализуют что-то одно: либо клиент, либо MCP-сервер.</p>
+      <ul>
+        <li>В реальном проекте мы могли бы написать только MCP-сервер — чтобы опубликовать его для всех и дать разработчикам доступ к какому-то сервису, который мы создали.</li>
+        <li>Или, наоборот, сделать только MCP-клиент. Тогда задача — подключаться к внешним MCP-серверам, которые уже написали другие инженеры.</li>
+      </ul>
+      <p>В этом проекте мы делаем и клиент, и сервер. Оба — в одном проекте, просто чтобы вы лучше поняли, как они работают вместе.</p>
+
+      <h2>Подготовка проекта</h2>
+      <p>С этой оговоркой разобрались — займёмся подготовкой. К видео приложен архив со стартовым кодом проекта (в субтитрах — CLIproject.zip). Скачайте его, распакуйте и откройте редактор кода в папке проекта. Автор, чтобы сэкономить время, это уже сделал: в редакторе у него открыт этот небольшой проект.</p>
+      <p>Советую заглянуть в файл <code>README.md</code> — там инструкции по настройке. Они объясняют два шага:</p>
+      <ul>
+        <li>как записать ключ API в файл <code>.env</code> проекта;</li>
+        <li>как установить зависимости — с UV или без него.</li>
+      </ul>
+      <p>После этой настройки стартовый проект можно сразу запускать.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Кроме ключа API, в <code>.env</code> проекта задана модель чата <code>CLAUDE_MODEL</code>. В архиве этого же проекта из курса Building with the Claude API там стоит <code>claude-sonnet-4-5</code>, а Claude Sonnet 4.5 устарела: 30 ноября 2026 её снимают с поддержки, и запросы к ней начнут завершаться ошибкой. Замените значение на действующую модель, например <code>claude-sonnet-5-5</code> (на ноябрь 2026).</p>
+      </aside>
+
+      <h2>Запуск приложения</h2>
+      <p>В терминале перейдите в папку проекта. У автора она называется <code>MCP</code>, и в ней лежат все файлы и папки проекта.</p>
+      <p>Если вы пользуетесь UV, запускайте так:</p>
+      <pre>uv run main.py</pre>
+      <p>Если UV у вас нет — так:</p>
+      <pre>python main.py</pre>
+      <p>Автор пользуется UV, поэтому запускает <code>uv run main.py</code>. После запуска должно появиться приглашение чата. Если спросить «What's one plus one?», ответ должен прийти довольно быстро.</p>
+      <p>На этом подготовка закончена. Теперь можно сосредоточиться на том, чтобы добавлять в приложение новые возможности.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>С UV — как в видео.</strong> <code>uv run</code> ставит версии из <code>uv.lock</code>: <code>anthropic</code> 0.51.0 и <code>mcp</code> 1.8.0.</li>
+          <li><strong>Без UV.</strong> <code>pip install</code> из README ставит последний <code>anthropic</code>. Начиная с версии 1.0 у <code>messages.create()</code> нет параметра <code>temperature</code>, а <code>core/claude.py</code> его передаёт — первый же вопрос закончится <code>TypeError</code>. Укажите <code>"anthropic&lt;1"</code> или уберите <code>temperature</code> из <code>params</code> в <code>core/claude.py</code>.</li>
+          <li><strong>MCP Python SDK 2.x.</strong> В нём <code>FastMCP</code> переименован в <code>MCPServer</code>, и импорт <code>mcp.server.fastmcp</code> в <code>mcp_server.py</code> падает с <code>ModuleNotFoundError</code>. README и <code>uv.lock</code> фиксируют <code>mcp</code> 1.8.0; если ставите пакеты иначе, ограничьте версию: <code>mcp&lt;2</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>В следующем уроке, «Инструменты в MCP», мы с помощью Python SDK добавим на сервер два инструмента — для чтения и для правки документа.</p>
+      <div class="pager">
+        <a class="ghost" href="03-mcp-clients.html">Назад</a>
+        <a class="next" href="05-mcp-tools.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296694" target="_blank" rel="noopener noreferrer">Project setup</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

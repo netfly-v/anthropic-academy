@@ -1,0 +1,164 @@
+{
+ "dir": "mcp",
+ "course": "introduction-to-model-context-protocol",
+ "img_prefix": "mcp",
+ "title": "Введение в Model Context Protocol",
+ "orig_title": "Introduction to Model Context Protocol",
+ "lead": "Как подключить Claude к внешним сервисам через MCP: свой сервер с инструментами, ресурсами и промптами, свой клиент и проверка в MCP Inspector.",
+ "about": [
+  "<p>На Skilljar это короткий видеокурс на Python. Здесь весь курс: двенадцать уроков в том же порядке, что и в оригинале. Текст по-русски, плюс пояснения там, где ролик уже расходится с текущим SDK и спецификацией MCP. Видео остаются на Skilljar и открываются в новой вкладке.</p>",
+  "<p>Ролики курса те же, что в блоке «MCP» курса <a href=\"../api/index.html\">Building with the Claude API</a>, но тексты уроков на Skilljar написаны заново, поэтому и перевод здесь свой.</p>"
+ ],
+ "sections": [
+  {
+   "title": "Введение",
+   "lessons": [
+    {
+     "file": "01-welcome.html",
+     "nav": "Добро пожаловать",
+     "sid": "303756",
+     "orig": "Welcome to the course",
+     "note": "Темы курса и что подготовить: Python и UV",
+     "dur": "1 мин 4 с",
+     "toc": 1
+    },
+    {
+     "file": "02-intro-mcp.html",
+     "nav": "Введение в MCP",
+     "sid": "296689",
+     "orig": "Introducing MCP",
+     "note": "Что такое MCP, какую проблему решает, частые вопросы",
+     "dur": "4 мин 40 с",
+     "toc": 2
+    },
+    {
+     "file": "03-mcp-clients.html",
+     "nav": "MCP-клиенты",
+     "sid": "296690",
+     "orig": "MCP clients",
+     "note": "Роль клиента, транспорты и поток сообщений MCP",
+     "dur": "4 мин 56 с",
+     "toc": 3
+    }
+   ]
+  },
+  {
+   "title": "Практика с MCP-серверами",
+   "lessons": [
+    {
+     "file": "04-project-setup.html",
+     "nav": "Подготовка проекта",
+     "sid": "296694",
+     "orig": "Project setup",
+     "note": "Учебный CLI-чат: клиент и сервер MCP, запуск проекта",
+     "dur": "3 мин 9 с",
+     "toc": 4
+    },
+    {
+     "file": "05-mcp-tools.html",
+     "nav": "Инструменты в MCP",
+     "sid": "296697",
+     "orig": "Defining tools with MCP",
+     "note": "Сервер на FastMCP: инструменты чтения и правки документов",
+     "dur": "7 мин 3 с",
+     "toc": 5
+    },
+    {
+     "file": "06-inspector.html",
+     "nav": "MCP Inspector",
+     "sid": "296693",
+     "orig": "The server inspector",
+     "note": "Проверка инструментов сервера в MCP Inspector",
+     "dur": "3 мин 52 с",
+     "toc": 6
+    }
+   ]
+  },
+  {
+   "title": "Подключение MCP-клиентов",
+   "lessons": [
+    {
+     "file": "07-client-impl.html",
+     "nav": "Реализация клиента",
+     "sid": "296696",
+     "orig": "Implementing a client",
+     "note": "Свой MCP-клиент: list_tools, call_tool и проверка",
+     "dur": "7 мин 26 с",
+     "toc": 8
+    },
+    {
+     "file": "08-resources.html",
+     "nav": "Ресурсы",
+     "sid": "296699",
+     "orig": "Defining resources",
+     "note": "Прямые и шаблонные ресурсы, MIME-тип, проверка в Inspector",
+     "dur": "9 мин 45 с",
+     "toc": 9
+    },
+    {
+     "file": "09-reading-resources.html",
+     "nav": "Чтение ресурсов",
+     "sid": "296695",
+     "orig": "Accessing resources",
+     "note": "read_resource в клиенте и документ в промпте через @",
+     "dur": "4 мин 38 с",
+     "toc": 10
+    },
+    {
+     "file": "10-mcp-prompts.html",
+     "nav": "Промпты в MCP",
+     "sid": "296698",
+     "orig": "Defining prompts",
+     "note": "Готовые промпты сервера: @mcp.prompt и проверка в Inspector",
+     "dur": "7 мин 44 с",
+     "toc": 11
+    },
+    {
+     "file": "11-prompts-client.html",
+     "nav": "Промпты в клиенте",
+     "sid": "296692",
+     "orig": "Prompts in the client",
+     "note": "list_prompts и get_prompt, промпты слэш-командами в CLI",
+     "dur": "3 мин 1 с",
+     "toc": 12
+    }
+   ]
+  },
+  {
+   "title": "Итог курса",
+   "lessons": [
+    {
+     "file": "12-mcp-review.html",
+     "nav": "Обзор MCP",
+     "sid": "296691",
+     "orig": "MCP review",
+     "note": "Кто управляет инструментами, ресурсами и промптами",
+     "dur": "4 мин 12 с",
+     "toc": 14
+    }
+   ]
+  }
+ ],
+ "quiz": {
+  "file": "quiz.html",
+  "page_title": "Introduction to MCP",
+  "kicker": "Introduction to Model Context Protocol",
+  "items": 16,
+  "minutes": 20,
+  "bank": "mcp-quiz.js"
+ },
+ "hard_quiz": {
+  "file": "quiz-hard.html",
+  "items": 17,
+  "minutes": 30,
+  "bank": "mcp-hard-quiz.js"
+ },
+ "official": [
+  {
+   "id": "297196",
+   "title": "Final Assessment Quiz on MCP",
+   "questions_text": "7 вопросов"
+  }
+ ],
+ "official_note": " Опрос удовлетворённости из раздела «Практика с MCP-серверами» пропущен: в нём нет учебного материала."
+}

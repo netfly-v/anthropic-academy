@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Routines и headless</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html" aria-current="page"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Routines и headless</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:08 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что объединяет routine и по каким триггерам она запускается;</li>
+        <li>создать routine на сайте или командой <code>/schedule</code>, помня о трёх её ограничениях;</li>
+        <li>запускать Claude Code из скриптов через <code>claude -p</code>, получать JSON по схеме и продолжать сессию по её ID;</li>
+        <li>выбирать между routine, headless-режимом, <code>--bare</code> и Agent SDK.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/b9TCW-pdzDA" title="Routines and Headless" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Когда вы уже доверяете Claude какую-то задачу, следующий шаг — перестать делать её вручную. Если это один и тот же промпт, который запускается по повторяющемуся триггеру, незачем каждый раз сидеть и запускать его самому. В этом уроке — два способа снять с себя такую работу: routines, где вам ничего не нужно строить, и headless-режим, где вы полностью управляете запуском из своих скриптов.</p>
+      <p>Представьте себе шкалу. На одном её конце — routines, которые работают на управляемой инфраструктуре Anthropic. На другом — headless-режим и Agent SDK: они запускают Claude Code из вашего собственного кода. Начнём с того конца, где строить приходится меньше всего.</p>
+
+      <h2>Routines: сохранённый промпт, который работает в облаке</h2>
+      <p>Routine — самый прямой способ автоматизировать задачу. Не нужно ни скрипта, ни сервера. Она объединяет три вещи: промпт, репозиторий, с которым она работает, и нужные ей коннекторы. И запускает этот набор в облаке каждый раз, когда срабатывает триггер.</p>
+      <p>Главное здесь то, что инфраструктура принадлежит Anthropic. Не нужно оставлять свою машину включённой на ночь, и нет файла workflow, который пришлось бы поддерживать. Вы один раз описываете работу, и она просто выполняется.</p>
+      <p>Routine может запускаться по триггерам нескольких видов:</p>
+      <ul>
+        <li>расписание cron, например каждое утро в 9:00;</li>
+        <li>HTTP POST на её API-эндпоинт — так её может запустить ваш собственный код;</li>
+        <li>событие GitHub, например появление нового pull request.</li>
+      </ul>
+      <p>Подходит всё, что сводится к одному и тому же промпту по повторяющемуся триггеру. Утренний аудит зависимостей. Сортировщик PR, который срабатывает, когда приходит новый pull request. Ежедневный разбор тикетов Sentry, чтобы понять, что срочнее всего.</p>
+      <p>Вот как стоит представлять routine: она связывает промпт, репозиторий, коннекторы и расписание.</p>
+
+      <h2>Два способа её создать</h2>
+      <p>Routine можно создать на сайте <code>claude.ai/code/routines</code>. Вы даёте ей имя, пишете инструкции — что Claude должен делать в каждой сессии, — выбираете репозиторий и триггер.</p>
+      <p>А можно создать её прямо из Claude Code, не выходя из терминала. Запустите команду <code>/schedule</code> и опишите обычными словами, что вам нужно, например:</p>
+      <pre>/schedule daily dependency audit at 9am</pre>
+      <p>Идея одна, входа два. Выбирайте тот, что удобнее в вашей работе.</p>
+
+      <h2>Три вещи, которые нужно знать, прежде чем полагаться на routines</h2>
+      <p>Прежде чем доверять routines что-то важное, помните о трёх ограничениях.</p>
+      <ul>
+        <li><strong>Routines пока в статусе research preview.</strong> Поведение и лимиты будут меняться, так что не удивляйтесь переменам.</li>
+        <li><strong>Повторяющееся расписание срабатывает не чаще раза в час.</strong> Если нужно чаще, routines — не тот инструмент.</li>
+        <li><strong>Каждый запуск начинается со свежего клона ветки по умолчанию и может делать push только в ветки с префиксом <code>claude/</code></strong>, если вы не ослабите это ограничение для конкретного репозитория. Именно эта защита не даёт автономному запуску переписать main.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Новое название.</strong> На ноябрь 2026 документация Claude Code называет routines «scheduled tasks» (cloud scheduled task, «formerly a routine»). Функция та же, старое имя осталось в адресе <code>claude.ai/code/routines</code> и местами в интерфейсе.</li>
+          <li><strong>Ветка <code>claude/</code> — умолчание, а не запрет.</strong> По текущей документации push по умолчанию идёт в ветку с префиксом <code>claude/</code>, но промпт может направить его в другую ветку. Отдельной настройки «ослабить для репозитория», о которой говорит урок, в документации нет: какие ветки закрыты для записи, задают branch protection rules или rulesets на GitHub. Так что main защищает правило на GitHub, а не сама routine.</li>
+        </ul>
+      </aside>
+
+      <h2>Headless-режим: когда нужно ваше окружение</h2>
+      <p>Routines хороши, когда работу можно сделать в облаке. Но иногда задаче нужно ваше окружение или своя логика вокруг запуска. Тогда спускайтесь к headless-режиму.</p>
+      <p>Основа headless-режима — флаг <code>-p</code> (сокращение от <code>--print</code>). Он запускает Claude Code как разовую команду без интерактивного интерфейса. Команда читает стандартный ввод и пишет в стандартный вывод, поэтому её можно встраивать в конвейер, как любой другой инструмент оболочки:</p>
+      <pre>claude -p "summarize the changes in this diff"</pre>
+      <p>Одно важное замечание: <code>-p</code> пропускает автообнаружение hooks, skills, плагинов, MCP-серверов и файла CLAUDE.md. Вы получаете Claude плюс инструменты, которые разрешили явно, и ничего из того, что случайно подгрузило бы локальное окружение. Зато запуск так проходит гораздо быстрее.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>В тексте урока здесь ошибка.</strong> В видео эта фраза сказана про <code>--bare</code>, и документация Claude Code (на ноябрь 2026) это подтверждает: автообнаружение hooks, skills, плагинов, MCP-серверов и <code>CLAUDE.md</code> пропускает именно <code>--bare</code>. Обычный <code>claude -p</code> всё это находит и загружает, как интерактивная сессия, а в чужом репозитории запускает hooks и MCP-серверы проекта без диалога доверия.</li>
+          <li><strong>«Детерминированный» — про окружение, а не про ответы.</strong> Ниже урок называет <code>--bare</code> детерминированным режимом. Документация называет его bare mode, минимальным режимом: одинаковой на любой машине становится конфигурация, потому что чужие hooks и MCP-серверы он не читает. Ответы модели от запуска к запуску всё равно могут различаться.</li>
+        </ul>
+      </aside>
+
+      <h2>Получаем структурированный вывод</h2>
+      <p>Раз headless-режим встраивается в конвейер, как любой инструмент оболочки, часто вам нужны структурированные данные, а не обычный текст. Можно передать JSON-схему вместе с форматом вывода JSON, и Claude ограничит свой ответ так, чтобы он соответствовал вашей схеме.</p>
+      <p>Объект, который соответствует схеме, попадает в поле <code>structured_output</code> JSON-ответа. Его можно извлечь командой <code>jq</code> и передать в базу данных или в другой скрипт:</p>
+      <pre>claude -p "Extract the exported function names from src/core/style.js" \
+  --output-format json \
+  --json-schema '{"type":"object","properties":{"functions":{"type":"array","items":{"type":"string"}}},"required":["functions"]}' \
+  | jq '.structured_output.functions'</pre>
+      <p>Так вы получаете чистый массив, который можно отдать следующему шагу.</p>
+
+      <h2>Многошаговая автоматизация через сессии</h2>
+      <p>Если работа идёт в несколько шагов, не нужно втискивать всё в одну команду. Сохраните ID сессии из JSON-вывода и продолжите её позже:</p>
+      <pre>claude --resume "$(jq -r .session_id /tmp/plan.json)"</pre>
+      <p>Один скрипт запускает работу. Другой позже продолжает её с полным контекстом. Это удобно, когда первый проход составляет план, а второй его выполняет.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>В скрипте добавьте <code>-p</code>.</strong> Команда из урока без <code>-p</code> откроет восстановленную сессию в интерактивном режиме. Чтобы второй шаг тоже выполнялся без участия человека, передайте ему промпт, как в документации: <code>claude -p "Continue that review" --resume "$session_id"</code>.</li>
+          <li><strong>Откуда <code>/tmp/plan.json</code>.</strong> Подразумевается, что первый шаг сохранил в этот файл свой JSON-вывод, например так (команды в уроке нет): <code>claude -p "Plan the migration" --output-format json &gt; /tmp/plan.json</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Детерминированные запуски для CI</h2>
+      <p>Когда CI должен получать один и тот же результат при каждом запуске, для этого есть специальный режим.</p>
+      <p>Флаг <code>--bare</code> включает детерминированный режим. Это правильный выбор, когда вы запускаете Claude Code внутри пайплайна и хотите повторяемый, предсказуемый результат, а не такой, который меняется от запуска к запуску.</p>
+
+      <h2>Agent SDK: Claude Code внутри вашего приложения</h2>
+      <p>Последняя точка на шкале — Agent SDK. Это библиотека, которая встраивает Claude Code в ваши собственные приложения на TypeScript или Python.</p>
+      <p>В обоих языках есть функция <code>query</code> и те же примитивы, что и в CLI. Вы передаёте промпт и параметры, например:</p>
+      <ul>
+        <li><code>allowedTools</code> — чтобы управлять тем, что Claude может делать;</li>
+        <li>системный промпт;</li>
+        <li>режим разрешений.</li>
+      </ul>
+      <p>Потом перебираете сообщения, которые Claude присылает потоком, и обрабатываете их так, как нужно вашему приложению. Это тот же движок, что и в CLI, только вызывается он изнутри вашего продукта.</p>
+
+      <h2>Что выбрать?</h2>
+      <p>Короткая шпаргалка:</p>
+      <ul>
+        <li><strong>Routines</strong> — вариант по умолчанию для повторяющейся работы. Они работают на инфраструктуре Anthropic, и вам ничего не нужно хостить.</li>
+        <li><strong>Headless-режим с <code>-p</code></strong> — когда задаче нужен ваш пайплайн и вы хотите пропускать данные через скрипт.</li>
+        <li><strong><code>--bare</code></strong> — когда CI должен получать один и тот же результат при каждом запуске.</li>
+        <li><strong>Agent SDK</strong> — когда работа должна жить внутри вашего собственного продукта.</li>
+      </ul>
+      <p>Начинайте с routines. Спускайтесь по шкале, только когда задаче действительно нужен дополнительный контроль.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «GitHub Actions и Code Review»: два способа поручить Claude работу с pull request — управляемый сервис Code Review, который достаточно включить, и GitHub Action, который вы настраиваете сами.</p>
+      <div class="pager">
+        <a class="ghost" href="05-hooks.html">Назад</a>
+        <a class="next" href="07-github-actions.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486935" target="_blank" rel="noopener noreferrer">Routines and Headless</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

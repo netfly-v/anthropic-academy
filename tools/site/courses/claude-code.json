@@ -1,0 +1,135 @@
+{
+ "dir": "claude-code",
+ "course": "claude-code-in-action",
+ "img_prefix": "cc",
+ "title": "Claude Code in Action",
+ "orig_title": "Claude Code in Action",
+ "lead": "Как доверить Claude Code долгую и всё менее контролируемую работу: направлять сессию, настраивать правила, автоматизировать повторяющееся и проверять результат.",
+ "about": [
+  "<p>На Skilljar это курс 2026 года для тех, кто уже пользуется Claude Code для коротких задач. Здесь весь курс: девять уроков в том же порядке, что и в оригинале. Текст по-русски, плюс пояснения там, где урок короткий или расходится с документацией Claude Code. Видео — те же ролики с YouTube.</p>"
+ ],
+ "sections": [
+  {
+   "title": "Управлять работой",
+   "lessons": [
+    {
+     "file": "01-long-sessions.html",
+     "nav": "Долгие сессии",
+     "sid": "486901",
+     "orig": "Steering Long Sessions",
+     "note": "План, сжатие, откат, /goal, /loop и worktree",
+     "dur": "3 мин 45 с",
+     "toc": 1
+    }
+   ]
+  },
+  {
+   "title": "Настроить Claude",
+   "lessons": [
+    {
+     "file": "02-claude-md.html",
+     "nav": "CLAUDE.md, которому следуют",
+     "sid": "486929",
+     "orig": "A CLAUDE.md That Follows",
+     "note": "Как держать CLAUDE.md коротким, чтобы правила работали",
+     "dur": "2 мин 40 с",
+     "toc": 2
+    },
+    {
+     "file": "03-verification-skills.html",
+     "nav": "Skills для проверки",
+     "sid": "486930",
+     "orig": "Verification Skills",
+     "note": "Skill, который проверяет работу, и где какое правило",
+     "dur": "1 мин 48 с",
+     "toc": 3
+    },
+    {
+     "file": "04-permission-modes.html",
+     "nav": "Режимы разрешений",
+     "sid": "486932",
+     "orig": "Permission Modes",
+     "note": "Шесть режимов разрешений: когда брать auto и Don't ask",
+     "dur": "2 мин 41 с",
+     "toc": 4
+    },
+    {
+     "file": "05-hooks.html",
+     "nav": "Hooks",
+     "sid": "486933",
+     "orig": "Hooks",
+     "note": "События, решения PreToolUse, коды выхода, сжатие",
+     "dur": "3 мин 24 с",
+     "toc": 5
+    }
+   ]
+  },
+  {
+   "title": "Автоматизировать повторяющееся",
+   "lessons": [
+    {
+     "file": "06-routines-headless.html",
+     "nav": "Routines и headless",
+     "sid": "486935",
+     "orig": "Routines and Headless",
+     "note": "Routines, claude -p, JSON по схеме, --bare и Agent SDK",
+     "dur": "3 мин 8 с",
+     "toc": 6
+    },
+    {
+     "file": "07-github-actions.html",
+     "nav": "GitHub Actions и Code Review",
+     "sid": "486936",
+     "orig": "GitHub Actions and Code Review",
+     "note": "Code Review для PR и claude-code-action для своего CI",
+     "dur": "3 мин 16 с",
+     "toc": 7
+    }
+   ]
+  },
+  {
+   "title": "Проверить и поделиться",
+   "lessons": [
+    {
+     "file": "08-verifying-runs.html",
+     "nav": "Проверка автономных запусков",
+     "sid": "486938",
+     "orig": "Trust It: Verifying Unsupervised Runs",
+     "note": "Как проверять работу Claude, сделанную без присмотра",
+     "dur": "2 мин 15 с",
+     "toc": 8
+    },
+    {
+     "file": "09-plugins.html",
+     "nav": "Плагины",
+     "sid": "486939",
+     "orig": "Plugins",
+     "note": "Установка, проверка и упаковка плагинов Claude Code",
+     "dur": "3 мин 9 с",
+     "toc": 9
+    }
+   ]
+  }
+ ],
+ "quiz": {
+  "file": "quiz.html",
+  "page_title": "Claude Code in Action",
+  "kicker": "Claude Code in Action",
+  "items": 16,
+  "minutes": 20,
+  "bank": "claude-code-quiz.js"
+ },
+ "hard_quiz": {
+  "file": "quiz-hard.html",
+  "items": 17,
+  "minutes": 30,
+  "bank": "claude-code-hard-quiz.js"
+ },
+ "official": [
+  {
+   "id": "487234",
+   "title": "Claude Code in Action Quiz",
+   "questions_text": "11 вопросов"
+  }
+ ]
+}

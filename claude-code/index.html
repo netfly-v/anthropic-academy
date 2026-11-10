@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Code in Action</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="../mcp/index.html">MCP</a>
+      <a href="index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="index.html" aria-current="page">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="lessons/03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="lessons/04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="lessons/05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="lessons/07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="lessons/09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <p class="kicker">Anthropic Academy</p>
+      <h1>Claude Code in Action</h1>
+      <div class="rule"></div>
+      <p class="overview-lead">Как доверить Claude Code долгую и всё менее контролируемую работу: направлять сессию, настраивать правила, автоматизировать повторяющееся и проверять результат.</p>
+      <p>На Skilljar это курс 2026 года для тех, кто уже пользуется Claude Code для коротких задач. Здесь весь курс: девять уроков в том же порядке, что и в оригинале. Текст по-русски, плюс пояснения там, где урок короткий или расходится с документацией Claude Code. Видео — те же ролики с YouTube.</p>
+      <h2>Управлять работой</h2>
+      <ul class="card-list">
+        <li><a href="lessons/01-long-sessions.html"><strong>1. Долгие сессии</strong><span>План, сжатие, откат, /goal, /loop и worktree · 3 мин 45 с</span></a></li>
+      </ul>
+      <h2>Настроить Claude</h2>
+      <ul class="card-list">
+        <li><a href="lessons/02-claude-md.html"><strong>2. CLAUDE.md, которому следуют</strong><span>Как держать CLAUDE.md коротким, чтобы правила работали · 2 мин 40 с</span></a></li>
+        <li><a href="lessons/03-verification-skills.html"><strong>3. Skills для проверки</strong><span>Skill, который проверяет работу, и где какое правило · 1 мин 48 с</span></a></li>
+        <li><a href="lessons/04-permission-modes.html"><strong>4. Режимы разрешений</strong><span>Шесть режимов разрешений: когда брать auto и Don't ask · 2 мин 41 с</span></a></li>
+        <li><a href="lessons/05-hooks.html"><strong>5. Hooks</strong><span>События, решения PreToolUse, коды выхода, сжатие · 3 мин 24 с</span></a></li>
+      </ul>
+      <h2>Автоматизировать повторяющееся</h2>
+      <ul class="card-list">
+        <li><a href="lessons/06-routines-headless.html"><strong>6. Routines и headless</strong><span>Routines, claude -p, JSON по схеме, --bare и Agent SDK · 3 мин 8 с</span></a></li>
+        <li><a href="lessons/07-github-actions.html"><strong>7. GitHub Actions и Code Review</strong><span>Code Review для PR и claude-code-action для своего CI · 3 мин 16 с</span></a></li>
+      </ul>
+      <h2>Проверить и поделиться</h2>
+      <ul class="card-list">
+        <li><a href="lessons/08-verifying-runs.html"><strong>8. Проверка автономных запусков</strong><span>Как проверять работу Claude, сделанную без присмотра · 2 мин 15 с</span></a></li>
+        <li><a href="lessons/09-plugins.html"><strong>9. Плагины</strong><span>Установка, проверка и упаковка плагинов Claude Code · 3 мин 9 с</span></a></li>
+      </ul>
+      <h2>Экзамен</h2>
+      <ul class="card-list">
+        <li><a href="quiz.html"><strong>Practice exam · весь курс</strong><span>Old · базовый (16 вопросов) и New · сложный (17 вопросов), на английском</span></a></li>
+      </ul>
+      <p>В оригинале в конце курса — официальный тест Skilljar <a href="https://anthropic.skilljar.com/claude-code-in-action/487234" target="_blank" rel="noopener noreferrer">Claude Code in Action Quiz</a> (11 вопросов). Он проходится на Skilljar и засчитывается в курс; наш Practice exam — отдельный тренировочный тест.</p>
+      <p class="source">Оригинал курса: <a href="https://anthropic.skilljar.com/claude-code-in-action">Claude Code in Action</a>.</p>
+    </main>
+  </div>
+  <script src="../js/sidebar.js"></script>
+</body>
+</html>

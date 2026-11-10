@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Промпты в клиенте</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html" aria-current="page"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Промпты в клиенте</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:01 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>реализовать в MCP-клиенте методы <code>list_prompts</code> и <code>get_prompt</code>;</li>
+        <li>передавать аргументы, которые подставляются в шаблон промпта;</li>
+        <li>запускать промпты сервера слэш-командами в CLI.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296692" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Prompts in the client · 3:01</span>
+      </a>
+
+      <p>Последний шаг в создании нашего MCP-клиента — поддержка промптов. Она позволяет получить список всех промптов, доступных на сервере, и запросить конкретный промпт с подставленными значениями переменных.</p>
+
+      <h2>Реализация list_prompts</h2>
+      <p>Метод <code>list_prompts</code> устроен просто: он вызывает у сессии функцию получения списка промптов и возвращает промпты:</p>
+      <pre>async def list_prompts(self) -&gt; list[types.Prompt]:
+    result = await self.session().list_prompts()
+    return result.prompts</pre>
+
+      <h2>Получение отдельного промпта</h2>
+      <p>Метод <code>get_prompt</code> интереснее: он отвечает за подстановку переменных. Запрашивая промпт, вы передаёте аргументы, и они попадают в функцию промпта как именованные аргументы (keyword arguments):</p>
+      <pre>async def get_prompt(self, prompt_name, args: dict[str, str]):
+    result = await self.session().get_prompt(prompt_name, args)
+    return result.messages</pre>
+      <p>Например, если на сервере есть промпт <code>format_document</code>, который ожидает параметр <code>doc_id</code>, словарь аргументов будет содержать <code>{"doc_id": "plan.md"}</code>. Это значение подставится в шаблон промпта.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Вопреки формулировке урока, сам клиент ничего не подставляет: он отправляет имя промпта и аргументы, шаблон заполняет функция промпта на сервере, а клиент получает готовые сообщения. Значения аргументов в MCP — всегда строки, отсюда <code>dict[str, str]</code>.</p>
+      </aside>
+
+      <h2>Проверка промптов в деле</h2>
+      <p>После реализации промпты можно проверить в CLI. Когда вы вводите косую черту (<code>/</code>), доступные промпты появляются в виде команд. Если выбрать промпт, например «format», CLI предложит выбрать один из доступных документов.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp11-01.png" alt="Терминал: после uv run main.py введено /format plan.md, ниже — список документов для автодополнения, в котором выделен plan.md.">
+        <figcaption>Команда <code>/format</code>: CLI предлагает выбрать документ.</figcaption>
+      </figure>
+      <p>Когда документ выбран, система отправляет Claude готовый промпт целиком. Модель получает и инструкции по форматированию, и ID документа, а затем с помощью доступных инструментов читает содержимое документа и обрабатывает его.</p>
+
+      <h2>Как работают промпты</h2>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp11-02.png" alt="Слайд «Prompts»: промпт задаёт набор сообщений пользователя и ассистента для клиента; справа — код промпта format на MCP-сервере с декоратором @mcp.prompt и функцией format_document(doc_id), которая возвращает список сообщений.">
+        <figcaption>Промпт на MCP-сервере: декоратор <code>@mcp.prompt</code> и функция, которая возвращает список сообщений.</figcaption>
+      </figure>
+      <p>Промпты задают набор сообщений пользователя и ассистента, которыми могут пользоваться клиенты. Они должны быть качественными, хорошо протестированными и соответствовать назначению вашего MCP-сервера. Порядок работы такой:</p>
+      <ul>
+        <li>напишите и оцените промпт, связанный с функциональностью вашего сервера;</li>
+        <li>определите промпт на MCP-сервере с помощью декоратора <code>@mcp.prompt</code>;</li>
+        <li>клиенты могут запросить промпт в любой момент;</li>
+        <li>аргументы, переданные клиентом, становятся именованными аргументами функции промпта;</li>
+        <li>функция возвращает оформленные сообщения, готовые для модели.</li>
+      </ul>
+      <p>Так получаются многоразовые параметризованные промпты: они сохраняют единообразие и при этом настраиваются через переменные. Это особенно полезно в сложных сценариях, где нужно, чтобы модель каждый раз получала правильно выстроенные инструкции.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Сообщения MCP — ещё не запрос к Claude.</strong> <code>get_prompt</code> возвращает <code>PromptMessage</code> в формате протокола, а не Messages API: приложение само переводит их в <code>messages</code> для Claude.</li>
+          <li><strong>Слэш-команды — забота приложения.</strong> Промпты управляются пользователем (user-controlled): их явно выбирает человек, а слэш-команды — лишь пример интерфейса, протокол его не навязывает.</li>
+          <li><strong>Python SDK 2.x.</strong> На ноябрь 2026 методы клиента из урока работают как есть; <code>FastMCP</code> в 2.x называется <code>MCPServer</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>В последнем уроке курса, «Обзор MCP», подведём итог: кто в приложении управляет инструментами, ресурсами и промптами.</p>
+      <div class="pager">
+        <a class="ghost" href="10-mcp-prompts.html">Назад</a>
+        <a class="next" href="12-mcp-review.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296692" target="_blank" rel="noopener noreferrer">Prompts in the client</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

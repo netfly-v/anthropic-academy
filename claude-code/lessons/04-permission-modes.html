@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Режимы разрешений</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html" aria-current="page"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Режимы разрешений</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:41 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>назвать шесть режимов разрешений и сказать, что каждый выполняет без вопросов;</li>
+        <li>объяснить, что проверяет классификатор режима auto и почему его дополняет stop hook с тестами;</li>
+        <li>подобрать режим под задачу: auto — когда вы не участвуете в работе, Don't ask — для CI и задач по расписанию, Bypass permissions — только в изолированной среде.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/Fjg4O-ZcRSU" title="Permission Modes" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Режимы разрешений позволяют один раз решить, что Claude может запускать, не останавливаясь за вашим разрешением. Вместо того чтобы одобрять каждое действие отдельным запросом, вы выбираете режим под задачу и даёте Claude работать с тем уровнем доверия, который вас устраивает.</p>
+      <p>С некоторыми из этих режимов вы уже знакомы. Нажимая Shift+Tab, вы переключаете их по кругу: manual, accept edits и plan. Их хватает для повседневной работы, в которой вы участвуете сами. А в остальных режимах Claude Code по-настоящему работает без вашего участия, и из них в первую очередь стоит выбирать auto.</p>
+
+      <h2>Шесть режимов разрешений</h2>
+      <p>Вот полный набор. Каждый режим по-своему проводит границу между тем, что выполняется без спроса, и тем, на что нужно ваше согласие.</p>
+      <ul>
+        <li><strong>Manual</strong> без вопросов только читает. На всё остальное сначала спрашивает.</li>
+        <li><strong>Accept edits</strong> без вопросов выполняет чтение, правку файлов и типовые bash-команды для работы с файловой системой. Он нужен, когда вы дорабатываете код итерациями, а изменения просматриваете уже потом.</li>
+        <li><strong>Plan</strong> только читает. Он исследует код и предлагает изменения, ничего не редактируя.</li>
+        <li><strong>Auto</strong> принимает всё, но каждое действие перед запуском проверяет отдельная модель-классификатор.</li>
+        <li><strong>Don't ask</strong> разрешает только заранее одобренные инструменты. Всё остальное автоматически отклоняется без запроса.</li>
+        <li><strong>Bypass permissions</strong> пропускает все проверки. Это аналог флага <code>dangerously-skip-permissions</code>. Запускайте его только внутри изолированного контейнера или виртуальной машины.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Флаг и имена.</strong> Флаг пишется <code>--dangerously-skip-permissions</code> и равносилен <code>--permission-mode bypassPermissions</code>; правила <code>deny</code> блокируют и в этом режиме. Во флагах и настройках режимы называются <code>default</code> (Manual), <code>acceptEdits</code>, <code>plan</code>, <code>auto</code>, <code>dontAsk</code> и <code>bypassPermissions</code>; стартовый режим задают флагом <code>--permission-mode</code> или ключом <code>permissions.defaultMode</code>.</li>
+          <li><strong>Plan.</strong> На ноябрь 2026, если доступен auto, shell-команды в plan пропускает или блокирует классификатор, не спрашивая вас.</li>
+          <li><strong>Shift+Tab.</strong> На ноябрь 2026 интерактивная сессия по умолчанию стартует в auto (если он доступен). Don't ask в круг не входит, а bypass появляется в нём, только если его включили или разрешили при запуске.</li>
+        </ul>
+      </aside>
+
+      <h2>Переключение через Shift+Tab</h2>
+      <p>Запоминать отдельную команду для каждого режима не нужно. Нажимайте Shift+Tab, чтобы по кругу переключать повседневные режимы: manual, accept edits, plan и auto. Строка состояния внизу всегда показывает текущий режим: достаточно взглянуть вниз, чтобы точно знать, что Claude сейчас разрешено.</p>
+
+      <h2>Как работает режим auto</h2>
+      <p>Auto — режим, в котором вы не участвуете. Claude работает сам, но каждое действие перед выполнением проверяет отдельная модель-классификатор. Классификатор стоит на страже намерения: он отслеживает шаги, которые выходят за рамки того, о чём вы на самом деле просили.</p>
+      <p>Вот примеры того, что он призван блокировать:</p>
+      <ul>
+        <li>деплои в продакшен и миграции;</li>
+        <li>force push или передачу скачанного кода по конвейеру прямо в shell;</li>
+        <li>отправку конфиденциальных данных на внешние адреса;</li>
+        <li>уничтожение файлов, которые существуют для сессии.</li>
+      </ul>
+      <p>А повседневную работу он пропускает: локальные правки в вашем проекте, установку зависимостей из lock-файла, запросы только на чтение и push в вашу собственную ветку.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Не каждое действие.</strong> Урок говорит, что классификатор проверяет каждое действие, но на ноябрь 2026 сначала срабатывают ваши правила <code>allow</code>, <code>ask</code> и <code>deny</code>, а чтение и правка файлов в рабочей папке (кроме защищённых путей вроде <code>.git</code>) одобряются без классификатора. Ему достаётся остальное — в основном shell-команды и сетевые действия.</li>
+          <li><strong>«Файлы, которые существуют для сессии».</strong> В документации — безвозвратное уничтожение файлов, которые существовали до начала сессии.</li>
+          <li><strong>Push.</strong> На ноябрь 2026 разрешён push в любую ветку текущего репозитория, включая основную; push в ветки деплоя вроде <code>production</code> или <code>gh-pages</code> классификатор оценивает отдельно.</li>
+        </ul>
+      </aside>
+
+      <h2>Чего классификатор не умеет</h2>
+      <p>Классификатор проверяет намерение, а не правильность. Он не определит, работает ли код на самом деле. Если вы попросите Claude отрефакторить аутентификацию, а он напишет сломанную аутентификацию, классификатор это пропустит: сломанное не значит опасное.</p>
+      <p>Поэтому режим auto сочетают со stop hook, который запускает ваши тесты. Эти два механизма работают в паре:</p>
+      <ul>
+        <li>режим auto следит за тем, что Claude <em>пытается</em> сделать, пока работает;</li>
+        <li>stop hook подтверждает, что код действительно работает, после того как Claude закончил.</li>
+      </ul>
+      <p>Первый стоит на страже намерения перед каждым действием, второй — правильности после. Ограничители режима auto ещё развиваются, поэтому актуальные списки того, что блокируется и что разрешено, смотрите в документации.</p>
+
+      <h2>Don't ask — для запусков без присмотра</h2>
+      <p>Don't ask — правильный выбор всякий раз, когда рядом нет человека, который одобрял бы запросы: CI-пайплайны, задачи по расписанию, ночные пакетные прогоны. Разрешены только заранее одобренные инструменты, а всё, чего нет в этом списке, автоматически отклоняется без запроса. В этом весь смысл: пайплайн продолжает работу, а не зависает в ожидании одобрения, которое некому дать.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>«Заранее одобренные» — это правила <code>permissions.allow</code> в настройках или флаг <code>--allowedTools</code>. На ноябрь 2026 без запроса выполняется и то, что в manual не требует одобрения: чтение файлов в рабочих папках и bash-команды только на чтение. Действия под явными правилами <code>ask</code> в этом режиме отклоняются.</p>
+      </aside>
+
+      <h2>Режим под задачу</h2>
+      <p>Режимов разрешений несколько, а до повседневных из них вы добираетесь, переключая режимы по кругу через Shift+Tab. Подведём итог:</p>
+      <ul>
+        <li><strong>Auto</strong> — режим, в котором вы не участвуете. Классификатор проверяет намерение перед каждым действием, а stop hook — правильность после.</li>
+        <li><strong>Don't ask</strong> подходит для пайплайнов без присмотра, где некому давать одобрение.</li>
+        <li><strong>Bypass permissions</strong> уместен только внутри изолированных контейнеров и виртуальных машин.</li>
+      </ul>
+      <p>Выберите режим, который подходит для вашей задачи, и дайте Claude работать на этом уровне.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Hooks»: почему правило в <code>CLAUDE.md</code> — лишь просьба, а hook гарантирует поведение, и какие события hooks нужны чаще всего, включая <code>Stop</code>.</p>
+      <div class="pager">
+        <a class="ghost" href="03-verification-skills.html">Назад</a>
+        <a class="next" href="05-hooks.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486932" target="_blank" rel="noopener noreferrer">Permission Modes</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ресурсы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html" aria-current="page"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Ресурсы</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 9:45 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, зачем нужны ресурсы и как клиент читает их через <code>ReadResourceRequest</code>;</li>
+        <li>создавать прямые и шаблонные ресурсы декоратором <code>@mcp.resource</code>;</li>
+        <li>задавать <code>mime_type</code> и проверять ресурсы в MCP Inspector.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296699" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Defining resources · 9:45</span>
+      </a>
+
+      <p>Ресурсы (resources) в MCP-серверах позволяют отдавать данные клиентам — примерно как обработчики GET-запросов в обычном HTTP-сервере. Они идеально подходят там, где нужно получить информацию, а не выполнить действие.</p>
+
+      <h2>Ресурсы на примере</h2>
+      <p>Допустим, вы хотите сделать упоминание документов: пользователь пишет <code>@document_name</code>, чтобы сослаться на файл. Для этого нужны две операции:</p>
+      <ul>
+        <li>получить список всех доступных документов (для автодополнения);</li>
+        <li>получить содержимое конкретного документа (когда его упомянули).</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp08-01.png" alt="Слайд «Next Feature»: в запросе «Can you please summarize the contents of @» символ @ открывает список документов — deposition.md, design.md, plan.md и другие, у каждого пометка Resource.">
+        <figcaption>Задача: «@» показывает список документов, а содержимое упомянутого документа попадает в промпт.</figcaption>
+      </figure>
+      <p>Когда пользователь упоминает документ, ваша система автоматически подставляет его содержимое в промпт, который уходит Claude, — и Claude уже не нужно вызывать инструменты, чтобы добыть эту информацию.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp08-02.png" alt="На вопрос «What's in the @report.pdf file?» наш код собирает промпт: вопрос пользователя в теге query и содержимое report.pdf в теге document — и отправляет его Claude.">
+        <figcaption>Наш код сам подставляет содержимое <code>report.pdf</code> в промпт для Claude.</figcaption>
+      </figure>
+
+      <h2>Как работают ресурсы</h2>
+      <p>Ресурсы работают по схеме «запрос — ответ». Когда клиенту нужны данные, он отправляет <code>ReadResourceRequest</code> с URI, который указывает, какой ресурс нужен. MCP-сервер обрабатывает запрос и возвращает данные в <code>ReadResourceResult</code>.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp08-03.png" alt="Диаграмма: пользователь вводит «What's in the @…», наш код просит у MCP-клиента список имён документов, клиент шлёт MCP-серверу ReadResourceRequest с URI docs://documents и получает ReadResourceResult со списком имён.">
+        <figcaption><code>ReadResourceRequest</code> с URI <code>docs://documents</code> и ответ <code>ReadResourceResult</code> со списком имён документов.</figcaption>
+      </figure>
+      <p>Путь запроса такой: ваш код запрашивает ресурс у MCP-клиента, а тот пересылает запрос MCP-серверу. Сервер разбирает URI, запускает нужную функцию и возвращает результат.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp08-04.png" alt="Та же диаграмма: ответ сервера через MCP-клиент возвращается в наш код, и тот выводит имена документов в автодополнении.">
+        <figcaption>Весь путь: наш код → MCP-клиент → MCP-сервер и обратно.</figcaption>
+      </figure>
+
+      <h2>Типы ресурсов</h2>
+      <p>Ресурсы бывают двух типов.</p>
+      <h3>Прямые ресурсы</h3>
+      <p>У прямых ресурсов (direct) статический URI, который никогда не меняется. Они идеальны для операций, которым не нужны параметры.</p>
+      <pre>@mcp.resource(
+    "docs://documents",
+    mime_type="application/json"
+)
+def list_docs() -&gt; list[str]:
+    return list(docs.keys())</pre>
+      <h3>Шаблонные ресурсы</h3>
+      <p>В URI шаблонных ресурсов (templated) есть параметры. Python SDK автоматически разбирает их и передаёт в вашу функцию как именованные аргументы.</p>
+      <pre>@mcp.resource(
+    "docs://documents/{doc_id}",
+    mime_type="text/plain"
+)
+def fetch_doc(doc_id: str) -&gt; str:
+    if doc_id not in docs:
+        raise ValueError(f"Doc with id {doc_id} not found")
+    return docs[doc_id]</pre>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp08-05.png" alt="Слайд: слева прямой ресурс docs://documents — в URI нет параметров; справа шаблонный docs://documents/{doc_id} — Python SDK разбирает параметры и передаёт их в функцию.">
+        <figcaption>Прямой ресурс — URI без параметров; шаблонный — с параметром <code>{doc_id}</code>.</figcaption>
+      </figure>
+
+      <h2>Детали реализации</h2>
+      <p>Ресурс может возвращать данные любого типа — строки, JSON, двоичные данные и т. д. Чтобы подсказать клиентам, какие данные вы возвращаете, используйте параметр <code>mime_type</code>:</p>
+      <ul>
+        <li><code>"application/json"</code> — для структурированных данных;</li>
+        <li><code>"text/plain"</code> — для обычного текста;</li>
+        <li><code>"application/pdf"</code> — для двоичных файлов.</li>
+      </ul>
+      <p>MCP Python SDK автоматически сериализует возвращаемые значения. Вручную превращать объекты в строки JSON не нужно: просто верните структуру данных, а сериализацию SDK возьмёт на себя.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В Python SDK (на ноябрь 2026) формат ответа задаёт возвращаемое значение, а не <code>mime_type</code>: <code>str</code> уходит текстом, <code>bytes</code> — в base64 (поле <code>blob</code>), остальное SDK превращает в строку JSON в поле <code>text</code>, и разбирать её — задача клиента (следующий урок). <code>mime_type</code> — лишь метка для клиента, поэтому <code>"application/pdf"</code> имеет смысл, только если функция возвращает <code>bytes</code>.</p>
+      </aside>
+
+      <h2>Проверка ресурсов</h2>
+      <p>Ресурсы можно проверить в MCP Inspector. Запустите сервер командой:</p>
+      <pre>uv run mcp dev mcp_server.py</pre>
+      <p>Затем подключитесь к инспектору в браузере. Вы увидите два раздела:</p>
+      <ul>
+        <li><strong>Resources</strong> — список прямых (статических) ресурсов;</li>
+        <li><strong>Resource Templates</strong> — список шаблонных ресурсов.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp08-06.png" alt="MCP Inspector, вкладка Resources: в разделе Resources — docs://documents, в Resource Templates — fetch_doc; справа ответ на чтение docs://documents с mimeType application/json и списком имён файлов в поле text.">
+        <figcaption>Чтение <code>docs://documents</code>: список имён приходит строкой JSON в поле <code>text</code>.</figcaption>
+      </figure>
+      <p>Нажмите на любой ресурс, чтобы проверить его. Для шаблонных ресурсов понадобится указать значения параметров. Инспектор показывает точную структуру ответа, которую получит клиент, включая MIME-тип и сериализованные данные.</p>
+      <p>Ресурсы — аккуратный способ отдавать с MCP-сервера данные только для чтения: клиенты легко получают информацию без сложностей, связанных с вызовом инструментов.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Кто решает, читать ли ресурс.</strong> По спецификации MCP ресурсами управляет приложение (application-driven): когда прочитать ресурс и что сделать с данными, решает ваш код, как в примере с подстановкой документа в промпт. Инструменты же вызывает модель.</li>
+          <li><strong>Python SDK 2.x.</strong> На ноябрь 2026 сервер создаётся классом <code>MCPServer</code> вместо <code>FastMCP</code>, <code>@mcp.resource()</code> не изменился. Для отсутствующего документа там есть <code>ResourceNotFoundError</code> из <code>mcp.server.mcpserver.exceptions</code> (клиент получит код <code>-32602</code>). Обычный <code>ValueError</code>, как в уроке, считается сбоем: клиент получит лишь общее сообщение с кодом <code>-32603</code>, без текста исключения.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Чтение ресурсов»: научим клиент запрашивать ресурсы у сервера, разбирать ответ по MIME-типу и подставлять документ прямо в промпт.</p>
+      <div class="pager">
+        <a class="ghost" href="07-client-impl.html">Назад</a>
+        <a class="next" href="09-reading-resources.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296699" target="_blank" rel="noopener noreferrer">Defining resources</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

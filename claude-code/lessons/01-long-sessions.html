@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Долгие сессии</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html" aria-current="page"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Долгие сессии</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:45 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>очерчивать рамки работы в plan mode до того, как Claude начнёт менять код;</li>
+        <li>направлять сжатие контекста инструкциями после <code>/compact</code> и откатываться через меню rewind;</li>
+        <li>задавать условие готовности через <code>/goal</code> и повторять промпт через <code>/loop</code>;</li>
+        <li>разводить параллельные сессии по отдельным worktree.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/l_4ZYAiyP7U" title="Steering Long Sessions" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Попросить Claude быстро выполнить небольшую задачу просто: вы просите, он делает, вы проверяете результат. С долгими задачами всё иначе. Рефакторинг на десяток файлов или разработка новой функциональности могут занять часы. И чем чаще вам приходится поправлять Claude по ходу, тем дольше всё тянется.</p>
+      <p>Хорошая новость: у вас много средств, чтобы помочь Claude в таких долгих сессиях. Всё сводится к двум привычкам: очертить рамки работы до того, как Claude начнёт, и направлять его, пока он работает. Разберём обе.</p>
+
+      <h2>Сначала очертите рамки работы в plan mode</h2>
+      <p>Прежде чем Claude напишет хоть одну строчку, пусть он составит план. В plan mode Claude исследует задачу в режиме только для чтения: читает код, выясняет, что нужно изменить, и отдаёт вам план на проверку.</p>
+      <p>Когда план готов, прочитайте его по-настоящему. Не пробегайте глазами. Чем подробнее план, тем меньше сюрпризов будет, когда Claude начнёт его выполнять. Если что-то не так или чего-то не хватает, просто попросите Claude добавить это туда, куда нужно. Доработать план гораздо быстрее, чем пустить Claude в работу в надежде на лучшее, а потом разгребать последствия.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Plan mode включают клавишами <code>Shift+Tab</code> (нажимайте, пока в строке состояния не появится <code>⏸ plan mode on</code>) или командой <code>/plan</code> в начале промпта. «Только чтение» относится к вашему коду: по документации Claude Code (на ноябрь 2026), Claude может запускать команды оболочки, чтобы разобраться, но исходники не правит, пока вы не одобрите план.</p>
+      </aside>
+
+      <h2>Направляйте Claude, пока он работает</h2>
+      <p>Когда Claude уже работает, есть несколько способов удерживать его на верном курсе. Первый — сжатие контекста.</p>
+
+      <h3>Сжатие (compact)</h3>
+      <p>Compact составляет краткое содержание разговора, делает его новым контекстом и удаляет старые сообщения. Так освобождается окно контекста, и Claude может продолжать. Риск в том, что при пересказе потеряется что-то важное и Claude собьётся с курса.</p>
+      <p>Поэтому не запускайте <code>/compact</code> без аргументов. Допишите после команды указания, как Claude составить краткое содержание. Например, если отладку вы закончили давно, а сейчас вас интересуют только изменения API, так и скажите:</p>
+      <pre>/compact Focus on the --version flag implementation</pre>
+      <p>Всё, что вы напишете после команды, определит, что останется в кратком содержании. Это ваш руль для контекста.</p>
+
+      <h3>Откат (rewind)</h3>
+      <p>Когда Claude свернул не туда, не нужно выводить его обратно промптами. Rewind возвращает вас к последней контрольной точке (checkpoint). Каждый ваш промпт создаёт контрольную точку, к которой можно вернуться. Чтобы открыть меню, дважды нажмите <code>Esc</code> при пустой строке ввода.</p>
+      <p>В меню rewind есть несколько вариантов:</p>
+      <ul>
+        <li><strong>Restore code and conversation</strong> — откатить и код, и разговор.</li>
+        <li><strong>Restore conversation</strong> — откатить только переписку.</li>
+        <li><strong>Restore code</strong> — откатить только файлы.</li>
+        <li><strong>Summarize from here</strong> — кратко пересказать всё, что было после контрольной точки. Удобно, если у вас был побочный разговор и вы просто хотите освободить место.</li>
+        <li><strong>Summarize up to here</strong> — кратко пересказать всё, что было до контрольной точки. Удобно, когда была долгая подготовительная фаза и её хочется сжать, а части с реализацией оставить нетронутыми.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Не только последняя точка.</strong> По документации (на ноябрь 2026), в меню rewind (его открывает и команда <code>/rewind</code>) список всех ваших промптов за сессию: вернуться можно к любому, а не только к последнему, как сказано в уроке.</li>
+          <li><strong>Что не откатывается.</strong> Контрольные точки следят за правками, которые Claude делает своими инструментами редактирования. Файл, который меняли только команды оболочки (скрипт, <code>mv</code>, <code>rm</code>), не отслеживается; правки субагентов и ваши ручные изменения вне Claude Code обычно тоже. Это быстрый откат внутри сессии, а не замена git.</li>
+        </ul>
+      </aside>
+
+      <h2>Дайте Claude больше самостоятельности</h2>
+      <p>Всё, что было выше, предполагает, что вы у руля: следите и поправляете. Если хотите, чтобы Claude работал самостоятельнее, есть goal и loop.</p>
+
+      <h3>Цель (goal)</h3>
+      <p>Goal задаёт условие завершения. Вы описываете, как выглядит «готово», и Claude продолжает работать ход за ходом, пока быстрый оценщик не подтвердит, что условия выполнены. Он не остановится, как только впервые решит, что закончил.</p>
+      <p>Например:</p>
+      <pre>/goal all tests in src/billing pass, and the type checker reports zero errors</pre>
+      <p>Чтобы отменить цель, выполните <code>/goal clear</code>. Важное ограничение: оценщик читает только транскрипт. Поэтому условие должно проверяться по тому, что Claude действительно выводит, — например, по результатам прогона тестов.</p>
+
+      <h3>Цикл (loop)</h3>
+      <p>Loop запускает промпт с интервалом между ходами — фиксированным или подобранным самим Claude. Используйте его, чтобы опрашивать что-то внешнее, например прогон CI или деплой, и действовать, когда состояние изменится.</p>
+      <p>Чтобы остановить цикл, просто нажмите <code>Esc</code>.</p>
+
+      <h2>Параллельная работа в worktree</h2>
+      <p>Метафора с рулём до сих пор предполагала один руль в одной машине. Но когда над одной кодовой базой работают несколько агентов, два руля в одной машине вам не нужны. Это опасно. Когда две сессии Claude борются за одни и те же файлы, возникают конфликты.</p>
+      <p>Здесь и пригодятся worktree. Сессии больше не мешают друг другу: каждая получает собственное независимое дерево файлов.</p>
+      <p>Раз у каждого агента своё дерево, они не могут затереть изменения друг друга. Когда сессия завершается, чистый worktree удаляется автоматически.</p>
+      <p>Есть один полезный файл, о котором стоит знать. Файл <code>.worktreeinclude</code> в корне репозитория перечисляет игнорируемые git файлы, которые нужно копировать в каждый worktree. Это удобно, например, для файла с переменными окружения или локального конфига: они нужны в каждом worktree, но коммитить их в систему контроля версий не хочется.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong><code>Esc</code> останавливает не всякий цикл.</strong> По документации (на ноябрь 2026), <code>Esc</code> останавливает цикл с интервалом от Claude, пока тот ждёт следующего прохода. Цикл с фиксированным интервалом вроде <code>/loop 5m</code> клавишами <code>Esc</code> и <code>Ctrl+C</code> не остановить: попросите Claude его отменить.</li>
+          <li><strong>Как запустить worktree и когда он удаляется.</strong> <code>claude --worktree feature-auth</code> запускает сессию в новом worktree. Без вопросов при выходе удаляется только чистый worktree безымянной сессии; для именованной сессии и для worktree с изменениями или новыми коммитами Claude Code спрашивает, оставить его или удалить.</li>
+        </ul>
+      </aside>
+
+      <h2>Собираем всё вместе</h2>
+      <p>Работа с долгими сессиями Claude Code сводится к нескольким привычкам:</p>
+      <ol>
+        <li>Сначала очертите рамки работы, потом направляйте.</li>
+        <li>Направляйте сжатие, чтобы в кратком содержании осталось важное.</li>
+        <li>Откатывайтесь через меню rewind, когда Claude сбивается с курса.</li>
+        <li>Ставьте цель, когда «готово» вы можете описать лучше, чем шаги к нему.</li>
+        <li>Параллельную работу ведите в worktree.</li>
+      </ol>
+      <p>Делайте так — и сможете доверять долгому запуску, не присматривая за каждым его шагом.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «CLAUDE.md, которому следуют»: почему разросшийся <code>CLAUDE.md</code> Claude соблюдает хуже и как держать его коротким.</p>
+      <div class="pager">
+        <a class="next" href="02-claude-md.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486901" target="_blank" rel="noopener noreferrer">Steering Long Sessions</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

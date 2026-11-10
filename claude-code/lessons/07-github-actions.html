@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub Actions и Code Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html" aria-current="page"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>GitHub Actions и Code Review</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:16 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>отличить управляемый сервис Code Review от GitHub Action и выбрать подходящий для задачи;</li>
+        <li>объяснить, как Code Review включают, когда он запускается и чего он не делает;</li>
+        <li>подключить <code>anthropics/claude-code-action@v1</code> через <code>/install-github-app</code> и разобраться в его входных параметрах;</li>
+        <li>ограничить запуск без присмотра через <code>claude_args</code>: лимит ходов, режим разрешений, разрешённые инструменты.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/gIVt_iqmACw" title="GitHub Actions and Code Review" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Лучшее место, чтобы передать Claude повторяющуюся работу, — pull request. Здесь проходит ревью, сюда попадают изменения, и здесь же живёт немалая часть вашей рутины. Поставить Claude на эту работу можно двумя способами, и они решают разные задачи. Первый — управляемый сервис, который достаточно включить. Второй — GitHub Action, который вы подключаете сами. Разберём оба и поймём, когда какой из них выбирать.</p>
+
+      <h2>Управляемый путь: Code Review</h2>
+      <p>Самый простой вариант — Code Review. Это сервис, размещённый у Anthropic: он проверяет ваши pull request через GitHub-приложение Claude (Claude GitHub App). Вам ничего не нужно ни собирать, ни где-то размещать. Вы включаете его — и он начинает оставлять замечания в комментариях прямо к тем строкам, где это важно.</p>
+      <p>Включает его администратор организации — в настройках администратора Claude Code. Там есть раздел Code review с кнопкой Configure, которая подключает сервис к вашим репозиториям.</p>
+      <p>Дальше администратор устанавливает GitHub-приложение Claude, выбирает, за какими репозиториями оно следит, и решает, когда запускать ревью. Вариантов запуска несколько:</p>
+      <ul>
+        <li>один раз, когда PR открывают;</li>
+        <li>при каждом push в PR;</li>
+        <li>только когда кто-то напишет в комментарии <code>@claude review</code>.</li>
+      </ul>
+      <p>Когда сервис включён, всё работает на инфраструктуре Anthropic. Группа агентов-ревьюеров анализирует diff с учётом всей кодовой базы, а не изменённые строки в отрыве от остального кода. Затем сервис публикует замечания в комментариях к конкретным строкам, с пометкой серьёзности, а в check run — сводную таблицу.</p>
+      <p>Вот как выглядит одно такое замечание. Оно приходит от Claude комментарием прямо к строке — с понятным объяснением и предложенным исправлением.</p>
+      <p>Удобно, что сервис убирает дубли и ранжирует замечания. Поэтому вместо вороха придирок вы видите несколько настоящих проблем, которые стоят вашего внимания.</p>
+
+      <h2>Что Code Review делает, а чего нет</h2>
+      <p>Несколько вещей, которые стоит помнить о границах сервиса:</p>
+      <ul>
+        <li>Он никогда не одобряет и не блокирует PR. Последнее слово за человеком: Claude отмечает проблемы, решаете вы.</li>
+        <li>Управляемого автоисправления нет. Сервис только публикует замечания.</li>
+        <li>Сейчас это research preview, доступный на планах Team и Enterprise, так что поведение ещё будет меняться.</li>
+      </ul>
+      <p>Раз автоисправления в сервисе нет, исправлять найденное приходится локально. В вашем терминале команда <code>/code-review</code> проверяет diff, а её флаг <code>--fix</code> применяет найденное к рабочему дереву. Порядок работы такой: Claude находит проблему в PR, вы забираете ветку к себе и исправляете локально.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Статус и включение.</strong> На ноябрь 2026 документация уже не называет Code Review research preview: это сервис для планов Team и Enterprise. Включает его Owner организации переключателем Allow code review (claude.ai → Admin settings → Claude Code); кнопки Configure, о которой говорит урок, в текущей инструкции нет.</li>
+          <li><strong><code>/code-review</code> — отдельное ревью.</strong> Это собственная проверка изменений в вашей сессии, а не замечания сервиса: <code>--fix</code> применяет к рабочему дереву то, что нашёл этот прогон.</li>
+        </ul>
+      </aside>
+
+      <h2>Путь «своими руками»: GitHub Action</h2>
+      <p>Code Review берёт на себя ревью. Когда задача шире ревью, берите GitHub Action. Он нужен для вашего собственного CI: вносить изменения по комментарию, запускать отчёты по расписанию — всё, для чего вы обычно пишете workflow. Action запускает агента по комментариям в PR, по расписанию и по любому событию GitHub.</p>
+      <p>Настройка начинается в Claude Code. Выполните команду <code>/install-github-app</code>. Для этого нужны права администратора репозитория. Slash-команда проведёт вас через установку GitHub-приложения и создание в репозитории секрета с ключом Anthropic API.</p>
+      <p>Сам action — <code>anthropics/claude-code-action@v1</code>. Вот входные параметры, которые вы действительно будете использовать:</p>
+      <ul>
+        <li><code>anthropic_api_key</code> — необязательный.</li>
+        <li><code>github_token</code> — по умолчанию <code>secrets.GITHUB_TOKEN</code>.</li>
+        <li><code>trigger_phrase</code> — что action ищет в комментариях. По умолчанию <code>@claude</code>.</li>
+        <li><code>use_bedrock</code> / <code>use_vertex</code> — переключение на этих провайдеров, если вы работаете через Bedrock или Vertex.</li>
+        <li><code>prompt</code> — инструкция для запуска.</li>
+        <li><code>claude_args</code> — строка аргументов CLI, которая передаётся прямо в Claude Code.</li>
+      </ul>
+
+      <h2>Workflow, который откликается на @claude</h2>
+      <p>Положите workflow в <code>.github/workflows/claude.yaml</code> — и он будет ловить <code>@claude</code> в комментариях к PR и к issue. Главный шаг выглядит так:</p>
+      <pre>- uses: anthropics/claude-code-action@v1
+  with:
+    anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+    github_token: ${{ secrets.GITHUB_TOKEN }}
+    trigger_phrase: "@claude"
+    prompt: "Your instructions here"
+    claude_args: "--max-turns 5 --model claude-sonnet-5"</pre>
+      <p>Теперь кто-то пишет в pull request <code>@claude implement the spec in the linked Linear issue</code> — и action подхватывает запрос. Claude пушит коммиты и оставляет комментарии о том, что сделал.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong><code>prompt</code> переключает режим.</strong> Без <code>prompt</code> action работает в режиме interactive: ждёт фразу-триггер и отвечает комментарием. С <code>prompt</code>, как в примере урока, — automation: выполняет инструкцию при любом событии, запустившем workflow, не дожидаясь упоминания, а результат по умолчанию пишет в лог запуска. Поэтому workflow для ответов на <code>@claude</code> в документации написан без <code>prompt</code>.</li>
+          <li><strong><code>github_token</code>.</strong> Документация на ноябрь 2026 расходится с уроком: если параметр не задан, action авторизуется как Claude GitHub App. Если передать <code>${{ secrets.GITHUB_TOKEN }}</code>, как в примере, CI по коммитам Claude не запустится.</li>
+          <li><strong><code>anthropic_api_key</code>.</strong> В тексте урока он необязательный, в видео — обязательный. Ключ нужен для работы напрямую с Claude API, если вы не используете <code>claude_code_oauth_token</code> (подписка) или workload identity federation; с Bedrock и Vertex он не используется.</li>
+          <li><strong>Модель.</strong> <code>claude-sonnet-5</code> на ноябрь 2026 — legacy-модель; текущий Sonnet — <code>claude-sonnet-5-5</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Workflow по расписанию</h2>
+      <p>Тот же action подходит для ежедневной сводки. Cron-триггер срабатывает, скажем, в 9:00 UTC, action запускается, Claude публикует результаты. Можно добавить и триггер <code>workflow_dispatch</code>, чтобы запускать workflow вручную со вкладки Actions.</p>
+      <p>Пока action работает, на вкладке Actions можно следить, как он проходит шаги, — как и у любого другого workflow GitHub.</p>
+
+      <h2>Тонкая настройка через claude_args</h2>
+      <p>Строка <code>claude_args</code> — место для тонкой настройки. Несколько рычагов, которые стоит знать:</p>
+      <ul>
+        <li><code>--max-turns 5</code> жёстко ограничивает цикл агента, чтобы он не крутился бесконечно.</li>
+        <li>Режим разрешений. Job без присмотра не должен останавливаться с вопросами: отвечать на них некому.</li>
+        <li>Разрешённые инструменты. Дайте job ровно то, что ему нужно, и ничего сверх. Для отчёта это значит: только чтение.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Какие это флаги.</strong> В тексте урока они не названы; в видео режим разрешений — <code>--permission-mode dontAsk</code>: каждый запрос разрешения превращается в отказ, и сессия никогда не ждёт ввода. Разрешённые инструменты задаёт <code>--allowedTools</code>; для CI документация рекомендует именно эту пару.</li>
+          <li><strong>Инструменты сами не выдаются.</strong> Если <code>prompt</code> — обычный текст, у Claude нет доступа ни к shell, ни к GitHub API, пока вы не разрешите нужное, например через <code>--allowedTools</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Что выбрать?</h2>
+      <p>Коротко:</p>
+      <ul>
+        <li>Для ревью PR — управляемый путь. Включите Code Review, пусть GitHub-приложение публикует замечания к строкам, а исправления применяйте локально через <code>/code-review --fix</code>.</li>
+        <li>Берите action, когда задача шире ревью: <code>/install-github-app</code> для настройки, один workflow для упоминаний <code>@claude</code>, ещё один — для cron, а вся тонкая настройка — в <code>claude_args</code>.</li>
+      </ul>
+      <p>Начните с управляемого сервиса. Переходите на action, как только вам понадобится, чтобы Claude действительно что-то делал в CI, а не только комментировал.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Проверка автономных запусков»: как убедиться, что работе, которую Claude сделал без присмотра, можно доверять, — от diff и <code>/code-review</code> до тестов, встроенных как hook.</p>
+      <div class="pager">
+        <a class="ghost" href="06-routines-headless.html">Назад</a>
+        <a class="next" href="08-verifying-runs.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486936" target="_blank" rel="noopener noreferrer">GitHub Actions and Code Review</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

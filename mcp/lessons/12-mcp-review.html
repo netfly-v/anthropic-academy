@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Обзор MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html" aria-current="page"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Обзор MCP</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:12 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснять, какая часть приложения управляет каждым примитивом сервера: инструментами — модель, ресурсами — приложение, промптами — пользователь;</li>
+        <li>выбирать примитив под задачу: новые возможности для Claude, данные для интерфейса и контекста или готовые сценарии для пользователей;</li>
+        <li>узнавать все три примитива в интерфейсе Claude.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296691" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>MCP review · 4:12</span>
+      </a>
+
+      <p>MCP-сервер готов — теперь подведём итог по трём основным примитивам сервера и разберёмся, когда какой из них использовать. Главная мысль: каждым примитивом управляет своя часть стека вашего приложения.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp12-01.png" alt="Слайд «MCP Server Primitives» с тремя карточками: Tools — model-controlled, вызывать решает Claude и он же использует результат; Resources — app-controlled, решает приложение, и в основном оно же использует результат; Prompts — user-controlled, решает пользователь, например слэш-командой, кнопкой или пунктом меню.">
+        <figcaption>Три примитива сервера: кто управляет каждым из них.</figcaption>
+      </figure>
+
+      <h2>Инструменты: управляет модель (model-controlled)</h2>
+      <p>Инструментами полностью управляет Claude. Модель сама решает, когда вызвать эти функции, и Claude напрямую использует их результаты, чтобы выполнить задачу.</p>
+      <p>Инструменты идеально подходят, чтобы дать Claude дополнительные возможности, которыми он пользуется самостоятельно. Когда вы просите Claude «вычислить квадратный корень из 3 с помощью JavaScript», именно Claude решает запустить вычисление через инструмент для выполнения JavaScript.</p>
+
+      <h2>Ресурсы: управляет приложение (app-controlled)</h2>
+      <p>Ресурсами управляет код вашего приложения. Приложение решает, когда получить данные ресурса и как их использовать, — обычно в элементах интерфейса или как контекст для диалога.</p>
+      <p>В нашем проекте ресурсы использовались двумя способами:</p>
+      <ul>
+        <li>получение данных, чтобы заполнить список вариантов автодополнения в интерфейсе;</li>
+        <li>получение содержимого, чтобы дополнить промпты контекстом.</li>
+      </ul>
+      <p>Вспомните функцию «Add from Google Drive» в интерфейсе Claude: код приложения определяет, какие документы показать, и сам подставляет их содержимое в контекст чата.</p>
+
+      <h2>Промпты: управляет пользователь (user-controlled)</h2>
+      <p>Промпты запускаются действиями пользователя. Пользователь сам решает, когда запустить такой заранее заданный сценарий, и делает это через интерфейс: нажимает кнопку, выбирает пункт меню или вводит слэш-команду.</p>
+      <p>Промпты идеально подходят для сценариев, которые пользователь запускает, когда ему нужно. В интерфейсе Claude примеры промптов — кнопки сценариев под полем ввода чата: заранее подготовленные и оптимизированные сценарии, которые пользователь запускает одним нажатием.</p>
+
+      <h2>Как выбрать примитив</h2>
+      <p>Короткая подсказка для выбора:</p>
+      <ul>
+        <li><strong>Нужно дать Claude новые возможности?</strong> Используйте инструменты.</li>
+        <li><strong>Нужно получить данные в приложение — для интерфейса или контекста?</strong> Используйте ресурсы.</li>
+        <li><strong>Хотите сделать готовые сценарии для пользователей?</strong> Используйте промпты.</li>
+      </ul>
+      <p>Все три примитива можно увидеть в деле в официальном интерфейсе Claude. Кнопки сценариев демонстрируют промпты, интеграция с Google Drive — ресурсы, а когда Claude выполняет код или что-то вычисляет, он незаметно для вас пользуется инструментами.</p>
+      <p>Это общие ориентиры, которые помогают выбрать подходящий примитив под вашу задачу. Каждый примитив служит своей части стека приложения: инструменты — модели, ресурсы — приложению, промпты — пользователям.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Ориентиры, а не правила.</strong> Спецификация MCP (на ноябрь 2026) использует те же термины: инструменты — <em>model-controlled</em>, ресурсы — <em>application-controlled</em>, промпты — <em>user-controlled</em>. «User-controlled» значит, что пользователь решает, когда запустить промпт, а сам текст промпта задаёт сервер. Ресурсы приложение может подключать по-разному, в том числе по выбору модели, а для инструментов спецификация рекомендует (SHOULD), чтобы человек мог запретить вызов. Интерфейс протокол не навязывает.</li>
+          <li><strong>Google Drive сейчас.</strong> На ноябрь 2026 Google Drive в Claude — коннектор, то есть MCP-сервер. Файл можно выбрать вручную через «+» → <em>Add from Google Drive</em>, как в уроке, но при включённом коннекторе Claude может и сам искать и читать файлы Drive своими инструментами. Пример урока иллюстрирует идею, а не устройство claude.ai.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Курс пройден. В оригинале официальный тест курса — <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/297196" target="_blank" rel="noopener noreferrer">Final Assessment Quiz on MCP</a> (7 вопросов) — стоит перед этим уроком и проходится на Skilljar. Проверить себя можно и нашим <a href="../quiz.html">пробным экзаменом</a> в двух вариантах: Old · базовый и New · сложный.</p>
+      <div class="pager">
+        <a class="ghost" href="11-prompts-client.html">Назад</a>
+        <a class="next" href="../quiz.html">К тесту</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296691" target="_blank" rel="noopener noreferrer">MCP review</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

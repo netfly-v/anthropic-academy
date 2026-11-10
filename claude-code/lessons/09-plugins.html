@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Плагины</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html" aria-current="page"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Плагины</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:09 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое плагин и что он объединяет в одну установку;</li>
+        <li>установить плагин и подключить маркетплейс для команды;</li>
+        <li>проверить плагин до установки: его hooks, агентов, MCP-серверы и ключ <code>agent</code>;</li>
+        <li>упаковать свою папку <code>.claude</code> в плагин с манифестом <code>.claude-plugin/plugin.json</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/k4kZwJ0FtX0" title="Plugins" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Настройка, которой вы доверяете, стоит гораздо больше, когда ею пользуется вся команда. Сложность в том, как её перенести. Вы собрали отличную папку <code>.claude</code> со skills, субагентами и hooks — а дальше что? Все копируют файлы с машины на машину и надеются, что копии не разойдутся. Плагины решают эту проблему. Плагин — это способ, которым Claude Code упаковывает настройку и передаёт её от одного человека к другому.</p>
+      <p>У темы две стороны, и мы разберём обе. Первая — пользоваться плагинами, которые публикуют другие. Вторая — упаковать собственный, когда вы сделали что-то, чем стоит поделиться.</p>
+
+      <h2>Что такое плагин</h2>
+      <p>Плагин — это одна устанавливаемая единица. В него входит всё, чем иначе пришлось бы делиться вручную: skills, субагенты, hooks и конфигурации MCP-серверов, а сверх того — длинный хвост прочего, например серверы LSP (language server protocol), фоновые мониторы, темы и часть <code>settings.json</code>. Одна версия, одна установка.</p>
+      <p>От того, где лежит плагин, зависит, как его устанавливать. Внутри сессии плагин можно поставить прямо по имени:</p>
+      <pre>/plugin install org-name@plugin-name</pre>
+      <p>Вот как это выглядит: Claude Code устанавливает плагин и предлагает выполнить <code>/reload-plugins</code>, чтобы применить изменение.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Порядок в команде.</strong> По документации Claude Code (на ноябрь 2026) команда выглядит так: <code>/plugin install &lt;плагин&gt;@&lt;маркетплейс&gt;</code> — сначала имя плагина, после <code>@</code> имя маркетплейса, например <code>/plugin install commit-commands@claude-plugins-official</code>. В примере урока <code>org-name@plugin-name</code> части названы в обратном порядке. Официальный маркетплейс <code>claude-plugins-official</code> Claude Code добавляет сам, плагин из любого другого ставят после того, как его маркетплейс добавлен.</li>
+          <li><strong>Установка идёт через панель.</strong> В сессии команда не ставит плагин сразу, а открывает панель <code>/plugin</code> на карточке плагина. Там вы смотрите, что он добавит, и выбираете область установки: user, project или local.</li>
+        </ul>
+      </aside>
+
+      <h2>Как добавить маркетплейс для команды</h2>
+      <p>Для команды лучше один раз добавить закрытый маркетплейс. Маркетплейс — это общий источник, из которого берутся плагины:</p>
+      <pre>/plugin marketplace add your-org/claude-plugins</pre>
+      <p>Назвать его можно как угодно. Когда он добавлен, каждая следующая установка идёт через него. Поиск плагинов, отслеживание версий и обновления собраны в одном месте, а не разбросаны по ноутбукам всей команды.</p>
+      <p>Что доступно, можно посмотреть на вкладке Discover. Там перечислены плагины из ваших маркетплейсов, их можно искать и выбирать.</p>
+
+      <h2>Прочитайте до установки</h2>
+      <p>Это самое важное. Плагин выполняет код на вашей машине с вашими правами. Его hooks срабатывают на каждый подходящий вызов инструмента. Поэтому если вы ставите плагин ради его skills, вы получаете и его hooks <code>PreToolUse</code> и <code>Stop</code> — читали вы их или нет.</p>
+      <p>Подумайте, что это значит. Плагин из сообщества может содержать hook <code>Stop</code>, который каждый раз обращается к какому-то сетевому адресу, и ничто в вашей конфигурации об этом не предупредит. Это не причина отказываться от плагинов. Это причина сначала посмотреть.</p>
+      <p>Перед установкой изучите карточку плагина. Claude Code показывает, что будет установлено, и оценивает, сколько контекста займёт плагин, а рядом — прямое предупреждение: Anthropic не контролирует, что находится внутри сторонних плагинов.</p>
+      <p>О том, откуда берутся плагины, стоит знать две вещи:</p>
+      <ul>
+        <li>Плагин, поданный через форму в самом приложении, после автоматической проверки Anthropic попадает в маркетплейс сообщества.</li>
+        <li>Официальный маркетплейс курируется отдельно, своим порядком.</li>
+      </ul>
+      <p>Но «проверен» не значит «надёжен». Автоматическая проверка ловит кое-что, но не всё. Так что правило остаётся в силе: ставьте плагины и добавляйте маркетплейсы только из источников, которым действительно доверяете, и проверяйте, что плагин на самом деле делает, прежде чем его включить.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Чего карточка не показывает.</strong> Она перечисляет компоненты плагина, но не показывает, что запускает hook: это видно только в исходниках (<code>hooks/hooks.json</code>, <code>.mcp.json</code>). Оценку контекста на ноябрь 2026 показывают только для плагинов официального маркетплейса Anthropic, и не в списке Discover.</li>
+          <li><strong>Откуда плагины берутся сейчас.</strong> Порядок подачи со времени записи курса изменился. На ноябрь 2026 автор подаёт плагин в каталог Anthropic на claude.ai через портал <code>claude.ai/directory/manage</code>; прежняя форма подачи в Claude Console больше не поддерживается. Каждая версия проходит автоматическую проверку, а новую публикацию дополнительно проверяет человек. Маркетплейс сообщества <code>claude-community</code> Claude Code сам не добавляет. Сторонние маркетплейсы, в том числе ваш командный, Anthropic не проверяет вовсе.</li>
+        </ul>
+      </aside>
+
+      <h2>Компоненты работают рядом с вашими</h2>
+      <p>Плагин не перезаписывает вашу конфигурацию. Его компоненты работают рядом с вашими. В основном это хорошо, но есть последствия, которые стоит понимать.</p>
+      <p>Hooks складываются. Hook <code>PreToolUse</code> плагина и ваш собственный hook <code>PreToolUse</code> срабатывают оба на каждый вызов инструмента. Ни один не заменяет другой. Именно поэтому карточку читают заранее.</p>
+      <p>Skills, агенты и команды получают пространство имён по имени плагина, поэтому никогда не конфликтуют с вашими. В плагин можно положить и файл <code>settings.json</code>, но очень ограниченный. Claude Code учитывает из него всего два ключа: <code>agent</code> и ключ строки состояния субагентов.</p>
+      <p>На ключе <code>agent</code> стоит остановиться. Если он задан, один из субагентов плагина становится главным потоком сессии — вместе со своим системным промптом, ограничениями на инструменты и моделью. Иначе говоря, включение плагина может изменить поведение Claude Code по умолчанию. Это одна из главных причин посмотреть на плагин ещё до того, как вы его включите.</p>
+      <p>Когда плагин установлен, в панели плагинов можно увидеть всё, что он добавил, управлять им и удалить его.</p>
+
+      <h2>Как упаковать свой плагин</h2>
+      <p>Теперь вторая сторона. Когда у вас есть работающая папка <code>.claude</code>, не заставляйте команду копировать её между машинами. Упакуйте её.</p>
+      <p>Хорошая новость: ничего не нужно перестраивать. Плагин устроен так же, как привычная вам папка <code>.claude</code>:</p>
+      <ul>
+        <li>по папке на каждый skill;</li>
+        <li>по Markdown-файлу на каждого субагента в папке <code>agents</code>;</li>
+        <li><code>hooks/hooks.json</code> и <code>.mcp.json</code> — в корне плагина.</li>
+      </ul>
+      <p>Основную работу делает структура каталогов: Claude Code находит компоненты по соглашению.</p>
+
+      <h2>Манифест</h2>
+      <p>К этому можно добавить необязательный манифест. Он лежит в <code>.claude-plugin/plugin.json</code> и хранит имя, версию, описание и автора:</p>
+      <pre>{
+  "name": "svg-splitter-review",
+  "version": "0.1.0",
+  "description": "Reviews the SVG Splitter repo",
+  "author": {
+    "name": "Lewis Menelaws"
+  }
+}</pre>
+      <p>Манифест необязателен. Без него Claude Code всё равно найдёт ваши компоненты по структуре каталогов. Но пару деталей знать стоит:</p>
+      <ul>
+        <li><strong>Имя — единственное обязательное поле.</strong> Оно задаёт пространство имён для ваших skills в виде <code>company-name:skill-name</code>, поэтому они не конфликтуют с чужими.</li>
+        <li><strong>Версионируйте плагин, как любую другую зависимость.</strong> Именно на этом держатся обновления и отслеживание версий во всей команде.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Что стоит перед двоеточием.</strong> Префикс — это поле <code>name</code> плагина, а не название компании: skills из примера вызываются как <code>/svg-splitter-review:&lt;skill&gt;</code>. Без манифеста имя берётся из записи в маркетплейсе.</li>
+          <li><strong>Где лежат файлы.</strong> Компоненты лежат в корне плагина, без префикса <code>.claude/</code>; hooks из <code>settings.json</code> переезжают в <code>hooks/hooks.json</code> в той же форме. Внутри <code>.claude-plugin/</code> лежит только манифест.</li>
+          <li><strong>Как работает версия.</strong> Пока <code>version</code> не меняется, пользователи остаются на этой версии, даже если вы пушите новые коммиты. Поэтому либо поднимайте её в каждом релизе, либо, если плагин раздаётся через git, не указывайте её вовсе — тогда версией служит SHA коммита (на ноябрь 2026).</li>
+        </ul>
+      </aside>
+
+      <h2>Главное</h2>
+      <p>Почти всё здесь сводится к двум простым правилам:</p>
+      <ul>
+        <li>Пользуетесь плагинами — читайте до установки. Плагин выполняет код с вашими правами, поэтому сначала посмотрите на его hooks, агентов и MCP-серверы.</li>
+        <li>Делаете свой — упакуйте папку <code>.claude</code>, как только она заработала. Один манифест, одна установка.</li>
+      </ul>
+      <p>В этом весь смысл. Одна устанавливаемая единица — и настройка, которой вы доверяете, доходит до всей команды.</p>
+
+      <h2>Дальше</h2>
+      <p>Это последний урок курса. Проверьте себя официальным тестом <a href="https://anthropic.skilljar.com/claude-code-in-action/487234" target="_blank" rel="noopener noreferrer">Claude Code in Action Quiz</a> на Skilljar (11 вопросов), а затем нашим <a href="../quiz.html">пробным экзаменом</a> по всему курсу — в двух вариантах, базовом и сложном.</p>
+      <div class="pager">
+        <a class="ghost" href="08-verifying-runs.html">Назад</a>
+        <a class="next" href="../quiz.html">К тесту</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486939" target="_blank" rel="noopener noreferrer">Plugins</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

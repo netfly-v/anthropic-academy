@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills для проверки</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html" aria-current="page"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Skills для проверки</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 1:48 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, почему первым стоит сделать skill, который проверяет работу, и из каких шагов он состоит;</li>
+        <li>держать главный файл skill коротким, а подробную справку и скрипты выносить в соседние файлы;</li>
+        <li>решать, куда положить правило: в <code>CLAUDE.md</code>, в skill или в hook.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/soLPOXXAc1w" title="Verification Skills" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Когда проект растёт, вы начинаете замечать, что одна и та же работа повторяется снова и снова. Вы уже знаете, что skills — хороший способ автоматизировать повторяющуюся работу. В этом уроке разберём одну конкретную задачу, с которой skills справляются особенно хорошо: проверку собственной работы. Если делать какой-то skill первым, то именно этот.</p>
+
+      <h2>Почему начинать стоит со skill для проверки</h2>
+      <p>Вспомните, как вы обычно проверяете работу Claude. Вы просите его что-нибудь отрефакторить, он заканчивает, и дальше вам надо не забыть всё перепроверить. Может быть, вы попросите его прогнать тесты. Может быть, сами прочитаете diff. Беда в том, что проверка зависит от того, не забудете ли вы попросить о ней. Пропустите этот шаг один раз — и плохой код проскочит.</p>
+      <p>Skill для проверки убирает эту зависимость. Вот как он устроен. Вы просите Claude что-нибудь отрефакторить. Когда он заканчивает, изменение подходит под описание skill, поэтому skill срабатывает сам. Дальше он:</p>
+      <ul>
+        <li>прогоняет набор тестов;</li>
+        <li>читает diff;</li>
+        <li>проверяет, что ни один тест не ослабили только ради того, чтобы всё прошло;</li>
+        <li>сообщает, пройдена проверка или нет, и прикладывает доказательства.</li>
+      </ul>
+      <p>Всё это происходит без вашей просьбы. Запускает skill его описание, а запустившись, он каждый раз проходит одни и те же шаги.</p>
+      <p>Обратите внимание на последнюю проверку в этой цепочке. Мало прогнать тесты и увидеть зелёный результат. Тест можно незаметно ослабить так, что он будет проходить при любом коде. Поэтому skill читает diff и убеждается, что тесты не ослабили. «Готово» не значит «по diff код выглядит правильно». «Готово» — это когда обязательные проверки запущены, их результат действительно увиден, а итог прямо назван в отчёте.</p>
+      <p>Та же схема подходит для любой процедуры, которую повторяет ваша команда: чеклист релиза, рецепт миграции, проверка перед pull request. Простое правило: если вы дважды набрали одну и ту же многошаговую инструкцию, это уже skill.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>«Срабатывает сам» — не гарантия: Claude сравнивает задачу с описаниями skills и сам решает, загрузить ли подходящий. По документации Claude Code (на ноябрь 2026), описание должно объяснять и что делает skill, и когда его использовать, причём главный случай лучше ставить в начало. Если skill не сработал, его можно вызвать вручную командой <code>/имя-skill</code>. Гарантию даёт только hook — см. раздел «Куда класть какое правило».</p>
+      </aside>
+
+      <h2>В папке skill может лежать не только инструкция</h2>
+      <p>Skill — это не только один файл <code>skill.md</code>. Рядом с ним в папке может лежать и другое, и именно это делает skills таким сильным средством проверки.</p>
+      <ul>
+        <li>Положите рядом со skill файл <code>reference.md</code> с подробным материалом и сошлитесь на него из <code>skill.md</code>. Claude прочитает его, только когда ему действительно понадобятся эти подробности. Главный файл при этом остаётся коротким.</li>
+        <li>Скрипты тоже кладите в эту папку. Claude их выполняет, а не загружает их содержимое в контекст. Значит, у skill могут быть собственные инструменты — например, <code>check.sh</code>, который прогоняет все проверки.</li>
+      </ul>
+      <p>Вывод: сам <code>skill.md</code> держите компактным. Объёмный материал — длинные объяснения и исполняемые скрипты — выносите в соседние файлы. Компактный файл описывает, что делать, а в соседних лежат подробности и инструменты.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Имя файла.</strong> В уроке файл назван <code>skill.md</code>, но в документации Claude Code и в спецификации Agent Skills главный файл называется <code>SKILL.md</code>, заглавными буквами, и лежит в собственной папке skill: <code>.claude/skills/&lt;имя&gt;/SKILL.md</code>.</li>
+          <li><strong>Соседние файлы.</strong> В <code>SKILL.md</code> стоит написать, что лежит в каждом таком файле и когда его открывать. Код скрипта в контекст не попадает, туда приходит только его вывод: например, «тесты прошли» или текст ошибки.</li>
+        </ul>
+      </aside>
+
+      <h2>Куда класть какое правило</h2>
+      <p>У вас уже есть три места для инструкций, и их легко перепутать. Вот быстрый способ их различать.</p>
+      <p>Соглашения, которые действуют всё время, например правила именования или то, куда класть файлы, пишут в файл <code>CLAUDE.md</code>. Процедуры и справочный материал для определённого вида задач кладут в skill.</p>
+      <p>Есть и третий случай. Правило, которое Claude не должен иметь возможности пропустить, кладут в hook, а не в <code>CLAUDE.md</code> и не в skill. Дело в том, что <code>CLAUDE.md</code> и skills — это инструкции, которым Claude следует, а hook — это код, который действительно выполняется. Если пропустить правило нельзя, не полагайтесь только на инструкции.</p>
+
+      <h2>Итог</h2>
+      <p>Skill — это папка с файлом <code>skill.md</code> внутри: имя, описание, которое запускает skill, и сама процедура. Пока skill на самом деле не понадобился, в контекст загружаются только описания, поэтому упаковать в skill каждую повторяющуюся процедуру ничего не стоит.</p>
+      <p>Начните с проверки. Сделайте skill, закоммитьте его в <code>.claude/skills</code> вашего проекта — и тот же приём получит вся команда. Работу каждого будут проверять одинаково, автоматически, и никому не придётся помнить, что об этом надо попросить.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>«Ничего не стоит» — почти. Описание каждого skill занимает контекст на каждом ходе, вызывается skill или нет. В Claude Code (на ноябрь 2026) список skills по умолчанию ограничен бюджетом: если skills слишком много, описания тех, что вызываются реже всего, убираются (имена остаются), и Claude теряет ключевые слова, по которым сопоставляет с ними задачу. Поэтому описание пишите коротким, с главным случаем в начале, а лишние skills отключайте.</p>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Режимы разрешений»: как один раз выбрать, что Claude может запускать, не спрашивая вас, вместо того чтобы подтверждать каждое действие.</p>
+      <div class="pager">
+        <a class="ghost" href="02-claude-md.html">Назад</a>
+        <a class="next" href="04-permission-modes.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486930" target="_blank" rel="noopener noreferrer">Verification Skills</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

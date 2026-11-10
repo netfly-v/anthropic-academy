@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Промпты в MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html" aria-current="page"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Промпты в MCP</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 7:44 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, зачем MCP-серверу готовые промпты, если пользователь может и сам попросить Claude о том же;</li>
+        <li>описать промпт декоратором <code>@mcp.prompt</code> и вернуть из функции промпта список сообщений;</li>
+        <li>проверить в MCP Inspector, как аргумент подставляется в шаблон промпта.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296698" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Defining prompts · 7:44</span>
+      </a>
+
+      <p>Промпты в MCP-серверах позволяют задать готовые высококачественные инструкции, которыми клиенты могут пользоваться вместо того, чтобы писать собственные промпты с нуля. Считайте их тщательно продуманными шаблонами, которые дают результат лучше, чем то, что пользователи придумали бы сами.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp10-01.png" alt="Наш сервер с MCP-клиентом подключён к двум MCP-серверам; у каждого из них есть Tools, Resources и Prompts (Prompts выделены), и каждый обращается к внешнему сервису (Outside Service).">
+        <figcaption>Промпты — ещё одна возможность MCP-сервера наряду с инструментами и ресурсами.</figcaption>
+      </figure>
+
+      <h2>Зачем нужны промпты</h2>
+      <p>Ключевая мысль такая: пользователи и так могут напрямую попросить Claude выполнить большинство задач. Например, пользователь может написать «reformat the report.pdf in markdown» («переоформи report.pdf в Markdown») и получить вполне приличный результат. Но результат будет гораздо лучше, если вы предложите пользователю тщательно протестированный специализированный промпт, который учитывает пограничные случаи и следует лучшим практикам.</p>
+      <p>Как автор MCP-сервера вы можете потратить время на то, чтобы составить, протестировать и оценить промпты, которые стабильно работают в самых разных сценариях. Пользователи получают этот опыт в готовом виде, и им не нужно самим становиться экспертами в prompt engineering.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp10-02.png" alt="Слева — что написал бы сам пользователь: «Convert report.pdf to markdown», с подписью, что это сработает, но с сильным промптом результат может быть лучше; справа — тщательно оценённый промпт: роль специалиста по конвертации документов, ID документа в тегах, пошаговые инструкции и правила Markdown, анализ в тегах document analysis и пример структуры результата.">
+        <figcaption>Однострочная просьба пользователя и протестированный промпт автора сервера.</figcaption>
+      </figure>
+
+      <h2>Создаём команду форматирования</h2>
+      <p>Реализуем практический пример — команду форматирования, которая преобразует документы в Markdown. Пользователь вводит <code>/format doc_id</code> и получает профессионально оформленную Markdown-версию своего документа.</p>
+      <p>Процесс выглядит так:</p>
+      <ul>
+        <li>пользователь вводит <code>/</code>, чтобы увидеть доступные команды;</li>
+        <li>выбирает <code>format</code> и указывает ID документа;</li>
+        <li>Claude по вашему готовому промпту читает документ и переоформляет его;</li>
+        <li>результат — чистый Markdown с правильными заголовками, списками и форматированием.</li>
+      </ul>
+
+      <h2>Как описать промпт</h2>
+      <p>Промпты описываются декоратором — примерно так же, как инструменты и ресурсы:</p>
+      <pre>@mcp.prompt(
+    name="format",
+    description="Rewrites the contents of the document in Markdown format."
+)
+def format_document(
+    doc_id: str = Field(description="Id of the document to format")
+) -&gt; list[base.Message]:
+    prompt = f"""
+Your goal is to reformat a document to be written with markdown syntax.
+
+The id of the document you need to reformat is:
+&lt;document_id&gt;
+{doc_id}
+&lt;/document_id&gt;
+
+Add in headers, bullet points, tables, etc as necessary. Feel free to add in structure.
+Use the 'edit_document' tool to edit the document. After the document has been reformatted...
+"""
+    
+    return [
+        base.UserMessage(prompt)
+    ]</pre>
+      <p>Функция возвращает список сообщений, которые отправляются прямо Claude. В список можно включить несколько сообщений пользователя и ассистента, чтобы выстроить более сложный ход диалога.</p>
+
+      <h2>Проверка промптов</h2>
+      <p>Прежде чем выпускать промпты, проверьте их в MCP Inspector:</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp10-03.png" alt="MCP Inspector v0.10.2: в списке промптов — format; справа doc_id = outlook.pdf и кнопка Get Prompt, ниже результат — одно сообщение с ролью user и текстом «Your goal is to reformat a document…»; в истории — initialize, prompts/list, completion/complete, prompts/get.">
+        <figcaption>Промпт <code>format</code> в MCP Inspector: значение <code>doc_id</code> подставлено в текст единственного сообщения с ролью <code>user</code>.</figcaption>
+      </figure>
+      <p>Инспектор показывает, какие именно сообщения будут отправлены Claude, в том числе как переменные подставляются в шаблон промпта. Так можно убедиться, что промпт выглядит правильно, ещё до того, как пользователи начнут на него полагаться.</p>
+
+      <h2>Главные преимущества</h2>
+      <ul>
+        <li><strong>Стабильность</strong> — пользователи каждый раз получают надёжный результат;</li>
+        <li><strong>Экспертиза</strong> — в промпты можно заложить знания предметной области;</li>
+        <li><strong>Переиспользование</strong> — одни и те же промпты могут использовать разные клиентские приложения;</li>
+        <li><strong>Поддержка</strong> — достаточно обновить промпт в одном месте, чтобы улучшить работу всех клиентов.</li>
+      </ul>
+      <p>Лучше всего промпты работают, когда они заточены под предметную область вашего MCP-сервера. У сервера для управления документами могут быть промпты для форматирования, краткого изложения или анализа документов. У сервера для анализа данных — промпты для подготовки отчётов или визуализаций.</p>
+      <p>Цель — дать промпты, настолько хорошо составленные и проверенные, что пользователи предпочтут их собственным инструкциям, написанным с нуля.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Импорты и SDK.</strong> Урок не показывает импорты: <code>from pydantic import Field</code> и <code>from mcp.server.fastmcp.prompts import base</code>. Это SDK 1.x. В версии 2 (на ноябрь 2026) <code>FastMCP</code> переименован в <code>MCPServer</code>, а <code>base</code> лежит в <code>mcp.server.mcpserver.prompts.base</code>; декоратор <code>@mcp.prompt()</code> принимает те же аргументы. Для реплик ассистента есть <code>base.AssistantMessage</code>.</li>
+          <li><strong>Что идёт по протоколу.</strong> Сам сервер модели ничего не шлёт: клиент получает список промптов запросом <code>prompts/list</code>, а сообщения с подставленными аргументами — запросом <code>prompts/get</code>, и уже клиентское приложение добавляет их в диалог.</li>
+          <li><strong>Промпт выбирает пользователь.</strong> Промпты — user-controlled: пользователь явно выбирает их в интерфейсе, а слэш-команда <code>/format</code> — решение нашего CLI, не протокола. Инструменты — model-controlled: вызывать ли их, решает модель.</li>
+          <li><strong>Промпт и инструменты вместе.</strong> Промпт содержит только ID документа: прочитать документ Claude должен инструментом <code>read_doc_contents</code>, а сохранить результат — <code>edit_document</code>. Промпт задаёт сценарий, инструменты выполняют действия.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Промпты в клиенте»: научим MCP-клиент получать список промптов и сами промпты с подставленными аргументами, а затем запустим команду <code>/format</code> в CLI.</p>
+      <div class="pager">
+        <a class="ghost" href="09-reading-resources.html">Назад</a>
+        <a class="next" href="11-prompts-client.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296698" target="_blank" rel="noopener noreferrer">Defining prompts</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

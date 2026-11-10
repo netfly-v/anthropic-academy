@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice exam · Claude Code in Action</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="../mcp/index.html">MCP</a>
+      <a href="index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="lessons/03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="lessons/04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="lessons/05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="lessons/07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="lessons/09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="quiz.html" aria-current="page"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Practice exam</h1>
+      <div class="rule"></div>
+      <nav class="quiz-switch" aria-label="Вариант экзамена">
+        <a href="quiz.html" aria-current="page">Old · базовый</a>
+        <a href="quiz-hard.html">New · сложный</a>
+      </nav>
+      <p class="kicker">Claude Code in Action</p>
+      <p class="estimate">16 items · about 20 minutes · English</p>
+      <p>Scenario items for the whole course. Choices are saved in this browser. The score, the per-topic breakdown and the reasons stay hidden until you press Submit. Clear the attempt with Очистить after the result.</p>
+      <div id="quiz-root"></div>
+    </main>
+  </div>
+  <script src="../js/claude-code-quiz.js"></script>
+  <script src="../js/stem-ru/claude-code-quiz.js"></script>
+  <script src="../js/why-ru/claude-code-quiz.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script src="../js/sidebar.js"></script>
+</body>
+</html>

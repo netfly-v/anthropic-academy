@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hooks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html" aria-current="page"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Hooks</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:24 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, чем hook отличается от правила в <code>CLAUDE.md</code>, и подобрать событие под задачу;</li>
+        <li>вернуть из PreToolUse решение <code>allow</code>, <code>deny</code> или <code>ask</code> и переписать вызов через <code>updatedInput</code>;</li>
+        <li>блокировать действие правильным кодом выхода: 2, а не 1;</li>
+        <li>возвращать нужный контекст после сжатия через SessionStart с <code>compact</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/8ALu1dk681s" title="Hooks" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Вот в чём беда с указаниями в файле CLAUDE.md: это просьба, а не гарантия. Можно написать «всегда форматируй после правки», и Claude обычно послушается. Обычно. Но в долгом запуске, за которым вы не следите, «обычно» — это мало. Hook решает эту проблему. Hook — детерминированный код, который выполняется в фиксированной точке цикла, поэтому он может гарантировать поведение, а не надеяться на него. Он превращает правило из «Claude обычно слушается» в «Claude не может это пропустить».</p>
+      <p>Вот и вся идея. Теперь посмотрим, как это устроено на деле.</p>
+
+      <h2>События hooks</h2>
+      <p>За сессию в Claude Code срабатывает около 30 событий hooks. Знать их все не нужно. Но есть несколько событий, к которым вы будете возвращаться снова и снова: они совпадают с теми точками агентного цикла, где вам захочется вмешаться.</p>
+      <p>Вот как они расположены в цикле. Сессия начинается, приходят промпты, вызываются инструменты, и в конце концов ход заканчивается. На каждый из этих моментов есть hook, на который можно повесить свой код.</p>
+      <p>Стоит знать вот эти:</p>
+      <ul>
+        <li><strong>PreToolUse</strong> срабатывает перед вызовом инструмента. Это ваш базовый механизм контроля: именно он может остановить действие до того, как оно произойдёт.</li>
+        <li><strong>PostToolUse</strong> срабатывает после успешного вызова инструмента. Обычно сюда ставят автоформатирование или автоматический линтер.</li>
+        <li><strong>Stop</strong> срабатывает, когда Claude хочет закончить ход. Если какое-то условие не выполнено, можно отказать и сказать: «нет, ты ещё не закончил». Когда работу заканчивает субагент, срабатывает парное событие <strong>SubagentStop</strong>.</li>
+        <li><strong>PreCompact</strong> и <strong>PostCompact</strong> срабатывают до и после сжатия контекста.</li>
+        <li><strong>InstructionsLoaded</strong> срабатывает, когда загружается CLAUDE.md или файл правил. Удобно, чтобы проверить, что на самом деле попало в контекст.</li>
+        <li><strong>SessionStart</strong> срабатывает в начале сессии и готовит окружение. Если он нужен только при новом запуске, используйте источник <code>startup</code>.</li>
+      </ul>
+      <p>Вот на чём часто спотыкаются: чтобы вернуть контекст после сжатия, не берите PostCompact. Берите SessionStart с matcher <code>compact</code>. Именно его вывод на самом деле попадает обратно в разговор.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Не только код.</strong> Чаще всего hook — команда оболочки (<code>"type": "command"</code>), но есть ещё типы <code>http</code>, <code>mcp_tool</code>, <code>prompt</code> и <code>agent</code>. Последние два спрашивают модель, поэтому детерминированной гарантии, о которой говорит урок, у них нет.</li>
+          <li><strong>Почему не PostCompact.</strong> PostCompact получает готовую сводку (<code>compact_summary</code>) и годится для логов, но в контекст ничего не добавляет.</li>
+          <li><strong>Stop без вечного цикла.</strong> Во входных данных hook есть поле <code>stop_hook_active</code>: оно равно <code>true</code>, когда Claude уже продолжает работу из-за Stop hook. Проверяйте его, чтобы не блокировать остановку по условию, которое никогда не выполнится.</li>
+          <li><strong>Где настраивают hooks.</strong> В блоке <code>hooks</code> файла настроек: <code>~/.claude/settings.json</code> — для всех ваших проектов, <code>.claude/settings.json</code> — для проекта (коммитится в репозиторий), <code>.claude/settings.local.json</code> — для проекта, только у вас. Уровни: событие → группа с <code>matcher</code> → обработчики.</li>
+        </ul>
+      </aside>
+
+      <h2>PreToolUse: решение в виде JSON</h2>
+      <p>Главная сила — в PreToolUse, потому что он может заблокировать вызов инструмента до того, как тот выполнится. Ответить Claude можно так: напечатать JSON и завершиться с кодом 0. Ключевое поле — <code>permissionDecision</code>, и оно принимает одно из трёх значений:</p>
+      <ul>
+        <li><code>allow</code> — пропустить вызов;</li>
+        <li><code>deny</code> — остановить вызов;</li>
+        <li><code>ask</code> — передать решение пользователю.</li>
+      </ul>
+      <p>Технически есть и четвёртое значение, <code>defer</code>, но оно действует только в неинтерактивных запусках с <code>-p</code>, где вызывающий процесс ставит инструмент на паузу и позже возобновляет его. Пригодится оно вам редко.</p>
+      <p>Выглядит это так:</p>
+      <pre>{
+  "hookSpecificOutput": {
+    "hookEventName": "PreToolUse",
+    "permissionDecision": "deny",
+    "permissionDecisionReason": "...",
+    "updatedInput": {
+      "command": "..."
+    }
+  }
+}</pre>
+      <p>Обратите внимание на <code>updatedInput</code>. Вызов можно не блокировать, а переписать. Именно так вычищают секрет из bash-команды и всё равно дают ей выполниться. Но есть подвох: <code>updatedInput</code> заменяет <em>весь</em> объект входных данных, поэтому поля, которые вы не меняете, нужно вернуть как есть, иначе они потеряются.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong><code>updatedInput</code> и решение.</strong> В примере <code>deny</code> и <code>updatedInput</code> стоят рядом, чтобы показать все поля сразу. На деле переписанный вызов возвращают с <code>allow</code> (он пройдёт без вопроса) или с <code>ask</code> (пользователь увидит уже изменённые входные данные); при <code>deny</code> вызов не выполнится вовсе.</li>
+          <li><strong><code>allow</code> не всесилен.</strong> Он снимает только окно подтверждения: правила <code>deny</code> и <code>ask</code> из настроек продолжают действовать.</li>
+          <li><strong>От чего защищает подмена.</strong> Hook меняет то, что выполнится, но Claude секрет уже видел: команду написал он сам.</li>
+        </ul>
+      </aside>
+
+      <h2>Коды выхода — для hooks без JSON</h2>
+      <p>Не каждому hook нужно отвечать в JSON. Простым hooks хватает кодов выхода. Важны три числа.</p>
+      <ul>
+        <li><strong>0 — успех.</strong> Если в стандартном выводе (stdout) JSON, Claude его разбирает. Простой текст у большинства событий игнорируется, но у SessionStart, UserPromptSubmit и UserPromptExpansion он добавляется в контекст. Именно на этом и держится hook, сохраняющий состояние.</li>
+        <li><strong>2 — блокирующая ошибка.</strong> Стандартный поток ошибок (stderr) передаётся Claude как контекст. Почти везде блокирует именно этот код.</li>
+        <li><strong>Любой другой код</strong> не блокирует. Stderr записывается в лог, и Claude продолжает работу.</li>
+      </ul>
+      <p>Чаще всего подводит код 1. Он <em>кажется</em> ошибкой, но не блокирует: Claude всё равно выполнит команду. Так что если вы хотели что-то остановить, завершайтесь с кодом 2, а не 1.</p>
+      <p>Ещё пара тонкостей. Код 2 может заблокировать даже Stop — так вы говорите Claude, что он не закончил. А вот PostToolUse срабатывает, когда инструмент уже отработал, поэтому блокировать там поздно: вызов не остановить, хотя передать Claude текст всё ещё можно. И некоторые события блокировку вообще игнорируют, например Notification и SessionStart. На них stderr просто показывается, а работа продолжается как ни в чём не бывало.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Расхождения с уроком.</strong> На ноябрь 2026 по документации простой текст из stdout попадает в контекст ещё и у PostModelSwitch. У Notification код выхода и stderr игнорируются полностью, а SessionStart при коде 2 показывает stderr только пользователю. У PermissionRequest код 2 не действует вовсе: отказать там можно только через JSON.</li>
+          <li><strong>Код 0 — не одобрение.</strong> Если PreToolUse завершился с кодом 0 без JSON, вызов идёт обычным путём проверки разрешений: возможно, Claude Code всё равно спросит вас.</li>
+        </ul>
+      </aside>
+
+      <h2>Настоящий предохранитель: скрыть, а не заблокировать</h2>
+      <p>Сведём всё воедино на практическом примере. Допустим, вам нужен предохранитель PreToolUse на инструменте Bash. Поле matcher выбирает, за каким инструментом следить, а необязательное условие <code>if</code> может сузить проверку до конкретной команды.</p>
+      <p>Очевидный ход — вернуть <code>deny</code> и остановить опасный вызов. Это хорошо. Но менее известный и более интересный ход — вернуть <code>updatedInput</code> и переписать вызов. Так можно вырезать секрет из команды и всё равно её выполнить, а не просто отказать.</p>
+      <p>Вот как это выглядит на практике. Claude просят выполнить команду, в которой есть секрет, похожий на настоящий. Hook перехватывает её, замечает шаблон <code>sk_live_</code> и подменяет его заглушкой ещё до того, как команда выполнится.</p>
+      <p>Команда всё равно выполнилась. Работа сделана. Но секрет так и не прошёл дальше. В этом разница между блокировкой и скрытием, и именно такое поведение hook может гарантировать каждый раз, без исключений.</p>
+
+      <h2>Сохранить состояние при сжатии</h2>
+      <p>Ещё один шаблон, который стоит настроить. Когда Claude сжимает длинный разговор, теряется много деталей. Hook SessionStart с matcher <code>compact</code> запускается сразу после сжатия. Пусть он печатает короткую сводку по файлам, с которыми вы работали. Эта сводка возвращается в контекст, и Claude продолжает с того места, где остановился, а не начинает с нуля.</p>
+
+      <h2>Итоги</h2>
+      <p>Hooks превращают правило, которому Claude обычно следует, в правило, которому он следует всегда. Не останавливайтесь на автоформатировании: охраняйте инструменты через PreToolUse, через Stop не давайте закончить ход раньше времени и сохраняйте состояние при сжатии. Настройка требует немного усилий заранее, но окупается в первый же раз, когда hook что-то поймает в запуске, за которым вы даже не следили.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Routines и headless»: как перестать запускать повторяющиеся задачи вручную. Путей два: routines в облаке Anthropic и headless-режим из собственных скриптов.</p>
+      <div class="pager">
+        <a class="ghost" href="04-permission-modes.html">Назад</a>
+        <a class="next" href="06-routines-headless.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486933" target="_blank" rel="noopener noreferrer">Hooks</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

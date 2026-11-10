@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка автономных запусков</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../index.html" aria-current="page">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code in Action</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Управлять работой</p>
+        <ul class="lesson-nav">
+          <li><a href="01-long-sessions.html"><span class="mark"></span>Долгие сессии</a></li>
+        </ul>
+        <p class="nav-group">Настроить Claude</p>
+        <ul class="lesson-nav">
+          <li><a href="02-claude-md.html"><span class="mark"></span>CLAUDE.md, которому следуют</a></li>
+          <li><a href="03-verification-skills.html"><span class="mark"></span>Skills для проверки</a></li>
+          <li><a href="04-permission-modes.html"><span class="mark"></span>Режимы разрешений</a></li>
+          <li><a href="05-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Автоматизировать повторяющееся</p>
+        <ul class="lesson-nav">
+          <li><a href="06-routines-headless.html"><span class="mark"></span>Routines и headless</a></li>
+          <li><a href="07-github-actions.html"><span class="mark"></span>GitHub Actions и Code Review</a></li>
+        </ul>
+        <p class="nav-group">Проверить и поделиться</p>
+        <ul class="lesson-nav">
+          <li><a href="08-verifying-runs.html" aria-current="page"><span class="mark"></span>Проверка автономных запусков</a></li>
+          <li><a href="09-plugins.html"><span class="mark"></span>Плагины</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Проверка автономных запусков</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:15 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>соразмерять проверку с тем, насколько запуск шёл без присмотра;</li>
+        <li>проверять работу по diff и <code>/code-review</code>, а не по сводке Claude;</li>
+        <li>сделать тесты обязательным барьером с помощью hooks и <code>exit 2</code>;</li>
+        <li>получать «холодное» второе мнение от новой сессии или субагента.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/lalGZSNhm8E" title="Trust It: Verifying Unsupervised Runs" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Вы поручили Claude задачу и дали ему работать, не следя за каждым шагом. Теперь он сообщает, что всё готово. Прежде чем выпускать эту работу, нужен способ проверить то, за чем вы даже не присматривали. Именно такая проверка позволяет спокойно полагаться на Claude Code, работающий без надзора.</p>
+      <p>Идея простая: проверяйте соразмерно тому, сколько свободы вы дали запуску. Если в короткой сессии вы следили, как бегут сообщения, хватит беглого взгляда. Но запуску без присмотра или задаче, которая запустилась в CI (непрерывной интеграции) без участия человека, нужна настоящая проверка. Никто не видел, что произошло, поэтому картину приходится восстанавливать задним числом.</p>
+      <p>Представить это можно так: чем меньше вы наблюдали, тем больше проверяете.</p>
+
+      <h2>Держите запуски без присмотра в режиме auto</h2>
+      <p>Когда рабочий запуск идёт без присмотра, держите его в режиме auto, а не в bypass permissions. В режиме auto классификатор по-прежнему проверяет каждое действие на опасность. Такую страховку стоит сохранить.</p>
+      <p>Но чётко понимайте, что эта страховка делает, а чего не делает. Классификатор никогда не оценивает, правилен ли код на самом деле. Он только отмечает опасные действия. Поэтому планка проверки остаётся ровно там, где была. Выставляйте её в зависимости от того, насколько запуск шёл без присмотра.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Что проверяет классификатор.</strong> По документации (на ноябрь 2026) — не каждое действие, как сказано в уроке: чтение и правки в рабочей папке одобряются без него, проверяет он в основном команды shell и сетевые операции. Режим auto сокращает число запросов разрешений, но безопасности не гарантирует.</li>
+          <li><strong>Режим в <code>claude -p</code>.</strong> Без явного режима запуск идёт в <code>default</code> и отклоняет действия, требующие одобрения, если их не разрешают правила или hook. Без присмотра запускайте с <code>--permission-mode auto</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Начинайте с diff, а не со сводки</h2>
+      <p>Не начинайте со сводки Claude о том, что он сделал. Начинайте с самого diff.</p>
+      <ol>
+        <li>Запустите <code>/code-review</code>, чтобы пройтись по изменениям и отметить проблемы.</li>
+        <li>Затем посмотрите <code>git diff</code> своими глазами.</li>
+      </ol>
+      <p>Ловушка — аккуратная сводка, которая читается совершенно нормально, хотя на деле в diff оказался файл, которого вы, честно говоря, там не ждали. Сводка об этом не скажет. Diff скажет.</p>
+      <p>Так что читайте, что изменилось. Сначала просмотрите файлы, которые входили в план, затем ищите всё, что вышло за его пределы. Чистый отчёт — не доказательство чистого кода.</p>
+
+      <h2>Сделайте тесты барьером, а не обещанием</h2>
+      <p>Настоящий барьер для запуска без присмотра — прошли ли тесты и действительно ли Claude их запускал, а не только заявил об этом. Не принимайте это на веру. Оформите проверку как hook, чтобы Claude не мог её пропустить.</p>
+      <p>Для этого хватит пары hooks:</p>
+      <ul>
+        <li><strong>Stop hook</strong>, который запускает ваши тесты и не даёт завершить ход, если они упали.</li>
+        <li><strong>Post-tool-use hook</strong>, который запускает линтер и проверку типов после каждой правки.</li>
+      </ul>
+      <p>Ключевая деталь — код выхода. Hook, который завершается командой <code>exit 2</code>, передаёт ошибку прямо Claude. Claude читает её и исправляет, не дожидаясь вашей просьбы. А лучше всего то, что проверка срабатывает при каждом запуске — вспомните вы попросить о ней или нет.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Код 2 у <code>Stop</code> и <code>PostToolUse</code>.</strong> У <code>Stop</code> <code>exit 2</code> не даёт Claude остановиться, а stderr приходит ему как причина продолжать. У <code>PostToolUse</code> инструмент уже отработал, Claude лишь видит stderr.</li>
+          <li><strong>Hooks и <code>--bare</code>.</strong> <code>claude -p</code> загружает hooks проекта, а с <code>--bare</code> (на ноябрь 2026 его рекомендуют для CI) hooks не запускаются — барьер из тестов не сработает. Урок «Routines и headless» приписывает пропуск hooks самому <code>-p</code>, но по документации так ведёт себя только <code>--bare</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Получите «холодное» второе мнение</h2>
+      <p>Ревью кода субагентом, которое вы запустили бы перед pull request, подходит и здесь. Примените его к запуску без присмотра.</p>
+      <p>Запустите новую сессию или субагента и попросите его проверить изменённый код — без памяти о том, как этот код создавался. У него нет привязанности к выбранному подходу, поэтому он замечает то, мимо чего исходный запуск прошёл, убедив себя, что всё в порядке. Второй рецензент со свежим взглядом находит то, что автор успел себе оправдать.</p>
+
+      <h2>Всё вместе</h2>
+      <p>Делайте проверку настолько серьёзной, насколько запуск шёл без присмотра:</p>
+      <ul>
+        <li>Прочитайте diff сами.</li>
+        <li>Превратите тесты в hook, который служит барьером для завершения хода.</li>
+        <li>Проверяйте headless-запуски по их JSON-результату и коду выхода.</li>
+        <li>Для всего, что важно, получайте «холодное» второе мнение.</li>
+      </ul>
+      <p>Делайте так — и фразе «Claude сделал это, пока я не смотрел» больше не придётся верить на слово.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>JSON-результат.</strong> С <code>--output-format json</code> <code>claude -p</code> печатает итог (на ноябрь 2026) с полями <code>is_error</code>, <code>subtype</code> (<code>success</code> или вид ошибки) и <code>permission_denials</code>; при сбое код выхода ненулевой. <code>result</code> — та же сводка Claude, поэтому CI опирается на остальные поля и код выхода.</li>
+          <li><strong>«Холодный» рецензент.</strong> Обычный субагент стартует без истории разговора; форк её наследует и «холодным» не будет.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Плагины»: как упаковать проверенную настройку — skills, субагентов, hooks и MCP-серверы — в один устанавливаемый пакет и передать её команде.</p>
+      <div class="pager">
+        <a class="ghost" href="07-github-actions.html">Назад</a>
+        <a class="next" href="09-plugins.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/claude-code-in-action/486938" target="_blank" rel="noopener noreferrer">Trust It: Verifying Unsupervised Runs</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Инструменты в MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html" aria-current="page"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Инструменты в MCP</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 7:03 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>создать MCP-сервер одной строкой через Python SDK;</li>
+        <li>описывать инструменты декоратором <code>@mcp.tool</code>, а их аргументы — аннотациями типов и <code>Field</code>;</li>
+        <li>написать инструменты чтения и правки документа с проверкой ID.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296697" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Defining tools with MCP · 7:03</span>
+      </a>
+
+      <p>С официальным Python SDK создавать MCP-сервер гораздо проще. Вместо того чтобы вручную писать сложные JSON-схемы, инструменты можно описывать декораторами, а всю тяжёлую работу переложить на SDK.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp05-01.png" alt="Схема «Our MCP Server» с двумя инструментами — «Tool to read a doc» и «Tool to update a doc», — к которой подключены документы document.pdf, spreadsheet.xlsx, report.txt и spec.md.">
+        <figcaption>Наш MCP-сервер: инструменты чтения и обновления документа.</figcaption>
+      </figure>
+      <p>В этом примере мы создаём сервер для работы с документами, у которого два основных инструмента: один читает документы, другой их обновляет. Все документы хранятся в памяти в простом словаре: ключи — ID документов, значения — их содержимое.</p>
+
+      <h2>Создаём MCP-сервер</h2>
+      <p>С Python MCP SDK создать сервер несложно. Он инициализируется всего одной строкой:</p>
+      <pre>from mcp.server.fastmcp import FastMCP
+
+mcp = FastMCP("DocumentMCP", log_level="ERROR")</pre>
+      <p>Документы можно хранить в обычном словаре:</p>
+      <pre>docs = {
+    "deposition.md": "This deposition covers the testimony of Angela Smith, P.E.",
+    "report.pdf": "The report details the state of a 20m condenser tower.",
+    "financials.docx": "These financials outline the project's budget and expenditures",
+    "outlook.pdf": "This document presents the projected future performance of the system",
+    "plan.md": "The plan outlines the steps for the project's implementation.",
+    "spec.txt": "These specifications define the technical requirements for the equipment"
+}</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Версия SDK.</strong> Код урока написан для пакета <code>mcp</code> версии 1.x. На ноябрь 2026 актуальна версия 2: в ней <code>FastMCP</code> переименован в <code>MCPServer</code>, а импорт <code>mcp.server.fastmcp</code> выдаёт <code>ModuleNotFoundError</code>. Теперь пишут <code>from mcp.server import MCPServer</code> и <code>mcp = MCPServer("DocumentMCP", log_level="ERROR")</code>; <code>@mcp.tool</code> и <code>Field</code> работают как прежде. Чтобы запускать код курса без правок, закрепите <code>mcp&lt;2</code>.</li>
+          <li><strong>Импорт <code>Field</code>.</strong> В коде урока его нет; нужен <code>from pydantic import Field</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Инструменты через декораторы</h2>
+      <p>Инструменты в SDK описываются декораторами. Вместо того чтобы писать JSON-схемы вручную, вы пользуетесь аннотациями типов Python и описаниями полей, а SDK сам генерирует правильную схему, понятную Claude.</p>
+
+      <h2>Инструмент чтения документа</h2>
+      <p>Первый инструмент читает содержимое документа по ID. Полная реализация:</p>
+      <pre>@mcp.tool(
+    name="read_doc_contents",
+    description="Read the contents of a document and return it as a string."
+)
+def read_document(
+    doc_id: str = Field(description="Id of the document to read")
+):
+    if doc_id not in docs:
+        raise ValueError(f"Doc with id {doc_id} not found")
+    
+    return docs[doc_id]</pre>
+      <p>Декоратор задаёт имя и описание инструмента, а параметры функции — обязательные аргументы. Класс <code>Field</code> из Pydantic добавляет к аргументам описания, которые помогают Claude понять, что передавать в каждый параметр.</p>
+
+      <h2>Инструмент правки документа</h2>
+      <p>Второй инструмент выполняет в документе простой поиск и замену:</p>
+      <pre>@mcp.tool(
+    name="edit_document",
+    description="Edit a document by replacing a string in the documents content with a new string."
+)
+def edit_document(
+    doc_id: str = Field(description="Id of the document that will be edited"),
+    old_str: str = Field(description="The text to replace. Must match exactly, including whitespace."),
+    new_str: str = Field(description="The new text to insert in place of the old text.")
+):
+    if doc_id not in docs:
+        raise ValueError(f"Doc with id {doc_id} not found")
+    
+    docs[doc_id] = docs[doc_id].replace(old_str, new_str)</pre>
+      <p>Инструмент принимает три параметра: ID документа, текст, который нужно найти, и текст замены. Реализация обрабатывает отсутствие документа и выполняет обычную замену строки.</p>
+
+      <h2>Главные преимущества подхода с SDK</h2>
+      <ul>
+        <li>не нужно вручную писать JSON-схемы;</li>
+        <li>аннотации типов дают автоматическую проверку входных данных;</li>
+        <li>понятные описания параметров подсказывают Claude, как пользоваться инструментом;</li>
+        <li>обработка ошибок естественно сочетается с исключениями Python;</li>
+        <li>инструменты регистрируются автоматически через декораторы.</li>
+      </ul>
+      <p>MCP Python SDK превращает создание инструментов из сложной работы над схемами в описание обычных функций Python. Благодаря этому MCP-серверы гораздо проще создавать и поддерживать, а Claude при этом получает правильно оформленные описания инструментов.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Ошибки в SDK 2.</strong> Пункт урока об исключениях Python верен для версии 1.x: Claude получает результат с <code>isError: true</code> и текстом исключения. В версии 2 при обычном исключении (например, <code>ValueError</code>) Claude видит только «Error executing tool read_doc_contents», без причины. Чтобы Claude увидел сообщение, выбрасывайте <code>ToolError</code> (<code>from mcp.server.mcpserver.exceptions import ToolError</code>).</li>
+          <li><strong>Замена вслепую.</strong> Если <code>old_str</code> не найден, <code>edit_document</code> молча оставляет документ прежним и не сообщает об ошибке; в настоящем сервере это стоит проверять.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «MCP Inspector»: как проверить инструменты сервера во встроенном браузерном инспекторе, не подключая сервер к полноценному приложению.</p>
+      <div class="pager">
+        <a class="ghost" href="04-project-setup.html">Назад</a>
+        <a class="next" href="06-inspector.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296697" target="_blank" rel="noopener noreferrer">Defining tools with MCP</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

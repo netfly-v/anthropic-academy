@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice exam · Introduction to MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="index.html" aria-current="page">MCP</a>
+      <a href="../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="lessons/02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="lessons/03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="lessons/05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="lessons/06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="lessons/08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="lessons/09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="lessons/10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="lessons/11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="quiz.html" aria-current="page"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Practice exam</h1>
+      <div class="rule"></div>
+      <nav class="quiz-switch" aria-label="Вариант экзамена">
+        <a href="quiz.html" aria-current="page">Old · базовый</a>
+        <a href="quiz-hard.html">New · сложный</a>
+      </nav>
+      <p class="kicker">Introduction to Model Context Protocol</p>
+      <p class="estimate">16 items · about 20 minutes · English</p>
+      <p>Scenario items for the whole course. Choices are saved in this browser. The score, the per-topic breakdown and the reasons stay hidden until you press Submit. Clear the attempt with Очистить after the result.</p>
+      <div id="quiz-root"></div>
+    </main>
+  </div>
+  <script src="../js/mcp-quiz.js"></script>
+  <script src="../js/stem-ru/mcp-quiz.js"></script>
+  <script src="../js/why-ru/mcp-quiz.js"></script>
+  <script src="../js/quiz.js"></script>
+  <script src="../js/sidebar.js"></script>
+</body>
+</html>

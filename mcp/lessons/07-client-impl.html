@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Реализация клиента</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html" aria-current="page"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Реализация клиента</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 7:26 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, из чего состоит клиент: свой класс MCP Client и Client Session из MCP Python SDK, и зачем нужна обёртка;</li>
+        <li>реализовать функции <code>list_tools()</code> и <code>call_tool()</code> через сессию;</li>
+        <li>проверить клиент тестовой обвязкой, а весь поток с Claude — в CLI.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296696" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>Implementing a client · 7:26</span>
+      </a>
+
+      <p>MCP-сервер работает — пора браться за клиентскую сторону. Именно через клиент код приложения общается с MCP-сервером и получает доступ к его функциональности.</p>
+
+      <h2>Устройство клиента</h2>
+      <p>В большинстве реальных проектов вы реализуете либо MCP-клиент, либо MCP-сервер, но не оба сразу. В этом проекте мы строим и то и другое только для того, чтобы увидеть, как они работают вместе.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp07-01.png" alt="Слайд «Important Note!»: обычно проект реализует либо MCP-клиент, либо MCP-сервер, а наш — оба; на схеме MCP Client внутри нашего сервера связан стрелкой с отдельным MCP Server.">
+        <figcaption>Обычно проект делает что-то одно — клиент или сервер; мы делаем оба.</figcaption>
+      </figure>
+      <p>MCP-клиент состоит из двух основных частей:</p>
+      <ul>
+        <li><strong>MCP Client</strong> — наш собственный класс, который упрощает работу с сессией;</li>
+        <li><strong>Client Session</strong> — само соединение с сервером (часть MCP Python SDK).</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp07-02.png" alt="Внутри файла mcp_client.py класс MCP Client, написанный для удобства работы с сессией, связан с Client Session — самим соединением с сервером, а та — с MCP Server.">
+        <figcaption>Цепочка MCP Client → Client Session → MCP Server; первые два звена — в <code>mcp_client.py</code>.</figcaption>
+      </figure>
+      <p>Client Session требует аккуратного обращения с ресурсами: когда работа закончена, соединения нужно правильно закрыть. Поэтому мы оборачиваем сессию в собственный класс, который выполняет всю очистку автоматически.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В коде курса <code>async with MCPClient(...)</code> вызывает <code>connect()</code> на входе и <code>cleanup()</code> на выходе: соединение закрывается, а процесс сервера завершается, даже если код упал. Проект написан под пакет <code>mcp</code> 1.x. На ноябрь 2026 стабильная ветка Python SDK — 2.x, и в ней такая обёртка встроена: класс <code>Client</code> сам запускает сервер подпроцессом и всё закрывает на выходе из <code>async with</code>, а <code>ClientSession</code> остался под ним низкоуровневым слоем.</p>
+      </aside>
+
+      <h2>Место клиента в приложении</h2>
+      <p>Помните схему потока нашего приложения? Именно клиент позволяет нашему коду взаимодействовать с MCP-сервером в двух ключевых точках:</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp07-03.png" alt="Диаграмма последовательности из примера с GitHub (User, Our Code, MCP Client, MCP Server, Claude, Github), на которой выделены два участка: код CLI через клиент получает список инструментов для Claude (ListToolsRequest и ListToolsResult) и вызывает инструмент (CallToolRequest и CallToolResult).">
+        <figcaption>Две точки, где код CLI обращается к клиенту: список инструментов и вызов инструмента.</figcaption>
+      </figure>
+      <p>Наш код CLI использует клиент, чтобы:</p>
+      <ul>
+        <li>получить список доступных инструментов и отправить его Claude;</li>
+        <li>выполнять инструменты, когда Claude их запрашивает.</li>
+      </ul>
+
+      <h2>Реализуем основные функции клиента</h2>
+      <p>Нужно реализовать две важнейшие функции: <code>list_tools()</code> и <code>call_tool()</code>.</p>
+
+      <h3>Функция list_tools</h3>
+      <p>Эта функция получает с MCP-сервера все доступные инструменты:</p>
+      <pre>async def list_tools(self) -&gt; list[types.Tool]:
+    result = await self.session().list_tools()
+    return result.tools</pre>
+      <p>Всё просто: обращаемся к сессии (соединению с сервером), вызываем встроенный метод <code>list_tools()</code> и возвращаем инструменты из результата.</p>
+
+      <h3>Функция call_tool</h3>
+      <p>Эта функция выполняет на сервере конкретный инструмент:</p>
+      <pre>async def call_tool(
+    self, tool_name: str, tool_input: dict
+) -&gt; types.CallToolResult | None:
+    return await self.session().call_tool(tool_name, tool_input)</pre>
+      <p>Мы передаём серверу имя инструмента и входные параметры (их даёт Claude) и возвращаем результат.</p>
+
+      <h2>Проверяем клиент</h2>
+      <p>Внизу файла клиента есть простая тестовая обвязка. Файл можно запустить напрямую и убедиться, что всё работает:</p>
+      <pre>uv run mcp_client.py</pre>
+      <p>Скрипт подключится к вашему MCP-серверу и выведет доступные инструменты. В выводе будут определения ваших инструментов вместе с описаниями и схемами входных данных.</p>
+
+      <h2>Собираем всё вместе</h2>
+      <p>Когда функции клиента реализованы, можно проверить весь поток целиком — запустить основное приложение:</p>
+      <pre>uv run main.py</pre>
+      <p>Спросите: «What is the contents of the report.pdf document?»</p>
+      <p>Вот что при этом происходит за кулисами:</p>
+      <ol>
+        <li>приложение через клиент получает доступные инструменты;</li>
+        <li>эти инструменты отправляются Claude вместе с вашим вопросом;</li>
+        <li>Claude решает воспользоваться инструментом <code>read_doc_contents</code>;</li>
+        <li>приложение через клиент выполняет этот инструмент;</li>
+        <li>результат возвращается Claude, и тот отвечает вам.</li>
+      </ol>
+      <p>Клиент служит мостом между логикой приложения и функциональностью MCP-сервера: благодаря ему мощные инструменты легко встраиваются в рабочие процессы с ИИ.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В SDK 2.x <code>list_tools()</code> и <code>call_tool()</code> остались, но поля типов читаются в snake_case: <code>tool.input_schema</code> и <code>result.is_error</code> вместо <code>inputSchema</code> и <code>isError</code>. Поэтому <code>core/tools.py</code> курса, который превращает инструменты MCP в инструменты Claude, под 2.x упадёт с <code>AttributeError</code>. Кроме того, текущая на ноябрь 2026 спецификация MCP (2026-07-28) убрала сессии на уровне протокола и рукопожатие <code>initialize</code>, которое вызывает код курса: <code>Client</code> сначала пробует новый запрос <code>server/discover</code>, а со старым сервером откатывается на <code>initialize</code>.</p>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Ресурсы»: второй примитив MCP-сервера, через который приложение получает данные напрямую, без вызова инструментов.</p>
+      <div class="pager">
+        <a class="ghost" href="06-inspector.html">Назад</a>
+        <a class="next" href="08-resources.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296696" target="_blank" rel="noopener noreferrer">Implementing a client</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

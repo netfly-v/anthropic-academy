@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP-клиенты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../index.html" aria-current="page">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в Model Context Protocol</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Введение</p>
+        <ul class="lesson-nav">
+          <li><a href="01-welcome.html"><span class="mark"></span>Добро пожаловать</a></li>
+          <li><a href="02-intro-mcp.html"><span class="mark"></span>Введение в MCP</a></li>
+          <li><a href="03-mcp-clients.html" aria-current="page"><span class="mark"></span>MCP-клиенты</a></li>
+        </ul>
+        <p class="nav-group">Практика с MCP-серверами</p>
+        <ul class="lesson-nav">
+          <li><a href="04-project-setup.html"><span class="mark"></span>Подготовка проекта</a></li>
+          <li><a href="05-mcp-tools.html"><span class="mark"></span>Инструменты в MCP</a></li>
+          <li><a href="06-inspector.html"><span class="mark"></span>MCP Inspector</a></li>
+        </ul>
+        <p class="nav-group">Подключение MCP-клиентов</p>
+        <ul class="lesson-nav">
+          <li><a href="07-client-impl.html"><span class="mark"></span>Реализация клиента</a></li>
+          <li><a href="08-resources.html"><span class="mark"></span>Ресурсы</a></li>
+          <li><a href="09-reading-resources.html"><span class="mark"></span>Чтение ресурсов</a></li>
+          <li><a href="10-mcp-prompts.html"><span class="mark"></span>Промпты в MCP</a></li>
+          <li><a href="11-prompts-client.html"><span class="mark"></span>Промпты в клиенте</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="12-mcp-review.html"><span class="mark"></span>Обзор MCP</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>MCP-клиенты</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:56 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, зачем вашему приложению MCP-клиент;</li>
+        <li>рассказать, что значит независимость MCP от транспорта, и назвать способы связи клиента с сервером;</li>
+        <li>различать основные типы сообщений: <code>ListToolsRequest</code>/<code>ListToolsResult</code> и <code>CallToolRequest</code>/<code>CallToolResult</code>;</li>
+        <li>пройти весь поток сообщений от вопроса пользователя до ответа Claude.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <a class="video-link" href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296690" target="_blank" rel="noopener noreferrer">
+        <strong>Смотреть урок на Skilljar</strong>
+        <span>MCP clients · 4:56</span>
+      </a>
+
+      <p>MCP-клиент — это мост, по которому ваш сервер общается с MCP-серверами. Через него вы получаете доступ ко всем инструментам, которые предоставляет MCP-сервер: клиент берёт на себя обмен сообщениями и детали протокола, чтобы этим не пришлось заниматься вашему приложению.</p>
+
+      <h2>Независимость от транспорта</h2>
+      <p>Одно из главных достоинств MCP — независимость от транспорта (transport agnostic). За мудрёным термином стоит простая мысль: клиент и сервер могут общаться по разным протоколам — в зависимости от того, как устроена ваша система.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp03-01.png" alt="Внутри нашего сервера MCP-клиент, который через стандартный ввод/вывод (Standard IO) связан с MCP-сервером для GitHub, запущенным локально.">
+        <figcaption>MCP-клиент и локальный MCP-сервер GitHub общаются через стандартный ввод/вывод.</figcaption>
+      </figure>
+      <p>Чаще всего MCP-клиент и сервер работают на одной машине и общаются через стандартный ввод/вывод. Но соединить их можно и через:</p>
+      <ul>
+        <li>HTTP;</li>
+        <li>WebSockets;</li>
+        <li>другие сетевые протоколы.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp03-02.png" alt="Тот же MCP-клиент на нашем сервере связан с MCP-сервером для GitHub через WebSockets.">
+        <figcaption>Тот же клиент, но связь с MCP-сервером идёт через WebSockets.</figcaption>
+      </figure>
+
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p><strong>Транспорты.</strong> Урок ставит HTTP, WebSockets и «другие сетевые протоколы» в один ряд, но спецификация MCP (на ноябрь 2026) определяет только два стандартных транспорта: <strong>stdio</strong> (клиент запускает сервер как подпроцесс и обменивается с ним сообщениями через стандартные потоки) и <strong>Streamable HTTP</strong> (сообщения идут запросами HTTP POST на одну конечную точку). WebSockets к стандартным не относится: его можно реализовать как собственный (custom) транспорт, сохранив формат сообщений JSON-RPC.</p>
+      </aside>
+
+      <h2>Типы сообщений MCP</h2>
+      <p>После подключения клиент и сервер обмениваются сообщениями определённых типов, которые задаёт спецификация MCP. Вот основные типы, с которыми вам предстоит работать:</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp03-03.png" alt="MCP-клиент отправляет MCP-серверу для GitHub ListToolsRequest («Give me a list of tools you provide») и получает ListToolsResult («Here are the tools I can run»).">
+        <figcaption>ListToolsRequest → ListToolsResult: клиент узнаёт, какие инструменты есть у сервера.</figcaption>
+      </figure>
+      <p><strong>ListToolsRequest/ListToolsResult:</strong> клиент спрашивает сервер: «Какие инструменты ты предоставляешь?» — и получает в ответ список доступных инструментов.</p>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp03-04.png" alt="MCP-клиент отправляет MCP-серверу для GitHub CallToolRequest («Please run a particular tool with these arguments») и получает CallToolResult («Here’s the result of the tool run»).">
+        <figcaption>CallToolRequest → CallToolResult: сервер выполняет инструмент и возвращает результат.</figcaption>
+      </figure>
+      <p><strong>CallToolRequest/CallToolResult:</strong> клиент просит сервер выполнить конкретный инструмент с заданными аргументами и затем получает результат.</p>
+
+      <h2>Как всё работает вместе</h2>
+      <p>Вот полный пример того, как запрос пользователя проходит через всю систему: от вашего сервера через MCP-клиент к внешним сервисам вроде GitHub и обратно к Claude.</p>
+      <p>Допустим, пользователь спрашивает: «What repositories do I have?» («Какие у меня есть репозитории?»). Пошагово поток выглядит так:</p>
+      <ol>
+        <li><strong>Вопрос пользователя:</strong> пользователь отправляет свой вопрос на ваш сервер;</li>
+        <li><strong>Поиск инструментов:</strong> вашему серверу нужно знать, какие инструменты доступны, чтобы передать их Claude;</li>
+        <li><strong>Обмен списком инструментов:</strong> ваш сервер запрашивает у MCP-клиента доступные инструменты;</li>
+        <li><strong>Общение по MCP:</strong> MCP-клиент отправляет MCP-серверу <code>ListToolsRequest</code> и получает <code>ListToolsResult</code>;</li>
+        <li><strong>Запрос к Claude:</strong> ваш сервер отправляет Claude вопрос пользователя вместе с доступными инструментами;</li>
+        <li><strong>Решение вызвать инструмент:</strong> Claude решает, что для ответа на вопрос ему нужно вызвать инструмент;</li>
+        <li><strong>Запрос на выполнение инструмента:</strong> ваш сервер просит MCP-клиента выполнить инструмент, который указал Claude;</li>
+        <li><strong>Вызов внешнего API:</strong> MCP-клиент отправляет MCP-серверу <code>CallToolRequest</code>, и тот выполняет настоящий запрос к API GitHub;</li>
+        <li><strong>Результаты идут обратно:</strong> GitHub отвечает данными о репозиториях, и они возвращаются через MCP-сервер в виде <code>CallToolResult</code>;</li>
+        <li><strong>Результат инструмента — к Claude:</strong> ваш сервер отправляет результаты инструмента обратно Claude;</li>
+        <li><strong>Итоговый ответ:</strong> Claude составляет окончательный ответ на основе данных о репозиториях;</li>
+        <li><strong>Пользователь получает ответ:</strong> ваш сервер передаёт ответ Claude пользователю.</li>
+      </ol>
+      <figure class="shot">
+        <img src="../../assets/mcp/mcp03-05.png" alt="Диаграмма последовательности с дорожками User, Our Server, MCP Client, MCP Server, Claude и Github: от вопроса «What repositories do I have?» через ListToolsRequest/ListToolsResult, Query + Tools, ToolUse, CallToolRequest, запрос к GitHub, CallToolResult и toolResult до ответа «Your repositories are…».">
+        <figcaption>Весь поток на одной схеме: от вопроса пользователя до ответа Claude.</figcaption>
+      </figure>
+      <p>Да, шагов в этом потоке много, но у каждого компонента своя чёткая роль. MCP-клиент скрывает сложность общения с сервером: вы можете сосредоточиться на логике приложения и при этом получать доступ к мощным внешним инструментам и источникам данных.</p>
+      <p>Понимать этот поток очень важно: все эти части встретятся вам, когда в следующих разделах вы будете писать собственные MCP-клиенты и серверы.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Формат сообщений.</strong> Сообщения MCP кодируются в JSON-RPC. <code>ListToolsRequest</code>, <code>CallToolResult</code> и т. п. — имена типов в спецификации и SDK; в самом сообщении запрос обозначается методом <code>tools/list</code> или <code>tools/call</code>.</li>
+          <li><strong>Схема курса — обычный tool use.</strong> Claude получает инструменты в параметре <code>tools</code> и отвечает блоком <code>tool_use</code>, а ваш сервер возвращает результат блоком <code>tool_result</code> — как в курсе API (<a href="../../api/lessons/27-introducing-tool-use.html">Введение в tool use</a>). Разница лишь в том, что инструмент выполняет не ваш код, а MCP-сервер.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Подготовка проекта»: познакомимся с учебным CLI-чатом, для которого мы напишем свой MCP-клиент и свой MCP-сервер.</p>
+      <div class="pager">
+        <a class="ghost" href="02-intro-mcp.html">Назад</a>
+        <a class="next" href="04-project-setup.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://anthropic.skilljar.com/introduction-to-model-context-protocol/296690" target="_blank" rel="noopener noreferrer">MCP clients</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
