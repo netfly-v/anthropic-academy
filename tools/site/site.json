@@ -1,0 +1,28 @@
+{
+ "courses": [
+  {
+   "dir": "skills",
+   "label": "Skills",
+   "title": "Введение в agent skills",
+   "card": "Шесть уроков готовы. Как устроены skills в Claude Code, где они лежат и как ими делиться."
+  },
+  {
+   "dir": "api",
+   "label": "API",
+   "title": "Building with the Claude API",
+   "card": "Курс переведён целиком: 76 уроков в девяти блоках, от доступа к API до агентов, пробные экзамены по блокам и итоговый экзамен."
+  },
+  {
+   "dir": "mcp",
+   "label": "MCP",
+   "title": "Введение в Model Context Protocol",
+   "card": "Курс переведён целиком: 12 уроков о своём MCP-сервере и клиенте на Python — инструменты, ресурсы, промпты и MCP Inspector, базовый и сложный пробные экзамены."
+  },
+  {
+   "dir": "claude-code",
+   "label": "Claude Code",
+   "title": "Claude Code in Action",
+   "card": "Курс 2026 года переведён целиком: 9 уроков о долгих и автономных сессиях — CLAUDE.md, skills, режимы разрешений, hooks, routines, GitHub Actions и плагины, базовый и сложный пробные экзамены."
+  }
+ ]
+}

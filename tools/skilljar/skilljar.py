@@ -124,6 +124,29 @@ def english_track(ctx, media_id):
     return item.get("title"), item.get("duration"), srt
 
 
+def youtube_track(video_id):
+    """Английские субтитры ролика YouTube (нужен пакет youtube-transcript-api в том же venv)."""
+    try:
+        from youtube_transcript_api import YouTubeTranscriptApi
+    except ImportError:
+        print("  нет youtube-transcript-api: субтитры YouTube не сняты", flush=True)
+        return None, None
+    try:
+        snippets = YouTubeTranscriptApi().list(video_id).find_transcript(["en"]).fetch()
+    except Exception as e:
+        print(f"  субтитры YouTube {video_id}: {type(e).__name__}", flush=True)
+        return None, None
+    def ts(s):
+        ms = int(round(s * 1000))
+        h, ms = divmod(ms, 3600000)
+        m, ms = divmod(ms, 60000)
+        sec, ms = divmod(ms, 1000)
+        return f"{h:02d}:{m:02d}:{sec:02d},{ms:03d}"
+    srt = "\n".join(f"{i}\n{ts(s.start)} --> {ts(s.start + s.duration)}\n{s.text}\n" for i, s in enumerate(snippets, 1))
+    last = snippets[-1]
+    return srt, round(last.start + last.duration)
+
+
 def dump_lesson(ctx, page, it, out):
     page.goto(it["url"], wait_until="domcontentloaded")
     try:
@@ -198,6 +221,15 @@ def dump_lesson(ctx, page, it, out):
             srt_name = f"{stem}.srt"
             (out / srt_name).write_text(srt)
         video = {"media_id": mid, "title": vtitle, "duration_sec": duration, "srt": srt_name}
+    elif re.search(r"youtube\.com/embed/([A-Za-z0-9_-]{11})", info["html"]):
+        # Новые курсы встраивают ролики YouTube прямо в текст урока.
+        yid = re.search(r"youtube\.com/embed/([A-Za-z0-9_-]{11})", info["html"]).group(1)
+        srt, duration = youtube_track(yid)
+        srt_name = None
+        if srt:
+            srt_name = f"{stem}.srt"
+            (out / srt_name).write_text(srt)
+        video = {"youtube": yid, "title": it["title"], "duration_sec": duration, "srt": srt_name}
     return {
         **it,
         "page_title": info["title"],
@@ -223,7 +255,7 @@ def cmd_dump(args):
             manifest[it["id"]] = rec
             v = rec["video"] or {}
             print(f'{it["n"]:02d} {it["id"]} {it["title"][:50]:50} text={rec["has_text"]} img={len(rec["images"])} '
-                  f'video={v.get("media_id")} srt={bool(v.get("srt"))}', flush=True)
+                  f'video={v.get("media_id") or v.get("youtube")} srt={bool(v.get("srt"))}', flush=True)
         ctx.close()
     ordered = sorted(manifest.values(), key=lambda m: m["n"])
     manifest_path.write_text(json.dumps(ordered, ensure_ascii=False, indent=1))

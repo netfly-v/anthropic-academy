@@ -4,7 +4,7 @@
 
 Окружение и профиль браузера лежат вне репозитория:
 
-- `~/.academy-browser/venv` — Python с Playwright (`python3 -m venv ~/.academy-browser/venv && ~/.academy-browser/venv/bin/pip install playwright`);
+- `~/.academy-browser/venv` — Python с Playwright и youtube-transcript-api (`python3 -m venv ~/.academy-browser/venv && ~/.academy-browser/venv/bin/pip install playwright youtube-transcript-api`);
 - `~/.academy-browser/profile` — профиль Google Chrome с сессией Skilljar. Его никогда не коммитить.
 
 ```sh
@@ -19,7 +19,7 @@ $PY tools/skilljar/skilljar.py dump claude-with-the-anthropic-api --from 16 --to
 
 - `NN-<id>.txt` — текст урока по блокам (`##` заголовки, `-` списки, блоки кода, `[IMG k: alt]` на месте картинок);
 - `NN-<id>.html` — исходный HTML урока;
-- `NN-<id>.srt` — английские субтитры видео, если оно есть;
+- `NN-<id>.srt` — английские субтитры видео, если оно есть (ролик Skilljar/JW Player или встроенный YouTube);
 - `images/NN-<id>-KK.*` — картинки урока по порядку;
 - `manifest.json` — номер, id, название, раздел, ссылка, картинки и видео каждого урока.
 

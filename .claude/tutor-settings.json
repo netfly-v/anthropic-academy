@@ -7,6 +7,8 @@
     "deny": [
       "Edit(./api/**)",
       "Edit(./skills/**)",
+      "Edit(./claude-code/**)",
+      "Edit(./mcp/**)",
       "Edit(./js/**)",
       "Edit(./css/**)",
       "Edit(./assets/**)",

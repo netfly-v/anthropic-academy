@@ -58,11 +58,12 @@ a { color: inherit; }
 
 .header-nav {
   display: flex;
-  gap: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.5rem;
   font-size: 0.95rem;
 }
 
-.header-nav a { text-decoration: none; }
+.header-nav a { text-decoration: none; white-space: nowrap; }
 .header-nav a:hover { text-decoration: underline; }
 .header-nav a[aria-current="page"] {
   font-weight: 700;
@@ -592,7 +593,7 @@ p code, li code, figcaption code, p a, li a {
   .sidebar { border-right: 0; border-bottom: 1px solid var(--line); }
   .sidebar-inner { position: static; max-height: none; overflow: visible; }
   .lesson { padding: 1.5rem 1.1rem 3rem; }
-  .header-nav { gap: 0.9rem; }
+  .header-nav { gap: 0.35rem 0.9rem; }
 }
 
 .quiz-switch {
