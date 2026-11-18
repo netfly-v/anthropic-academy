@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Команды и поля skill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 2. Инструменты и MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="09-tool-descriptions.html"><span class="mark"></span>Описания инструментов</a></li>
+          <li><a href="10-mcp-errors.html"><span class="mark"></span>Ошибки MCP</a></li>
+          <li><a href="11-tool-distribution.html"><span class="mark"></span>Распределение инструментов</a></li>
+          <li><a href="12-tool-choice.html"><span class="mark"></span>tool_choice</a></li>
+          <li><a href="13-mcp-config.html"><span class="mark"></span>Настройка MCP</a></li>
+          <li><a href="14-builtin-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+        </ul>
+        <p class="nav-group">Домен 3. Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="15-claude-md-rules.html"><span class="mark"></span>CLAUDE.md и rules</a></li>
+          <li><a href="16-commands-skills.html" aria-current="page"><span class="mark"></span>Команды и skills</a></li>
+          <li><a href="17-plan-or-direct.html"><span class="mark"></span>Plan mode или сразу</a></li>
+          <li><a href="18-iterative-refinement.html"><span class="mark"></span>Итеративная доработка</a></li>
+          <li><a href="19-claude-code-ci.html"><span class="mark"></span>Claude Code в CI</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Команды и поля skill</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 3 · подпункт 3.2</p>
+
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../skills/lessons/01-what-are-skills.html">Skills · Что такое skills</a> — личные skills в <code>~/.claude/skills</code>, проектные в <code>.claude/skills</code>; файлы <code>.claude/commands/</code> по-прежнему работают</li>
+        <li><a href="../../skills/lessons/02-creating-your-first-skill.html">Skills · Первый skill</a> — при одинаковом имени личный skill побеждает проектный</li>
+        <li><a href="../../skills/lessons/03-configuration-and-multi-file-skills.html">Skills · Настройка и несколько файлов</a> — поля <code>name</code>, <code>description</code>, <code>allowed-tools</code>, <code>model</code>; чем <code>allowed-tools</code> отличается от <code>disallowed-tools</code></li>
+        <li><a href="../../skills/lessons/05-sharing-skills.html">Skills · Как делиться skills</a> — проектные skills приходят вместе с <code>git clone</code>; плагины и корпоративный уровень</li>
+        <li><a href="../../claude-code/lessons/03-verification-skills.html">Claude Code · Skills для проверки</a> — skill, закоммиченный в <code>.claude/skills</code>, получает вся команда</li>
+        <li><a href="../../claude-code-101/lessons/10-skills.html">Claude Code 101 · Skills</a> — slash-команды объединены со skills; <code>disable-model-invocation</code></li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p><strong>Кто получит команду, решает папка.</strong> Команда — промпт в Markdown-файле, который запускают как <code>/имя</code>. Файл в <code>.claude/commands/</code> лежит в репозитории: его коммитят, и после <code>git pull</code> команда есть у всех. Файл в <code>~/.claude/commands/</code> — только ваш, зато работает во всех ваших проектах.</p>
+      <p>Экзамен говорит о командах как об отдельном механизме. На ноябрь 2026 это старый однофайловый формат skill, и он работает: и <code>.claude/commands/release.md</code>, и <code>.claude/skills/release/SKILL.md</code> дают <code>/release</code> и понимают те же поля frontmatter; при совпадении имён побеждает skill.</p>
+      <p><strong>Своя версия общего skill</strong> — копия в <code>~/.claude/skills/</code> под другим именем. Правка файла в репозитории уйдёт всем со следующим коммитом. Копия с прежним именем подменит у вас общий skill (личный побеждает проектный): его обновления до вас не дойдут, а <code>/имя</code> у вас и у коллег начнёт делать разное.</p>
+      <p><strong>Три поля frontmatter.</strong></p>
+      <ul>
+        <li><code>context: fork</code> — skill выполняется в отдельном субагенте, а в основной разговор возвращается только итог. Так в сессию не попадают ни длинный вывод (обход сотен файлов), ни черновые варианты (из пяти набросков вернётся один выбранный). Fork не копирует текущий разговор, поэтому в skill нужно задание, понятное без контекста. Поле <code>agent</code> выбирает субагента, например <code>Explore</code>, который только читает.</li>
+        <li><code>allowed-tools</code> — список инструментов skill; на экзамене это ограничение, см. «Курс vs экзамен».</li>
+        <li><code>argument-hint</code> — подсказка вроде <code>[версия]</code>, которую разработчик видит, пока набирает команду. Аргументы подставляются в текст skill на место <code>$ARGUMENTS</code>.</li>
+      </ul>
+
+      <h2>Пример</h2>
+      <p>У команды мобильного банка с тремя общими skills четыре проблемы:</p>
+      <ul>
+        <li><code>map-services</code> обходит монорепозиторий и оставляет в сессии сотни строк с путями — Claude теряет нить задачи. Решение: <code>context: fork</code> и <code>agent: Explore</code>, в тексте — задание и формат сводки; в сессию вернётся короткая таблица.</li>
+        <li><code>changelog</code> запускают без номера версии и получают заметки за весь год. Решение: <code>argument-hint: [версия]</code>, <code>$ARGUMENTS</code> на месте номера и строка «если версия не указана, спроси».</li>
+        <li><code>gen-migrations</code> должен только создавать файлы, а однажды стёр старые миграции через Bash. Решение на экзамене — <code>allowed-tools</code> только с инструментами чтения и записи файлов, в Claude Code (на ноябрь 2026) — <code>disallowed-tools: Bash</code>.</li>
+        <li>Тимлид переделал <code>changelog</code> под себя прямо в репозитории, и формат поменялся у всех. Решение: откатить правку, свой вариант держать в <code>~/.claude/skills/changelog-short/</code>.</li>
+      </ul>
+
+      <h2>Как это спрашивают</h2>
+      <p>Ситуацию узнают по признаку:</p>
+      <ul>
+        <li><strong>«Нужно всем»</strong> — закоммиченный файл в <code>.claude/commands/</code> или <code>.claude/skills/</code>. Неверно: копия у каждого в <code>~/.claude/</code> (копии расходятся, новичок её не получит) или процедура в README.</li>
+        <li><strong>«Вывод skill забивает сессию»</strong> — <code>context: fork</code>. Неверно: «отвечай кратко» в тексте skill (работа всё равно идёт в сессии), <code>/compact</code> после каждого запуска, модель с большим контекстом.</li>
+        <li><strong>«Забывают параметр»</strong> — <code>argument-hint</code>, а не напоминание в <code>CLAUDE.md</code>, которое будет загружаться в каждый разговор.</li>
+        <li><strong>«Skill не должен делать опасного»</strong> — ограничение инструментов во frontmatter, а не «ничего не удаляй» в тексте: это просьба, а не запрет.</li>
+        <li><strong>«Хочу по-своему, не мешая коллегам»</strong> — личная копия под другим именем, а не правка общего файла.</li>
+      </ul>
+      <p>Общий принцип: то, что должно соблюдаться, задают расположением файла и полями frontmatter, а не просьбой в промпте.</p>
+
+      <aside class="callout">
+        <p class="callout-label">Курс vs экзамен</p>
+        <ul>
+          <li><strong><code>allowed-tools</code>.</strong> Экзамен считает его ограничением: skill может пользоваться только перечисленными инструментами. Так и отвечайте. В Claude Code (на ноябрь 2026) поле лишь снимает запрос подтверждения для этих инструментов в том ходе, где skill вызван, а остальные доступны по обычным правилам разрешений. Настоящее ограничение — <code>disallowed-tools</code> в skill или список <code>tools</code> у субагента, которого skill запускает через <code>context: fork</code> и <code>agent</code>.</li>
+          <li><strong><code>argument-hint</code>.</strong> На экзамене это поле запрашивает у разработчика обязательный параметр. В документации (на ноябрь 2026) это лишь подсказка при автодополнении: запуск без аргумента она не останавливает.</li>
+        </ul>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/skills" target="_blank" rel="noopener noreferrer">Extend Claude with skills</a> — команды объединены со skills, где лежат skills и чья версия побеждает при одинаковом имени, справочник frontmatter (<code>argument-hint</code>, <code>allowed-tools</code>, <code>disallowed-tools</code>, <code>context</code>, <code>agent</code>), аргументы, запуск skill в субагенте</li>
+        <li><a href="https://code.claude.com/docs/en/claude-directory" target="_blank" rel="noopener noreferrer">Explore the .claude directory</a> — <code>.claude/commands/</code> и <code>~/.claude/commands/</code>, что коммитят для команды, а что остаётся личным</li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener noreferrer">Create custom subagents</a> — список <code>tools</code> как настоящее ограничение, read-only субагент Explore, вынос объёмного вывода в субагент</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="15-claude-md-rules.html">Назад</a>
+        <a class="next" href="17-plan-or-direct.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

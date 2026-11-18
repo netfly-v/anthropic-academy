@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Plan mode или сразу делать</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 2. Инструменты и MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="09-tool-descriptions.html"><span class="mark"></span>Описания инструментов</a></li>
+          <li><a href="10-mcp-errors.html"><span class="mark"></span>Ошибки MCP</a></li>
+          <li><a href="11-tool-distribution.html"><span class="mark"></span>Распределение инструментов</a></li>
+          <li><a href="12-tool-choice.html"><span class="mark"></span>tool_choice</a></li>
+          <li><a href="13-mcp-config.html"><span class="mark"></span>Настройка MCP</a></li>
+          <li><a href="14-builtin-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+        </ul>
+        <p class="nav-group">Домен 3. Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="15-claude-md-rules.html"><span class="mark"></span>CLAUDE.md и rules</a></li>
+          <li><a href="16-commands-skills.html"><span class="mark"></span>Команды и skills</a></li>
+          <li><a href="17-plan-or-direct.html" aria-current="page"><span class="mark"></span>Plan mode или сразу</a></li>
+          <li><a href="18-iterative-refinement.html"><span class="mark"></span>Итеративная доработка</a></li>
+          <li><a href="19-claude-code-ci.html"><span class="mark"></span>Claude Code в CI</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Plan mode или сразу делать</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 3 · подпункт 3.4</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../claude-code-101/lessons/04-first-prompt.html">Claude Code 101 · Первый промпт</a> — что делает plan mode и почему он хорош для сложных многошаговых изменений.</li>
+        <li><a href="../../claude-code-101/lessons/05-explore-plan-code-commit.html">Claude Code 101 · Цикл Explore → Plan → Code → Commit</a> — исследование кода и план в plan mode, правка плана до первой строки кода, затем выполнение одобренного плана.</li>
+        <li><a href="../../claude-code/lessons/01-long-sessions.html">Claude Code · Долгие сессии</a> — рамки большой задачи задают планом: поправить план дешевле, чем разгребать последствия.</li>
+        <li><a href="../../api/lessons/67-claude-code-in-action.html">API · Claude Code в работе</a> — схема «контекст → план → реализация».</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Курсы объясняют, как планировать. Экзамен проверяет, нужен ли план вообще. Прямое выполнение (direct execution) — обычный промпт без plan mode: Claude сразу читает нужные файлы, правит и проверяет. Plan mode — сначала исследование и план без правок, затем ваше одобрение и только потом правки.</p>
+      <p>Правило выбора — два вопроса:</p>
+      <ol>
+        <li>Известно ли заранее, где менять код и как понять, что работа готова?</li>
+        <li>Есть ли у задачи один очевидный способ решения?</li>
+      </ol>
+      <p>Два «да» — делайте сразу. Хоть одно «нет» — нужен план.</p>
+      <p><strong>Сразу делать</strong>: ошибка в одном файле, место которой уже показала трассировка; ещё одна проверка входных данных в функции, которую вы можете назвать; правка текста или константы. План здесь только перескажет промпт и добавит лишний круг согласования. Нужнее конкретный промпт (файл, симптом, что значит «исправлено») и проверка, которую Claude запустит сам, — тест или команда, воспроизводящая ошибку.</p>
+      <p><strong>Plan mode</strong>, когда задача меняет устройство системы, а не одно место в ней:</p>
+      <ul>
+        <li>меняются границы модулей или сервисов и контракты между ними;</li>
+        <li>переезд на другую библиотеку по всему проекту: мест вызова десятки, и важен порядок шагов;</li>
+        <li>есть несколько путей с разными последствиями для инфраструктуры: новый сервис, брокер сообщений, другая база данных. Какой нужен команде, Claude из кода не узнает — решать вам, и лучше до первой правки.</li>
+      </ul>
+
+      <h2>Пример</h2>
+      <p>Команда бэкенда интернет-магазина разбирает с Claude Code три задачи.</p>
+      <ol>
+        <li><strong>Падает тест расчёта доставки.</strong> Трассировка указывает на строку в <code>shipping.py</code>: при пустой корзине вес равен <code>None</code>. Разработчик сразу пишет: «Вот трассировка, исправь и прогони <code>tests/test_shipping.py</code>». Место, причина и проверка известны — решать нечего.</li>
+        <li><strong>Замена HTTP-клиента.</strong> Устаревшая библиотека вызывается в 70 файлах, кое-где со своими настройками повторов и таймаутов. В plan mode Claude находит все места вызова, отмечает нестандартные и предлагает порядок замены с проверкой после каждой группы. Разработчик правит план («модуль платежей пока не трогать») и одобряет его.</li>
+        <li><strong>SMS-уведомления.</strong> Провайдера можно вызывать прямо из обработчика заказа или через очередь с отдельным воркером — второй путь требует брокера сообщений и ещё одного развёртывания. В plan mode Claude изучает инфраструктуру и расписывает оба варианта. Выбирает команда, потом пишется код.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>В вопросе описана задача и спрашивается, как её вести. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>«Всегда plan mode — так надёжнее».</strong> Для однострочного исправления с понятной трассировкой это лишний круг согласования.</li>
+        <li><strong>«Начнём сразу, план включим, если станет сложно»</strong> — для архитектурной задачи. Масштаб виден уже из условия. Без плана Claude выберет подход за команду, и переделывать придётся десятки файлов.</li>
+        <li><strong>Расписать в промпте всё решение и сразу выполнять.</strong> Такое устройство никто не сверил с кодом: зависимости и нестандартные места всплывут во время правок. Архитектурной задаче сначала нужны исследование кода и план.</li>
+        <li><strong>Модель покрупнее или effort повыше.</strong> Effort управляет тем, сколько Claude думает, а не тем, кто принимает решение: подход Claude всё равно выберет без вас.</li>
+        <li><strong>«Сначала план, код не пиши» в промпте или в <code>CLAUDE.md</code>.</strong> Это просьба: Claude обычно её выполняет, но без гарантии. Plan mode блокирует правки средствами самого Claude Code, пока вы не одобрите план (на ноябрь 2026 — кроме терминальной сессии, где доступен <code>bypassPermissions</code>).</li>
+      </ul>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>Claude Code 101 называет цикл Explore → Plan → Code → Commit главным рабочим процессом. Экзамен считает plan mode выбором под задачу: для маленького чётко очерченного изменения верный ответ — прямое выполнение. Документация на ноябрь 2026 ближе к экзамену: <code>/plan</code> описан как переход в plan mode «перед большим изменением».</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/permission-modes#analyze-before-you-edit-with-plan-mode" target="_blank" rel="noopener noreferrer">Choose a permission mode: Analyze before you edit with plan mode</a> — Claude исследует и пишет план, исходники не правит; вход через Shift+Tab, <code>/plan</code> или <code>--permission-mode plan</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/permission-modes#review-and-approve-a-plan" target="_blank" rel="noopener noreferrer">Choose a permission mode: Review and approve a plan</a> — варианты одобрения; одобрение выводит из plan mode, и Claude начинает правки.</li>
+        <li><a href="https://code.claude.com/docs/en/permission-modes#common-setups" target="_blank" rel="noopener noreferrer">Choose a permission mode: Common setups</a> — в plan mode Claude Code блокирует правки до одобрения плана.</li>
+        <li><a href="https://code.claude.com/docs/en/permission-modes#skip-all-checks-with-bypasspermissions-mode" target="_blank" rel="noopener noreferrer">Choose a permission mode: Skip all checks with bypassPermissions mode</a> — в терминальной сессии, где доступен <code>bypassPermissions</code>, блокировки plan mode не действуют; в <code>-p</code>, Agent SDK и чате расширения VS Code они сохраняются.</li>
+        <li><a href="https://code.claude.com/docs/en/common-workflows#plan-before-editing" target="_blank" rel="noopener noreferrer">Common workflows: Plan before editing</a> — plan mode для изменений, которые хочется проверить до записи на диск.</li>
+        <li><a href="https://code.claude.com/docs/en/common-workflows#fix-bugs-efficiently" target="_blank" rel="noopener noreferrer">Common workflows: Fix bugs efficiently</a> — дайте команду, воспроизводящую ошибку, и трассировку стека.</li>
+        <li><a href="https://code.claude.com/docs/en/commands#commands-across-a-typical-workflow" target="_blank" rel="noopener noreferrer">Commands: Commands across a typical workflow</a> — <code>/plan</code> переводит в plan mode перед большим изменением.</li>
+        <li><a href="https://code.claude.com/docs/en/best-practices#write-a-specific-prompt" target="_blank" rel="noopener noreferrer">Best practices for Claude Code: Write a specific prompt</a> — файл, симптом и что значит «исправлено»; какой из двух подходов вы предпочитаете, Claude из кода не узнает.</li>
+        <li><a href="https://code.claude.com/docs/en/best-practices#give-claude-a-check-to-run" target="_blank" rel="noopener noreferrer">Best practices for Claude Code: Give Claude a check to run</a> — проверка с результатом «прошло / не прошло».</li>
+        <li><a href="https://code.claude.com/docs/en/best-practices#deterministic-and-non-deterministic-instructions" target="_blank" rel="noopener noreferrer">Best practices for Claude Code: Deterministic and non-deterministic instructions</a> — указания из промпта или <code>CLAUDE.md</code> Claude выполняет по своему усмотрению, без гарантии.</li>
+        <li><a href="https://code.claude.com/docs/en/best-practices#change-the-model-and-effort" target="_blank" rel="noopener noreferrer">Best practices for Claude Code: Change the model and effort</a> — effort управляет тем, сколько Claude думает.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="16-commands-skills.html">Назад</a>
+        <a class="next" href="18-iterative-refinement.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
