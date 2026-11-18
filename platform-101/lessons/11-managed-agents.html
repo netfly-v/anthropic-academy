@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Что такое Managed Agents</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html" aria-current="page"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Что такое Managed Agents</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:06 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое Claude Managed Agents и что значит «цикл агента размещает Anthropic»;</li>
+        <li>перечислить строительные блоки Managed Agents — агенты, сессии, окружения, инструменты, MCP, память, outcomes и координацию нескольких агентов — и найти каждый в примерах урока;</li>
+        <li>объяснить, как рубрика с отдельным грейдером доводит работу до заданного результата, а политика разрешений оставляет чувствительные действия за человеком.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/haeslvB0zpg" title="What are managed agents?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p><strong>Claude Managed Agents</strong> — набор API для создания и развёртывания агентов в больших масштабах. Вы определяете агентов с конкретными инструментами, персонами и возможностями. Настраиваете окружения-песочницы с нужными пакетами и правилами доступа к сети. А затем запускаете сессии из своего приложения, и Claude выполняет работу внутри изолированного контейнера, где есть полный доступ к файловой системе, выполнение bash-команд и веб-поиск.</p>
+
+      <h2>Цикл агента, который размещают за вас</h2>
+      <p>Под капотом это <strong>цикл агента</strong>: Claude рассуждает, вызывает инструмент, читает результат и повторяет всё это, пока работа не будет сделана. Если вы уже строили агентов, то, скорее всего, писали такой цикл сами. Managed agents берут тот же самый цикл и размещают его на инфраструктуре Anthropic, так что запускать его у себя вам не придётся.</p>
+      <p>Managed Agents находятся в отдельном разделе Claude Console.</p>
+      <p>Лучше всего понять, что это даёт, на нескольких примерах.</p>
+
+      <h2>Пример 1: Kanban-доска, которая сама делает работу</h2>
+      <p>Представьте Kanban-доску, работающую поверх managed agents. Вы перетаскиваете тикет в колонку «in progress», и это автоматически запускает <strong>сессию</strong>. Допустим, в тикете написано «optimize website performance» (оптимизировать производительность сайта). Вот что происходит:</p>
+      <ol>
+        <li>Ваш бэкенд создаёт сессию.</li>
+        <li>Сессия ссылается на <strong>окружение</strong> (environment), которое вы настроили заранее: в нём уже установлены Lighthouse и Puppeteer.</li>
+        <li>В контейнер монтируется ваш репозиторий GitHub.</li>
+      </ol>
+      <p>Теперь у Claude есть кодовая база, инструменты и <strong>рубрика</strong> — описание того, что значит «готово»:</p>
+      <ul>
+        <li>оценка Lighthouse выше 90;</li>
+        <li>нет ресурсов, блокирующих отрисовку;</li>
+        <li>у всех изображений ленивая загрузка (lazy loading).</li>
+      </ul>
+      <p>Claude запускает аудит, а затем начинает сжимать изображения, встраивать CSS в страницу и откладывать загрузку скриптов. Каждый вызов инструмента в реальном времени приходит на доску через <strong>поток событий</strong> (event stream), так что работу можно наблюдать по ходу дела.</p>
+      <p>Затем в дело вступает рубрика. Отдельный <strong>грейдер</strong>, работающий в собственном контекстном окне, оценивает результат по вашим критериям. Claude читает этот отзыв, возвращается к работе, исправляет то, что упустил, и сдаёт результат снова. В демо этот цикл поднимает оценку Lighthouse до 96.</p>
+      <p>И ещё одно: второй тикет можно перетащить, пока первый ещё выполняется. Две сессии, два контейнера, две отдельные задачи, которые идут параллельно.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl11-01.png" alt="Доска Development Board с колонками Backlog, In Progress, Review и Done: в In Progress работает тикет «Optimize website performance» с живым логом агента, а второй тикет, «SaaS pricing audit and weekly report», перетаскивают в ту же колонку.">
+        <figcaption>Kanban-доска на Managed Agents: каждый тикет в колонке In Progress запускает свою сессию, и события вызовов инструментов идут прямо в карточку.</figcaption>
+      </figure>
+
+      <h2>Пример 2: регулярный исследовательский агент с памятью</h2>
+      <p>А вот агент другого рода: его задача — следить за ценами и изменениями тарифов во всех SaaS-сервисах, за которые платит ваша компания, и готовить отчёт к стендапу.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl11-02.png" alt="Приложение Pricing Research: кнопка Run Weekly Report, пока пустая лента Agent Activity, панель Memory без прошлых находок и список Deliverables с Excel Report и Executive Summary.">
+        <figcaption>Агент еженедельного исследования цен до первого запуска: память пуста, на выходе будут отчёт в Excel и краткая сводка для руководства.</figcaption>
+      </figure>
+      <p>При каждом запуске агент:</p>
+      <ul>
+        <li>ищет в интернете актуальные страницы с ценами, проверяет, не изменились ли тарифные планы, и отмечает новые функции, которые могут повлиять на ваши договоры;</li>
+        <li>проводит анализ затрат в песочнице с помощью Python;</li>
+        <li>использует skill для работы с таблицами Excel и пишет краткую сводку для руководства (executive summary);</li>
+        <li>публикует ссылку в Slack и создаёт задачу на проверку в Asana — и то и другое через <strong>MCP-серверы</strong>.</li>
+      </ul>
+      <p>Кроме того, агент читает <strong>хранилище памяти</strong> (memory store) и пишет в него. Перед началом он смотрит, что нашёл на прошлой неделе. Закончив, сохраняет, что изменилось. Поэтому в следующий понедельник отчёт может сообщить: «расходы на вычисления на 15% ниже, чем на прошлой неделе», а не перечислять каждый раз одни и те же статичные данные о ценах.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl11-03.png" alt="Панель Memory с записью за неделю 2026-03-31: что изменилось и что осталось прежним в ценах поставщиков облачных вычислений, AI-инференса, деплоя, наблюдаемости и хранилища данных, а также оценка общих ежемесячных расходов в $47,200.">
+        <figcaption>Что агент сохранил в память после прошлого запуска: следующий отчёт сравнит новые цены с этими.</figcaption>
+      </figure>
+
+      <h2>Пример 3: реагирование на инциденты несколькими агентами</h2>
+      <p>Теперь представьте, что ваша система мониторинга выдала алерт. Ваш бэкенд получает данные алерта и отправляет их в новую сессию как сообщение пользователя. Если агенту нужно больше данных из системы мониторинга, он вызывает <strong>пользовательский инструмент</strong> (custom tool): ваш бэкенд выполняет его и возвращает результат в ту же сессию. В этой сессии используется <strong>координация нескольких агентов</strong> (multi-agent coordination):</p>
+      <ul>
+        <li><strong>Агент-координатор</strong> получает алерт и распределяет работу между тремя специалистами.</li>
+        <li>Каждый специалист работает в собственном контекстном окне, но в общей файловой системе.</li>
+        <li>Специалисты отчитываются, а координатор объединяет их выводы в общую сводку по инциденту.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl11-04.png" alt="Панель реагирования на инцидент API Latency Spike с приоритетом P1: панели специалистов Diagnostics, Log Analysis и Communications пока в статусе Pending, а панель Past Incidents ищет похожие случаи в памяти.">
+        <figcaption>Многоагентная сессия в самом начале: алерт получен, три специалиста ещё ждут, а в памяти уже ищут прошлые инциденты.</figcaption>
+      </figure>
+      <p>Прежде чем сводка уйдёт в Slack, срабатывает <strong>политика разрешений</strong> (permission policy). Вы видите черновик на экране, одобряете его, и сообщение отправляется. Чувствительные действия ждут человека.</p>
+      <p>Всё это связывает воедино память. Координатор просматривает прошлые инциденты в хранилище памяти и замечает закономерность: «похоже на проблему с DNS-резолвингом двухнедельной давности, которую вызвал неправильно настроенный TTL». Когда в следующий раз сработает похожий алерт, агент начнёт уже с этим контекстом, а не будет диагностировать всё с нуля.</p>
+
+      <h2>Строительные блоки</h2>
+      <p>Во всех этих примерах managed agents дают разработчикам всё необходимое для полностью управляемой работы агента с сохранением состояния (stateful). Она строится на таких блоках:</p>
+      <ul>
+        <li><strong>агенты</strong> (agents) — определения с конкретными инструментами, персонами и возможностями;</li>
+        <li><strong>сессии</strong> (sessions) — отдельные запуски, которые вы стартуете из своего приложения;</li>
+        <li><strong>окружения</strong> (environments) — песочницы с нужными пакетами и правилами доступа к сети;</li>
+        <li><strong>инструменты</strong> (tools) — в том числе пользовательские инструменты на вашем бэкенде;</li>
+        <li><strong>MCP</strong> — подключения к сервисам вроде Slack и Asana;</li>
+        <li><strong>память</strong> (memory) — хранилище, которое агент читает перед началом работы и в которое пишет, когда закончит;</li>
+        <li><strong>outcomes</strong> (целевые результаты) — рубрики и грейдеры, которые задают и проверяют, что значит «готово»;</li>
+        <li><strong>координация нескольких агентов</strong> (multi-agent coordination) — координаторы, которые распределяют работу между специалистами.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Статус.</strong> На ноябрь 2026 Managed Agents — бета: эндпоинтам нужен заголовок <code>managed-agents-2026-04-01</code> (SDK добавляет его сам). Outcomes, память и координация нескольких агентов входят в неё без отдельной заявки.</li>
+          <li><strong>Где выполняются инструменты.</strong> По умолчанию песочница — облачный контейнер Anthropic, но на ноябрь 2026 окружение может быть и self-hosted: Claude по-прежнему на стороне Anthropic решает, какой инструмент вызвать, а bash и файловые инструменты выполняет ваш worker на вашей инфраструктуре.</li>
+          <li><strong>Память сама не читается.</strong> Хранилище подключают при создании сессии, и в песочнице оно появляется папкой; в системный промпт автоматически попадает только описание подключения (где лежит, какой доступ). Агент работает с ним обычными файловыми инструментами. «Сначала посмотреть прошлую неделю, в конце записать изменения» — это ваши инструкции агенту, а не встроенный шаг.</li>
+          <li><strong>Политика разрешений.</strong> Действует на встроенные инструменты и на инструменты MCP: на ноябрь 2026 первые по умолчанию выполняются сразу (<code>always_allow</code>), вторые ждут подтверждения (<code>always_ask</code>), так что и публикация в Slack через MCP из примера 2 без настройки будет ждать одобрения. Пользовательских инструментов политика не касается: их выполняет ваш бэкенд.</li>
+          <li><strong>«Пока не выполнит» — с пределом.</strong> Кругов «работа — оценка грейдера» не больше <code>max_iterations</code> (по умолчанию 3); если критерии рубрики так и не выполнены, сессия всё равно переходит в <code>idle</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Итог</h2>
+      <ul>
+        <li><strong>Claude Managed Agents</strong> — набор API для создания и развёртывания агентов в больших масштабах; работает он на инфраструктуре Anthropic.</li>
+        <li>Он выполняет знакомый цикл агента — рассуждать, вызвать инструмент, прочитать результат, повторить — внутри изолированного контейнера, где есть доступ к файловой системе, выполнение bash-команд и веб-поиск.</li>
+        <li>Сессии работают в окружениях, которые вы настраиваете, идут параллельно и в реальном времени передают вызовы инструментов обратно в ваше приложение.</li>
+        <li>Рубрики и отдельные грейдеры позволяют задать критерии успеха; Claude повторяет работу, пока их не выполнит.</li>
+        <li>Память, MCP-серверы, пользовательские инструменты, политики разрешений и координация нескольких агентов дополняют работу агента с сохранением состояния.</li>
+        <li>Вы определяете, что значит «готово». Claude работает, пока этого не добьётся.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Первый managed agent своими руками»: четыре примитива — агент, окружение, сессия и события — и самый маленький managed agent, собранный шаг за шагом.</p>
+      <div class="pager">
+        <a class="ghost" href="10-context-management.html">Назад</a>
+        <a class="next" href="12-first-managed-agent.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/what-are-managed-agents" target="_blank" rel="noopener noreferrer">What are managed agents?</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

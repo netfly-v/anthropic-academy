@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Встроенные инструменты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html" aria-current="page"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Встроенные инструменты</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:44 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>отличать серверные инструменты (web search, code execution, web fetch), которые выполняет Anthropic, от клиентских (memory, bash), которые выполняет ваш код;</li>
+        <li>подключать серверный инструмент одной записью в массиве <code>tools</code> и получать результат в том же ответе, без цикла агента;</li>
+        <li>находить в ответе блоки <code>server_tool_use</code> и блоки результатов инструментов рядом с обычными блоками <code>text</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/pm8iwdSIs3M" title="Built-in tools" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Можно создавать собственные инструменты, но некоторые возможности нужны так часто, что Anthropic поставляет их готовыми. Код писать не нужно. Песочницу (sandbox) держать у себя не нужно. Вы просто объявляете инструмент, а выполняет его Anthropic.</p>
+
+      <h2>Серверные инструменты: объявляете вы, выполняет Anthropic</h2>
+      <p>Anthropic предоставляет <strong>серверные инструменты</strong> (server tools), которые работают на её инфраструктуре. Выполняете их не вы, а Anthropic. Поэтому для таких вызовов не нужен цикл агента: Claude вызывает инструменты сам, и результат приходит в том же ответе.</p>
+      <p>Главные из них:</p>
+      <ul>
+        <li><strong>Web search</strong> (веб-поиск) — ищет в интернете и возвращает результаты со ссылками на источники (citations);</li>
+        <li><strong>Code execution</strong> (выполнение кода) — пишет и запускает код на Python в песочнице;</li>
+        <li><strong>Web fetch</strong> — загружает полное содержимое страниц по URL.</li>
+      </ul>
+
+      <h2>Два серверных инструмента в одном файле</h2>
+      <p>Посмотрим на некоторые главные инструменты в одном файле: два вызова <code>messages.create</code>, один с веб-поиском, другой — с выполнением кода.</p>
+      <pre>import anthropic
+
+client = anthropic.Anthropic()
+
+# Call 1: web search — Anthropic runs the search server-side
+search_response = client.messages.create(
+    model="claude-opus-5",
+    max_tokens=1024,
+    tools=[{"type": "web_search_20260209", "name": "web_search"}],
+    messages=[
+        {"role": "user", "content": "What is Anthropic's latest model release? Answer in one sentence."}
+    ],
+)
+
+for block in search_response.content:
+    if block.type == "server_tool_use":
+        print(f"Tool call: {block.name} — {block.input}")
+    elif block.type == "text":
+        print(block.text)
+
+# Call 2: code execution — Claude writes and runs Python in a sandbox
+code_response = client.messages.create(
+    model="claude-opus-5",
+    max_tokens=1024,
+    tools=[{"type": "code_execution_20260120", "name": "code_execution"}],
+    messages=[
+        {"role": "user", "content": "Calculate the mean and standard deviation of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"}
+    ],
+)
+
+for block in code_response.content:
+    if block.type == "server_tool_use":
+        print(f"Tool call: {block.name} — {block.input}")
+    elif block.type == "bash_code_execution_tool_result":
+        print(f"stdout: {block.content.stdout}")
+    elif block.type == "text":
+        print(block.text)</pre>
+      <p>Обратите внимание на две вещи:</p>
+      <ol>
+        <li><strong>Цикла агента здесь нет.</strong> Мы не проверяем <code>stop_reason</code>. Мы не отправляем результаты инструментов обратно. Anthropic выполняет инструмент на своей стороне, и результат уже есть в ответе.</li>
+        <li><strong>В ответе появляются новые типы блоков.</strong> Блок <code>server_tool_use</code> — для вызова инструмента, блок результата выполнения кода — для вывода, плюс обычные блоки <code>text</code>.</li>
+      </ol>
+
+      <h2>Запускаем</h2>
+      <p>В примере с веб-поиском программа напечатает вызов инструмента, который сделал Claude, а затем ответ в одно предложение о последней вышедшей модели; в текст ответа встроены ссылки на найденные источники.</p>
+      <p>В примере с выполнением кода вы увидите сам код на Python, который написал Claude, вывод (stdout) песочницы, в которой он выполнялся, и итоговый текстовый ответ.</p>
+      <p>Нам не пришлось поднимать поисковый краулер. Мы не запускали песочницу для Python. Мы объявили два инструмента и получили обе возможности даром.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Цикл всё же есть — на сервере.</strong> В долгом ходе API может прервать цикл с <code>stop_reason: "pause_turn"</code>; тогда ответ отправляют обратно как есть, с теми же <code>tools</code>. Если Claude в одном ходе вызвал серверный инструмент вместе с вашим, придёт <code>stop_reason: "tool_use"</code>, и серверный выполнится после ваших <code>tool_result</code> (на ноябрь 2026).</li>
+          <li><strong>Какие блоки искать.</strong> У поиска — <code>web_search_tool_result</code> (пример его не печатает), у выполнения кода — <code>bash_code_execution_tool_result</code> или <code>text_editor_code_execution_tool_result</code>: Claude запускает код на Python командой Bash.</li>
+          <li><strong><code>web_search_20260209</code></strong> — версия с динамической фильтрацией: по умолчанию Claude ищет через код в песочнице и отсекает лишнее, прежде чем результаты попадут в контекст, поэтому в ответе будут и блоки выполнения кода. Для прямого поиска укажите <code>allowed_callers: ["direct"]</code> (на ноябрь 2026).</li>
+          <li><strong>«Даром»</strong> — значит без своей инфраструктуры: веб-поиск оплачивается за каждый запрос, выполнение кода — по времени, если в запросе нет веб-поиска или web fetch версии <code>20260209</code> и новее (на ноябрь 2026).</li>
+        </ul>
+      </aside>
+
+      <h2>Другая категория: клиентские инструменты</h2>
+      <p>Стоит знать, что есть и другая категория. <strong>Клиентские инструменты</strong> (client tools) выполняются там же, где работает ваш код. Anthropic публикует их схемы и обучает на них Claude, так что описывать схему самому не нужно. Два примера:</p>
+      <ul>
+        <li><strong>Memory</strong> — Claude читает и записывает память, которая сохраняется между сессиями;</li>
+        <li><strong>Bash</strong> — постоянная оболочка bash, в которой Claude может выполнять команды.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl07-01.png" alt="Фрагмент таблицы встроенных инструментов из документации Anthropic: в фокусе клиентские Memory tool, Bash tool, Text editor tool и Computer use tool с их версиями, а размытые строки выше — серверные Web fetch, Code execution, Advisor, Tool search и MCP connector.">
+        <figcaption>Таблица встроенных инструментов в документации: memory и bash помечены как клиентские (Client), выше — серверные (Server).</figcaption>
+      </figure>
+      <p>Устроены они так же, как собственный инструмент, только схема встроена в Claude. Выполняет их по-прежнему ваш код: для memory в четырёх SDK есть готовый помощник (helper), который обрабатывает обращения Claude к памяти в предоставленном вами хранилище, а для bash оболочку запускает само ваше приложение.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Вызов клиентского инструмента приходит в блоке <code>tool_use</code>: ваш код выполняет его и возвращает <code>tool_result</code>. Здесь цикл агента нужен, но помощники для memory вместе с tool runner из SDK ведут его сами (на ноябрь 2026).</p>
+      </aside>
+
+      <h2>Почему это важно в продакшене</h2>
+      <p>В продакшен-приложении это самый короткий путь к функциям, на которые иначе ушли бы недели. Например, на основе веб-поиска можно построить эндпоинт для проверки фактов (fact-check), который сверяет каждое утверждение черновика о цифрах и нормативах с актуальными данными в интернете.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl07-02.png" alt="Приложение Meridian Engineering Ops, страница Proposals: у черновика предложения Greenline Transit · Northgate intermodal панель Fact-check с отметкой «39 web searches» выводит отчёт с проверкой утверждений по одному, рядом — панель Feasibility calc с инженерным вопросом и кнопкой Run calc.">
+        <figcaption>Приложение для разбора предложений (proposals): панель Fact-check проверяет утверждения черновика с помощью веб-поиска.</figcaption>
+      </figure>
+      <p>И всё же напомним: то, что утверждение подтверждается в интернете, ещё не значит, что оно верно. Всегда перепроверяйте работу Claude.</p>
+
+      <h2>Итог</h2>
+      <ul>
+        <li><strong>Серверные инструменты</strong> — web search, code execution, web fetch — объявляются в вашем массиве <code>tools</code>. Выполняет их Anthropic.</li>
+        <li>Результат приходит в том же ответе, и <strong>цикл агента не нужен</strong>. Ищите блоки <code>server_tool_use</code> и блоки результатов инструментов рядом с обычными текстовыми блоками.</li>
+        <li><strong>Клиентские инструменты</strong>, такие как memory и bash, выполняются там, где работает ваш код. Схема встроена в Claude, в четырёх SDK есть помощник для memory, а для bash оболочку запускает ваш код.</li>
+        <li>Идея «размещено у Anthropic» работает и в самом крупном масштабе: <strong>managed agents</strong> применяют её ко всему агенту, а не к одному инструменту.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Skills»: папки с инструкциями, скриптами и ресурсами, которые Claude подгружает, чтобы выполнять специализированные задачи так, как принято у вас.</p>
+      <div class="pager">
+        <a class="ghost" href="06-thinking.html">Назад</a>
+        <a class="next" href="08-skills.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/built-in-tools" target="_blank" rel="noopener noreferrer">Built-in tools</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

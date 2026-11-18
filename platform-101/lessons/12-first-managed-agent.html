@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Первый managed agent своими руками</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html" aria-current="page"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Первый managed agent своими руками</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:02 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое managed agent и чем он отличается от цикла агента на вашем сервере;</li>
+        <li>назвать четыре примитива — агент, окружение, сессию и события — и порядок, в котором их создают;</li>
+        <li>запустить простейший managed agent: открыть поток событий до стартового сообщения и разобрать события <code>agent.message</code>, <code>agent.tool_use</code> и <code>session.status_idle</code>;</li>
+        <li>решать, когда выбрать managed agent, а когда — ручной цикл.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/1Rl3gZrlQJo" title="Building your first managed agent" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Если вы уже писали цикл агента вручную, то знаете, как это устроено: циклы while, ветвления по <code>stop_reason</code>, выполнение инструментов. Это работает, и для многих функций приложения такой подход как раз верный. Но иногда цикл идёт очень долго — минуты, а то и часы, — задействует много инструментов, хранит состояние, записывает файлы и должен продолжить работу после сбоя сети. В этот момент запускать цикл на своём сервере уже не хочется. Хочется его кому-то поручить. Для этого и существуют <strong>managed agents</strong>.</p>
+
+      <h2>Что такое managed agent?</h2>
+      <p>Managed agent — это цикл агента, который работает не на вашей инфраструктуре, а на инфраструктуре Anthropic. Вы один раз описываете агента, даёте ему окружение для работы и запускаете сессию. Цикл выполняет Anthropic, а вы просто получаете поток событий, пока агент работает.</p>
+      <p>Managed agents по умолчанию включены для любого аккаунта API — особый доступ не нужен.</p>
+
+      <h2>Четыре примитива</h2>
+      <p>Примитивов четыре, и они идут в определённом порядке:</p>
+      <ol>
+        <li><strong>Агент</strong> (agent) — «персона»: модель, системный промпт и набор инструментов. Его можно использовать во многих запусках.</li>
+        <li><strong>Окружение</strong> (environment) — где работает агент: в облаке или на вашей собственной инфраструктуре (self-hosted), с какими сетевыми настройками и так далее.</li>
+        <li><strong>Сессия</strong> (session) — один запуск агента в определённом окружении. Сессия — это единица работы.</li>
+        <li><strong>События</strong> (events) — сообщения, которые идут туда и обратно: действия агента, вызовы инструментов, результаты, ответы.</li>
+      </ol>
+      <p>Вот как эти части связаны между собой: ваше приложение общается с сессией, сессия ведёт работу внутри окружения, а всё, что происходит, возвращается через поток событий:</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl12-01.png" alt="Схема: значок агента-робота подключён к блоку Session, от сессии стрелки идут к Environment и вниз к Event Stream, от окружения результаты тоже возвращаются в Event Stream; слева — блок Your App.">
+        <figcaption>Агент работает в сессии, сессия ведёт работу в окружении, а результаты приходят в поток событий.</figcaption>
+      </figure>
+      <p>Обратите внимание, что изменилось: вы не крутите цикл while. Вы отправляете события и читаете события.</p>
+
+      <h2>Самый маленький managed agent</h2>
+      <p>Соберём самый маленький managed agent, который делает что-то полезное: создаёт файл во временном каталоге, считает в нём строки и сообщает результат.</p>
+      <p>В качестве инструментов возьмём <strong>набор инструментов агента</strong> (agent toolset) — готовые инструменты Anthropic для работы с файлами, bash и вебом. Для этой задачи их вполне хватает, так что определять собственные инструменты не придётся.</p>
+
+      <h2>Шаг 1. Создаём агента</h2>
+      <p>Сначала создаём агента. Обратите внимание: набор инструментов агента задан прямо в массиве <code>tools</code> — это и есть готовый набор:</p>
+      <pre>import anthropic
+
+client = anthropic.Anthropic()
+
+agent = client.beta.agents.create(
+    name="Line Counter",
+    model="claude-opus-5",
+    system="You are a helpful agent that completes small file tasks.",
+    tools=[
+        {"type": "agent_toolset_20260401", "default_config": {"enabled": True}}
+    ],
+)</pre>
+      <p>Помните: агент используется многократно. Создайте его один раз и запускайте во многих сессиях.</p>
+
+      <h2>Шаг 2. Создаём окружение</h2>
+      <p>Дальше — окружение. Оно задаёт песочницу, в которой работает агент: облачную, с сетью в режиме <code>limited</code>. В режиме <code>limited</code> песочница и веб-инструменты могут обращаться только к хостам, перечисленным в <code>allowed_hosts</code>. Этой задаче сеть не нужна, поэтому мы не перечисляем ни одного. Режим <code>unrestricted</code> берите, только если агенту нужны сайты, которые нельзя перечислить заранее. Каждая сессия получает собственную песочницу, и именно там будет записан файл:</p>
+      <pre>environment = client.beta.environments.create(
+    name="line-counter-env",
+    config={
+        "type": "cloud",
+        "networking": {"type": "limited"},
+    },
+)</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Почему <code>client.beta</code>.</strong> На ноябрь 2026 Managed Agents находятся в бете: в каждом запросе должен быть бета-заголовок <code>managed-agents-2026-04-01</code>, и SDK добавляет его сам.</li>
+          <li><strong>Модель.</strong> <code>claude-opus-5</code> — рабочий ID, но на ноябрь 2026 новейшая Opus — <code>claude-opus-5-5</code>.</li>
+          <li><strong>Инструменты.</strong> Все инструменты набора (<code>bash</code>, <code>read</code>, <code>write</code>, <code>edit</code>, <code>glob</code>, <code>grep</code>, <code>web_fetch</code>, <code>web_search</code>) и так включены по умолчанию, поэтому <code>default_config</code> с <code>enabled: True</code> ничего не меняет. Полезен он в обратном случае: <code>{"enabled": False}</code> выключает всё, а в списке <code>configs</code> включают только те инструменты, которые агенту действительно нужны.</li>
+          <li><strong>Сеть.</strong> Задавайте <code>networking</code> явно: на ноябрь 2026 окружение, созданное через API без этого поля, получает <code>unrestricted</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Шаг 3. Создаём сессию</h2>
+      <p>Затем создаём сессию с нашим агентом и окружением, а также, по желанию, с названием. Сессия — это единица работы:</p>
+      <pre>session = client.beta.sessions.create(
+    agent=agent.id,
+    environment_id=environment.id,
+    title="Count lines demo",
+)</pre>
+
+      <h2>Шаг 4. Сначала открываем поток, потом отправляем стартовое сообщение</h2>
+      <p>Теперь открываем поток событий — и обратите внимание: делаем это <strong>первым делом</strong>. Поток доставляет только те события, которые произошли после его открытия, поэтому всегда открывайте его до того, как отправить стартовое сообщение. Затем отправляем сообщение пользователя в уже открытый поток:</p>
+      <pre>with client.beta.sessions.events.stream(session_id=session.id) as stream:
+    # Stream is open — now send the kickoff
+    client.beta.sessions.events.send(
+        session_id=session.id,
+        events=[
+            {
+                "type": "user.message",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Create a file in the temp directory, "
+                                "count its lines, and report back.",
+                    }
+                ],
+            }
+        ],
+    )</pre>
+      <p>Обратите внимание: параметр называется <code>events</code>, во множественном числе. В этом API всё передаётся событиями.</p>
+
+      <h2>Шаг 5. Читаем поток</h2>
+      <p>Наконец, читаем поток — всё ещё внутри блока <code>with</code> из шага 4. Для этого примера важны три типа событий:</p>
+      <ul>
+        <li><code>agent.message</code> — текст Claude;</li>
+        <li><code>agent.tool_use</code> — какой инструмент выбрал Claude;</li>
+        <li><code>session.status_idle</code> — агент остановился и ждёт ввода.</li>
+      </ul>
+      <p>Этот пример останавливается на первом событии простоя (idle). В своём приложении, прежде чем считать работу законченной, проверяйте <code>event.stop_reason.type</code>: <code>end_turn</code> означает, что агент закончил свой ход или вы его прервали, а <code>requires_action</code> — что вызов инструмента ждёт ответа от вас.</p>
+      <pre>    for event in stream:
+        if event.type == "agent.message":
+            for block in event.content:
+                if block.type == "text":
+                    print(block.text, end="", flush=True)
+        elif event.type == "agent.tool_use":
+            print(f"\n[tool] {event.name}")
+        elif event.type == "session.status_idle":
+            print("\n--- Agent done ---")
+            break</pre>
+      <p>Запустите скрипт — и увидите, как агент рассуждает вслух: настоящий текст, выбранные инструменты и итоговый ответ. И всё это выполняется в контейнере Anthropic, а не в вашем:</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl12-02.png" alt="Терминал после команды npx tsx src/lesson-12-managed-agent.ts: созданы агент, окружение и сессия с их ID, затем в потоке событий агент вызывает инструменты write и bash и сообщает, что в файле /tmp/sample.txt три строки.">
+        <figcaption>Вывод запуска: инструменты <code>write</code> и <code>bash</code>, в итоге — «The file contains 3 lines». В видео запущена TypeScript-версия того же примера.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Здесь остановиться на первом <code>session.status_idle</code> безопасно: собственных инструментов у агента нет, а встроенные по умолчанию выполняются без подтверждения (политика разрешений <code>always_allow</code>), так что <code>requires_action</code> не возникнет и простой (idle) означает <code>end_turn</code>. Кроме двух причин из урока, на ноябрь 2026 у <code>stop_reason.type</code> есть третья — <code>budget_reached</code>: сессия упёрлась в бюджет (необязательный, его задают при создании сессии), и продолжить её можно, только изменив или сняв бюджет.</p>
+      </aside>
+
+      <h2>Компромисс</h2>
+      <p>Обычно цикл агента — наш собственный, и всё в нём приходится контролировать самим. С managed agents вы поручаете другим и этот цикл, и песочницу, и возобновление работы, а сами просто читаете поток событий по мере их поступления. История событий сессии хранится на сервере. Поэтому если соединение оборвалось, откройте новый поток, запросите список прошлых событий, чтобы увидеть, что вы упустили, и пропускайте события живого потока, которые уже вернул этот список. Код — в разделе документации <a href="https://platform.claude.com/docs/en/managed-agents/events-and-streaming#reconnect-without-missing-events" target="_blank" rel="noopener noreferrer">Reconnect without missing events</a>.</p>
+      <p>В рабочем приложении такая схема подходит для долгих задач, связанных с файлами, — задач вида «разбери это за меня». Представьте уборку общего файлового хранилища: managed agent читает описание целевой структуры каталогов, обходит захламлённую папку входящих, раскладывает файлы по нужным папкам проектов, отправляет в архив дубликаты и мусорные файлы нулевого размера и помечает всё, что не может уверенно куда-то отнести, — и всё это в одной сессии, которая может минутами обрабатывать тысячи файлов. Вот как это выглядит в настоящем приложении — дашборд уборки файлового хранилища в реальном времени показывает действия агента, пока тот сортирует, архивирует и помечает файлы:</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl12-03.png" alt="Веб-приложение Meridian Fileshare, сессия Fileshare cleanup: счётчики Files scanned, Moved, Archived и Flagged, дерево папок fileshare/ с archive, incoming, projects и target_structure.md, а справа лента Activity с размышлениями агента, командами ls, find, md5sum и перемещениями файлов в archive/.">
+        <figcaption>Дашборд уборки файлов: слева дерево папок, справа — живая лента событий агента.</figcaption>
+      </figure>
+
+      <h2>Итог</h2>
+      <ul>
+        <li><strong>Managed agents — это цикл агента, который выполняют за вас</strong>, — на инфраструктуре Anthropic, а не на вашем сервере.</li>
+        <li>Порядок такой: <strong>создать агента, создать окружение, создать сессию, отправлять события в сессию и получать поток событий обратно</strong>.</li>
+        <li><strong>Агент</strong> (модель, системный промпт, набор инструментов) используется во многих запусках; <strong>сессия</strong> — один запуск; через <strong>события</strong> передаётся всё.</li>
+        <li>Открывайте поток событий <strong>до</strong> того, как отправить стартовое сообщение: он доставляет только события, произошедшие после его открытия.</li>
+        <li>Следите за тремя событиями: <code>agent.message</code> (текст), <code>agent.tool_use</code> (выбор инструмента) и <code>session.status_idle</code> (агент остановился и ждёт ввода, а <code>stop_reason.type</code> говорит почему).</li>
+        <li>Берите managed agents, когда цикл шёл бы слишком долго, делал бы слишком много или должен выдерживать сбои. Берите ручной цикл, когда вам нужен полный контроль.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Разработка с Claude Code»: вместо того чтобы писать интеграцию с API вручную, мы поручим Claude Code дописать её по файлу-заготовке на тех же примитивах, что прошли в курсе.</p>
+      <div class="pager">
+        <a class="ghost" href="11-managed-agents.html">Назад</a>
+        <a class="next" href="13-building-with-claude-code.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/building-your-first-managed-agent" target="_blank" rel="noopener noreferrer">Building your first managed agent</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

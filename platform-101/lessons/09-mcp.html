@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html" aria-current="page"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>MCP</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:32 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, зачем нужен MCP, если уже есть инструменты и skills, и когда выбирать каждый из трёх вариантов;</li>
+        <li>подключить удалённый MCP-сервер прямо в запросе через <code>mcp_servers</code> и <code>mcp_toolset</code>;</li>
+        <li>оставить Claude только нужные инструменты сервера с помощью <code>default_config</code> и <code>configs</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/hftmYd97LBw" title="MCP" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>У нас уже есть инструменты, skills и коннекторы. Зачем тогда нужен <strong>MCP</strong>? На первый взгляд он выглядит как второй API поверх первого. Вопрос справедливый, и ответ на него сводится к тому, кто поддерживает код интеграции.</p>
+
+      <h2>Проблема поддержки</h2>
+      <p>Допустим, вашему агенту нужно за один заход забрать задачи из Asana, заглянуть в Google Calendar и поискать в Slack. С собственными инструментами вам придётся написать три интеграции. С этим ещё можно справиться. Трудности начинаются потом: эти интеграции нужно ещё и <strong>поддерживать</strong> — каждый раз, когда один из сервисов меняет свой API, а меняется он часто. Поздравляем: теперь вы сопровождаете целую кучу обёрток над чужими API.</p>
+      <p>MCP перекладывает эту поддержку на поставщика сервиса. Asana публикует MCP-сервер. Slack публикует свой. Google — свой. Каждый сервер предоставляет собственные инструменты — с описаниями, схемами и аутентификацией — по стандартному протоколу. Когда их API меняется, они обновляют свой сервер. Вы ничего не меняете.</p>
+
+      <h2>Инструменты, skills и MCP</h2>
+      <p>У этих трёх возможностей разные задачи:</p>
+      <ul>
+        <li><strong>Инструменты</strong> подключают Claude к вашим внутренним системам — к вашей базе данных, вашему трекеру задач, вашим собственным API. Код ваш — значит, и поддержка ваша.</li>
+        <li><strong>Skills</strong> учат Claude процедуре — вашему шаблону отчёта, вашему чеклисту ревью. Skills — это инструкции; интеграциями они быть не обязаны.</li>
+        <li><strong>MCP</strong> подключает Claude к сторонним сервисам, и интеграцию поддерживает поставщик сервиса. Обёртку для Asana пишете не вы — её написала сама Asana.</li>
+      </ul>
+      <p>Коротко: <strong>инструменты — для ваших систем, skills — для ваших процессов, а MCP — для чужих систем.</strong></p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl09-01.png" alt="Три карточки — Tools, Skills и MCP; выделена карточка MCP с подписью «подключает Claude к сторонним сервисам, поддерживается поставщиком сервиса», а приглушённые карточки Tools и Skills говорят о внутренних системах и о процедурах.">
+        <figcaption>Tools, Skills и MCP: у MCP интеграцию поддерживает поставщик сервиса, а не вы.</figcaption>
+      </figure>
+
+      <h2>Подключение к MCP-серверу</h2>
+      <p>Проще всего прочувствовать MCP, если подключить Claude к любому MCP-серверу и дать ему самому выяснить, что там есть. В этом примере возьмём MCP-сервер Linear, а параметры подключения и токен авторизации положим в файл <code>.env</code>.</p>
+      <p>В запросе в связке работают две части. Ключ <code>mcp_servers</code> объявляет подключение: тип, URL, имя, по которому на сервер можно сослаться, и, если нужно, токен авторизации. Затем инструмент с типом <code>mcp_toolset</code> задаёт, какими инструментами этого сервера может пользоваться Claude. По умолчанию — всеми, а если набор нужно сузить, это делается именно здесь.</p>
+      <pre>import os
+import anthropic
+
+client = anthropic.Anthropic()
+
+response = client.beta.messages.create(
+    model="claude-opus-5",
+    max_tokens=1024,
+    messages=[
+        {"role": "user", "content": "What tools do you have available?"}
+    ],
+    mcp_servers=[
+        {
+            "type": "url",
+            "url": "https://mcp.linear.app/mcp",
+            "name": "linear",
+            "authorization_token": os.environ["LINEAR_MCP_TOKEN"],
+        }
+    ],
+    tools=[
+        {
+            "type": "mcp_toolset",
+            "mcp_server_name": "linear",
+        }
+    ],
+    betas=["mcp-client-2025-11-20"],
+)
+
+print(response)</pre>
+      <p>Обратите внимание: мы не написали ни одной схемы инструмента. Claude <strong>опрашивает</strong> сервер (introspection), получает в ответ список инструментов с их схемами и выбирает подходящий для промпта. На момент урока MCP connector находится в бете — в запросе для этого есть бета-заголовок.</p>
+      <p>Запустите код: если URL указывает на MCP-эндпоинт Linear, Claude перечислит инструменты Linear, а затем вызовет один из них. То же самое работает практически с любым сервером, который соблюдает протокол. Мы не определили ни одного инструмента. Мы не написали клиент для Linear. Всё это поддерживает сам Linear.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl09-02.png" alt="Терминал после команды npx tsx src/lesson-09-mcp.ts: таблица найденных инструментов MCP-сервера Linear (external_list_issues, external_save_issue, external_get_user и другие, всего 30), а под ней Claude пишет, что это инструменты управления проектами Linear, и решает сразу запросить команды, последние задачи и текущего пользователя.">
+        <figcaption>Claude сам нашёл инструменты Linear и выбирает, какие из них вызвать.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Бета-заголовок.</strong> На ноябрь 2026 MCP connector всё ещё в бете, и заголовок <code>mcp-client-2025-11-20</code> из урока по-прежнему действует. В Claude API есть и более новый <code>mcp-client-2026-09-15</code>: он умеет то же самое и вдобавок позволяет закрепить список инструментов сервера.</li>
+          <li><strong>Кто обращается к серверу.</strong> К серверу обращается сам API Anthropic, а не ваш код: он запрашивает список инструментов и выполняет вызовы — MCP connector работает как серверный инструмент. Вызов и результат приходят в том же ответе блоками <code>mcp_tool_use</code> и <code>mcp_tool_result</code>, так что выполнять вызовы в своём цикле не нужно.</li>
+          <li><strong>Ограничения.</strong> Пока поддерживаются только инструменты MCP (ресурсы и промпты — нет) и только серверы, доступные из интернета по HTTPS (Streamable HTTP или SSE); локальный сервер по stdio так не подключить. Авторизацию по OAuth сам API не проходит: токен вы получаете и обновляете сами, а затем передаёте в <code>authorization_token</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Как ограничить инструменты, доступные Claude</h2>
+      <p>MCP-серверы часто предоставляют очень много инструментов, и не всегда нужно, чтобы Claude пользовался всеми. Может быть, вы не хотите давать ему права на запись, а может, просто не хотите, чтобы все эти определения инструментов занимали контекст.</p>
+      <p>Решение: по умолчанию отключить всё, а затем включить только нужные инструменты. Вот этот приём на примере MCP-сервера Slack:</p>
+      <pre>tools=[
+    {
+        "type": "mcp_toolset",
+        "mcp_server_name": "slack",
+        "default_config": {
+            "enabled": False,
+        },
+        "configs": {
+            "search_messages": {"enabled": True},
+            "list_channels": {"enabled": True},
+        },
+    }
+]</pre>
+      <p>Теперь Claude может искать в Slack и получать список каналов, но не может ничего публиковать или удалять. Это удобно, когда сервису можно доверить чтение, но вы не хотите, чтобы Claude по ошибке что-то написал от вашего имени.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Если имени из <code>configs</code> на сервере нет — например, в нём опечатка, — API не вернёт ошибку — запись просто ни к чему не применится. В схеме из урока (allowlist) нужный инструмент останется выключенным, а в обратной (denylist — всё включено, в <code>configs</code> выключены только опасные) опасный инструмент так и останется включённым. Сверяйте имена со списком, который отдаёт сервер.</p>
+      </aside>
+
+      <h2>Итог</h2>
+      <ul>
+        <li><strong>MCP существует, чтобы вам не приходилось поддерживать интеграции,</strong> которые уже написал кто-то другой. Поставщик сервиса публикует MCP-сервер и держит его в актуальном состоянии — когда меняется API сервиса, вы ничего не меняете.</li>
+        <li>Выбирайте возможность под задачу: <strong>инструменты — для ваших данных, skills — для ваших процессов, MCP — для сторонних сервисов</strong>.</li>
+        <li>Объявите подключение в <code>mcp_servers</code> (тип, URL, имя, необязательный токен авторизации) и откройте доступ записью <code>mcp_toolset</code> в <code>tools</code>. Claude сам опрашивает сервер и находит инструменты — схемы писать не нужно.</li>
+        <li>Сузить доступ можно так: задать <code>default_config: {"enabled": False}</code> и включить нужные инструменты в <code>configs</code>. Так удобно сделать сервер доступным только для чтения.</li>
+        <li>MCP connector пока в бете, поэтому добавляйте в запросы бета-заголовок.</li>
+        <li>Список доступных серверов и подробности о протоколе — на <strong>modelcontextprotocol.io</strong>.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Управление контекстом»: даже миллиона токенов в реальном агенте хватает ненадолго, и мы разберём, как оставаться в пределах контекстного окна, не теряя важного.</p>
+      <div class="pager">
+        <a class="ghost" href="08-skills.html">Назад</a>
+        <a class="next" href="10-context-management.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/mcp" target="_blank" rel="noopener noreferrer">MCP</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

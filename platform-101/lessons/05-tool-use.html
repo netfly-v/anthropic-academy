@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Что такое tool use</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html" aria-current="page"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Что такое tool use</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:38 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое инструмент и почему его выполняет ваш код, а не Claude;</li>
+        <li>задать инструмент через имя, описание и схему входных данных и написать описание, по которому Claude выберет нужный инструмент;</li>
+        <li>построить цикл: <code>stop_reason: "tool_use"</code> → вызов функции → <code>tool_result</code>, в том числе для нескольких инструментов;</li>
+        <li>заменить ручной цикл на tool runner из SDK.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/Ao759wXbRc0" title="What is tool use?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Ваши рабочие процессы опираются на множество разных технологий: системы управления проектами, базы данных, файлы. Сам Claude заглянуть во всё это не может. Вместо этого он полагается на <strong>инструменты</strong> — они дают Claude доступ к внешним данным и действиям.</p>
+
+      <h2>Что такое инструмент</h2>
+      <p>Проще говоря, инструмент — это <strong>функция, которую вы определяете и предоставляете Claude</strong>. Вы описываете, что она делает и какие входные данные принимает, а Claude решает, когда её вызвать.</p>
+      <p>Главное, что нужно усвоить: <strong>инструмент выполняет не Claude, а ваш код</strong>. Схема такая:</p>
+      <ol>
+        <li><strong>Claude запрашивает</strong> вызов инструмента.</li>
+        <li><strong>Ваш код выполняет</strong> функцию.</li>
+        <li><strong>Результат возвращается к Claude</strong>, и он продолжает работу.</li>
+      </ol>
+
+      <h2>Как определяют инструменты</h2>
+      <p>Инструменты — это <strong>JSON-схемы</strong> из трёх частей: <strong>имя</strong>, <strong>описание</strong> и <strong>схема входных данных</strong>. Их передают Claude в теле запроса, в массиве <code>tools</code>.</p>
+      <p>Именно <strong>описание</strong> читает Claude, решая, вызывать ли инструмент. Напишете расплывчатое описание — Claude будет плохо пользоваться инструментами. Это главная причина, по которой агенты ошибаются или не пользуются доступными им инструментами. Пишите конкретно.</p>
+      <p>Вот как выглядит определение инструмента:</p>
+      <pre>{
+  "name": "lookup_building_code",
+  "description": "Look up a specific building code section by its identifier. Returns the full text of that code section.",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "section": {
+        "type": "string",
+        "description": "The building code section to look up"
+      }
+    },
+    "required": ["section"]
+  }
+}</pre>
+      <p>Что же происходит, когда мы его используем? Допустим, мы отправляем агенту отчёт, который нужно проверить на соответствие строительным нормам. На первом ходе Claude возвращает <strong><code>stop_reason: "tool_use"</code></strong> — это наш сигнал. Вот как выглядит такой ответ:</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl05-01.png" alt="Ответ API: в content — блок tool_use с id, именем инструмента и входом section R301.2.1, поле stop_reason равно tool_use.">
+        <figcaption>Первый ход: Claude останавливается с <code>stop_reason: "tool_use"</code>, а блок <code>tool_use</code> называет инструмент и входные данные для него.</figcaption>
+      </figure>
+      <p>Наш цикл вызывает <code>lookup_building_code</code> с параметром, который запросил Claude, а затем возвращает полученные данные как <strong>результат инструмента</strong> (tool result) — сообщение пользователя с блоком <code>tool_result</code>, привязанным к <code>id</code> вызова инструмента:</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl05-02.png" alt="Сообщение с ролью user: блок tool_result с tool_use_id и текстом раздела норм R301.2.1 в поле content.">
+        <figcaption>Ответ вашего кода: сообщение пользователя с блоком <code>tool_result</code>, в котором <code>tool_use_id</code> совпадает с <code>id</code> вызова.</figcaption>
+      </figure>
+      <p>И Claude продолжает работу. Дальше можно снова и снова вызывать инструменты и возвращать Claude результаты, пока у него не будет всего, что нужно.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Кто выполняет инструмент.</strong> Правило «выполняет ваш код» относится к клиентским инструментам: по документации Claude API (на ноябрь 2026) это и ваши собственные инструменты, и инструменты со схемой от Anthropic, например bash и text editor. Серверные инструменты, например web search и code execution, выполняет Anthropic, и <code>tool_result</code> для них отправлять не нужно. О них — урок «Встроенные инструменты».</li>
+          <li><strong>Имя на картинке.</strong> В ответе на первой картинке инструмент назван <code>lookupBuildingCode</code>, а в определении — <code>lookup_building_code</code>. В настоящем ответе поле <code>name</code> блока <code>tool_use</code> совпадает с именем из массива <code>tools</code>: по нему ваш код выбирает функцию.</li>
+        </ul>
+      </aside>
+
+      <h2>Несколько инструментов: пусть Claude выбирает</h2>
+      <p>Один инструмент — это полезно, но самое интересное начинается, когда вы даёте Claude <strong>несколько инструментов</strong> и смотрите, какой он выберет и в каком порядке.</p>
+      <p>Представьте: вы собираетесь в трёхдневную поездку в Денвер и хотите узнать и сегодняшнюю погоду, и прогноз на ближайшие дни. Поэтому мы объявляем не один инструмент, а два:</p>
+      <pre>const tools = [
+  {
+    name: "get_weather",
+    description: "Get today's current weather for a city.",
+    input_schema: {
+      type: "object",
+      properties: {
+        city: { type: "string", description: "The city to check" }
+      },
+      required: ["city"]
+    }
+  },
+  {
+    name: "get_forecast",
+    description: "Get the weather forecast for the next few days for a city.",
+    input_schema: {
+      type: "object",
+      properties: {
+        city: { type: "string", description: "The city to check" }
+      },
+      required: ["city"]
+    }
+  }
+];</pre>
+      <p>Цикл точно такой же, как в циклах агента, которые мы уже видели. Новое только одно — функция <code>runTool</code>, которая <strong>выбирает, что запустить, по имени инструмента</strong> с помощью оператора switch: этот блок кода — как раз то место, где на самом деле выполняется ваш код. Чтобы код можно было запустить, в нём есть ещё две заглушки с зашитыми данными и первое сообщение, а <code>client</code> берётся из урока «Первый запрос к API»:</p>
+      <pre>// Two hardcoded lookups. In a real app, these would call a weather service.
+const getWeather = (city) =&gt; `${city} today: 34F, snow flurries`;
+const getForecast = (city) =&gt; `${city}, next three days: 38F, 45F, and 52F, sunny`;
+
+const messages = [
+  {
+    role: "user",
+    content:
+      "I'm packing for a three-day trip to Denver. What's the weather today and over the next few days?",
+  },
+];
+
+function runTool(name, input) {
+  switch (name) {
+    case "get_weather":
+      return getWeather(input.city);
+    case "get_forecast":
+      return getForecast(input.city);
+  }
+}
+
+while (true) {
+  const response = await client.messages.create({
+    model: "claude-sonnet-5",
+    max_tokens: 1024,
+    messages,
+    tools,
+  });
+
+  if (response.stop_reason !== "tool_use") {
+    // Claude is done — this is the final answer
+    for (const block of response.content) {
+      if (block.type === "text") console.log(block.text);
+    }
+    break;
+  }
+
+  messages.push({ role: "assistant", content: response.content });
+
+  const toolResults = response.content
+    .filter((block) =&gt; block.type === "tool_use")
+    .map((block) =&gt; ({
+      type: "tool_result",
+      tool_use_id: block.id,
+      content: runTool(block.name, block.input),
+    }));
+
+  messages.push({ role: "user", content: toolResults });
+}</pre>
+      <p>Вот и весь шаблон. Нужен третий инструмент? Добавьте его в массив, добавьте <code>case</code> в switch — и готово.</p>
+      <p>Запустите этот код, и вы увидите, как Claude вызывает <code>get_weather</code>, а затем <code>get_forecast</code> — иногда за один ход, иногда один за другим. Потом он отвечает: берите одежду, которую можно надевать слоями, сегодня ждите лёгкого снега, а в течение недели будет теплеть.</p>
+      <p>Теперь обратите внимание, <em>как</em> Claude выбирал. Он прочитал описания, сопоставил ваш промпт с «today's weather» и «the next few days» и для каждой части подобрал нужный инструмент. Вот почему описания инструментов так важны.</p>
+
+      <h2>Tool runner: без шаблонного кода</h2>
+      <p>Вы, наверное, уже заметили в только что написанном коде два тревожных сигнала:</p>
+      <ul>
+        <li>Это <strong>много кода</strong> для двух простых запросов.</li>
+        <li>В настоящей кодовой базе не хочется <strong>писать JSON-схемы вручную</strong> для каждой функции. Это всё равно что писать код дважды.</li>
+      </ul>
+      <p>Тут и пригодится <strong>tool runner</strong>. Он есть в Claude SDK (пока в бете): для TypeScript, Python, Ruby, C#, Go, Java и PHP. Каждый инструмент вы определяете один раз, а runner сам ведёт весь цикл tool use / tool result.</p>
+      <p>В TypeScript рекомендуемый помощник для runner — <code>betaZodTool()</code>. Он описывает каждый инструмент короткой схемой на Zod — библиотеке TypeScript для описания и проверки структуры данных. Помощнику нужен Zod 3.25.0 или новее — свежая установка как раз такую версию и поставит:</p>
+      <pre>npm install zod</pre>
+      <p>Ваш код сводится к трём шагам: описать инструмент, отправить промпт, дождаться результата. Вот тот же пример с погодой и двумя инструментами, но через tool runner:</p>
+      <pre>import { betaZodTool } from "@anthropic-ai/sdk/helpers/beta/zod";
+import { z } from "zod";
+
+// Wrap the same two lookups we ran by hand, each with a short Zod schema
+const weatherTool = betaZodTool({
+  name: "get_weather",
+  description: "Get today's current weather for a city.",
+  inputSchema: z.object({
+    city: z.string().describe("The city to check"),
+  }),
+  run: async ({ city }) =&gt; getWeather(city),
+});
+
+const forecastTool = betaZodTool({
+  name: "get_forecast",
+  description: "Get the weather forecast for the next few days for a city.",
+  inputSchema: z.object({
+    city: z.string().describe("The city to check"),
+  }),
+  run: async ({ city }) =&gt; getForecast(city),
+});
+
+const runner = client.beta.messages.toolRunner({
+  model: "claude-sonnet-5",
+  max_tokens: 1024,
+  messages: [
+    {
+      role: "user",
+      content:
+        "I'm packing for a three-day trip to Denver. What's the weather today and over the next few days?",
+    },
+  ],
+  tools: [weatherTool, forecastTool],
+});
+
+// Await the runner to get the final message after all the tool ping-pong has settled
+const finalMessage = await runner;
+for (const block of finalMessage.content) {
+  if (block.type === "text") console.log(block.text);
+}</pre>
+      <p>Тот же сценарий, но кода в разы меньше:</p>
+      <ul>
+        <li><strong>Нет цикла while</strong>, нет ветвления по stop reason, не нужно вручную добавлять результаты инструментов в messages — всё это делает runner.</li>
+        <li><strong>Нет написанных вручную JSON-схем</strong> — только короткая схема Zod на каждый инструмент, которая к тому же проверяет входные данные, присланные Claude.</li>
+        <li>Каждая функция <code>run</code> оборачивает тот же запрос, который мы минуту назад выполняли вручную.</li>
+        <li>Если дождаться runner через <code>await</code>, он вернёт итоговое сообщение ассистента, когда всё уляжется.</li>
+      </ul>
+      <p>Запустите — и получите тот же ответ.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Несколько вызовов за один ход.</strong> Если Claude вызвал оба инструмента в одном ответе, все результаты возвращают одним сообщением пользователя — поэтому ручной цикл собирает их в один массив <code>toolResults</code>. По документации (на ноябрь 2026) блоки <code>tool_result</code> должны стоять в начале <code>content</code>, до любого текста, иначе API вернёт ошибку 400. Если же разложить результаты по отдельным сообщениям, Claude станет реже вызывать инструменты параллельно.</li>
+          <li><strong>Ручной цикл или tool runner.</strong> По документации (на ноябрь 2026), если инструмент бросает исключение, runner сам возвращает Claude <code>tool_result</code> с <code>is_error: true</code>. Ручной цикл документация советует, когда нужны подтверждение человеком, своё логирование или выполнение по условию.</li>
+        </ul>
+      </aside>
+
+      <h2>Настоящие инструменты оборачивают ваш код</h2>
+      <p>В реальной жизни ваши инструменты не будут возвращать зашитые данные о погоде. Они будут оборачивать <strong>настоящие функции, которые уже есть в вашем приложении</strong>.</p>
+      <p>Возьмём агента, который проверяет документы на соответствие строительным нормам: его инструменты — тонкие обёртки над функциями <code>lookup_building_code</code> и <code>search_building_code</code>, которые уже есть в кодовой базе. С tool runner каждую из этих функций вы оборачиваете в короткое определение инструмента со своей схемой Zod, и в каждом замечании агент ссылается на конкретные разделы норм:</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl05-03.png" alt="Приложение Meridian Compliance: слева текст отчёта по подпорной стене, справа замечания агента со ссылками на разделы ACI 318-25 и спецификации проекта.">
+        <figcaption>Агент проверки на соответствие нормам: каждое отмеченное замечание ссылается на раздел норм, который агент проверил.</figcaption>
+      </figure>
+
+      <h2>Итог</h2>
+      <ul>
+        <li><strong>Инструменты дают Claude доступ к вашим системам.</strong> Инструмент — это функция, которую вы определяете и предоставляете Claude; Claude решает, когда её вызвать, а выполняет её ваш код.</li>
+        <li>Инструменты — это JSON-схемы с <strong>именем</strong>, <strong>описанием</strong> и <strong>схемой входных данных</strong>; их передают в запросе в массиве <code>tools</code>.</li>
+        <li><strong>Пишите конкретные описания.</strong> Расплывчатые описания — главная причина, по которой агенты ошибаются.</li>
+        <li><code>stop_reason: "tool_use"</code> — сигнал выполнить инструмент и вернуть результат как tool result.</li>
+        <li>Когда инструментов несколько, выбирайте функцию по имени инструмента. Чтобы добавить инструмент, достаточно дописать его в массив и добавить <code>case</code>.</li>
+        <li><strong>Tool runner</strong> из SDK (в бете во всех Claude SDK) ведёт весь цикл сам, а в TypeScript каждый инструмент — короткое определение со схемой Zod. А можно вести цикл и самому.</li>
+        <li>Цикл можно выполнять самому, а можно делегировать. На дальнем краю этого спектра — <strong>managed agents</strong>: с ними Anthropic берёт на себя всего агента.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Что такое thinking»: как Claude может обдумать задачу шаг за шагом, прежде чем ответить, и когда это действительно помогает.</p>
+      <div class="pager">
+        <a class="ghost" href="04-agent-loop.html">Назад</a>
+        <a class="next" href="06-thinking.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/what-is-tool-use" target="_blank" rel="noopener noreferrer">What is tool use?</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

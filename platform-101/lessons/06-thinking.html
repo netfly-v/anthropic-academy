@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Что такое thinking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html" aria-current="page"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Что такое thinking</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:23 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что даёт thinking и почему без него модель может уверенно ошибиться в многошаговой задаче;</li>
+        <li>включить показ рассуждений через <code>"display": "summarized"</code> и задать их глубину параметром effort внутри <code>output_config</code>;</li>
+        <li>решать, в каких задачах thinking окупается, а где только увеличивает задержку и стоимость.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/4SunBsMGRwA" title="What is thinking?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Некоторым задачам мало быстрого ответа. Claude может обдумать задачу, прежде чем ответить, — эта возможность называется <strong>extended thinking</strong>. В этом уроке разберём, что такое thinking, как он работает и когда действительно помогает.</p>
+      <p>Вот какого сбоя мы хотим избежать. Если задать модели многошаговый вопрос и заставить её ответить сразу, она может уверенно ошибиться:</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl06-01.png" alt="Схема: от блока «Your App» стрелка идёт к модели, и та сразу отвечает «You’d have 6.5 apples.» — неверно решив многошаговую задачу про яблоки.">
+        <figcaption>Модель сразу отвечает на многошаговый вопрос про яблоки — и ошибается: «You’d have 6.5 apples».</figcaption>
+      </figure>
+
+      <h2>Что такое extended thinking</h2>
+      <p>Extended thinking позволяет Claude рассуждать шаг за шагом, прежде чем дать итоговый ответ. Когда режим включён, Claude генерирует внутренние токены рассуждения — их часто называют <strong>цепочкой рассуждений</strong> (chain of thought), — а затем выдаёт ответ. На Claude Opus 5 текст рассуждения остаётся скрытым, если только настройка <code>thinking</code> в вашем запросе не содержит <code>"display": "summarized"</code>, как в примере ниже. Тогда вместе с итоговым текстом в ответе приходит краткое изложение рассуждений Claude.</p>
+
+      <h2>Adaptive thinking на Claude Opus 5</h2>
+      <p>На Opus 5 thinking работает в режиме <strong>adaptive</strong> и включён по умолчанию. Выбирать бюджет токенов не нужно: Claude сам по ходу работы решает, когда думать и сколько.</p>
+      <p>Чтобы управлять тем, сколько думает Claude, используйте параметр <strong>effort</strong>. Здесь есть подвох: он задаётся внутри <code>output_config</code>, а не рядом с блоком <code>thinking</code>. Уровни такие:</p>
+      <ul>
+        <li><code>low</code>;</li>
+        <li><code>medium</code>;</li>
+        <li><code>high</code> (по умолчанию);</li>
+        <li><code>xhigh</code> (extra high, очень высокий);</li>
+        <li><code>max</code>.</li>
+      </ul>
+
+      <h2>Когда его включать (и когда нет)</h2>
+      <p>Extended thinking помогает в таких задачах:</p>
+      <ul>
+        <li>математика и многошаговая логика;</li>
+        <li>отладка кода;</li>
+        <li>анализ нормативных требований;</li>
+        <li>всё, где приходится искать компромисс или сравнивать варианты.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl06-02.png" alt="Слайд «Extended thinking use cases» с пятью карточками: Math, Multi-step logic, Code debugging, Regulatory analysis и Complex comparisons.">
+        <figcaption>Где thinking полезен: математика, многошаговая логика, отладка кода, анализ нормативных требований, сложные сравнения.</figcaption>
+      </figure>
+      <p>Не включайте его для простой классификации, извлечения данных или шаблонного текста. В таких задачах он только увеличивает задержку и стоимость, а результат не улучшает.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Термины.</strong> В документации Claude Platform (на ноябрь 2026) сама возможность называется просто thinking, а «extended thinking» — это старый ручной режим <code>{"type": "enabled", "budget_tokens": N}</code>. На моделях Claude 4.7 и новее (включая все Claude 5) запрос с ним возвращает ошибку 400: там работает только adaptive thinking.</li>
+          <li><strong>Модель.</strong> <code>claude-opus-5</code> — действующий ID, но новейшая модель Opus на ноябрь 2026 — Claude Opus 5.5 (<code>claude-opus-5-5</code>). У неё effort по умолчанию <code>medium</code>, а не <code>high</code>.</li>
+          <li><strong>Как «не включать».</strong> На Opus 5 thinking и так включён. Для простых задач снижают effort до <code>low</code> или передают <code>thinking={"type": "disabled"}</code> — Opus 5 принимает это только при effort <code>high</code> и ниже. На Opus 5.5 thinking отключить нельзя, остаётся только effort.</li>
+        </ul>
+      </aside>
+
+      <h2>Thinking на практике</h2>
+      <p>Посмотрим, как это работает. Вот цикл агента с одним инструментом, который узнаёт погоду. Попросим Claude спланировать поездку на машине из Сан-Франциско — с двумя остановками, с учётом погоды и времени в пути. Здесь приходится искать настоящий компромисс — это как раз такой вопрос, где thinking себя оправдывает.</p>
+      <pre>import anthropic
+
+client = anthropic.Anthropic()
+
+weather_tool = {
+    "name": "get_weather",
+    "description": "Get the current weather for a city.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "city": {"type": "string", "description": "City name"}
+        },
+        "required": ["city"],
+    },
+}
+
+response = client.messages.create(
+    model="claude-opus-5",
+    max_tokens=16000,
+    thinking={"type": "adaptive", "display": "summarized"},  # summarized = return the reasoning text
+    output_config={"effort": "high"},  # low | medium | high | xhigh | max
+    tools=[weather_tool],
+    messages=[
+        {
+            "role": "user",
+            "content": "Plan a road trip out of San Francisco with two stops, "
+                       "weighing weather and drive time.",
+        }
+    ],
+)</pre>
+      <p>Если запустить этот код, вывод окажется интереснее обычного. Вы увидите <strong>блоки thinking</strong>, в которых Claude взвешивает варианты, затем вызовы инструмента, проверяющие каждый город, и, наконец, текстовый блок с самой рекомендацией.</p>
+      <p>Рассуждение видно — в этом весь смысл.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В примере один запрос, а не цикл. Ответ на него остановится на вызовах <code>get_weather</code> (<code>stop_reason: "tool_use"</code>). Чтобы дойти до текстового блока с рекомендацией, нужен цикл агента из прошлых уроков: выполнить инструмент, отправить <code>tool_result</code> и передать обратно ответ ассистента целиком — блоки thinking нельзя менять или выбрасывать. Между вызовами инструментов Claude тоже может думать (interleaved thinking): с adaptive thinking это происходит автоматически.</p>
+      </aside>
+
+      <h2>Почему это важно в продакшене</h2>
+      <p>В рабочем приложении это разница между агентом, который находит проблемы по одной, и агентом, который связывает их воедино. Возьмём приложение для проверки документов на соответствие нормам: если включить adaptive thinking в вызове автопроверки, агент сможет рассуждать, сопоставляя разделы отчёта <em>между собой</em>, — и заметит, например, что требование к ветровой нагрузке в третьем разделе противоречит спецификации материала в другом месте документа.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl06-03.png" alt="Экран «Compliance reviews»: у отчёта «Harbor Crossing — Structural narrative» запущен «Run auto-review» с отмеченным флажком «Thorough review» (сверяет находки между разделами, медленнее), ниже — статус «Reviewing report against the building-code library…».">
+        <figcaption>Приложение для проверки на соответствие нормам: автопроверка с флажком «Thorough review», который сверяет находки между разделами отчёта.</figcaption>
+      </figure>
+
+      <h2>Итог</h2>
+      <ul>
+        <li><strong>Extended thinking</strong> даёт Claude возможность порассуждать, прежде чем ответить. На Opus 5 краткое изложение этих рассуждений приходит в ответе, только если вы его запросили.</li>
+        <li>На Opus 5 adaptive thinking включён по умолчанию — бюджет токенов не нужен. Добавьте <code>"display": "summarized"</code>, чтобы видеть рассуждение в ответе.</li>
+        <li>Глубину регулируйте параметром <strong>effort</strong> внутри <code>output_config</code>: <code>low</code>, <code>medium</code>, <code>high</code> (по умолчанию), <code>xhigh</code> или <code>max</code>.</li>
+        <li>Включайте thinking для трудных задач, где приходится искать компромиссы. Для простых не включайте — там он только увеличивает задержку и расход токенов.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Встроенные инструменты»: готовые серверные инструменты Anthropic, например веб-поиск и выполнение кода: их достаточно объявить в запросе, а выполняет их сама Anthropic.</p>
+      <div class="pager">
+        <a class="ghost" href="05-tool-use.html">Назад</a>
+        <a class="next" href="07-built-in-tools.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/what-is-thinking" target="_blank" rel="noopener noreferrer">What is thinking?</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

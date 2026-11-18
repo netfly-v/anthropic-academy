@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Как выбрать модель</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html" aria-current="page"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Как выбрать модель</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:07 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>назвать четыре уровня моделей Claude — Fable, Opus, Sonnet и Haiku — и задачи, для которых подходит каждый;</li>
+        <li>выбирать модель с помощью простой оценки: идти от Haiku вверх до самой дешёвой модели, чей результат можно выпускать;</li>
+        <li>сравнивать модели по задержке и по токенам из <code>response.usage</code>, по которым выставляется счёт;</li>
+        <li>направлять разные задачи одного приложения на разные модели.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/UAeTSBsK71A" title="Choosing the right model" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Вы выпускаете приложение на Claude. Какую модель выбрать? Если по умолчанию брать самую умную, счёт за API вас неприятно удивит. Возьмёте самую дешёвую — и результат может подвести. У каждой модели свои плюсы и минусы, и от правильного выбора зависят и <strong>качество</strong>, и <strong>стоимость</strong>.</p>
+
+      <h2>Уровни моделей</h2>
+      <p>Сейчас Anthropic предлагает четыре уровня моделей; нужный вы выбираете параметром <code>model</code> в вызове API.</p>
+      <p><em>Учтите: Claude Fable 5.1 общедоступна с 1 сентября 2026 года, но в видео выше её нет, а на картинке с тремя карточками ниже показана линейка до выхода Fable 5.1. Подробнее о Claude Fable 5.1 и Claude Mythos 5.1 — <a href="https://www.anthropic.com/claude-fable-and-mythos-5-1" target="_blank" rel="noopener noreferrer">здесь</a>. Видео и скриншот терминала в этом уроке сделаны на более ранних моделях (Claude Opus 4.7 и Claude Sonnet 4.6). В коде ниже — текущие ID моделей; задержка и число токенов у вас будут другими.</em></p>
+      <ul>
+        <li><strong>Claude Fable</strong> — наша самая мощная модель на сегодня: новый уровень выше Opus, созданный для самых трудных задач. Она дороже Opus, поэтому приберегите её для работы, где дополнительные возможности стоят этих денег. Текущая модель Fable — Claude Fable 5.1 (<code>claude-fable-5-1</code>).</li>
+        <li><strong>Claude Opus</strong> — самое мощное из трёх основных семейств моделей, но и самое медленное и дорогое из них. Берите его для глубоких рассуждений, сложного анализа, многошагового программирования и текстов, где важны нюансы. Текущая модель Opus — Claude Opus 5.5 (<code>claude-opus-5-5</code>).</li>
+        <li><strong>Claude Haiku</strong> — самая быстрая и дешёвая модель, оптимизированная под скорость и экономию, а не под максимальный интеллект. Берите её для большого объёма несложной работы: классификации, извлечения данных и маршрутизации. Текущая модель Haiku — Claude Haiku 4.5 (<code>claude-haiku-4-5</code>).</li>
+        <li><strong>Claude Sonnet</strong> — золотая середина: сбалансированное сочетание интеллекта, скорости и стоимости, которое хорошо подходит для большей части работы в продакшене. Текущая модель Sonnet — Claude Sonnet 5 (<code>claude-sonnet-5</code>).</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl03-01.png" alt="Три карточки моделей Claude: Haiku (менее умная, самая быстрая и дешёвая; классификация, извлечение, маршрутизация), Sonnet (способная и быстрая; подходит для большей части работы в продакшене) и выделенная Opus (самая умная, самая медленная и дорогая; глубокие рассуждения, сложный анализ, многошаговое программирование, тексты с нюансами).">
+        <figcaption>Три уровня моделей до выхода Fable 5.1: Haiku, Sonnet и выделенная Opus. Четвёртого уровня — Fable, который теперь стоит выше Opus и по возможностям, и по цене, — на картинке нет.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Линейка в уроке уже частично устарела. На ноябрь 2026 текущие модели — Claude Fable 5.2 (<code>claude-fable-5-2</code>), Opus 5.5 (<code>claude-opus-5-5</code>), Sonnet 5.5 (<code>claude-sonnet-5-5</code>) и Haiku 5.5 (<code>claude-haiku-5-5</code>). Остальные ID урока (<code>claude-fable-5-1</code>, <code>claude-sonnet-5</code>, <code>claude-haiku-4-5</code>) ещё работают, но Haiku 4.5 уже помечена как legacy; для нового кода берите текущие.</p>
+      </aside>
+
+      <h2>Начните с простой оценки</h2>
+      <p>Прежде чем писать код для продакшена, подготовьте простую <strong>оценку</strong> (evaluation): набор примеров входных данных; вы прогоняете их через каждую модель и сверяете результат с тем, что считается хорошим ответом в вашей задаче. Ничего сложного не нужно — для начала хватит 20–30 показательных примеров из реальных задач вашего приложения.</p>
+      <p>Затем поднимайтесь по уровням:</p>
+      <ol>
+        <li>Сначала прогоните примеры через <strong>Haiku</strong>. Если качество устраивает — готово, и вы только что сэкономили немало денег.</li>
+        <li>Если нет — переходите на <strong>Sonnet</strong>.</li>
+        <li>За <strong>Opus</strong> беритесь, только когда задача этого требует.</li>
+      </ol>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Документация (на ноябрь 2026) считает путь «от Haiku вверх» лишь одним из двух подходов — для прототипов, жёстких требований к задержке, ограниченного бюджета и большого потока простых задач. Для большинства задач она советует начинать с Opus 5.5 и затем удешевлять: снижать <code>effort</code> (это часто выгоднее, чем менять модель) или брать модель попроще; если и на effort <code>xhigh</code> или <code>max</code> качества не хватает — переходить на Fable 5.2.</p>
+      </aside>
+
+      <h2>Сравниваем уровни напрямую</h2>
+      <p>Давайте не просто поговорим о разнице между уровнями, а посмотрим на неё. Отправим один и тот же промпт всем трём моделям и проследим за задержкой и числом токенов:</p>
+      <pre>models = ["claude-haiku-4-5", "claude-sonnet-5", "claude-opus-5-5"]
+
+for model in models:
+    response = client.messages.create(
+        model=model,
+        max_tokens=300,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    print(model, response.usage)</pre>
+      <p>Здесь стоит отметить две вещи:</p>
+      <ul>
+        <li>Цикл в каждом запросе меняет значение поля <code>model</code>. Промпт тот же, <code>max_tokens</code> тот же — меняется только модель.</li>
+        <li><code>response.usage</code> возвращает число входных и выходных токенов прямо из API — именно по ним рассчитывается ваш счёт.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl03-02.png" alt="Терминал после запуска npx tsx src/lesson-03-models.ts: для claude-opus-4-7, claude-sonnet-4-6 и claude-haiku-4-5 выведены время ответа (2511, 1764 и 1070 мс), входные и выходные токены (in=25 out=105, in=16 out=55, in=16 out=53) и определение prompt caching от каждой модели.">
+        <figcaption>Один промпт, три модели: Opus отвечает дольше всех и пишет длиннее всех, Haiku отвечает быстрее всех.</figcaption>
+      </figure>
+      <p>Запустите — и увидите три модели и три набора чисел. <strong>Opus</strong> отвечает дольше всех, и текст у него самый отточенный, но для определения в два предложения эта отточенность пропадает зря. <strong>Sonnet</strong> пишет немного сжатее. А <strong>Haiku</strong> часто меньше чем за секунду выдаёт очень толковый ответ в два предложения. Для такого сценария он, честно говоря, идеален.</p>
+      <p>В этом и весь смысл: <strong>правильная модель — самая дешёвая из тех, чей результат вы действительно готовы выпустить.</strong> Для определения вполне хватает Haiku. Для черновика ответа на запрос регулятора вы провели бы то же сравнение и, скорее всего, остановились бы на Opus. Оценка каждый раз устроена одинаково.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Задержка.</strong> Код печатает только <code>response.usage</code>: время ответа API не сообщает, его замеряют сами, ставя отметки до и после вызова (например, через <code>time.perf_counter()</code>) — так делает и скрипт со скриншота.</li>
+          <li><strong>Thinking.</strong> На ноябрь 2026 все текущие модели и <code>claude-sonnet-5</code> по умолчанию рассуждают (adaptive thinking); из моделей урока не рассуждает только <code>claude-haiku-4-5</code>. Токены размышлений оплачиваются как выходные: входят в <code>output_tokens</code> (их доля — <code>output_tokens_details.thinking_tokens</code>) и в лимит <code>max_tokens</code>, поэтому при <code>max_tokens=300</code> ответ может оборваться со <code>stop_reason</code> <code>"max_tokens"</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Разные задачи — разным моделям</h2>
+      <p>В реальном приложении разные виды работы направляют на разные модели внутри одного и того же эндпоинта. Возьмём операционный дашборд с маршрутом для обработки документов:</p>
+      <ul>
+        <li>каждый входящий файл <strong>классифицирует Haiku</strong>;</li>
+        <li>черновики сообщений клиентам <strong>пишет Sonnet</strong>;</li>
+        <li>и только ответы на RFP (запросы коммерческих предложений) <strong>достаются Opus</strong>.</li>
+      </ul>
+      <p>Одна очередь, три модели, и для каждой задачи — своя.</p>
+
+      <h2>Итог</h2>
+      <ul>
+        <li>Anthropic предлагает четыре уровня моделей: <strong>Fable</strong> — когда нужен максимум возможностей, <strong>Opus</strong> — для трудных задач, <strong>Sonnet</strong> — для повседневной работы и <strong>Haiku</strong> — для больших объёмов.</li>
+        <li>Прежде чем писать код для продакшена, подготовьте простую оценку — 20–30 показательных примеров из ваших реальных задач.</li>
+        <li>Прогоняйте оценку от Haiku вверх и останавливайтесь на самой дешёвой модели, чей результат вы действительно готовы выпустить.</li>
+        <li><code>response.usage</code> сообщает число входных и выходных токенов — по ним и рассчитывается ваш счёт.</li>
+        <li>В продакшене направляйте разные задачи на разные модели внутри одного эндпоинта, а не берите одну модель для всего.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Как устроен цикл агента»: один вызов API возвращает один ответ, а агенту нужно действовать, смотреть на результат и решать, что делать дальше. Разберём, как он работает.</p>
+      <div class="pager">
+        <a class="ghost" href="02-first-api-call.html">Назад</a>
+        <a class="next" href="04-agent-loop.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/choosing-the-right-model" target="_blank" rel="noopener noreferrer">Choosing the right model</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

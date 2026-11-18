@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Первый запрос к API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html" aria-current="page"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Первый запрос к API</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:25 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>собрать запрос через <code>messages.create</code>: модель, лимит токенов и список сообщений;</li>
+        <li>хранить API-ключ вне исходного кода и задавать роль Claude системным промптом;</li>
+        <li>читать ответ правильно: перебирать блоки <code>content</code> и проверять их тип.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/j0ftK_R5DTs" title="Your first API call" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Поздороваться с Claude, может, и приятно, но пользы от этого немного. В этом уроке мы отправим Claude настоящую задачу и получим в ответ структурированный разбор — и всё это чуть меньше чем в 20 строках кода.</p>
+
+      <h2>Подготовка</h2>
+      <p>Сначала получите <strong>API-ключ</strong> на platform.claude.com. Перед первым запросом проверьте, что на счёте есть средства: это видно на странице <a href="https://platform.claude.com/settings/billing" target="_blank" rel="noopener noreferrer">Billing</a> в Claude Console. Если средств нет, пополните баланс там же.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl02-01.png" alt="Диалог Save your API key в Claude Console: только что созданный ключ sk-ant-api03-…, кнопка Copy key и предупреждение, что посмотреть ключ ещё раз не получится.">
+        <figcaption>Новый ключ показывают один раз — сразу скопируйте его кнопкой «Copy key».</figcaption>
+      </figure>
+      <p>Сохраните ключ в файле <code>.env.local</code>, чтобы он не попал в систему контроля версий. Ключи утекают на GitHub именно тогда, когда их вписывают прямо в исходный код, поэтому держите их в файлах окружения.</p>
+      <p>Затем установите SDK:</p>
+      <pre>npm install @anthropic-ai/sdk</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Имя переменной.</strong> <code>new Anthropic()</code> без аргументов берёт ключ из переменной окружения <code>ANTHROPIC_API_KEY</code>, поэтому в файле нужна строка <code>ANTHROPIC_API_KEY=sk-ant-…</code>.</li>
+          <li><strong>Кто читает файл.</strong> Сам SDK файлы <code>.env</code> не открывает. Next.js загружает <code>.env.local</code> автоматически, а отдельный скрипт запускайте с флагом Node.js: <code>npx tsx --env-file=.env.local script.ts</code>. От коммита файл защищает только запись в <code>.gitignore</code> — проверьте, что она есть.</li>
+        </ul>
+      </aside>
+
+      <h2>Из чего состоит запрос</h2>
+      <p>Каждый вызов API проходит через функцию <code>messages.create</code>. В ней вы указываете три вещи:</p>
+      <ul>
+        <li><strong>модель</strong> — какая модель Claude обработает запрос;</li>
+        <li><strong>лимит токенов</strong> (<code>max_tokens</code>) — верхнюю границу длины ответа;</li>
+        <li><strong>список сообщений</strong> — объекты с ролью <code>user</code> или <code>assistant</code>, устроенные примерно так же, как обычный диалог с Claude в других местах.</li>
+      </ul>
+      <p>Вот самый простой вариант:</p>
+      <pre>import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const msg = await client.messages.create({
+  model: "claude-sonnet-5",
+  max_tokens: 2048,
+  messages: [{
+    role: "user",
+    content: "Hello, Claude",
+  }],
+});</pre>
+
+      <h2>Настоящий пример: ревью кода с ошибкой</h2>
+      <p>Дадим Claude задачу поинтереснее, чем «hello». Покажем ему код с ошибкой и попросим сделать ревью. Вот всё целиком — один файл, около 20 строк кода:</p>
+      <pre>import Anthropic from "@anthropic-ai/sdk";
+
+const client = new Anthropic();
+
+const buggyCode = `
+function add(a, b) {
+  return a - b;
+}
+`;
+
+const response = await client.messages.create({
+  model: "claude-sonnet-5",
+  max_tokens: 2048,
+  system: "You are a terse senior code reviewer. Give feedback in one paragraph.",
+  messages: [
+    { role: "user", content: `Review this code:\n${buggyCode}` },
+  ],
+});
+
+for (const block of response.content) {
+  if (block.type === "text") {
+    console.log(block.text);
+  }
+}</pre>
+      <p>Здесь стоит обратить внимание на две вещи:</p>
+      <ol>
+        <li><strong>Системный промпт</strong> (<code>system</code>) — здесь задаётся роль, в которой выступает Claude. Мне нужен немногословный опытный ревьюер, а не болтливый, — так я прямо и пишу.</li>
+        <li><code>message.content</code> в ответе — это <strong>массив блоков</strong>, а не строка. В простом текстовом ответе блок обычно один, с типом <code>text</code>, но Claude может вернуть и несколько блоков — текст, вызовы инструментов, thinking, — поэтому мы всегда перебираем их в цикле и проверяем тип.</li>
+      </ol>
+      <p>Запустите скрипт — Claude заметит, что <code>add</code> вычитает, и скажет об этом одним абзацем. Вот и всё. Это и есть весь вызов API.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl02-02.png" alt="Терминал после команды npx tsx src/lesson-02-first-call.ts: Claude отвечает, что функция называется add, но вычитает, и предлагает заменить return a - b на return a + b.">
+        <figcaption>Ответ Claude в терминале: ошибка найдена, исправление — <code>return a + b</code>.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Модель.</strong> На ноябрь 2026 <code>claude-sonnet-5</code> работает, но помечена как legacy (обновлений не будет). Текущая Sonnet — <code>claude-sonnet-5-5</code>, для нового кода берите её.</li>
+          <li><strong>Зачем цикл.</strong> В уроке сказано, что в простом ответе блок обычно один, но у моделей Claude 5 на ноябрь 2026 thinking включён по умолчанию: перед текстом может прийти блок <code>thinking</code> с пустым полем <code>thinking</code>. Тогда <code>response.content[0].text</code> даст <code>undefined</code>, а цикл с проверкой <code>block.type</code> найдёт текст. Токены thinking тоже учитываются в <code>max_tokens</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>От скрипта к продукту</h2>
+      <p>В настоящем продукте тот же вызов <code>messages.create</code> лежит, например, в основе эндпоинта, который составляет краткую сводку. Достаёте из базы данных расшифровку встречи, передаёте её Claude с системным промптом «extract insights and risks», сохраняете результат обратно в ту же строку таблицы и возвращаете в интерфейс. Это тот же самый вызов, только обёрнутый в обработчик маршрута (route handler).</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl02-03.png" alt="Демо-приложение Meridian Engineering Ops, страница Meetings: две записанные встречи по проектам с началом расшифровки и кнопками Generate summary и Show transcript.">
+        <figcaption>Страница встреч в демо-приложении: кнопка «Generate summary» работает на том же вызове API.</figcaption>
+      </figure>
+
+      <h2>Итог</h2>
+      <ul>
+        <li>Первый вызов API — это функция <code>messages.create</code> с <strong>моделью</strong>, <strong>лимитом токенов</strong> и <strong>сообщениями</strong>.</li>
+        <li>Храните API-ключ в файле <code>.env.local</code>, чтобы он не попал в систему контроля версий.</li>
+        <li>Добавьте <strong>системный промпт</strong>, чтобы задать поведение Claude.</li>
+        <li><code>content</code> ответа — массив блоков: перебирайте их и проверяйте <code>type</code> каждого.</li>
+        <li>Всё дальнейшее строится на этой схеме.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Как выбрать модель»: чем отличаются модели Claude и как выбор сказывается и на качестве ответов, и на стоимости.</p>
+      <div class="pager">
+        <a class="ghost" href="01-what-is-the-platform.html">Назад</a>
+        <a class="next" href="03-choosing-a-model.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/your-first-api-call" target="_blank" rel="noopener noreferrer">Your first API call</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

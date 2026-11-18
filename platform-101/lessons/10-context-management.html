@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Управление контекстом</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html" aria-current="page"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Управление контекстом</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:46 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>перечислить, из чего складывается контекст, и объяснить, почему его приходится расходовать с умом;</li>
+        <li>различать четыре паттерна управления контекстом: контекст по требованию, сжатие на стороне сервера, prompt caching и инструмент memory;</li>
+        <li>подбирать паттерн под проблему: стоимость, размер окна или память между сессиями.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/jZQ6b_vVHRc" title="Context management" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>У каждого запроса к Claude есть <strong>окно контекста</strong>. Миллион токенов звучит внушительно, но, как только вы запускаете в работу настоящего агента, они заканчиваются быстрее, чем вы думаете. Здесь и нужно <strong>управление контекстом</strong>: это способ оставаться в пределах окна, не теряя того, что важно.</p>
+
+      <h2>Что входит в контекст</h2>
+      <p>Контекст — это <strong>всё, что Claude видит на текущем ходе</strong>:</p>
+      <ul>
+        <li>системный промпт;</li>
+        <li>история сообщений;</li>
+        <li>определения инструментов и результаты их вызовов;</li>
+        <li>прикреплённые файлы и skills;</li>
+        <li>блоки thinking.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl10-01.png" alt="Слайд «What is Context?» с пятью карточками: System Prompt, Message History, Tools, Files and Skills и Thinking Blocks.">
+        <figcaption>Из чего состоит контекст: системный промпт, история сообщений, инструменты, файлы и skills, блоки thinking.</figcaption>
+      </figure>
+      <p>Контекст подаётся на вход каждому без исключения вызову API. Вы платите за него на входе — и платите на выходе. А когда окно заполнено, запрос завершается ошибкой.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Урок упрощает. На ноябрь 2026 ошибкой завершается запрос, вход которого уже не помещается в окно. Если окно заполнится во время генерации, на Claude 4.5 и новее запрос не падает: ответ обрывается со <code>stop_reason: "model_context_window_exceeded"</code>.</p>
+      </aside>
+      <p>Поэтому цель — не уместить в окно всё. Цель — уместить <strong>то, что нужно</strong>.</p>
+      <p>Anthropic описывает <strong>четыре паттерна</strong> управления контекстом в агентах, которые работают долго. Три из них — полноценные функции API, а один — паттерн проектирования.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl10-02.png" alt="Слайд «Four patterns for managing context» с четырьмя карточками: Just-in-time context, Compaction, Caching и Memory; выделена первая.">
+        <figcaption>Четыре паттерна: контекст по требованию (just-in-time), сжатие, кеширование и память.</figcaption>
+      </figure>
+
+      <h2>Паттерн 1: контекст по требованию</h2>
+      <p>Не загружайте всё заранее. Загружайте то, что агенту нужно <em>сейчас</em>, а остальное пусть он подтягивает через инструменты, когда попросит.</p>
+      <p>Возьмём агента, который проверяет соответствие нормам. Ему не запихивают в системный промпт весь свод строительных норм — когда нужен конкретный раздел, он вызывает инструмент <code>lookup_building_code</code>. Из четырёх паттернов только этот — паттерн проектирования: никаких особых функций API, только осознанный выбор того, что загружать и когда.</p>
+
+      <h2>Паттерн 2: сжатие на стороне сервера</h2>
+      <p>Когда разговор затягивается, <strong>сжатие на стороне сервера</strong> (server-side compaction) от Anthropic сводит старые ходы в один блок с кратким содержанием. Чтобы включить его, добавьте в запрос ключ <code>context_management</code> с правкой (edit) нужного типа:</p>
+      <pre>response = client.beta.messages.create(
+    betas=["compact-2026-01-12"],
+    model="claude-opus-5",
+    max_tokens=1024,
+    context_management={
+        "edits": [
+            {"type": "compact_20260112"}
+        ]
+    },
+    messages=messages,
+)</pre>
+      <p>API само делает сводку, когда вход превышает пороговое значение (trigger). Следить за длиной разговора самим не нужно.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Блок сжатия отправляют обратно.</strong> Когда порог превышен (на ноябрь 2026 по умолчанию — 150 000 входных токенов), в ответе приходит блок <code>compaction</code> со сводкой. Его нужно передавать в следующих запросах: проще всего добавлять в <code>messages</code> весь <code>response.content</code>, а всё, что было до блока, API отбросит само.</li>
+          <li><strong>Что сейчас.</strong> На ноябрь 2026 код урока работает, а сжатие по порогу всё ещё в бете. Появилось и сжатие по запросу (параметр <code>compaction</code>, своя бета): момент сжатия выбирает ваше приложение, и документация советует его везде, где оно доступно.</li>
+        </ul>
+      </aside>
+
+      <h2>Паттерн 3: prompt caching</h2>
+      <p><strong>Prompt caching</strong> позволяет пометить неизменные части запроса — системный промпт, определения инструментов, длинный документ — и переиспользовать их от вызова к вызову за малую долю обычной цены.</p>
+      <p>Арифметика здесь важнее, чем кажется. Если системный промпт занимает 4000 токенов и вы отправляете его 100 раз в час, от кеша зависит, получите вы приемлемый счёт или звонок из финансового отдела.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Кеш снижает цену, а не размер контекста: закешированные токены по-прежнему занимают окно.</p>
+      </aside>
+
+      <h2>Паттерн 4: инструмент memory</h2>
+      <p>Часть контекста должна сохраняться <em>между сессиями</em>: предпочтения пользователя, рабочие заметки агента, решения, принятые на прошлой неделе. Рекомендуемое средство для этого — <strong>инструмент memory</strong>.</p>
+      <p>Вот как он устроен:</p>
+      <ul>
+        <li>Claude читает папку памяти и пишет в неё через вызовы инструмента;</li>
+        <li>хранилище вы реализуете сами, на стороне клиента: файловая система, база данных, зашифрованное хранилище — что угодно;</li>
+        <li>Anthropic автоматически добавляет системную инструкцию, которая велит Claude заглянуть в папку памяти, прежде чем браться за работу.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl10-03.png" alt="Хранилище памяти managed-agents-demo со статусом Active в браузере: папки incidents и saas-pricing, в incidents — заметка 2026-…-24-dns-res… размером 982 B.">
+        <figcaption>Папка памяти в браузере: в <code>incidents</code> лежит заметка об инциденте, сохранённая в прошлой сессии.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>На скриншоте — не инструмент memory, а хранилище памяти (memory store) Managed Agents в Claude Console. Им управляет Anthropic: хранилище монтируется в песочницу агента как папка, и агент работает с ним обычными файловыми инструментами. У инструмента memory хранилище ваше.</p>
+      </aside>
+
+      <h2>Как сочетать паттерны</h2>
+      <p>В рабочем приложении обычно используют все четыре сразу, один поверх другого. Агент проверки на соответствие нормам кеширует системный промпт и определения инструментов, а разделы строительных норм подтягивает по требованию через <code>lookup_building_code</code>.</p>
+      <p>Каждый паттерн закрывает свою проблему: <strong>стоимость</strong>, <strong>размер окна</strong>, <strong>отсутствие состояния</strong> между сессиями. Выбирайте паттерны под то, что ломается именно у вас.</p>
+
+      <h2>Итог</h2>
+      <ul>
+        <li>Контекст — это всё, что Claude видит на текущем ходе, и он не бесплатный и не бесконечный. Когда окно заполнится, запрос завершится ошибкой.</li>
+        <li><strong>Контекст по требованию</strong>: загружайте то, что нужно сейчас, а остальное пусть подтягивают инструменты. Из четырёх паттернов только этот — паттерн проектирования.</li>
+        <li><strong>Сжатие на стороне сервера</strong>: добавьте ключ <code>context_management</code>, и API само сведёт старые ходы в сводку, когда вход превысит порог.</li>
+        <li><strong>Prompt caching</strong>: пометьте неизменные части запроса и переиспользуйте их от вызова к вызову за малую долю цены.</li>
+        <li><strong>Инструмент memory</strong>: Claude читает папку памяти и пишет в неё через вызовы инструмента; хранилище ваше, поэтому контекст переживает сессии.</li>
+        <li>Четыре паттерна — одна цель. Подключите их вручную или возьмите Claude Managed Agents: там кеширование и сжатие включены по умолчанию.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Что такое Managed Agents»: набор API, который переносит цикл агента на инфраструктуру Anthropic, так что запускать его самим уже не нужно.</p>
+      <div class="pager">
+        <a class="ghost" href="09-mcp.html">Назад</a>
+        <a class="next" href="11-managed-agents.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/context-management" target="_blank" rel="noopener noreferrer">Context management</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

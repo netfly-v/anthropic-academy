@@ -1,0 +1,173 @@
+{
+ "dir": "platform-101",
+ "course": "claude-platform-101",
+ "platform": "academy",
+ "img_prefix": "pl",
+ "title": "Claude Platform 101",
+ "orig_title": "Claude Platform 101",
+ "lead": "Как строить на Claude Platform с нуля: из чего состоит запрос, как выбрать модель, как устроен цикл агента, инструменты, thinking, skills, MCP, управление контекстом и Managed Agents.",
+ "about": [
+  "<p>Вводный курс Anthropic Academy на academy.claude.com для разработчиков, которые сделали пару вызовов API или знают Claude только по чату. Здесь весь курс в том же порядке, что и в оригинале: текст по-русски, плюс пояснения там, где урок короткий или расходится с документацией. Видео — те же ролики с YouTube.</p>"
+ ],
+ "sections": [
+  {
+   "title": "Что такое Claude Platform",
+   "lessons": [
+    {
+     "file": "01-what-is-the-platform.html",
+     "nav": "Что такое Claude Platform",
+     "sid": "what-is-the-claude-platform",
+     "orig": "What is the Claude Platform?",
+     "note": "Три слоя платформы и первый вызов messages.create",
+     "dur": "2 мин 49 с",
+     "toc": 1
+    },
+    {
+     "file": "02-first-api-call.html",
+     "nav": "Первый запрос к API",
+     "sid": "your-first-api-call",
+     "orig": "Your first API call",
+     "note": "messages.create, ключ API и блоки ответа",
+     "dur": "2 мин 25 с",
+     "toc": 2
+    },
+    {
+     "file": "03-choosing-a-model.html",
+     "nav": "Как выбрать модель",
+     "sid": "choosing-the-right-model",
+     "orig": "Choosing the right model",
+     "note": "Уровни моделей, выбор через оценку, usage и токены",
+     "dur": "3 мин 7 с",
+     "toc": 3
+    }
+   ]
+  },
+  {
+   "title": "Учим агента",
+   "lessons": [
+    {
+     "file": "04-agent-loop.html",
+     "nav": "Цикл агента",
+     "sid": "the-agent-loop-explained",
+     "orig": "The agent loop explained",
+     "note": "Цикл агента на Python и ветки по stop_reason",
+     "dur": "3 мин 10 с",
+     "toc": 4,
+     "h1": "Как устроен цикл агента"
+    },
+    {
+     "file": "05-tool-use.html",
+     "nav": "Что такое tool use",
+     "sid": "what-is-tool-use",
+     "orig": "What is tool use?",
+     "note": "Инструменты, цикл tool_use → tool_result и tool runner",
+     "dur": "4 мин 38 с",
+     "toc": 5
+    },
+    {
+     "file": "06-thinking.html",
+     "nav": "Что такое thinking",
+     "sid": "what-is-thinking",
+     "orig": "What is thinking?",
+     "note": "Adaptive thinking на Opus 5: display и effort",
+     "dur": "2 мин 23 с",
+     "toc": 6
+    }
+   ]
+  },
+  {
+   "title": "Расширяем агента",
+   "lessons": [
+    {
+     "file": "07-built-in-tools.html",
+     "nav": "Встроенные инструменты",
+     "sid": "built-in-tools",
+     "orig": "Built-in tools",
+     "note": "Серверные и клиентские инструменты, ответ без цикла",
+     "dur": "2 мин 44 с",
+     "toc": 7
+    },
+    {
+     "file": "08-skills.html",
+     "nav": "Skills",
+     "sid": "skills",
+     "orig": "Skills",
+     "note": "Skills и инструменты, загрузка и подключение skill",
+     "dur": "2 мин 53 с",
+     "toc": 8
+    },
+    {
+     "file": "09-mcp.html",
+     "nav": "MCP",
+     "sid": "mcp",
+     "orig": "MCP",
+     "note": "Зачем MCP, подключение сервера и фильтр инструментов",
+     "dur": "3 мин 32 с",
+     "toc": 9
+    },
+    {
+     "file": "10-context-management.html",
+     "nav": "Управление контекстом",
+     "sid": "context-management",
+     "orig": "Context management",
+     "note": "Контекст по требованию, сжатие, кеш и memory",
+     "dur": "2 мин 46 с",
+     "toc": 10
+    }
+   ]
+  },
+  {
+   "title": "Managed Agents",
+   "lessons": [
+    {
+     "file": "11-managed-agents.html",
+     "nav": "Что такое Managed Agents",
+     "sid": "what-are-managed-agents",
+     "orig": "What are managed agents?",
+     "note": "Что дают Managed Agents: три примера и строительные блоки",
+     "dur": "4 мин 6 с",
+     "toc": 11
+    },
+    {
+     "file": "12-first-managed-agent.html",
+     "nav": "Первый managed agent",
+     "sid": "building-your-first-managed-agent",
+     "orig": "Building your first managed agent",
+     "note": "Агент, окружение, сессия, события: первый запуск",
+     "dur": "4 мин 2 с",
+     "toc": 12,
+     "h1": "Первый managed agent своими руками"
+    }
+   ]
+  },
+  {
+   "title": "Разработка с Claude Code",
+   "lessons": [
+    {
+     "file": "13-building-with-claude-code.html",
+     "nav": "Разработка с Claude Code",
+     "sid": "building-with-claude-code",
+     "orig": "Building with Claude Code",
+     "note": "Claude Code пишет интеграцию с API по одному промпту",
+     "dur": "1 мин 57 с",
+     "toc": 13
+    }
+   ]
+  }
+ ],
+ "quiz": {
+  "file": "quiz.html",
+  "items": 18,
+  "minutes": 25,
+  "bank": "platform-101-quiz.js",
+  "page_title": "Claude Platform 101",
+  "kicker": "Claude Platform 101"
+ },
+ "official": [
+  {
+   "id": "claude-platform-101-quiz",
+   "title": "Claude Platform 101 quiz",
+   "questions_text": "нужен вход в Academy"
+  }
+ ]
+}

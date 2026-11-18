@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../index.html" aria-current="page">Platform 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Platform 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Platform</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-the-platform.html"><span class="mark"></span>Что такое Claude Platform</a></li>
+          <li><a href="02-first-api-call.html"><span class="mark"></span>Первый запрос к API</a></li>
+          <li><a href="03-choosing-a-model.html"><span class="mark"></span>Как выбрать модель</a></li>
+        </ul>
+        <p class="nav-group">Учим агента</p>
+        <ul class="lesson-nav">
+          <li><a href="04-agent-loop.html"><span class="mark"></span>Цикл агента</a></li>
+          <li><a href="05-tool-use.html"><span class="mark"></span>Что такое tool use</a></li>
+          <li><a href="06-thinking.html"><span class="mark"></span>Что такое thinking</a></li>
+        </ul>
+        <p class="nav-group">Расширяем агента</p>
+        <ul class="lesson-nav">
+          <li><a href="07-built-in-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+          <li><a href="08-skills.html" aria-current="page"><span class="mark"></span>Skills</a></li>
+          <li><a href="09-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="10-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+        </ul>
+        <p class="nav-group">Managed Agents</p>
+        <ul class="lesson-nav">
+          <li><a href="11-managed-agents.html"><span class="mark"></span>Что такое Managed Agents</a></li>
+          <li><a href="12-first-managed-agent.html"><span class="mark"></span>Первый managed agent</a></li>
+        </ul>
+        <p class="nav-group">Разработка с Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="13-building-with-claude-code.html"><span class="mark"></span>Разработка с Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Skills</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:53 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>отличать skills от инструментов: инструменты — о том, что Claude может сделать, skills — о том, как вы хотите, чтобы это было сделано;</li>
+        <li>объяснить, как skill попадает в контекст постепенно: сначала только имя и описание, целиком — когда агент решит его использовать;</li>
+        <li>загрузить skill через <code>client.skills.create</code> и подключить его к вызову <code>messages.create</code> через <code>container.skills</code>;</li>
+        <li>объяснить, зачем вместе со skills в запрос добавляют инструмент code execution.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/3fGaS8mcD9Q" title="Skills" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p><strong>Skills</strong> — это папки с инструкциями, скриптами и ресурсами, которые Claude подгружает по мере надобности, чтобы лучше справляться со специализированными задачами. В основе каждого skill лежит файл <code>SKILL.md</code> — упакованный набор инструкций, который вы загружаете один раз, а затем подключаете к любому вызову <code>messages.create</code>. Вы учите Claude тому, как что-то делаете <em>именно вы</em>: в каком формате пишете отчёт о статусе, по какому чеклисту проводите ревью, как оформляете заметки к релизу. Claude читает skill, следует процедуре и выдаёт результат в нужной вам форме.</p>
+
+      <h2>Skills и инструменты</h2>
+      <p>Разницу стоит понимать чётко, потому что они решают разные задачи:</p>
+      <ul>
+        <li><strong>Инструменты</strong> связывают Claude с данными и действиями. «Найди этот пункт строительных норм», «отправь это письмо» — Claude вызывает инструмент, а работу выполняет что-то другое.</li>
+        <li><strong>Skills</strong> учат Claude процедуре. «Составь ежедневный отчёт о статусе по этому шаблону» — это готовый сценарий действий, который Claude читает и выполняет; иногда для этого он сам запускает приложенные к skill скрипты.</li>
+      </ul>
+      <p>Запомнить просто: инструменты — о том, <strong>что</strong> Claude может сделать, а skills — о том, <strong>как</strong> вы хотите, чтобы это было сделано.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl08-01.png" alt="Слайд из двух колонок: у Tools — Connect to Data, Take actions, Run code, What Claude can do; у Skills — Teach a procedure, Just instructions, No code runs, How you want it done.">
+        <figcaption>Инструменты — что Claude может сделать; skills — как вы хотите, чтобы это было сделано.</figcaption>
+      </figure>
+      <p>И ещё одна важная деталь: при запуске skills не загружаются в контекст целиком. Сначала загружаются только имя и описание. Когда агент решает, что skill подходит для задачи, он загружает в контекст весь skill. Так контекст остаётся компактным, даже если доступно много skills.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>«Код не выполняется»?</strong> Слайд и текст («иногда сам запускает приложенные скрипты») не противоречат друг другу: skill — не функция, которую вызывают, как инструмент, а папка с файлами; скрипты из неё, по документации (на ноябрь 2026), запускает сам Claude через bash в контейнере code execution.</li>
+          <li><strong>Загрузка в три уровня.</strong> Урок упрощает: «весь skill» в контекст не попадает. При запуске в системный промпт идут только поля <code>name</code> и <code>description</code> из YAML-заголовка <code>SKILL.md</code> (поэтому в описании должно быть сказано, что делает skill и когда его применять). Когда skill сработал, Claude читает тело <code>SKILL.md</code>; остальные файлы — только если к ним обратится, а код скриптов в контекст не попадает вовсе, только их вывод.</li>
+        </ul>
+      </aside>
+
+      <h2>Загрузка skill</h2>
+      <p>Skill загружают в ваш workspace один раз, а потом ссылаются на него по ID. Загрузить его можно прямо в Claude Platform или программно:</p>
+      <pre>import anthropic
+from anthropic.lib import files_from_dir
+
+client = anthropic.Anthropic()
+
+skill = client.skills.create(
+    display_name="Status Report Generator",
+    files=files_from_dir("status-report-skill"),  # folder containing SKILL.md
+)
+
+print(skill.id)  # reference this ID in future requests</pre>
+      <p>В этом примере мне нужен <strong>генератор отчётов о статусе</strong>. Все правила хорошего отчёта — разделы, тон, как подводить итог, как описывать блокеры — лежат в skill, упакованном заранее. А сам журнал активности — просто строка, которую передают в момент запроса.</p>
+
+      <h2>Как подключить skill к запросу</h2>
+      <p>Skills подключаются к запросу через настройки контейнера: внутри него есть массив <code>skills</code>, и в каждом элементе указаны <code>skill_id</code> и <code>version</code>. Вот полный вызов для генератора отчётов о статусе:</p>
+      <pre>response = client.messages.create(
+    model="claude-opus-5",
+    max_tokens=4096,
+    container={
+        "skills": [
+            {
+                "type": "custom",
+                "skill_id": skill.id,
+                "version": "latest",
+            }
+        ]
+    },
+    tools=[
+        {
+            "type": "code_execution_20250825",
+            "name": "code_execution",
+        }
+    ],
+    messages=[
+        {
+            "role": "user",
+            "content": f"Generate the daily status report from this activity log:\n\n{activity_log}",
+        }
+    ],
+)</pre>
+      <p>На что стоит обратить внимание:</p>
+      <ul>
+        <li>Мы вызываем обычный <code>client.messages.create</code>, без бета-заголовка. Skills общедоступны (generally available) в Claude API, поэтому <strong>бета-заголовок</strong> <code>skills-2025-10-02</code> больше не нужен; запросы, которые всё ещё его отправляют, работают как прежде.</li>
+        <li>Skill подключается в <code>container.skills</code>. Это <strong>список</strong>, поэтому к одному вызову можно подключить сразу несколько skills.</li>
+        <li>Здесь же включён и <strong>инструмент выполнения кода</strong> (code execution). Без него нельзя: в API skills работают внутри контейнера инструмента code execution, и именно это позволяет процедурам из skill делать реальную работу — например, запускать скрипты в терминале.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Code execution нужен всегда.</strong> Итог урока («когда процедуре нужно делать реальную работу») неточен: по документации (на ноябрь 2026), в Messages API skills без этого инструмента не работают вовсе, даже если в skill одни инструкции, — файлы skill лежат в его контейнере, и <code>SKILL.md</code> Claude читает оттуда.</li>
+          <li><strong>Поля в коде.</strong> <code>"type": "custom"</code> — ваш skill; готовые skills Anthropic (<code>pptx</code>, <code>xlsx</code>, <code>docx</code>, <code>pdf</code>) подключают с <code>"type": "anthropic"</code>. <code>"version": "latest"</code> берёт новейшую версию; для продакшена документация советует закреплять ID версии, иначе новая версия, загруженная любым участником workspace, сразу изменит поведение приложения.</li>
+        </ul>
+      </aside>
+
+      <h2>Запуск</h2>
+      <p>На выходе — отчёт о статусе, оформленный ровно так, как велит skill. Разделы, тон, описание блокеров — всё это берётся из загруженного вами файла <code>SKILL.md</code>. Промпт пользователя занимает одну строку, а процедура живёт в skill.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl08-02.png" alt="Терминал после запуска скрипта урока: Claude сначала читает файл skill, затем выводит отчёт «Riverside Pavilion — Daily Status» с разделами Done и Blockers и абзацем Summary.">
+        <figcaption>Отчёт, оформленный по skill: разделы Done и Blockers и краткий итог.</figcaption>
+      </figure>
+      <p>В рабочем приложении так команда добивается того, что целая функция продукта выдаёт единообразный результат. С таким эндпоинтом для ежедневных отчётов каждый менеджер проекта получает одну и ту же структуру, тот же тон, те же разделы в том же порядке — и никому не приходится копировать шаблон в промпт.</p>
+      <figure class="shot">
+        <img src="../../assets/platform-101/pl08-03.png" alt="Приложение Meridian Engineering Ops, страница Daily reports: карточки проектов Greenline Transit и Portsmouth Marine District с журналом активности и кнопкой Generate report, на первой из них крутится индикатор загрузки.">
+        <figcaption>Страница Daily reports: отчёт по журналу активности проекта — одной кнопкой Generate report.</figcaption>
+      </figure>
+
+      <h2>Итог</h2>
+      <ul>
+        <li><strong>Skills упаковывают ваши процедуры.</strong> Файл <code>SKILL.md</code> (плюс скрипты и ресурсы, если они есть) учит Claude, как вы хотите, чтобы что-то было сделано.</li>
+        <li><strong>Инструменты и skills:</strong> инструменты — о том, что Claude может сделать; skills — о том, как вы хотите, чтобы это было сделано.</li>
+        <li><strong>Skills загружаются постепенно.</strong> При запуске загружаются только имя и описание; весь skill попадает в контекст, когда агент решает его использовать.</li>
+        <li><strong>Загрузите один раз</strong> через <code>client.skills.create</code>, а затем <strong>подключайте</strong> через <code>container.skills</code> к любому вызову <code>messages.create</code> — это список, так что skills можно комбинировать.</li>
+        <li><strong>Добавьте code execution</strong>, когда процедуре из skill нужно делать реальную работу.</li>
+        <li>Берите skill, когда <strong>как</strong> важно не меньше, чем <strong>что</strong>.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «MCP»: если у нас уже есть инструменты, skills и коннекторы, зачем нужен ещё и MCP? Ответ сводится к тому, кто поддерживает код интеграций.</p>
+      <div class="pager">
+        <a class="ghost" href="07-built-in-tools.html">Назад</a>
+        <a class="next" href="09-mcp.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-platform-101/skills" target="_blank" rel="noopener noreferrer">Skills</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
