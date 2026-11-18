@@ -20,10 +20,11 @@ assets/                    картинки из уроков (assets/<курс>
 tools/skilljar/            скрипт выгрузки уроков со Skilljar (старый сайт, закрывается в начале декабря 2026)
 tools/academy/             скрипт выгрузки уроков с academy.claude.com (новый сайт Academy, вход не нужен)
 tools/site/                сборка: курс API — blocks.json + build_api_block.py; короткие курсы — courses/<курс>.json +
-                           build_course.py; шапка сайта и каталог — site.json + site_nav.py; qa/ — промпты проверки и перевода
+                           build_course.py; шапка сайта и каталог — site.json + site_nav.py; qa/ — промпты проверки и перевода;
+                           карта раздела CCAR-F — ccarf-map.json + ccarf_map.py
 ```
 
-Курсы: `skills/` — Introduction to agent skills; `api/` — Building with the Claude API; `mcp/` — Introduction to Model Context Protocol; `claude-code/` — Claude Code in Action (редакция 2026 года); с academy.claude.com: `subagents/` — Introduction to subagents, `tool-use/` — Tool use with the Messages API, `platform-101/` — Claude Platform 101, `claude-code-101/` — Claude Code 101. Все курсы, кроме skills, переведены целиком.
+Курсы: `skills/` — Introduction to agent skills; `api/` — Building with the Claude API; `mcp/` — Introduction to Model Context Protocol; `claude-code/` — Claude Code in Action (редакция 2026 года); с academy.claude.com: `subagents/` — Introduction to subagents, `tool-use/` — Tool use with the Messages API, `platform-101/` — Claude Platform 101, `claude-code-101/` — Claude Code 101. Все курсы, кроме skills, переведены целиком. `ccar-f/` — раздел «CCAR-F: темы вне курсов»: конспект по документации для тем экзамена, которых нет в курсах (не перевод, оригинала нет).
 
 Сборки нет: страницы — обычный HTML, открываются двойным щелчком. Для проверки: `python3 -m http.server` в корне.
 
@@ -44,6 +45,11 @@ tools/site/                сборка: курс API — blocks.json + build_ap
    Начиная с блока «RAG и поиск» и для всех блоков после него, а также для всех будущих курсов и блоков, у каждого блока два экзамена: **Old · базовый** (`js/api-<блок>-quiz.js`, текущий стиль, пишет Opus, как раньше) и **New · сложный** (`js/api-<блок>-hard-quiz.js`, поле `hard_quiz` блока в `blocks.json`; у коротких курсов один экзамен на курс — `js/<курс>-quiz.js` и `js/<курс>-hard-quiz.js`, поля `quiz`/`hard_quiz` в `tools/site/courses/<курс>.json`; сложный пишет модель Fable — если сессия не на Fable, субагент с `model: "fable"`; если лимит Fable исчерпан — Opus). Зачем: владелец сравнивает эффективность — старые банки угадывались по форме (правильный почти всегда «b» и самый длинный), а настоящий экзамен сложнее. Требования и контроль качества сложного банка — `tools/site/hard-quiz-requirements.md` (`quiz_check.py`, проверка «вслепую»; промпты проверяющих и переводчиков — `tools/site/qa/`). Старые банки не править и не перемешивать: это контрольная группа. Русский перевод `why` (показывается после Submit): у сложных банков — поле `why_ru`, у базовых — `js/why-ru/<банк>.js`, через `tools/site/why_ru.py`. Русский перевод условия: у сложных банков — поле `stem_ru`, у базовых — `js/stem-ru/<банк>.js` (`why_ru.py --field stem_ru`); кнопка «Показать перевод условия» активна только после выбора ответа, открытия запоминаются в попытке (`peeked`) и показываются в результате. Правила перевода условия — в `hard-quiz-requirements.md`.
 7. Шапку, сайдбар и навигацию «Назад/Дальше» менять согласованно во всех страницах курса. Ссылки на курсы в шапке и каталог на `index.html` собирает `tools/site/site_nav.py` из `tools/site/site.json` — руками их не править; новый курс сначала добавить в `site.json`.
 8. Перед пушем: проверить, что нет битых внутренних ссылок и картинок.
+9. **Готовые курсы не дополнять.** Владелец отмечает, что прошёл; новое — только отдельными блоками (новый курс или раздел), чтобы не путать пройденное с непройденным. Исправлять ошибки в старых уроках можно, дописывать новые темы — нет.
+
+## Раздел «CCAR-F: темы вне курсов» (для строителя)
+
+Страница — одна тема из гайда экзамена (`.study/ccar-f-exam-guide.txt`, в репозиторий не класть): «Что уже есть в курсах» (ссылки на уроки), «Простыми словами», «Пример», «Как это спрашивают» (обычный текст, не квиз), при расхождении — блок «Курс vs экзамен», «Документация». Правила автора и проверяющих — `tools/site/qa/WRITE-CCARF.md`. Каждое утверждение — по живой документации со ссылкой. Текст гайда и вопросы сторонних тренажёров не публиковать. Конфиг — `tools/site/courses/ccar-f.json`; страница 01 — «Карта CCAR-F», её пересобирает `python3 tools/site/ccarf_map.py` (до `build_course.py ccar-f`), страницы ещё не опубликованных доменов карта показывает без ссылки. Домены выкладываются по одному: 5 → 1 → 4 → 2 → 3.
 
 ## Как добавить блок курса API (для строителя)
 

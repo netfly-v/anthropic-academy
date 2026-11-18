@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка человеком и калибровка уверенности</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html" aria-current="page"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Проверка человеком и калибровка уверенности</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 5 · подпункт 5.5; домен 4 · подпункт 4.6</p>
+
+      <h2>Что уже есть в курсах</h2>
+      <p>Самой темы в курсах нет. Ближе всего — уроки об оценке промптов:</p>
+      <ul>
+        <li><a href="../../api/lessons/15-eval-workflow.html">API · Типичный процесс оценки</a> — датасет, грейдер, сравнение версий промпта по среднему баллу.</li>
+        <li><a href="../../api/lessons/16-test-datasets.html">API · Генерация тестового датасета</a> — набор тестовых задач для прогонов.</li>
+        <li><a href="../../api/lessons/18-model-grading.html">API · Оценка с помощью модели</a> — грейдеры на коде, на модели и люди-оценщики.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Система извлекает данные из документов, и надо решить, что принимать без проверки человеком. Решают по измерениям, а не на глаз.</p>
+      <ul>
+        <li><strong>Одна цифра обманывает.</strong> Общая точность 98% — это среднее. Если большая часть потока — типовые счета, редкий тип документа или трудное поле может проваливаться незаметно. Поэтому точность считают по каждому типу документа и каждому полю, а проверку убирают только в тех сегментах, где цель достигнута.</li>
+        <li><strong>Уверенность калибруют.</strong> Модель может вернуть оценку уверенности для каждого поля, а не одну на документ. Схема structured outputs гарантирует, что поле <code>confidence</code> будет числом, но не гарантирует, что это число что-то значит. Его калибруют на размеченном наборе — документах, где верный ответ заранее проставили люди: смотрят, как часто модель права при каждом уровне уверенности, и ставят порог там, где ошибок не больше допустимого. У каждого поля порог свой.</li>
+        <li><strong>Что отдавать людям.</strong> Поля ниже порога и документы с неоднозначным или противоречивым источником (две разные суммы в одном счёте), даже если модель уверена. Людей мало, поэтому очередь сортируют: сначала случаи, где ошибка дороже всего, и самые сомнительные.</li>
+        <li><strong>Уверенные ответы тоже проверяют.</strong> Небольшую случайную выборку берут из каждого слоя — типа документа, поля, диапазона уверенности. Это стратифицированная выборка: в простой случайной редкие типы почти не попадаются. Она показывает реальный процент ошибок среди «уверенных» и ловит новые виды сбоев, например когда поставщик сменил шаблон документа.</li>
+      </ul>
+      <p>Тот же приём работает в ревью кода: отдельный проход ставит каждому замечанию балл уверенности, уверенные замечания сразу уходят в pull request, сомнительные — инженеру. Границу калибруют по прошлым замечаниям, про которые известно, подтвердились ли они.</p>
+
+      <h2>Пример</h2>
+      <p>Логистическая компания разбирает счета, транспортные накладные и таможенные декларации. Агент извлекает поставщика, сумму, валюту, код товара и даты. За месяц точность — 98%, и руководитель хочет перестать проверять всё, в чём модель уверена.</p>
+      <p>Архитектор сначала строит таблицу «тип документа × поле»: в декларациях код товара верен лишь в 84% случаев — в среднем этого не видно. Дальше:</p>
+      <ol>
+        <li>счета и накладные, где каждое поле достигает цели, переводят на автоматический приём; декларации остаются под проверкой;</li>
+        <li>на 600 размеченных документах подбирают порог уверенности для каждого поля;</li>
+        <li>поля ниже порога и документы, где цифры расходятся, уходят в очередь проверяющих, крупные суммы — первыми;</li>
+        <li>из автоматически принятого каждую неделю проверяют случайную выборку по каждому типу документа; найденные ошибки пополняют размеченный набор, и пороги пересчитывают.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>В вопросе обычно высокая общая точность и надо решить, где убрать человека, или проверяющие не справляются с очередью. Соблазнительные ошибки:</p>
+      <ul>
+        <li><strong>Поверить общей цифре</strong> и автоматизировать всё.</li>
+        <li><strong>Порог «на глаз»</strong>, например 0,9, без калибровки на размеченном наборе.</li>
+        <li><strong>Не проверять уверенные ответы</strong> или брать простую случайную выборку вместо стратифицированной.</li>
+        <li><strong>Модель покрупнее, повторы или «будь внимательнее» в промпте</strong> — они не показывают, где ошибки: это задача измерения, а не генерации.</li>
+        <li><strong>Всё отдать людям</strong> — их время берегут для рискованного и спорного.</li>
+      </ul>
+      <p>Начинают с того, что закрывает проблему из вопроса: решают, где убрать человека, — с разбивки точности по сегментам; проверяющие тонут в очереди — с откалиброванных порогов и приоритетов.</p>
+
+      <aside class="callout">
+        <p class="callout-label">Курс vs экзамен</p>
+        <p>Курс API сравнивает версии промпта по среднему баллу, а документация об оценках (на ноябрь 2026) советует по возможности обходиться без людей-оценщиков. Оба совета — про отладку промпта на тестовом наборе. В продакшене одного среднего мало, а люди нужны для разметки проверочного набора, выборочной проверки и спорных случаев.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests" target="_blank" rel="noopener noreferrer">Define success criteria and build evaluations</a> — измеримые критерии, отложенный тестовый набор, примеры с разметкой людей, трудные случаи; способы оценки: код, модель и люди (людей советует избегать: медленно и дорого).</li>
+        <li><a href="https://platform.claude.com/docs/en/about-claude/use-case-guides/ticket-routing" target="_blank" rel="noopener noreferrer">Ticket routing</a> — критерии успеха с точностью по сегментам: по языкам, на трудных случаях, по группам клиентов.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs" target="_blank" rel="noopener noreferrer">Structured outputs</a> — пример схемы с числовым полем <code>confidence</code>; гарантированы только формат, типы полей и обязательные поля, а не верность значений.</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" rel="noopener noreferrer">Reduce hallucinations</a> — разрешить модели сказать «не знаю», требовать подтверждающую цитату; критичное всё равно проверять.</li>
+        <li><a href="https://platform.claude.com/docs/en/about-claude/use-case-guides/content-moderation" target="_blank" rel="noopener noreferrer">Content moderation</a> — уровни риска по уверенности модели: высокий риск блокируют автоматически, пользователей с частыми сообщениями среднего риска отдают на проверку людям.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="28-large-codebase.html">Назад</a>
+        <a class="next" href="30-provenance.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

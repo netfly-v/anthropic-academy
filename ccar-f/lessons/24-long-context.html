@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Длинный контекст: что теряется и как удержать</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html" aria-current="page"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Длинный контекст: что теряется и как удержать</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 5 · подпункт 5.1</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/06-multi-turn.html">API · Диалог из нескольких ходов</a> — история уходит к Claude целиком в каждом запросе.</li>
+        <li><a href="../../tool-use/lessons/08-cut-the-cost.html">Tool use · Как снизить цену работы с инструментами</a> — каждый запрос заново отправляет все прошлые результаты инструментов; programmatic tool calling оставляет их у скрипта.</li>
+        <li><a href="../../api/lessons/39-intro-rag.html">API · Введение в RAG</a> — на очень длинных промптах Claude работает хуже.</li>
+        <li><a href="../../platform-101/lessons/10-context-management.html">Platform 101 · Управление контекстом</a> — четыре паттерна, в том числе сжатие на стороне сервера.</li>
+        <li><a href="../../claude-code/lessons/01-long-sessions.html">Claude Code · Долгие сессии</a> — <code>/compact</code> с указаниями, что сохранить: при пересказе может потеряться важное.</li>
+        <li><a href="../../claude-code-101/lessons/06-context-management.html">Claude Code 101 · Управление контекстом</a> — автосжатие теряет подробности, постоянные правила держат в <code>CLAUDE.md</code>.</li>
+        <li><a href="../../claude-code/lessons/05-hooks.html">Claude Code · Hooks</a> — SessionStart с matcher <code>compact</code> возвращает сводку в контекст после сжатия.</li>
+        <li><a href="../../tool-use/lessons/01-tools-claude-picks.html">Tool use · Инструменты, которые выбирает Claude</a> — параметр <code>fields</code>: Claude сам просит только нужные поля.</li>
+        <li><a href="../../tool-use/lessons/06-web-search.html">Tool use · Web search: ответы с сайтов, которым вы доверяете</a> — динамическая фильтрация оставляет только нужные части результатов поиска.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>В длинном разговоре старые ходы заменяют пересказом: это делает ваш код или сжатие (compaction) в API. Пересказ сохраняет суть, но теряет точность: «вернём 18 400 ₽ до 25 ноября, штраф 15% не возьмём» превращается в «обещали частичный возврат». Размываются суммы, проценты, даты, номера, статусы, пожелания клиента и данные ему обещания — и с каждым пересказом пересказа сильнее.</p>
+      <p>Правило: то, что должно остаться точным, не храните в истории.</p>
+      <ul>
+        <li><strong>Блок фактов дела (case facts).</strong> Ваш код выписывает точные значения из ответов инструментов и подтверждённых реплик в отдельный блок и добавляет его в каждый запрос туда, куда сжатие не дотягивается, например в system-промпт. Всё, что лежит в сжимаемых сообщениях, станет пересказом, по документации — даже сообщения с ролью <code>system</code>.</li>
+        <li><strong>Отдельная запись на каждую проблему.</strong> Если у клиента несколько проблем, у каждой своя структурированная запись (номер, сумма, статус, следующий шаг) рядом с блоком фактов, а не в сводке, иначе факты сольются. Удобный формат — JSON.</li>
+      </ul>
+      <p>Вторая беда — место в длинном тексте. Экзамен называет её «lost in the middle» (в документации Claude на ноябрь 2026 такого термина нет): начало и конец модель почти не упускает, а вывод из середины может не попасть в ответ. Чаще всего страдает текст, собранный из частей: результаты нескольких поисков или субагентов. Что делать:</p>
+      <ul>
+        <li>начинайте с выжимки главного: что найдено и в чём источники расходятся — это ответ, которого ждёт экзамен;</li>
+        <li>подробности раскладывайте по разделам с заголовками или XML-тегами, по разделу на источник;</li>
+        <li>вопрос ставьте в конец, после данных, — так советует и документация.</li>
+      </ul>
+      <p>Третья беда — раздутые результаты инструментов: каждый остаётся в истории. Если система бронирования отдаёт 70 полей, а нужны 6, обрежьте ответ своим кодом, прежде чем он станет <code>tool_result</code>. По документации, инструмент должен возвращать только поля, нужные для следующего шага.</p>
+
+      <h2>Пример</h2>
+      <p>Агент поддержки сервиса бронирования отелей ведёт долгий чат. У клиента два вопроса: отмена брони БР-7741 с возвратом денег и перенос дат брони БР-7790. Через полсотни ходов срабатывает сжатие, в сводке остаётся «клиент отменяет одну бронь и переносит другую» — и агент путает брони, называет неверную сумму, забывает обещание не брать штраф.</p>
+      <p>Что делает архитектор:</p>
+      <ol>
+        <li>После каждого вызова инструмента код обновляет блок фактов в system-промпте: по каждой брони — номер, даты, сумма, статус, пожелания клиента и данные ему обещания.</li>
+        <li>Обёртка над поиском брони отдаёт модели только нужное для отмены и переноса; внутренние коды тарифов в контекст не попадают.</li>
+        <li>Справка для итогового ответа (правила отеля, тариф, переписка с отелем) начинается с выжимки главного, дальше — разделы с заголовками, вопрос — в конце.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: после долгой сессии агент путает сумму или дату, смешивает два обращения, а отчёт по многим источникам теряет выводы из середины. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>Правило в промпте</strong> («будь внимателен к цифрам», «учти все источники»). Внимательность не вернёт число, которое стёр пересказ.</li>
+        <li><strong>Модель с окном побольше или отказ от сжатия.</strong> Чем больше токенов в контексте, тем ниже точность и припоминание (context rot), а эффект середины остаётся.</li>
+        <li><strong>Сводка подробнее, чаще или с указанием «сохрани все цифры»</strong> (параметр <code>instructions</code> у сжатия). Пересказ остаётся пересказом; указания — страховка, а не замена блока фактов.</li>
+        <li><strong>Полные ответы инструментов «на всякий случай»</strong> или просьба в промпте смотреть только на нужные поля. Лишние поля всё равно занимают окно; отсекать их должен код.</li>
+      </ul>
+      <p>Верный ход — структурный, в коде: блок фактов вне сжимаемой истории с записью на каждую проблему, обрезка ответов инструментов, выжимка в начале собранного текста.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/context-windows" target="_blank" rel="noopener noreferrer">Context windows</a> — context rot: с ростом контекста падают точность и припоминание, поэтому важно, что в нём лежит.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#long-context-prompting" target="_blank" rel="noopener noreferrer">Prompting best practices: Long context prompting</a> — длинные данные в начало, вопрос в конец, документы в XML-тегах.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#state-management-best-practices" target="_blank" rel="noopener noreferrer">Prompting best practices: State management best practices</a> — структурированное состояние в JSON.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/compaction" target="_blank" rel="noopener noreferrer">Compaction overview</a> — сжатие заменяет старые ходы сводкой — по запросу или по порогу; на ноябрь 2026 оба режима в бете.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/compaction-on-demand" target="_blank" rel="noopener noreferrer">Compaction on demand</a> — раздел Write your own summarization prompt: параметр <code>instructions</code> заменяет стандартный промпт сводки; раздел Limits and interactions with other features: сообщения с ролью <code>system</code> внутри сжатого диапазона тоже становятся сводкой.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank" rel="noopener noreferrer">Define tools</a> — раздел Best practices for tool definitions: ответ инструмента — только поля, нужные для следующего шага.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/manage-tool-context" target="_blank" rel="noopener noreferrer">Manage tool context</a> — накопленные <code>tool_result</code> занимают окно; четыре способа с этим справиться.</li>
+        <li><a href="https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents" target="_blank" rel="noopener noreferrer">Effective context engineering for AI agents</a> — фон (Anthropic Engineering): слишком агрессивное сжатие теряет тонкие, но важные детали.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="01-map.html">Назад</a>
+        <a class="next" href="25-agent-handoffs.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

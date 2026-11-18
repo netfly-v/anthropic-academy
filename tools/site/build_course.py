@@ -13,7 +13,8 @@ DIR — папка с фрагментами <main> уроков: файл NN.ht
 пересобираются через site_nav.py.
 
 Курс с полем "platform": "academy" выгружен с academy.claude.com (tools/academy): ссылки на уроки ведут туда,
-sid урока — его slug. Без поля — Skilljar, как у первых курсов.
+sid урока — его slug. Без поля — Skilljar, как у первых курсов. Раздел без оригинала (CCAR-F, по документации):
+у страниц нет sid, у раздела нет orig_title и quiz — строки «Оригинал урока/курса» и экзамен не появляются.
 
 --seed-from-api берёт урок курса API, указанный в поле from_api, и пишет черновик фрагмента: ссылка на видео
 ведёт на урок нового курса, картинки копируются в assets/<курс>/. Пользоваться только после сверки дампов:
@@ -78,6 +79,8 @@ def existing(c):
 
 
 def quiz_pages(c):
+    if not c.get("quiz"):
+        return []
     pages = [(c["quiz"]["file"], c["quiz"])]
     if c.get("hard_quiz"):
         pages.append((c["hard_quiz"]["file"], c["hard_quiz"]))
@@ -91,7 +94,8 @@ def sidebar(c, lp, rp, current):
         return f'          <li><a href="{href}"{cur}><span class="mark"></span>{title}</a></li>\n'
     kicker = rp + "index.html"
     cur = ' aria-current="page"' if kicker == current else ""
-    out = f'        <h2 class="course-title">{c["title"]}</h2>\n        <a class="course-kicker" href="{kicker}"{cur}>Обзор курса</a>\n'
+    out = (f'        <h2 class="course-title">{c["title"]}</h2>\n'
+           f'        <a class="course-kicker" href="{kicker}"{cur}>{c.get("overview_label", "Обзор курса")}</a>\n')
     have = existing(c)
     for s in c["sections"]:
         items = [l for s2, l in have if s2 is s]
@@ -126,8 +130,9 @@ def create_lessons(c, frags):
         lint(c, l, frag)
         title = re.search(r"<h1>(.*?)</h1>", frag).group(1)
         t = sub1(r"<title>.*?</title>", f"<title>{title}</title>", tpl, "<title>")
-        body = (frag + '      <div class="pager">\n      </div>\n\n'
-                f'      <p class="source">Оригинал урока: {link(c, l["sid"], l["orig"])}.</p>\n')
+        body = frag + '      <div class="pager">\n      </div>\n'
+        if l.get("sid"):
+            body += f'\n      <p class="source">Оригинал урока: {link(c, l["sid"], l["orig"])}.</p>\n'
         t = MAIN_RE.sub(lambda m: body, t, count=1)
         page.parent.mkdir(parents=True, exist_ok=True)
         page.write_text(site_nav.set_header(t, page))
@@ -158,6 +163,8 @@ def update_lessons(c):
 
 
 def build_quizzes(c):
+    if not quiz_pages(c):
+        return
     tpl = TPL_QUIZ.read_text()
     base = c["quiz"]
     for file, q in quiz_pages(c):
@@ -229,8 +236,9 @@ def build_index(c):
         where = "Academy" if academy(c) else "Skilljar"
         main += (f"      <p>В оригинале в конце курса — официальный тест {where} {links}. Он проходится на {where} и "
                  f"засчитывается в курс; наш Practice exam — отдельный тренировочный тест.{c.get('official_note', '')}</p>\n")
-    main += (f'      <p class="source">Оригинал курса: <a href="{course_url(c)}" target="_blank" rel="noopener noreferrer">'
-             f'{c["orig_title"]}</a>.</p>\n')
+    if c.get("orig_title"):
+        main += (f'      <p class="source">Оригинал курса: <a href="{course_url(c)}" target="_blank" rel="noopener noreferrer">'
+                 f'{c["orig_title"]}</a>.</p>\n')
     t = sub1(MAIN_RE, main, t, "main")
     page.parent.mkdir(parents=True, exist_ok=True)
     t = site_nav.set_header(t, page)

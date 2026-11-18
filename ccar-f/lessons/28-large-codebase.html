@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Большой код: состояние вне контекста</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html" aria-current="page"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Большой код: состояние вне контекста</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 5 · подпункт 5.4</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../subagents/lessons/01-what-are-subagents.html">Subagents · Что такое субагенты</a> — когда окно заполняется, Claude упускает из виду раннее; Explore исследует код в своём контексте и возвращает итог.</li>
+        <li><a href="../../platform-101/lessons/10-context-management.html">Platform 101 · Управление контекстом</a> — инструмент memory: заметки, которые переживают сессию.</li>
+        <li><a href="../../claude-code-101/lessons/06-context-management.html">Claude Code 101 · Управление контекстом</a> — <code>/compact</code>, <code>/clear</code> и CLAUDE.md для того, что нужно помнить между сессиями.</li>
+        <li><a href="../../claude-code/lessons/05-hooks.html">Claude Code · Hooks</a> — SessionStart с matcher <code>compact</code> возвращает сводку в контекст после сжатия.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>При долгом исследовании большого репозитория в контексте копятся сотни прочитанных файлов. Документация называет это context rot: с ростом числа токенов модель отвечает менее точно и хуже вспоминает прочитанное. Сжатие освобождает место, но пересказ теряет детали (см. <a href="24-long-context.html">«Длинный контекст»</a>). Симптомы:</p>
+      <ul>
+        <li>агент противоречит сам себе: на тот же вопрос о коде отвечает иначе, чем полчаса назад;</li>
+        <li>вместо класса, который он сам открывал утром, говорит «в таких проектах это обычно делает контроллер» — общими словами, а не фактом из этого репозитория.</li>
+      </ul>
+      <p>Правило: всё, что агенту нужно помнить долго, хранится вне контекста — в файле, который он перечитывает. Приёмов три.</p>
+      <p><strong>Scratchpad-файл с находками.</strong> Агент записывает ключевые факты, всегда с путями к файлам: какой класс за что отвечает, где точка входа, какие гипотезы отброшены. На новый вопрос он сначала смотрит в этот файл, а не в память разговора. Готовые механизмы того же рода — инструмент memory в API и поле <code>memory</code> во frontmatter субагента Claude Code.</p>
+      <p><strong>Сводка между фазами.</strong> Обычный субагент не видит разговор главного агента: к нему доходит только текст задания в инструменте Agent (до Claude Code 2.1.63 — Task). Поэтому после разведки координатор сжимает находки в короткую сводку — факты, пути, решения, открытые вопросы — и включает её в задание каждого субагента следующей фазы. Сжимают ход поиска, а не факты (см. <a href="25-agent-handoffs.html">«Передача между агентами»</a>).</p>
+      <p><strong>Манифест для восстановления после сбоя.</strong> Каждый агент ведёт файл состояния по заранее заданному пути — что сделано, что найдено, какой шаг следующий — и обновляет его после каждого шага, а не в конце: при падении теряется только текущий шаг. Координатор ведёт манифест — список агентов, их статусы и пути к файлам состояния. При перезапуске он читает манифест, готовое пропускает, а агенту, который продолжает работу, передаёт его файл состояния в стартовом промпте.</p>
+
+      <h2>Пример</h2>
+      <p>Команда меняет платёжного провайдера в старом сервисе бронирования на несколько тысяч файлов. Сначала разведчики изучают свои области (бронирования, тарифы и штрафы, отчёты), затем планировщики пишут план миграции по каждому из шести модулей.</p>
+      <p>Через пару часов главный агент на вопрос «какой класс считает штраф за позднюю отмену» отвечает «обычно это сервисный слой», хотя сам нашёл <code>LateCancelFee</code> в <code>booking/pricing/</code>. Потом процесс падает на третьем модуле. Что делает архитектор:</p>
+      <ul>
+        <li>разведчики записывают находки с путями в <code>findings/&lt;область&gt;.md</code>, и главный агент отвечает на вопросы по этим файлам;</li>
+        <li>перед второй фазой координатор сводит находки на одну страницу и включает её в задание каждого планировщика;</li>
+        <li>каждый планировщик ведёт <code>state/&lt;модуль&gt;.json</code>, координатор — <code>state/manifest.json</code>. После сбоя координатор читает манифест, пропускает два готовых модуля, а агенту третьего передаёт в промпте его файл состояния.</li>
+      </ul>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: долгое исследование кода или многофазная работа нескольких агентов; ответы стали путаными или процесс упал посередине. Неверные ходы:</p>
+      <ul>
+        <li><strong>модель с большим окном или более сильная модель</strong> — точность падает с ростом контекста, а не из-за нехватки места;</li>
+        <li><strong>правило в промпте</strong> «помни найденные классы» — деградирует как раз память разговора;</li>
+        <li><strong>положиться только на автоматическое сжатие</strong> — пересказ теряет детали, а больше они нигде не записаны;</li>
+        <li><strong>ждать, что субагент «знает» находки главного агента, или отдать ему весь журнал разведки</strong> — он видит только задание, а журнал переносит к нему тот же шум; велеть перечитать репозиторий — платить за разведку дважды;</li>
+        <li><strong>после сбоя начать заново или загрузить транскрипты упавших агентов</strong> — пропадает готовая работа или в контекст возвращается вся история; документация Agent SDK тоже советует передавать в свежую сессию результаты, а не транскрипты.</li>
+      </ul>
+      <p>Верный ход — состояние в файле по известному пути, который агент перечитывает или получает в промпте: файл не размывается с ростом разговора и переживает и сжатие, и падение процесса.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/context-windows" target="_blank" rel="noopener noreferrer">Context windows</a> — context rot: с ростом контекста падают точность и припоминание.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool" target="_blank" rel="noopener noreferrer">Memory tool</a> — протокол памяти, «assume interruption», шаблон работы в несколько сессий через журнал прогресса.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/sessions" target="_blank" rel="noopener noreferrer">Work with sessions</a> — resume и fork; передать результаты в промпт новой сессии вместо возобновления.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/subagents" target="_blank" rel="noopener noreferrer">Subagents in the SDK</a> — от родителя к субагенту доходит только текст задания в инструменте Agent.</li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener noreferrer">Create custom subagents</a> — свежий контекст субагента, поле <code>memory</code>, переименование Task в Agent.</li>
+        <li><a href="https://code.claude.com/docs/en/best-practices" target="_blank" rel="noopener noreferrer">Best practices for Claude Code</a> — автоматическое сжатие, субагенту приходится заново собирать контекст, устаревшие советы про размер окна.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="27-error-propagation.html">Назад</a>
+        <a class="next" href="29-human-review.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

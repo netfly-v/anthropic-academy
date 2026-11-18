@@ -1,0 +1,1764 @@
+{
+ "note": "Покрытие подпунктов гайда CCAR-F курсами сайта (сверка 18.11.2026). Для каждого пункта: covered/partial/none, лучшие уроки и страница раздела ccar-f, которая дополняет пункт. Текста гайда здесь нет.",
+ "domains": [
+  {
+   "n": 1,
+   "title": "Агентная архитектура и оркестрация",
+   "weight": 27
+  },
+  {
+   "n": 2,
+   "title": "Проектирование инструментов и интеграция MCP",
+   "weight": 18
+  },
+  {
+   "n": 3,
+   "title": "Настройка Claude Code и рабочие процессы",
+   "weight": 20
+  },
+  {
+   "n": 4,
+   "title": "Промпты и структурированный вывод",
+   "weight": 20
+  },
+  {
+   "n": 5,
+   "title": "Управление контекстом и надёжность",
+   "weight": 15
+  }
+ ],
+ "statements": [
+  {
+   "id": "1.1",
+   "title": "Агентный цикл: управление по stop_reason",
+   "bullets": {
+    "1.1-K1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/34-implementing-turns.html",
+      "platform-101/lessons/04-agent-loop.html",
+      "tool-use/lessons/03-parallel-tool-calling.html"
+     ],
+     "topic": null
+    },
+    "1.1-K2": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/34-implementing-turns.html",
+      "platform-101/lessons/04-agent-loop.html",
+      "api/lessons/32-tool-results.html"
+     ],
+     "topic": null
+    },
+    "1.1-K3": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/69-agents-and-workflows.html",
+      "api/lessons/75-workflows-vs-agents.html",
+      "api/lessons/73-agents-and-tools.html"
+     ],
+     "topic": null
+    },
+    "1.1-S1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/34-implementing-turns.html",
+      "platform-101/lessons/04-agent-loop.html",
+      "tool-use/lessons/03-parallel-tool-calling.html"
+     ],
+     "topic": null
+    },
+    "1.1-S2": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/34-implementing-turns.html",
+      "tool-use/lessons/03-parallel-tool-calling.html",
+      "platform-101/lessons/04-agent-loop.html"
+     ],
+     "topic": null
+    },
+    "1.1-S3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/34-implementing-turns.html",
+      "platform-101/lessons/04-agent-loop.html"
+     ],
+     "topic": "02-agent-loop-stop.html"
+    }
+   }
+  },
+  {
+   "id": "1.2",
+   "title": "Многоагентная система: координатор и субагенты",
+   "bullets": {
+    "1.2-K1": {
+     "coverage": "partial",
+     "pages": [
+      "platform-101/lessons/11-managed-agents.html"
+     ],
+     "topic": "03-coordinator.html"
+    },
+    "1.2-K2": {
+     "coverage": "covered",
+     "pages": [
+      "subagents/lessons/01-what-are-subagents.html",
+      "claude-code-101/lessons/09-subagents.html"
+     ],
+     "topic": null
+    },
+    "1.2-K3": {
+     "coverage": "partial",
+     "pages": [
+      "platform-101/lessons/11-managed-agents.html"
+     ],
+     "topic": "03-coordinator.html"
+    },
+    "1.2-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "03-coordinator.html"
+    },
+    "1.2-S1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/72-routing.html"
+     ],
+     "topic": "03-coordinator.html"
+    },
+    "1.2-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "03-coordinator.html"
+    },
+    "1.2-S3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/69-agents-and-workflows.html",
+      "platform-101/lessons/11-managed-agents.html"
+     ],
+     "topic": "03-coordinator.html"
+    },
+    "1.2-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "03-coordinator.html"
+    }
+   }
+  },
+  {
+   "id": "1.3",
+   "title": "Запуск субагентов и передача им контекста",
+   "bullets": {
+    "1.3-K1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "04-sdk-subagents.html"
+    },
+    "1.3-K2": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/01-what-are-subagents.html",
+      "subagents/lessons/03-designing-effective-subagents.html",
+      "claude-code-101/lessons/09-subagents.html"
+     ],
+     "topic": "04-sdk-subagents.html"
+    },
+    "1.3-K3": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/02-creating-a-subagent.html",
+      "subagents/lessons/03-designing-effective-subagents.html",
+      "claude-code-101/lessons/09-subagents.html"
+     ],
+     "topic": "04-sdk-subagents.html"
+    },
+    "1.3-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "05-sessions.html"
+    },
+    "1.3-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "25-agent-handoffs.html"
+    },
+    "1.3-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "25-agent-handoffs.html"
+    },
+    "1.3-S3": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/03-parallel-tool-calling.html"
+     ],
+     "topic": "04-sdk-subagents.html"
+    },
+    "1.3-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "03-coordinator.html"
+    }
+   }
+  },
+  {
+   "id": "1.4",
+   "title": "Многошаговые процессы: обязательный порядок и передача человеку",
+   "bullets": {
+    "1.4-K1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/05-hooks.html",
+      "claude-code/lessons/02-claude-md.html",
+      "claude-code-101/lessons/12-hooks.html"
+     ],
+     "topic": null
+    },
+    "1.4-K2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html",
+      "claude-code/lessons/05-hooks.html",
+      "claude-code-101/lessons/12-hooks.html"
+     ],
+     "topic": null
+    },
+    "1.4-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "06-enforced-steps-handoff.html"
+    },
+    "1.4-S1": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/05-hooks.html",
+      "claude-code-101/lessons/12-hooks.html",
+      "tool-use/lessons/03-parallel-tool-calling.html"
+     ],
+     "topic": "06-enforced-steps-handoff.html"
+    },
+    "1.4-S2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/70-parallelization.html"
+     ],
+     "topic": "08-decomposition.html"
+    },
+    "1.4-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "06-enforced-steps-handoff.html"
+    }
+   }
+  },
+  {
+   "id": "1.5",
+   "title": "Hooks Agent SDK: перехват вызовов и нормализация данных",
+   "bullets": {
+    "1.5-K1": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/05-hooks.html",
+      "claude-code-101/lessons/12-hooks.html"
+     ],
+     "topic": "07-posttooluse.html"
+    },
+    "1.5-K2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/05-hooks.html",
+      "claude-code-101/lessons/12-hooks.html"
+     ],
+     "topic": null
+    },
+    "1.5-K3": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/05-hooks.html",
+      "claude-code/lessons/02-claude-md.html",
+      "claude-code-101/lessons/12-hooks.html"
+     ],
+     "topic": null
+    },
+    "1.5-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "07-posttooluse.html"
+    },
+    "1.5-S2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/05-hooks.html",
+      "claude-code-101/lessons/12-hooks.html"
+     ],
+     "topic": null
+    },
+    "1.5-S3": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/05-hooks.html",
+      "claude-code-101/lessons/12-hooks.html",
+      "claude-code/lessons/02-claude-md.html"
+     ],
+     "topic": null
+    }
+   }
+  },
+  {
+   "id": "1.6",
+   "title": "Стратегии декомпозиции сложных задач",
+   "bullets": {
+    "1.6-K1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/75-workflows-vs-agents.html"
+     ],
+     "topic": null
+    },
+    "1.6-K2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/71-chaining.html"
+     ],
+     "topic": "08-decomposition.html"
+    },
+    "1.6-K3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/73-agents-and-tools.html",
+      "api/lessons/75-workflows-vs-agents.html"
+     ],
+     "topic": "08-decomposition.html"
+    },
+    "1.6-S1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/75-workflows-vs-agents.html"
+     ],
+     "topic": null
+    },
+    "1.6-S2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/70-parallelization.html"
+     ],
+     "topic": "08-decomposition.html"
+    },
+    "1.6-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "08-decomposition.html"
+    }
+   }
+  },
+  {
+   "id": "1.7",
+   "title": "Сессии: продолжение, ветвление, новый старт",
+   "bullets": {
+    "1.7-K1": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/06-routines-headless.html"
+     ],
+     "topic": "05-sessions.html"
+    },
+    "1.7-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "05-sessions.html"
+    },
+    "1.7-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "05-sessions.html"
+    },
+    "1.7-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "05-sessions.html"
+    },
+    "1.7-S1": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/06-routines-headless.html"
+     ],
+     "topic": "05-sessions.html"
+    },
+    "1.7-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "05-sessions.html"
+    },
+    "1.7-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "05-sessions.html"
+    },
+    "1.7-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "05-sessions.html"
+    }
+   }
+  },
+  {
+   "id": "2.1",
+   "title": "Описания инструментов и их границы",
+   "bullets": {
+    "2.1-K1": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html",
+      "platform-101/lessons/05-tool-use.html"
+     ],
+     "topic": null
+    },
+    "2.1-K2": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html"
+     ],
+     "topic": null
+    },
+    "2.1-K3": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html"
+     ],
+     "topic": null
+    },
+    "2.1-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "09-tool-descriptions.html"
+    },
+    "2.1-S1": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html"
+     ],
+     "topic": null
+    },
+    "2.1-S2": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html"
+     ],
+     "topic": "09-tool-descriptions.html"
+    },
+    "2.1-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "09-tool-descriptions.html"
+    },
+    "2.1-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "09-tool-descriptions.html"
+    }
+   }
+  },
+  {
+   "id": "2.2",
+   "title": "Структурные ответы об ошибках в MCP-инструментах",
+   "bullets": {
+    "2.2-K1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/57-mcp-tools.html"
+     ],
+     "topic": null
+    },
+    "2.2-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "10-mcp-errors.html"
+    },
+    "2.2-K3": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html",
+      "api/lessons/29-tool-functions.html",
+      "api/lessons/34-implementing-turns.html"
+     ],
+     "topic": "10-mcp-errors.html"
+    },
+    "2.2-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "10-mcp-errors.html"
+    },
+    "2.2-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "10-mcp-errors.html"
+    },
+    "2.2-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "10-mcp-errors.html"
+    },
+    "2.2-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "27-error-propagation.html"
+    },
+    "2.2-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "10-mcp-errors.html"
+    }
+   }
+  },
+  {
+   "id": "2.3",
+   "title": "Распределение инструментов между агентами и tool_choice",
+   "bullets": {
+    "2.3-K1": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html",
+      "platform-101/lessons/09-mcp.html"
+     ],
+     "topic": "11-tool-distribution.html"
+    },
+    "2.3-K2": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/03-designing-effective-subagents.html"
+     ],
+     "topic": "11-tool-distribution.html"
+    },
+    "2.3-K3": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/03-designing-effective-subagents.html",
+      "claude-code/lessons/07-github-actions.html",
+      "platform-101/lessons/09-mcp.html"
+     ],
+     "topic": "11-tool-distribution.html"
+    },
+    "2.3-K4": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": "12-tool-choice.html"
+    },
+    "2.3-S1": {
+     "coverage": "covered",
+     "pages": [
+      "subagents/lessons/03-designing-effective-subagents.html"
+     ],
+     "topic": null
+    },
+    "2.3-S2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/38-web-search-tool.html",
+      "tool-use/lessons/06-web-search.html"
+     ],
+     "topic": "11-tool-distribution.html"
+    },
+    "2.3-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "11-tool-distribution.html"
+    },
+    "2.3-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "12-tool-choice.html"
+    },
+    "2.3-S5": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": null
+    }
+   }
+  },
+  {
+   "id": "2.4",
+   "title": "Подключение MCP-серверов к Claude Code и агентам",
+   "bullets": {
+    "2.4-K1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code-101/lessons/11-mcp.html",
+      "api/lessons/68-claude-code-mcp.html"
+     ],
+     "topic": null
+    },
+    "2.4-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "13-mcp-config.html"
+    },
+    "2.4-K3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/68-claude-code-mcp.html",
+      "mcp/lessons/02-intro-mcp.html",
+      "claude-code-101/lessons/11-mcp.html"
+     ],
+     "topic": "13-mcp-config.html"
+    },
+    "2.4-K4": {
+     "coverage": "covered",
+     "pages": [
+      "mcp/lessons/08-resources.html",
+      "api/lessons/60-resources.html"
+     ],
+     "topic": null
+    },
+    "2.4-S1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/68-claude-code-mcp.html",
+      "claude-code-101/lessons/11-mcp.html"
+     ],
+     "topic": "13-mcp-config.html"
+    },
+    "2.4-S2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/68-claude-code-mcp.html",
+      "claude-code-101/lessons/11-mcp.html"
+     ],
+     "topic": "13-mcp-config.html"
+    },
+    "2.4-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "09-tool-descriptions.html"
+    },
+    "2.4-S4": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/68-claude-code-mcp.html",
+      "platform-101/lessons/09-mcp.html"
+     ],
+     "topic": null
+    },
+    "2.4-S5": {
+     "coverage": "partial",
+     "pages": [
+      "mcp/lessons/08-resources.html",
+      "api/lessons/60-resources.html"
+     ],
+     "topic": "13-mcp-config.html"
+    }
+   }
+  },
+  {
+   "id": "2.5",
+   "title": "Встроенные инструменты: Read, Write, Edit, Bash, Grep, Glob",
+   "bullets": {
+    "2.5-K1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/73-agents-and-tools.html"
+     ],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-K2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/73-agents-and-tools.html"
+     ],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-K3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/74-environment-inspection.html",
+      "api/lessons/73-agents-and-tools.html",
+      "api/lessons/37-text-editor-tool.html"
+     ],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-S4": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code-101/lessons/01-what-is-claude-code.html"
+     ],
+     "topic": "14-builtin-tools.html"
+    },
+    "2.5-S5": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "14-builtin-tools.html"
+    }
+   }
+  },
+  {
+   "id": "3.1",
+   "title": "Иерархия CLAUDE.md, области действия и модульность",
+   "bullets": {
+    "3.1-K1": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html",
+      "api/lessons/67-claude-code-in-action.html",
+      "claude-code-101/lessons/08-claude-md.html"
+     ],
+     "topic": "15-claude-md-rules.html"
+    },
+    "3.1-K2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html",
+      "claude-code-101/lessons/08-claude-md.html",
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": null
+    },
+    "3.1-K3": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html"
+     ],
+     "topic": null
+    },
+    "3.1-K4": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html"
+     ],
+     "topic": "15-claude-md-rules.html"
+    },
+    "3.1-S1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html",
+      "claude-code-101/lessons/08-claude-md.html",
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": null
+    },
+    "3.1-S2": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html"
+     ],
+     "topic": "15-claude-md-rules.html"
+    },
+    "3.1-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "15-claude-md-rules.html"
+    },
+    "3.1-S4": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": "15-claude-md-rules.html"
+    }
+   }
+  },
+  {
+   "id": "3.2",
+   "title": "Свои slash-команды и skills",
+   "bullets": {
+    "3.2-K1": {
+     "coverage": "partial",
+     "pages": [
+      "skills/lessons/01-what-are-skills.html",
+      "skills/lessons/05-sharing-skills.html",
+      "claude-code/lessons/03-verification-skills.html"
+     ],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-K2": {
+     "coverage": "partial",
+     "pages": [
+      "skills/lessons/03-configuration-and-multi-file-skills.html",
+      "claude-code/lessons/03-verification-skills.html",
+      "skills/lessons/01-what-are-skills.html"
+     ],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-K4": {
+     "coverage": "partial",
+     "pages": [
+      "skills/lessons/02-creating-your-first-skill.html",
+      "claude-code-101/lessons/10-skills.html"
+     ],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-S3": {
+     "coverage": "partial",
+     "pages": [
+      "skills/lessons/03-configuration-and-multi-file-skills.html"
+     ],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "16-commands-skills.html"
+    },
+    "3.2-S5": {
+     "coverage": "covered",
+     "pages": [
+      "skills/lessons/04-skills-vs-other-features.html",
+      "claude-code-101/lessons/10-skills.html",
+      "claude-code/lessons/03-verification-skills.html"
+     ],
+     "topic": null
+    }
+   }
+  },
+  {
+   "id": "3.3",
+   "title": "Правила по путям: условная загрузка соглашений",
+   "bullets": {
+    "3.3-K1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html"
+     ],
+     "topic": null
+    },
+    "3.3-K2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html"
+     ],
+     "topic": null
+    },
+    "3.3-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "15-claude-md-rules.html"
+    },
+    "3.3-S1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/02-claude-md.html"
+     ],
+     "topic": null
+    },
+    "3.3-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "15-claude-md-rules.html"
+    },
+    "3.3-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "15-claude-md-rules.html"
+    }
+   }
+  },
+  {
+   "id": "3.4",
+   "title": "Plan mode или прямое выполнение",
+   "bullets": {
+    "3.4-K1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code-101/lessons/04-first-prompt.html"
+     ],
+     "topic": null
+    },
+    "3.4-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "17-plan-or-direct.html"
+    },
+    "3.4-K3": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/01-long-sessions.html",
+      "claude-code-101/lessons/05-explore-plan-code-commit.html",
+      "claude-code-101/lessons/04-first-prompt.html"
+     ],
+     "topic": null
+    },
+    "3.4-K4": {
+     "coverage": "covered",
+     "pages": [
+      "subagents/lessons/01-what-are-subagents.html",
+      "claude-code-101/lessons/09-subagents.html"
+     ],
+     "topic": null
+    },
+    "3.4-S1": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code-101/lessons/05-explore-plan-code-commit.html"
+     ],
+     "topic": "17-plan-or-direct.html"
+    },
+    "3.4-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "17-plan-or-direct.html"
+    },
+    "3.4-S3": {
+     "coverage": "covered",
+     "pages": [
+      "subagents/lessons/01-what-are-subagents.html",
+      "claude-code-101/lessons/09-subagents.html"
+     ],
+     "topic": null
+    },
+    "3.4-S4": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code-101/lessons/05-explore-plan-code-commit.html",
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": null
+    }
+   }
+  },
+  {
+   "id": "3.5",
+   "title": "Итеративная доработка",
+   "bullets": {
+    "3.5-K1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": null
+    },
+    "3.5-K2": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": null
+    },
+    "3.5-K3": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code-101/lessons/04-first-prompt.html"
+     ],
+     "topic": "18-iterative-refinement.html"
+    },
+    "3.5-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "18-iterative-refinement.html"
+    },
+    "3.5-S1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": "18-iterative-refinement.html"
+    },
+    "3.5-S2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": "18-iterative-refinement.html"
+    },
+    "3.5-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "18-iterative-refinement.html"
+    },
+    "3.5-S4": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": "18-iterative-refinement.html"
+    },
+    "3.5-S5": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "18-iterative-refinement.html"
+    }
+   }
+  },
+  {
+   "id": "3.6",
+   "title": "Claude Code в CI/CD",
+   "bullets": {
+    "3.6-K1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/06-routines-headless.html"
+     ],
+     "topic": null
+    },
+    "3.6-K2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/06-routines-headless.html"
+     ],
+     "topic": null
+    },
+    "3.6-K3": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code-101/lessons/08-claude-md.html",
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": "19-claude-code-ci.html"
+    },
+    "3.6-K4": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/08-verifying-runs.html",
+      "subagents/lessons/04-using-subagents-effectively.html",
+      "claude-code-101/lessons/07-code-review.html"
+     ],
+     "topic": null
+    },
+    "3.6-S1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/06-routines-headless.html"
+     ],
+     "topic": null
+    },
+    "3.6-S2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/06-routines-headless.html"
+     ],
+     "topic": null
+    },
+    "3.6-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "19-claude-code-ci.html"
+    },
+    "3.6-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "19-claude-code-ci.html"
+    },
+    "3.6-S5": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "19-claude-code-ci.html"
+    }
+   }
+  },
+  {
+   "id": "4.1",
+   "title": "Явные критерии вместо общих указаний",
+   "bullets": {
+    "4.1-K1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/23-being-specific.html"
+     ],
+     "topic": null
+    },
+    "4.1-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "20-review-criteria.html"
+    },
+    "4.1-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "20-review-criteria.html"
+    },
+    "4.1-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "20-review-criteria.html"
+    },
+    "4.1-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "20-review-criteria.html"
+    },
+    "4.1-S3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/47-images.html"
+     ],
+     "topic": "20-review-criteria.html"
+    }
+   }
+  },
+  {
+   "id": "4.2",
+   "title": "Few-shot для единообразного результата",
+   "bullets": {
+    "4.2-K1": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": null
+    },
+    "4.2-K2": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": null
+    },
+    "4.2-K3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": "21-few-shot.html"
+    },
+    "4.2-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "21-few-shot.html"
+    },
+    "4.2-S1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": "21-few-shot.html"
+    },
+    "4.2-S2": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/25-examples.html"
+     ],
+     "topic": null
+    },
+    "4.2-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "20-review-criteria.html"
+    },
+    "4.2-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "21-few-shot.html"
+    },
+    "4.2-S5": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "21-few-shot.html"
+    }
+   }
+  },
+  {
+   "id": "4.3",
+   "title": "Структурированный вывод через tool use и JSON Schema",
+   "bullets": {
+    "4.3-K1": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": null
+    },
+    "4.3-K2": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": "12-tool-choice.html"
+    },
+    "4.3-K3": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": null
+    },
+    "4.3-K4": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": "12-tool-choice.html"
+    },
+    "4.3-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "12-tool-choice.html"
+    },
+    "4.3-S2": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": "12-tool-choice.html"
+    },
+    "4.3-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "12-tool-choice.html"
+    },
+    "4.3-S4": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": null
+    },
+    "4.3-S5": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "12-tool-choice.html"
+    },
+    "4.3-S6": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": "12-tool-choice.html"
+    }
+   }
+  },
+  {
+   "id": "4.4",
+   "title": "Проверка, повтор и обратная связь при извлечении",
+   "bullets": {
+    "4.4-K1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/71-chaining.html",
+      "claude-code/lessons/08-verifying-runs.html",
+      "api/lessons/69-agents-and-workflows.html"
+     ],
+     "topic": "22-validation-retry.html"
+    },
+    "4.4-K2": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": "22-validation-retry.html"
+    },
+    "4.4-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "20-review-criteria.html"
+    },
+    "4.4-K4": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/02-strict-tool-use.html"
+     ],
+     "topic": "22-validation-retry.html"
+    },
+    "4.4-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "22-validation-retry.html"
+    },
+    "4.4-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "22-validation-retry.html"
+    },
+    "4.4-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "20-review-criteria.html"
+    },
+    "4.4-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "22-validation-retry.html"
+    }
+   }
+  },
+  {
+   "id": "4.5",
+   "title": "Пакетная обработка",
+   "bullets": {
+    "4.5-K1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/17-running-the-eval.html",
+      "api/lessons/70-parallelization.html"
+     ],
+     "topic": "23-message-batches.html"
+    },
+    "4.5-K2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/17-running-the-eval.html",
+      "api/lessons/70-parallelization.html"
+     ],
+     "topic": "23-message-batches.html"
+    },
+    "4.5-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "23-message-batches.html"
+    },
+    "4.5-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "23-message-batches.html"
+    },
+    "4.5-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "23-message-batches.html"
+    },
+    "4.5-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "23-message-batches.html"
+    },
+    "4.5-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "23-message-batches.html"
+    },
+    "4.5-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "23-message-batches.html"
+    }
+   }
+  },
+  {
+   "id": "4.6",
+   "title": "Многопроходное ревью и независимые экземпляры",
+   "bullets": {
+    "4.6-K1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/08-verifying-runs.html",
+      "subagents/lessons/04-using-subagents-effectively.html",
+      "claude-code-101/lessons/07-code-review.html"
+     ],
+     "topic": null
+    },
+    "4.6-K2": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/08-verifying-runs.html",
+      "subagents/lessons/04-using-subagents-effectively.html"
+     ],
+     "topic": null
+    },
+    "4.6-K3": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/70-parallelization.html"
+     ],
+     "topic": "08-decomposition.html"
+    },
+    "4.6-S1": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/08-verifying-runs.html",
+      "subagents/lessons/04-using-subagents-effectively.html",
+      "claude-code-101/lessons/07-code-review.html"
+     ],
+     "topic": null
+    },
+    "4.6-S2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/70-parallelization.html"
+     ],
+     "topic": "08-decomposition.html"
+    },
+    "4.6-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    }
+   }
+  },
+  {
+   "id": "5.1",
+   "title": "Сохранение важного в длинном контексте",
+   "bullets": {
+    "5.1-K1": {
+     "coverage": "partial",
+     "pages": [
+      "claude-code/lessons/01-long-sessions.html",
+      "claude-code/lessons/05-hooks.html",
+      "claude-code-101/lessons/06-context-management.html"
+     ],
+     "topic": "24-long-context.html"
+    },
+    "5.1-K2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/39-intro-rag.html"
+     ],
+     "topic": "24-long-context.html"
+    },
+    "5.1-K3": {
+     "coverage": "covered",
+     "pages": [
+      "tool-use/lessons/08-cut-the-cost.html"
+     ],
+     "topic": null
+    },
+    "5.1-K4": {
+     "coverage": "covered",
+     "pages": [
+      "api/lessons/06-multi-turn.html",
+      "api/lessons/31-message-blocks.html",
+      "api/lessons/32-tool-results.html"
+     ],
+     "topic": null
+    },
+    "5.1-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "24-long-context.html"
+    },
+    "5.1-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "24-long-context.html"
+    },
+    "5.1-S3": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/01-tools-claude-picks.html",
+      "tool-use/lessons/08-cut-the-cost.html",
+      "tool-use/lessons/06-web-search.html"
+     ],
+     "topic": "24-long-context.html"
+    },
+    "5.1-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "24-long-context.html"
+    },
+    "5.1-S5": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/03-designing-effective-subagents.html"
+     ],
+     "topic": "25-agent-handoffs.html"
+    },
+    "5.1-S6": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/03-designing-effective-subagents.html"
+     ],
+     "topic": "25-agent-handoffs.html"
+    }
+   }
+  },
+  {
+   "id": "5.2",
+   "title": "Эскалация и разрешение неоднозначности",
+   "bullets": {
+    "5.2-K1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    },
+    "5.2-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    },
+    "5.2-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    },
+    "5.2-K4": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/73-agents-and-tools.html"
+     ],
+     "topic": "26-escalation.html"
+    },
+    "5.2-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    },
+    "5.2-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    },
+    "5.2-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    },
+    "5.2-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    },
+    "5.2-S5": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "26-escalation.html"
+    }
+   }
+  },
+  {
+   "id": "5.3",
+   "title": "Ошибки в многоагентной системе",
+   "bullets": {
+    "5.3-K1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "27-error-propagation.html"
+    },
+    "5.3-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "27-error-propagation.html"
+    },
+    "5.3-K3": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/04-using-subagents-effectively.html"
+     ],
+     "topic": "27-error-propagation.html"
+    },
+    "5.3-K4": {
+     "coverage": "partial",
+     "pages": [
+      "tool-use/lessons/03-parallel-tool-calling.html"
+     ],
+     "topic": "27-error-propagation.html"
+    },
+    "5.3-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "27-error-propagation.html"
+    },
+    "5.3-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "27-error-propagation.html"
+    },
+    "5.3-S3": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/03-designing-effective-subagents.html"
+     ],
+     "topic": "27-error-propagation.html"
+    },
+    "5.3-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    }
+   }
+  },
+  {
+   "id": "5.4",
+   "title": "Контекст при исследовании большого кода",
+   "bullets": {
+    "5.4-K1": {
+     "coverage": "partial",
+     "pages": [
+      "subagents/lessons/01-what-are-subagents.html"
+     ],
+     "topic": "28-large-codebase.html"
+    },
+    "5.4-K2": {
+     "coverage": "partial",
+     "pages": [
+      "platform-101/lessons/10-context-management.html",
+      "claude-code-101/lessons/06-context-management.html"
+     ],
+     "topic": "28-large-codebase.html"
+    },
+    "5.4-K3": {
+     "coverage": "covered",
+     "pages": [
+      "subagents/lessons/01-what-are-subagents.html",
+      "subagents/lessons/04-using-subagents-effectively.html",
+      "claude-code-101/lessons/09-subagents.html"
+     ],
+     "topic": null
+    },
+    "5.4-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "28-large-codebase.html"
+    },
+    "5.4-S1": {
+     "coverage": "covered",
+     "pages": [
+      "subagents/lessons/01-what-are-subagents.html",
+      "subagents/lessons/04-using-subagents-effectively.html",
+      "claude-code-101/lessons/09-subagents.html"
+     ],
+     "topic": null
+    },
+    "5.4-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "28-large-codebase.html"
+    },
+    "5.4-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "28-large-codebase.html"
+    },
+    "5.4-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "28-large-codebase.html"
+    },
+    "5.4-S5": {
+     "coverage": "covered",
+     "pages": [
+      "claude-code/lessons/01-long-sessions.html",
+      "claude-code-101/lessons/06-context-management.html",
+      "api/lessons/67-claude-code-in-action.html"
+     ],
+     "topic": null
+    }
+   }
+  },
+  {
+   "id": "5.5",
+   "title": "Проверка человеком и калибровка уверенности",
+   "bullets": {
+    "5.5-K1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    },
+    "5.5-K2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    },
+    "5.5-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    },
+    "5.5-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    },
+    "5.5-S1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    },
+    "5.5-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    },
+    "5.5-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    },
+    "5.5-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "29-human-review.html"
+    }
+   }
+  },
+  {
+   "id": "5.6",
+   "title": "Происхождение данных и неопределённость в сводке",
+   "bullets": {
+    "5.6-K1": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    },
+    "5.6-K2": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/49-citations.html"
+     ],
+     "topic": "30-provenance.html"
+    },
+    "5.6-K3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    },
+    "5.6-K4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    },
+    "5.6-S1": {
+     "coverage": "partial",
+     "pages": [
+      "api/lessons/49-citations.html",
+      "subagents/lessons/03-designing-effective-subagents.html"
+     ],
+     "topic": "30-provenance.html"
+    },
+    "5.6-S2": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    },
+    "5.6-S3": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    },
+    "5.6-S4": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    },
+    "5.6-S5": {
+     "coverage": "none",
+     "pages": [],
+     "topic": "30-provenance.html"
+    }
+   }
+  }
+ ]
+}

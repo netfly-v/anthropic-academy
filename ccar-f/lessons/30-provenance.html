@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Источники и противоречия в сводке</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html" aria-current="page"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Источники и противоречия в сводке</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 5 · подпункты 5.3, 5.6</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/49-citations.html">API · Цитаты</a> — Citations API: <code>cited_text</code>, номер документа, страницы и позиции символов.</li>
+        <li><a href="../../subagents/lessons/03-designing-effective-subagents.html">Subagents · Эффективные субагенты</a> — формат результата в системном промпте субагента и указание «return sources that can be cited».</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>В многоагентном исследовании информация сжимается несколько раз: субагент пересказывает найденные страницы, координатор собирает пересказы, агент синтеза пишет отчёт. На каждом шаге легко потерять, кто это сказал и когда. Если субагент вернул цифру без ссылки, дальше по цепочке источник не восстановить — только угадать или выдумать.</p>
+      <p>Правило: между агентами передают не голые выводы, а записи «утверждение — источник», например:</p>
+      <ul>
+        <li><code>claim</code> — само утверждение;</li>
+        <li><code>source</code> и <code>excerpt</code> — URL или имя документа и дословный фрагмент, на который оно опирается;</li>
+        <li><code>published</code> и <code>data_period</code> — дата публикации и период данных;</li>
+        <li><code>method</code> — как получена цифра: опрос, отчётность, оценка.</li>
+      </ul>
+      <p>Агент синтеза объединяет записи без потерь: одно утверждение из двух источников — одна запись с двумя ссылками.</p>
+      <ul>
+        <li><strong>Противоречия.</strong> Если авторитетные источники называют разные цифры, субагент не выбирает одну, не усредняет и не бросает работу: он возвращает обе с источниками и пометкой «расхождение». Спор разбирает координатор ещё до синтеза — он видит находки всех субагентов, даты и методики.</li>
+        <li><strong>Даты.</strong> Цифры за разные годы — не противоречие, а изменение во времени; без дат их легко спутать, поэтому дата — обязательное поле.</li>
+        <li><strong>Структура отчёта.</strong> «Установлено» — источники сходятся. «Спорно» — источники расходятся; их формулировки и методики сохранены, чтобы чья-то «предварительная оценка» не превратилась в факт. «Пробелы» — что не изучено и почему; иначе отчёт с дырой выглядит полным (о недоступных источниках — <a href="27-error-propagation.html">«Ошибки между агентами»</a>).</li>
+        <li><strong>Форма под содержание.</strong> Числа для сравнения — таблицей, ход событий — связным текстом, технические выводы — списком; единый шаблон портит часть содержания.</li>
+      </ul>
+      <p>Общие правила передачи между агентами — на странице <a href="25-agent-handoffs.html">«Передача между агентами»</a>.</p>
+
+      <h2>Пример</h2>
+      <p>Система готовит для отдела закупок обзор рынка складских роботов: три субагента ищут по отраслевым отчётам, новостям и нормативам. В первом отчёте:</p>
+      <ul>
+        <li>«рынок вырос на 12%» без источника — субагент сжал десять страниц в абзац;</li>
+        <li>объём рынка у агентства А — 4,1 млрд, у ассоциации Б — 2,8 млрд, а в отчёт попало одно число; позже выяснилось, что у Б данные за 2022 год, у А — за 2024-й;</li>
+        <li>раздела о нормативах нет: портал регулятора не отвечал, но отчёт выглядит полным.</li>
+      </ul>
+      <p>Архитектор меняет не модель, а договорённость между агентами:</p>
+      <ol>
+        <li>Субагенты возвращают записи «утверждение — источник» с фрагментом и датами.</li>
+        <li>Координатор смотрит на периоды: разные годы — динамика; тот же год при разных методиках (поставки производителей против опроса 300 складов) — пункт в «Спорно» с обеими цифрами.</li>
+        <li>Агент синтеза сохраняет ссылки; в «Пробелах» — «нормативы: источник недоступен, выводов нет».</li>
+        <li>Объёмы рынка — таблицей «значение, период, источник», история сделок — абзацами, характеристики роботов — списком.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>В вопросе — отчёт с одной из таких проблем; спрашивают, что изменить. Соблазнительные ошибки:</p>
+      <ul>
+        <li><strong>«Добавить в промпт синтеза: всегда указывай источники».</strong> Источник потерялся раньше, при сжатии у субагента, — чинить надо формат передачи.</li>
+        <li><strong>«Брать самый свежий или авторитетный источник», «усреднить».</strong> Из отчёта исчезает спор или динамика.</li>
+        <li><strong>«Попросить оценку уверенности», «взять модель мощнее».</strong> Ни то ни другое не скажет, откуда цифра и за какой год: этого нет на входе.</li>
+        <li><strong>«Отбросить противоречащие данные», «промолчать о недоступном источнике».</strong> Отчёт выглядит чище, но вводит в заблуждение.</li>
+        <li><strong>«Привести всё к одному формату».</strong> Таблица хороша для цифр, но рвёт новость на обрывки.</li>
+      </ul>
+      <p>Признак правильного ответа: он меняет формат данных между агентами, а не формулировку просьбы к модели.</p>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>На экзамене отвечайте: субагенты возвращают структурированные записи «утверждение — источник», агент синтеза их сохраняет. В продукте на ноябрь 2026 цитаты API нельзя совмещать со structured outputs (ошибка 400, см. <a href="../../api/lessons/49-citations.html">API · Цитаты</a>). Документация советует просить строки «поле: значение» и разбирать их в коде, проверяя цитату у каждого поля. Цитаты, написанные моделью по просьбе в промпте, верными не гарантированы: утверждения без подтверждающей цитаты убирают.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/citations" target="_blank" rel="noopener noreferrer">Citations</a> — гарантированно верные указатели на документы, поле <code>context</code> для метаданных, несовместимость со structured outputs, мало цитат при просьбе «только JSON», разбор ответа «поле: значение».</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/search-results" target="_blank" rel="noopener noreferrer">Search results</a> — блоки <code>search_result</code> из своих инструментов: источник и заголовок в каждой цитате, цитаты по умолчанию выключены.</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" rel="noopener noreferrer">Reduce hallucinations</a> — проверка каждого утверждения цитатой, удаление утверждений без подтверждения.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener noreferrer">Prompting best practices</a> — источник и другие метаданные в тегах документа, сверка по нескольким источникам, управление форматом ответа.</li>
+        <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener noreferrer">How we built our multi-agent research system</a> — фон (Anthropic Engineering): отдельный шаг CitationAgent и потеря информации при передаче между агентами.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="29-human-review.html">Назад</a>
+        <a class="next" href="../index.html">К обзору</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

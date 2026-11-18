@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Что агенты передают друг другу</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html" aria-current="page"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Что агенты передают друг другу</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 5 · подпункт 5.1; домен 1 · подпункт 1.3</p>
+
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../subagents/lessons/01-what-are-subagents.html">Subagents · Что такое субагенты</a> — на старте субагент получает свой системный промпт и описание задачи (без истории разговора), а возвращает краткий итог.</li>
+        <li><a href="../../subagents/lessons/03-designing-effective-subagents.html">Subagents · Эффективные субагенты</a> — формат результата в системном промпте субагента и раздел о препятствиях.</li>
+        <li><a href="../../api/lessons/49-citations.html">API · Цитаты</a> — поля цитаты (документ, страницы, точный текст) как образец метаданных источника.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Общей памяти у агентов нет. Обычный субагент (не форк) стартует без истории родителя и получает только строку промпта в вызове инструмента Agent (раньше — Task), а назад приходит только его последнее сообщение. Всё, что нужно следующему агенту, должно быть явно написано в этом тексте. Отсюда четыре правила:</p>
+      <ul>
+        <li><strong>Находки — целиком.</strong> Субагент синтеза получает в промпте то, что реально нашли предыдущие агенты: выдержки, цифры, ссылки, — а не пересказ координатора. Чего нет в промпте, того он не процитирует. Как расположить их в длинном промпте — см. <a href="24-long-context.html">«Длинный контекст»</a>.</li>
+        <li><strong>Содержание отдельно от метаданных.</strong> Каждая находка — запись: утверждение и выдержка в одном поле, источник (ссылка, файл, страница) — в отдельных. Метаданные, растворённые в прозе, первыми выпадают при пересказе. Так же устроены документы в промпте (теги <code>&lt;source&gt;</code> и <code>&lt;document_content&gt;</code>) и блок <code>search_result</code> в API (<code>source</code> и <code>title</code> отдельно от <code>content</code>).</li>
+        <li><strong>Метаданные — обязательные поля.</strong> Для каждой находки исполнитель указывает место в источнике, период данных и метод подсчёта. Иначе агент синтеза примет разницу в годах или методах за противоречие или сложит несравнимые цифры. Разбор расхождений — см. <a href="30-provenance.html">«Источники»</a>.</li>
+        <li><strong>Мало места у получателя — сжимают ответ отправителя.</strong> Если контекст координатора или агента синтеза не вмещает ответы исполнителей, меняют формат самих ответов: короткие записи из факта, выдержки со ссылкой на источник и оценки релевантности вместо рассказа о ходе поиска. Рассуждения остаются у исполнителя. Выдержки со ссылкой на источник экзамен называет «цитатами», не уточняя механизма; функцию Citations API на ноябрь 2026 нельзя включить вместе со structured outputs.</li>
+      </ul>
+      <p>Правило решения: сжимают форму, а не содержание. Факты и источники идут по цепочке целиком, рассуждения и повторы отбрасывают.</p>
+
+      <h2>Пример</h2>
+      <p>Система готовит обзор рынка тепловых насосов в Европе. Координатор запускает трёх субагентов-исследователей (веб-поиск, отраслевые PDF-отчёты, внутренняя статистика продаж), затем субагента синтеза.</p>
+      <p>Первый обзор вышел без сносок и с «ростом на 34%», хотя в одном из отчётов — 12%. Исследователи возвращали длинные рассказы о поиске, координатор ужал их в три абзаца — источники выпали, а то, что цифры относятся к разным годам и сегментам, никто не записал.</p>
+      <p>Что делает архитектор:</p>
+      <ul>
+        <li>задаёт в системном промпте исследователей формат результата: записи, где находка (утверждение и дословная выдержка) отделена от «паспорта» — ссылки или файла, страницы, периода данных, метода, оценки релевантности; рассказ о поиске в ответ не входит;</li>
+        <li>велит координатору передавать субагенту синтеза все записи целиком, без пересказа;</li>
+        <li>поручает субагенту синтеза ставить к каждому утверждению сноску из полей источника.</li>
+      </ul>
+      <p>Ответы стали короче, сноски появились, а поля периода и метода показали: 34% — рост продаж в одной стране за 2025 год, 12% — рост рынка ЕС за 2024-й.</p>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: в итоговом отчёте утверждения без источников или с неверными источниками, цифры перепутаны, или ответы субагентов переполняют контекст координатора. Ходы, которые не лечат причину:</p>
+      <ul>
+        <li><strong>Правило «всегда указывай источник»</strong> в промпте агента синтеза: он не сошлётся на то, чего не получил.</li>
+        <li><strong>Модель крупнее или окно больше:</strong> потерянные метаданные не вернутся, а переполнение вызывает формат ответов исполнителей, не размер окна.</li>
+        <li><strong>Дать агенту синтеза поиск,</strong> чтобы он сам нашёл источники: двойная работа, и найденный источник может не совпасть с тем, откуда взят факт. Узкий инструмент проверки факта — другая задача: потерянную атрибуцию он не вернёт.</li>
+        <li><strong>Обрезать ответы по длине или попросить координатора их пересказать:</strong> теряются как раз факты и источники.</li>
+      </ul>
+      <p>Правильный ход — изменить контракт между агентами: обязательный структурированный ответ исполнителя с отдельными полями для содержания и метаданных и полная передача этих записей дальше.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/subagents" target="_blank" rel="noopener noreferrer">Subagents in the SDK</a> — субагенту передаётся только промпт инструмента Agent, родителю возвращается только последнее сообщение; переименование Task в Agent.</li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener noreferrer">Create custom subagents</a> — субагент не видит историю разговора (кроме форка); подробные ответы многих субагентов съедают контекст основного разговора.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices" target="_blank" rel="noopener noreferrer">Prompting best practices</a> — теги <code>&lt;document&gt;</code>, <code>&lt;source&gt;</code>, <code>&lt;document_content&gt;</code> для содержания и метаданных; структурированные форматы для данных состояния.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/search-results" target="_blank" rel="noopener noreferrer">Search results</a> — блок <code>search_result</code>: <code>source</code> и <code>title</code> отдельно от <code>content</code>, цитаты возвращают их в ответе.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/citations" target="_blank" rel="noopener noreferrer">Citations</a> — несовместимость со structured outputs.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="24-long-context.html">Назад</a>
+        <a class="next" href="26-escalation.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

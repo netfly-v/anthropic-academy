@@ -47,6 +47,12 @@
    "label": "Claude Code 101",
    "title": "Claude Code 101",
    "card": "Курс переведён целиком: 12 уроков о повседневной работе с Claude Code — цикл Explore → Plan → Code → Commit, контекст, ревью, CLAUDE.md, субагенты, skills, MCP и hooks, пробный экзамен."
+  },
+  {
+   "dir": "ccar-f",
+   "label": "CCAR-F",
+   "title": "CCAR-F: темы вне курсов",
+   "card": "Конспект по официальной документации для экзамена Claude Certified Architect: карта всех подпунктов гайда — что покрыто курсами и куда идти — и страницы по темам, которых в курсах нет."
   }
  ]
 }
