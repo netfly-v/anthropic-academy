@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Установка Claude Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html" aria-current="page"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Установка Claude Code</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:01 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>установить Claude Code в терминале на macOS, Linux, WSL и Windows и запустить его командой <code>claude</code> в папке проекта;</li>
+        <li>подключить Claude Code к VS Code и к IDE от JetBrains;</li>
+        <li>найти Claude Code в приложении Claude Desktop и в браузере на <code>claude.ai/code</code>;</li>
+        <li>выбрать, где работать с Claude Code: в терминале, в IDE, в Claude Desktop или в вебе.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/0kILa02vKuI" title="Installing Claude Code" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Claude Code легко установить, где бы вы ни хотели с ним работать: в терминале, в браузере или в IDE.</p>
+      <p>Нужен план Pro, Max, Ultra, Team или Enterprise, аккаунт Claude Console или доступ через поддерживаемого облачного провайдера, например Amazon Bedrock. В бесплатный план Claude Code не входит.</p>
+
+      <h2>Терминал</h2>
+      <p>В <strong>macOS, Linux или WSL</strong> выполните в терминале:</p>
+      <pre>curl -fsSL https://claude.ai/install.sh | bash</pre>
+      <p>Если вам привычнее Homebrew, выполните <code>brew install --cask claude-code</code>, но учтите: при такой установке Claude Code по умолчанию не обновляется сам.</p>
+      <p>В <strong>Windows</strong> выполните эту команду в PowerShell — там приглашение командной строки начинается с <code>PS</code>:</p>
+      <pre>irm https://claude.ai/install.ps1 | iex</pre>
+      <p>А в CMD — вот эту:</p>
+      <pre>curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd</pre>
+      <p>Можно также выполнить <code>winget install Anthropic.ClaudeCode</code>, но, как и при установке через Homebrew, по умолчанию Claude Code не будет обновляться сам.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb03-01.jpg" alt="Терминал macOS после команды curl -fsSL https://claude.ai/install.sh | bash: сообщение «Claude Code successfully installed!», версия 2.1.72, путь ~/.local/bin/claude и подсказка запустить claude --help.">
+        <figcaption>Установка командой <code>curl</code> прошла успешно.</figcaption>
+      </figure>
+      <p>После установки должна заработать команда <code>claude</code>. Если система её не находит, откройте новое окно терминала, а если и это не поможет — найдите текст ошибки на странице <a href="https://code.claude.com/docs/en/troubleshoot-install" target="_blank" rel="noopener noreferrer">Troubleshoot installation and login</a>. Перейдите в папку своего проекта и выполните:</p>
+      <pre>claude</pre>
+      <p>Сначала вы пройдёте несколько шагов начальной настройки — например, выберете цветовую тему и войдёте в аккаунт Claude (Pro, Max, Ultra, Team или Enterprise) либо по API-ключу. Если у вашей организации есть аккаунт Claude Enterprise, обязательно выберите этот вариант.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb03-02.jpg" alt="Первый запуск Claude Code v2.1.70 в Windows PowerShell: экран «Select login method» с тремя вариантами входа — аккаунт Claude с подпиской, аккаунт Anthropic Console и сторонняя платформа.">
+        <figcaption>Выбор способа входа: подписка Claude, аккаунт Anthropic Console с оплатой по использованию API или сторонняя платформа (Amazon Bedrock, Microsoft Foundry, Vertex AI).</figcaption>
+      </figure>
+      <p>В какой бы папке вы ни запустили <code>claude</code>, он получит доступ к этой папке и ко всем её подпапкам.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Обновление вручную.</strong> На ноябрь 2026 установку через Homebrew обновляют командой <code>brew upgrade claude-code</code>, через WinGet — <code>winget upgrade Anthropic.ClaudeCode</code>. Установка командами <code>curl</code> и <code>irm</code> из урока (включая вариант для CMD) обновляется сама, в фоне.</li>
+          <li><strong>Что значит «доступ к папке».</strong> Внутри папки запуска Claude читает файлы без вопросов, а прежде чем его файловые инструменты прочитают или изменят что-то за её пределами, Claude Code спросит вас (в режиме разрешений Manual). Это граница разрешений, а не изоляция: одобренная вами команда Bash может писать везде, куда имеет доступ ваша учётная запись в системе. Добавить ещё одну папку можно флагом <code>--add-dir</code> при запуске или командой <code>/add-dir</code> в сессии.</li>
+        </ul>
+      </aside>
+
+      <h2>Visual Studio Code</h2>
+      <p>Откройте панель Extensions и найдите «Claude Code». Выберите расширение от Anthropic с синей галочкой верификации и нажмите Install.</p>
+      <p>После установки, возможно, придётся перезапустить VS Code. Когда он запустится, откройте палитру команд клавишами <code>Ctrl/Cmd + Shift + P</code> и найдите команду «Claude Code: Open in New Tab». Можно и просто нажать на логотип Claude, если он виден на боковой панели.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb03-03.jpg" alt="VS Code: в панели Extensions выбрано расширение Claude Code for VS Code от Anthropic с синей галочкой, в центре — его страница в маркетплейсе, справа — открытая панель Claude Code.">
+        <figcaption>Расширение Claude Code for VS Code от Anthropic в маркетплейсе VS Code.</figcaption>
+      </figure>
+      <p>Расширение для VS Code работает почти так же, как терминал. А в настройках можно отказаться от графического интерфейса и работать с терминальным вариантом напрямую.</p>
+
+      <h2>JetBrains</h2>
+      <p>Плагин запускает команду <code>claude</code>, поэтому сначала установите Claude Code в терминале. Затем установите <a href="https://plugins.jetbrains.com/plugin/27310-claude-code-beta-" target="_blank" rel="noopener noreferrer">плагин Claude Code</a> из JetBrains Marketplace и перезапустите IDE. Когда вы снова её откроете, появится логотип Claude. Если нажать на него, откроется панель с терминальным вариантом Claude Code, который работает рядом с вашим редактором.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb03-04.jpg" alt="Настройки IDE от JetBrains, раздел Plugins → Marketplace: по запросу «claude code» выбран плагин Claude Code [Beta] от Anthropic PBC, в описании сказано, что Claude Code нужно установить отдельно.">
+        <figcaption>Плагин Claude Code [Beta] от Anthropic PBC в JetBrains Marketplace.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Нужна ли установка в терминале.</strong> На ноябрь 2026 в расширение VS Code встроена собственная копия Claude Code, поэтому для его панели ставить Claude Code в терминале не нужно, но и команда <code>claude</code> в терминале от этого не появится. У плагина JetBrains своей копии нет — отсюда требование урока сначала установить Claude Code в терминале.</li>
+          <li><strong>Терминальный вариант в VS Code</strong> включает настройка <code>claudeCode.useTerminal</code> (флажок Use Terminal в разделе Extensions → Claude Code).</li>
+        </ul>
+      </aside>
+
+      <h2>Приложение для компьютера</h2>
+      <p>Если вашим компьютером управляет организация, приложение Claude для компьютера, возможно, уже установлено. Если нет, спросите у IT-отдела, как его получить. На собственном компьютере <a href="https://claude.ai/claude-code/desktop-download?utm_source=claude_code&amp;utm_medium=academy" target="_blank" rel="noopener noreferrer">скачайте приложение</a> для macOS, Windows или Linux (бета). Claude Code входит в приложение, так что описанная выше установка в терминале для работы с ним не нужна. Для вкладки Code нужен платный план: Pro, Max, Ultra, Team или Enterprise.</p>
+      <p>Установив Claude Desktop и войдя в аккаунт, откройте вкладку «Code» в верхней части боковой панели. Внешне всё похоже на чат, но здесь можно работать в конкретной папке, менять разрешения и даже использовать облачное окружение.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb03-05.jpg" alt="Claude Desktop на вкладке Code (рядом вкладки Chat и Cowork): открыт список недавних папок проектов с пунктом «Choose a different folder», внизу — кнопка Select folder, модель Opus 4.6 и окружение Local.">
+        <figcaption>Вкладка Code в Claude Desktop: выбор папки проекта.</figcaption>
+      </figure>
+
+      <h2>Веб</h2>
+      <p>В браузере Claude Code открывается по адресу <code>claude.ai/code</code> или по ссылке «Code» на боковой панели чата. Работает это примерно так же, как приложение для компьютера, но только с репозиториями GitHub.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb03-06.jpg" alt="Claude Code в браузере по адресу https://claude.ai/code: список Select a repository, окружение Default и подсказки Write a CLAUDE.md, Explain this codebase и Review recent changes.">
+        <figcaption>Claude Code в вебе: работа начинается с выбора репозитория.</figcaption>
+      </figure>
+
+      <h2>Что выбрать?</h2>
+      <p>Если вам важно всегда иметь самое новое, лучший выбор — <strong>терминал</strong>: новые возможности появляются там первыми. Если же хочется, чтобы Claude Code был теснее связан с вашим редактором кода, интеграции с IDE дают почти то же самое.</p>
+      <p><strong>Desktop</strong> отлично подходит, когда Claude должен работать в фоне, пока вы заняты другими делами.</p>
+      <p><strong>Claude Code в вебе</strong> — хороший вариант, если вы хотите работать над проектами удалённо, через репозиторий GitHub.</p>
+      <p>Как пользоваться Claude Code — решать вам.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Первый промпт»: как выбрать режим разрешений и что учесть в первой просьбе к Claude Code.</p>
+      <div class="pager">
+        <a class="ghost" href="02-how-it-works.html">Назад</a>
+        <a class="next" href="04-first-prompt.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/installing-claude-code" target="_blank" rel="noopener noreferrer">Installing Claude Code</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

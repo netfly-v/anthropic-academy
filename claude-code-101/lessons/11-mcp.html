@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MCP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html" aria-current="page"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>MCP</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:37 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое MCP и зачем подключать к Claude Code внешние инструменты и источники данных;</li>
+        <li>добавлять HTTP- и stdio-серверы командой <code>claude mcp add</code> и управлять ими через <code>/mcp</code>;</li>
+        <li>выбирать область действия сервера — local, user или project (файл <code>.mcp.json</code>);</li>
+        <li>беречь контекст: отключать лишние серверы, предпочитать CLI и добавлять к серверам skills.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/kkBFmwkDzdo" title="MCP" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Model Context Protocol (MCP) — открытый стандарт, который позволяет Claude Code подключаться к внешним инструментам и источникам данных. Когда вы задаёте вопрос, Claude сам понимает, в каких случаях стоит воспользоваться этими инструментами, чтобы лучше справиться с запросом.</p>
+      <p>Многое из вашего контекста находится за пределами кодовой базы — в базах данных, рабочих приложениях, публичных репозиториях. MCP восполняет этот пробел.</p>
+
+      <h2>Что с ним можно делать?</h2>
+      <p>Сначала важно понять, что в агентном ИИ называют «инструментами». Инструменты дают агентам вроде Claude Code возможность выполнять действия, которые помогают им эффективнее справляться с задачами. В этом отличие от обычного ИИ, который просто возвращает текстовый ответ.</p>
+      <p>Например, если ваша команда ведёт проекты в Linear, можно добавить MCP-сервер Linear и подтягивать подробности конкретных задач. Если нужна актуальная документация по зависимости, MCP-сервер с документацией, например Context7, может передать её Claude Code.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb11-01.jpg" alt="Терминал Claude Code: после /mcp подключён linear-server, на промпт «Can you make a plan off of the linear ticket: DEMO-1» Claude хочет вызвать MCP-инструмент linear-server - get_issue для задачи DEMO-1 и спрашивает «Do you want to proceed?».">
+        <figcaption>Claude Code запрашивает у MCP-сервера Linear подробности задачи DEMO-1 (инструмент <code>get_issue</code>).</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb11-02.jpg" alt="Терминал Claude Code: на промпт «Can you get the latest docs from shadcn ui and see if our implementation matches the newest standards?» Claude вызывает инструмент resolve-library-id сервера plugin:context7:context7 для библиотеки shadcn/ui и спрашивает разрешения.">
+        <figcaption>Claude Code ищет свежую документацию shadcn/ui через MCP-сервер Context7.</figcaption>
+      </figure>
+
+      <h2>Как добавить MCP-сервер</h2>
+      <p>MCP-серверы добавляют командой <code>claude mcp add</code>. Есть два основных типа серверов:</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb11-03.jpg" alt="Windows PowerShell: набрана команда claude mcp add --transport http linear-server https://mcp.linear.app/mcp.">
+        <figcaption>Добавляем удалённый HTTP-сервер Linear командой <code>claude mcp add</code>.</figcaption>
+      </figure>
+      <ul>
+        <li><strong>HTTP-серверы</strong> — для удалённых сервисов. Их размещает у себя поставщик сервиса, а подключение идёт по сети.</li>
+        <li><strong>Stdio-серверы</strong> — для локальных процессов, которые работают на вашем компьютере.</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb11-04.jpg" alt="Windows PowerShell: набрана команда claude mcp add --transport stdio dev-utils -- python C:/Users/guest/mcp-server/server.py.">
+        <figcaption>Добавляем локальный stdio-сервер — Python-скрипт <code>server.py</code>.</figcaption>
+      </figure>
+      <p>Управлять серверами можно командой <code>/mcp</code> внутри сессии Claude Code: посмотреть, что подключено, проверить статус и отключить ненужные серверы.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb11-05.jpg" alt="Панель Manage MCP servers после команды /mcp: 4 сервера; в разделе Local MCPs (из C:\Users\guest\.claude.json) linear-server ждёт аутентификации, в разделе Built-in MCPs claude-in-chrome и plugin:context7:context7 подключены, а plugin:figma:figma ждёт аутентификации.">
+        <figcaption>Команда <code>/mcp</code>: подключённые серверы и их статус.</figcaption>
+      </figure>
+
+      <h2>Области действия серверов</h2>
+      <p>У MCP-сервера может быть одна из трёх областей действия:</p>
+      <ol>
+        <li><strong>Local</strong> — сервер доступен только в текущем проекте и только вам.</li>
+        <li><strong>User</strong> — доступен во всех ваших проектах.</li>
+        <li><strong>Project</strong> — использует файл <code>.mcp.json</code>, который вы добавляете в систему контроля версий, чтобы все, кто работает с кодовой базой, автоматически получали точно такой же набор серверов.</li>
+      </ol>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Флаг <code>--scope</code>.</strong> Область задают при добавлении сервера, например <code>claude mcp add --scope project …</code>; без флага действует <code>local</code>. Серверы local и user хранятся в <code>~/.claude.json</code> (это видно на снимке <code>/mcp</code> выше), project — в <code>.mcp.json</code> в корне проекта.</li>
+          <li><strong>Разделитель <code>--</code>.</strong> В команде для stdio-сервера всё, что стоит после <code>--</code>, — команда запуска сервера; опции самого Claude Code (<code>--transport</code>, <code>--scope</code>) ставят перед ним.</li>
+          <li><strong>Серверы проекта.</strong> «Автоматически» — не совсем точно: по документации Claude Code (на ноябрь 2026) в интерактивной сессии он сначала просит одобрить серверы из <code>.mcp.json</code>, а без вопроса загружает их только в неинтерактивных запусках вроде <code>claude -p</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Расход контекста</h2>
+      <p>MCP-серверы добавляют в окно контекста имена своих инструментов и инструкции, даже когда вы ими сейчас не пользуетесь. Каждый подключённый сервер занимает какое-то место, поэтому запустите <code>/mcp</code>, посмотрите, что подключено, и отключите всё, чем сейчас не пользуетесь.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb11-06.jpg" alt="Карточка Dev-utils MCP Server в /mcp: статус connected, команда python, аргумент C:/Users/guest/mcp-server/server.py, конфигурация в C:\Users\guest\.claude.json, 8 инструментов и пункты View tools, Reconnect и Disable.">
+        <figcaption>Карточка сервера в <code>/mcp</code>: посмотреть инструменты, переподключить или отключить сервер.</figcaption>
+      </figure>
+      <p>Если у инструмента есть аналог в виде CLI (например, <code>gh</code> для GitHub или <code>aws</code> для AWS), CLI экономнее расходует контекст: он не добавляет в него запись для каждого инструмента.</p>
+      <p>Бывает также полезно добавить к MCP-серверу <strong>skill</strong>, который учит Claude хорошо пользоваться инструментами этого сервера. От skill в контекст загружаются только имя и описание, а полное содержимое Claude подгружает, лишь когда решит, что skill нужен.</p>
+      <p>Поиск инструментов (tool search) включён по умолчанию, поэтому Claude Code не держит в контексте полное определение каждого MCP-инструмента, пока оно не понадобится Claude.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В видео сказано иначе: tool search включается сам, только когда MCP-инструменты занимают больше 10% окна контекста. Это устарело. По документации Claude Code (на ноябрь 2026) прав текст урока: tool search работает по умолчанию, при старте сессии в контекст попадают только имена инструментов и инструкции серверов, а полное определение Claude подгружает, когда инструмент понадобится. Порог в 10% остался лишь как необязательный режим <code>ENABLE_TOOL_SEARCH=auto</code>.</p>
+      </aside>
+
+      <h2>Итог</h2>
+      <p>MCP подключает Claude Code к вашим внешним инструментам и источникам данных. Серверы добавляют командой <code>claude mcp add</code>. Задайте им область действия project через <code>.mcp.json</code> — и команда получит их автоматически. И следите за расходом контекста: отключайте серверы, которыми сейчас не пользуетесь.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Hooks»: как запускать команды в определённые моменты работы Claude Code. В отличие от инструкций, hooks срабатывают всегда, без исключений.</p>
+      <div class="pager">
+        <a class="ghost" href="10-skills.html">Назад</a>
+        <a class="next" href="12-hooks.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/mcp" target="_blank" rel="noopener noreferrer">MCP</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

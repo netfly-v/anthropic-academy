@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skills</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html" aria-current="page"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Skills</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:54</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что такое skill и как Claude по описанию решает, когда его применить;</li>
+        <li>выбрать, где хранить skill: в личной папке <code>~/.claude/skills</code> или в <code>.claude/skills</code> репозитория;</li>
+        <li>отличить skills от <code>CLAUDE.md</code> и slash-команд и понять, какие знания стоит оформлять как skill.</li>
+      </ul>
+      <p class="duration">На странице урока — видео с его текстом под плеером и ссылка на отдельный курс. Ниже — перевод этого текста.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/bjdBVZa66oU" title="Skills" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Каждый раз, когда вы объясняете Claude стандарты кода своей команды, вы повторяетесь. На каждом ревью PR вы заново описываете, в каком виде хотите получить замечания. Для каждого сообщения коммита напоминаете Claude, какой формат вы предпочитаете. Skills избавляют от этого.</p>
+
+      <h2>Что такое skill</h2>
+      <p>Skill — это Markdown-файл, который один раз учит Claude что-то делать, а дальше Claude сам применяет это знание всякий раз, когда оно к месту. Skills для Claude — это папки с инструкциями, скриптами и ресурсами, которые агенты могут находить и использовать, чтобы работать точнее и эффективнее.</p>
+      <p>В Claude Code для этого есть файл <code>SKILL.md</code>. По описанию (description) Claude решает, использовать ли skill. Когда вы просите: «Сделай ревью этого PR», Claude сопоставляет вашу просьбу с описаниями доступных skills и находит skill для ревью. Claude читает вашу просьбу, сравнивает её с описаниями всех доступных skills и включает те, что подходят.</p>
+
+      <h2>Где хранить skills</h2>
+      <p>Хранить skills можно в нескольких местах — смотря по тому, кому они нужны. Личные skills лежат в домашней папке, в <code>.claude/skills</code>, и действуют во всех ваших проектах. Это ваши предпочтения: стиль сообщений коммитов, формат документации, то, как вам нравится получать объяснения кода. Skills проекта лежат в <code>.claude/skills</code> в корне репозитория. Кто клонирует репозиторий, автоматически получает и эти skills. Здесь живут стандарты команды — например, брендбук компании, предпочтительные шрифты и цвета, которые вы используете в веб-дизайне.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Skill — это папка с файлом <code>SKILL.md</code>: <code>~/.claude/skills/&lt;имя&gt;/SKILL.md</code> для личных и <code>.claude/skills/&lt;имя&gt;/SKILL.md</code> для проекта. Во frontmatter файла главное — поле <code>description</code>: по нему Claude и выбирает skill, поэтому документация Claude Code (на ноябрь 2026) советует вписать туда слова, которыми вы обычно формулируете такую просьбу. Поле <code>name</code> необязательно — по умолчанию это имя папки.</p>
+      </aside>
+
+      <h2>Чем skills отличаются от CLAUDE.md и slash-команд</h2>
+      <p>В Claude Code есть несколько способов настроить поведение. Skills выделяются тем, что срабатывают автоматически и привязаны к конкретной задаче. Файлы <code>CLAUDE.md</code> загружаются в каждый разговор. Если вы хотите, чтобы Claude всегда писал на TypeScript в strict mode, такому правилу место в <code>CLAUDE.md</code>. Skills же загружаются по требованию, когда соответствуют вашей просьбе. Заранее загружаются только имя и описание, поэтому skills не забивают всё окно контекста. Чеклист ревью PR не нужен в контексте, пока вы отлаживаете код. Он загрузится, когда вы действительно попросите ревью.</p>
+      <p>Slash-команды нужно набирать самому, skills — нет: Claude применяет их, когда узнаёт ситуацию. Лучше всего они подходят для специальных знаний, которые относятся к определённым задачам: стандарты ревью кода, которым следует ваша команда, форматы сообщений коммитов, которые вы предпочитаете, брендбук вашей организации. Если вы ловите себя на том, что раз за разом объясняете Claude одно и то же, — это skill, который ждёт, когда его напишут.</p>
+
+      <p><strong>Хотите разобраться глубже?</strong> Загляните в наш отдельный курс: <a href="https://academy.claude.com/courses/introduction-to-agent-skills" target="_blank" rel="noopener noreferrer">Introduction to agent skills</a>.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Slash-команды и skills.</strong> Урок их противопоставляет, но по документации Claude Code (на ноябрь 2026) пользовательские slash-команды объединены со skills: skill по умолчанию можно вызвать и вручную — командой <code>/имя-skill</code>, а старые файлы из <code>.claude/commands/</code> работают по-прежнему, и Claude может запускать их сам. Чтобы skill запускался только вручную, во frontmatter ставят <code>disable-model-invocation: true</code>.</li>
+          <li><strong>Курс о skills.</strong> Русский конспект — на этом сайте: <a href="../../skills/index.html">«Введение в agent skills»</a>.</li>
+        </ul>
+      </aside>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «MCP»: как через открытый стандарт Model Context Protocol подключить Claude Code к внешним инструментам и источникам данных.</p>
+      <div class="pager">
+        <a class="ghost" href="09-subagents.html">Назад</a>
+        <a class="next" href="11-mcp.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/skills" target="_blank" rel="noopener noreferrer">Skills</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

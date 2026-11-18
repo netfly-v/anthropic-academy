@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Субагенты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html" aria-current="page"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Субагенты</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:48 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, как субагенты берегут контекстное окно основного разговора: работают в собственном контексте и возвращают только сводку;</li>
+        <li>создать своего субагента, попросив об этом Claude, и выбрать, где будет лежать его файл: в <code>.claude/agents/</code> или в <code>~/.claude/agents/</code>;</li>
+        <li>назвать два способа дополнительно настроить субагента: постоянную память и предзагрузку skills.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/jKErNxuxPXg" title="Subagents" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Claude может поручать задачи субагентам: они разбивают задачу на части и выполняют эти части параллельно, а вам становится проще управлять контекстом. Каждый субагент работает в собственном изолированном контекстном окне.</p>
+
+      <h2>Как это работает</h2>
+      <p>Управлять контекстом в Claude Code важно. Значительную часть контекстного окна съедают, например, вызовы инструментов, которыми Claude изучает вашу кодовую базу, или веб-поиск, когда нужно что-то исследовать. А то, что Claude узнаёт по ходу такого изучения, не всегда относится к главной функции, которую вы разрабатываете.</p>
+      <p>Здесь и пригодятся субагенты. Claude запускает субагента для задачи вроде «изучи для меня эту кодовую базу». Субагент работает параллельно, в собственном контекстном окне, берёт на себя всё изучение, а закончив, подводит итог найденному и возвращает эту сводку Claude.</p>
+      <p>В результате вы получаете нужный ответ, а весь путь к нему не засоряет основной контекст.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В видео сказано, что субагент получает только системный промпт из своего файла и задачу от основного агента, а после работы его разговор удаляется. По документации Claude Code (на ноябрь 2026) он получает ещё и файлы <code>CLAUDE.md</code>, а его транскрипт сохраняется в отдельном файле, так что работу субагента можно возобновить. Исключения — встроенные субагенты Explore и Plan: они стартуют без <code>CLAUDE.md</code>, и возобновить их нельзя.</p>
+      </aside>
+
+      <h2>Создание своего субагента</h2>
+      <p>Субагентов описывают в Markdown-файлах с YAML-frontmatter. Проще всего для начала поручить Claude написать субагента за вас. Опишите, какой субагент вам нужен и куда его сохранить:</p>
+      <pre>Create a code-reviewer subagent in .claude/agents/ that reviews code for bugs and readability. Make it read-only.</pre>
+      <p>Субагент из <code>.claude/agents/</code> работает в текущем проекте, а из <code>~/.claude/agents/</code> — во всех ваших проектах. Если выбранной папки не было на момент запуска сессии, перезапустите Claude Code, чтобы новый субагент загрузился.</p>
+      <p>Claude придумает субагенту имя, описание и промпт. По ним же Claude будет понимать, когда вызывать этого субагента в ответ на ваши промпты.</p>
+
+      <h2>Дальнейшая настройка</h2>
+      <p>Субагентов можно настраивать и дальше. Вот самое интересное:</p>
+      <ul>
+        <li><strong>Постоянная память</strong> позволяет субагенту сохранять знания между разговорами. Это очень удобно, если вы постоянно используете его в одних и тех же проектах.</li>
+        <li><strong>Предзагружайте skills</strong> в субагентов: добавьте ключ <code>skills</code> и перечислите в нём skills по именам. Учтите, что, в отличие от skills в основном разговоре, здесь skill загружается в контекст целиком.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>«Только для чтения».</strong> Отдельного поля для этого во frontmatter нет (на ноябрь 2026): обычно в поле <code>tools</code> перечисляют одни инструменты чтения, например <code>tools: Read, Grep, Glob</code>. Вариант <code>disallowedTools: Write, Edit</code> убирает только эти два инструмента, а Bash и MCP-инструменты остаются.</li>
+          <li><strong>Когда вызывается.</strong> Передать ли задачу субагенту, Claude решает по его полю <code>description</code>. Можно вызвать субагента и явно — упомянуть его в промпте через <code>@</code>.</li>
+          <li><strong>Память.</strong> Её включает поле <code>memory</code> со значением <code>user</code>, <code>project</code> или <code>local</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Итог</h2>
+      <p>Держать контекстное окно чистым — один из лучших способов продуктивно работать с Claude Code. С субагентами можно запустить агента в фоне: он возьмёт на себя тяжёлую работу и вернёт в основное контекстное окно только ответ.</p>
+      <p><strong>Хотите разобраться глубже?</strong> Загляните в наш отдельный курс: <a href="https://academy.claude.com/courses/introduction-to-subagents" target="_blank" rel="noopener noreferrer">Introduction to subagents</a> (его перевод на этом сайте — «<a href="../../subagents/index.html">Введение в субагентов</a>»).</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Skills»: как один раз научить Claude выполнять задачу, чтобы он сам применял эти знания всякий раз, когда они к месту.</p>
+      <div class="pager">
+        <a class="ghost" href="08-claude-md.html">Назад</a>
+        <a class="next" href="10-skills.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/subagents" target="_blank" rel="noopener noreferrer">Subagents</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

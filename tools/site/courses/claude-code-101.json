@@ -1,0 +1,161 @@
+{
+ "dir": "claude-code-101",
+ "course": "claude-code-101",
+ "platform": "academy",
+ "img_prefix": "cb",
+ "title": "Claude Code 101",
+ "orig_title": "Claude Code 101",
+ "lead": "Как пользоваться Claude Code в повседневной работе: как устроен агент, установка, первый промпт, цикл Explore → Plan → Code → Commit, контекст и ревью, а затем CLAUDE.md, субагенты, skills, MCP и hooks.",
+ "about": [
+  "<p>Вводный курс Anthropic Academy на academy.claude.com. Здесь весь курс в том же порядке, что и в оригинале: текст по-русски, плюс пояснения там, где урок короткий или расходится с документацией Claude Code. Видео — те же ролики с YouTube.</p>"
+ ],
+ "sections": [
+  {
+   "title": "Что такое Claude Code",
+   "lessons": [
+    {
+     "file": "01-what-is-claude-code.html",
+     "nav": "Что такое Claude Code",
+     "sid": "what-is-claude-code",
+     "orig": "What is Claude Code?",
+     "note": "Чем Claude Code отличается от Claude.ai и что он умеет",
+     "dur": "2 мин 55 с",
+     "toc": 1
+    },
+    {
+     "file": "02-how-it-works.html",
+     "nav": "Как работает Claude Code",
+     "sid": "how-claude-code-works",
+     "orig": "How Claude Code works",
+     "note": "Агентный цикл, контекст, инструменты и режимы разрешений",
+     "dur": "2 мин 50 с",
+     "toc": 2
+    }
+   ]
+  },
+  {
+   "title": "Первый промпт",
+   "lessons": [
+    {
+     "file": "03-installing.html",
+     "nav": "Установка",
+     "sid": "installing-claude-code",
+     "orig": "Installing Claude Code",
+     "note": "Установка в терминале, IDE, Desktop и вебе",
+     "dur": "3 мин 1 с",
+     "toc": 3,
+     "h1": "Установка Claude Code"
+    },
+    {
+     "file": "04-first-prompt.html",
+     "nav": "Первый промпт",
+     "sid": "your-first-prompt",
+     "orig": "Your first prompt",
+     "note": "Режимы разрешений, plan mode и первый промпт",
+     "dur": "2 мин 27 с",
+     "toc": 4
+    }
+   ]
+  },
+  {
+   "title": "Повседневная работа",
+   "lessons": [
+    {
+     "file": "05-explore-plan-code-commit.html",
+     "nav": "Explore → Plan → Code → Commit",
+     "sid": "the-explore-plan-code-commit-workflow",
+     "orig": "The explore → plan → code → commit workflow",
+     "note": "Цикл работы: исследование, план в plan mode, код, коммит",
+     "dur": "3 мин 11 с",
+     "toc": 5,
+     "h1": "Цикл Explore → Plan → Code → Commit"
+    },
+    {
+     "file": "06-context-management.html",
+     "nav": "Управление контекстом",
+     "sid": "context-management",
+     "orig": "Context management",
+     "note": "/compact, /clear, /context и как экономить контекст",
+     "dur": "3 мин 30 с",
+     "toc": 6
+    },
+    {
+     "file": "07-code-review.html",
+     "nav": "Ревью кода",
+     "sid": "code-review",
+     "orig": "Code review",
+     "note": "Проверка diff, /code-review и разбор находок",
+     "dur": "",
+     "toc": 7
+    }
+   ]
+  },
+  {
+   "title": "Настройка Claude Code",
+   "lessons": [
+    {
+     "file": "08-claude-md.html",
+     "nav": "Файл CLAUDE.md",
+     "sid": "the-claude-md-file",
+     "orig": "The CLAUDE.md file",
+     "note": "Память проекта: что писать в CLAUDE.md и где он лежит",
+     "dur": "3 мин 1 с",
+     "toc": 8
+    },
+    {
+     "file": "09-subagents.html",
+     "nav": "Субагенты",
+     "sid": "subagents",
+     "orig": "Subagents",
+     "note": "Как субагенты берегут контекст и как создать своего",
+     "dur": "2 мин 48 с",
+     "toc": 9,
+     "allow_cross": true
+    },
+    {
+     "file": "10-skills.html",
+     "nav": "Skills",
+     "sid": "skills",
+     "orig": "Skills",
+     "note": "Что такое skill, где его хранить и чем он не CLAUDE.md",
+     "dur": "2 мин 54 с",
+     "toc": 10,
+     "allow_cross": true
+    },
+    {
+     "file": "11-mcp.html",
+     "nav": "MCP",
+     "sid": "mcp",
+     "orig": "MCP",
+     "note": "MCP-серверы: claude mcp add, /mcp, области, контекст",
+     "dur": "3 мин 37 с",
+     "toc": 11
+    },
+    {
+     "file": "12-hooks.html",
+     "nav": "Hooks",
+     "sid": "hooks",
+     "orig": "Hooks",
+     "note": "Hooks: автоформатирование, блокировка, коды выхода",
+     "dur": "3 мин 21 с",
+     "toc": 12
+    }
+   ]
+  }
+ ],
+ "quiz": {
+  "file": "quiz.html",
+  "items": 18,
+  "minutes": 25,
+  "bank": "claude-code-101-quiz.js",
+  "page_title": "Claude Code 101",
+  "kicker": "Claude Code 101"
+ },
+ "official": [
+  {
+   "id": "course-quiz",
+   "title": "Course quiz",
+   "questions_text": "нужен вход в Academy"
+  }
+ ]
+}

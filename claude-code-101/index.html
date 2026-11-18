@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Code 101</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../index.html">Курсы</a>
+      <a href="../skills/index.html">Skills</a>
+      <a href="../api/index.html">API</a>
+      <a href="../mcp/index.html">MCP</a>
+      <a href="../claude-code/index.html">Claude Code</a>
+      <a href="../subagents/index.html">Subagents</a>
+      <a href="../tool-use/index.html">Tool use</a>
+      <a href="../platform-101/index.html">Platform 101</a>
+      <a href="index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="index.html" aria-current="page">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="lessons/02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="lessons/04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="lessons/06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="lessons/07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="lessons/08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="lessons/09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="lessons/10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="lessons/11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="lessons/12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <p class="kicker">Anthropic Academy</p>
+      <h1>Claude Code 101</h1>
+      <div class="rule"></div>
+      <p class="overview-lead">Как пользоваться Claude Code в повседневной работе: как устроен агент, установка, первый промпт, цикл Explore → Plan → Code → Commit, контекст и ревью, а затем CLAUDE.md, субагенты, skills, MCP и hooks.</p>
+      <p>Вводный курс Anthropic Academy на academy.claude.com. Здесь весь курс в том же порядке, что и в оригинале: текст по-русски, плюс пояснения там, где урок короткий или расходится с документацией Claude Code. Видео — те же ролики с YouTube.</p>
+      <h2>Что такое Claude Code</h2>
+      <ul class="card-list">
+        <li><a href="lessons/01-what-is-claude-code.html"><strong>1. Что такое Claude Code</strong><span>Чем Claude Code отличается от Claude.ai и что он умеет · 2 мин 55 с</span></a></li>
+        <li><a href="lessons/02-how-it-works.html"><strong>2. Как работает Claude Code</strong><span>Агентный цикл, контекст, инструменты и режимы разрешений · 2 мин 50 с</span></a></li>
+      </ul>
+      <h2>Первый промпт</h2>
+      <ul class="card-list">
+        <li><a href="lessons/03-installing.html"><strong>3. Установка Claude Code</strong><span>Установка в терминале, IDE, Desktop и вебе · 3 мин 1 с</span></a></li>
+        <li><a href="lessons/04-first-prompt.html"><strong>4. Первый промпт</strong><span>Режимы разрешений, plan mode и первый промпт · 2 мин 27 с</span></a></li>
+      </ul>
+      <h2>Повседневная работа</h2>
+      <ul class="card-list">
+        <li><a href="lessons/05-explore-plan-code-commit.html"><strong>5. Цикл Explore → Plan → Code → Commit</strong><span>Цикл работы: исследование, план в plan mode, код, коммит · 3 мин 11 с</span></a></li>
+        <li><a href="lessons/06-context-management.html"><strong>6. Управление контекстом</strong><span>/compact, /clear, /context и как экономить контекст · 3 мин 30 с</span></a></li>
+        <li><a href="lessons/07-code-review.html"><strong>7. Ревью кода</strong><span>Проверка diff, /code-review и разбор находок</span></a></li>
+      </ul>
+      <h2>Настройка Claude Code</h2>
+      <ul class="card-list">
+        <li><a href="lessons/08-claude-md.html"><strong>8. Файл CLAUDE.md</strong><span>Память проекта: что писать в CLAUDE.md и где он лежит · 3 мин 1 с</span></a></li>
+        <li><a href="lessons/09-subagents.html"><strong>9. Субагенты</strong><span>Как субагенты берегут контекст и как создать своего · 2 мин 48 с</span></a></li>
+        <li><a href="lessons/10-skills.html"><strong>10. Skills</strong><span>Что такое skill, где его хранить и чем он не CLAUDE.md · 2 мин 54 с</span></a></li>
+        <li><a href="lessons/11-mcp.html"><strong>11. MCP</strong><span>MCP-серверы: claude mcp add, /mcp, области, контекст · 3 мин 37 с</span></a></li>
+        <li><a href="lessons/12-hooks.html"><strong>12. Hooks</strong><span>Hooks: автоформатирование, блокировка, коды выхода · 3 мин 21 с</span></a></li>
+      </ul>
+      <h2>Экзамен</h2>
+      <ul class="card-list">
+        <li><a href="quiz.html"><strong>Practice exam · весь курс</strong><span>18 вопросов по всему курсу, на английском</span></a></li>
+      </ul>
+      <p>В оригинале в конце курса — официальный тест Academy <a href="https://academy.claude.com/courses/claude-code-101/course-quiz" target="_blank" rel="noopener noreferrer">Course quiz</a> (нужен вход в Academy). Он проходится на Academy и засчитывается в курс; наш Practice exam — отдельный тренировочный тест.</p>
+      <p class="source">Оригинал курса: <a href="https://academy.claude.com/courses/claude-code-101" target="_blank" rel="noopener noreferrer">Claude Code 101</a>.</p>
+    </main>
+  </div>
+  <script src="../js/sidebar.js"></script>
+</body>
+</html>

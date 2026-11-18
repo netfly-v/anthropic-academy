@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Управление контекстом</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html" aria-current="page"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Управление контекстом</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:30 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, что занимает место в контекстном окне и что происходит при его автоматическом сжатии;</li>
+        <li>выбирать между <code>/compact</code> и <code>/clear</code> и проверять состояние контекста командой <code>/context</code>;</li>
+        <li>экономить контекст: писать конкретные промпты, отключать лишние MCP-серверы и поручать поиск субагентам.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/eW3oTyfeWZ0" title="Context management" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Контекст — это рабочая память Claude. Каждый прочитанный файл, каждая запущенная команда, каждое ваше сообщение — всё это занимает место в контекстном окне.</p>
+
+      <h2>Что такое контекстное окно?</h2>
+      <p>Контекстное окно можно представить как объём, который Claude способен удерживать в памяти. Ваши промпты, файлы, которые читает Claude, вызовы инструментов и их результаты — всё это добавляется в контекстное окно. Место в нём ограничено, поэтому расходовать его важно с умом.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb06-01.jpg" alt="Схема: пиксельный персонаж Claude рядом с сеткой «Context Window» из стопок-токенов; занята небольшая часть (Taken), большинство ячеек свободно (Available).">
+        <figcaption>Контекстное окно: часть токенов уже занята, большая часть свободна.</figcaption>
+      </figure>
+
+      <h2>Что происходит, когда контекст заполняется</h2>
+      <p>Когда вы приближаетесь к пределу, контекстное окно автоматически <strong>сжимается</strong> (compaction). Сжатие кратко пересказывает важные подробности и убирает ненужные результаты вызовов инструментов, освобождая место. Учтите, что при этом часть подробностей может потеряться.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb06-02.jpg" alt="Терминал Claude Code: над строкой ввода сообщение «Compacting conversation…», под ней — индикатор режима accept edits on.">
+        <figcaption>Claude Code сжимает разговор: «Compacting conversation…».</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb06-03.jpg" alt="Окно Claude Code с блоком «Compact summary»: сессия продолжена после того, как закончился контекст, а ниже идёт сводка — основной запрос пользователя, ключевые технические понятия, файлы и фрагменты кода.">
+        <figcaption>Сводка после сжатия: запрос пользователя, ключевые понятия, файлы и код.</figcaption>
+      </figure>
+
+      <h2>Команды</h2>
+      <p>Сжатие можно запустить вручную командой <code>/compact</code>. Она сжимает всё, что накопилось до этого момента. Это удобно, когда нужно освободить место в контексте, но сохранить память о том, над чем вы уже работали.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb06-04.jpg" alt="В строке ввода Claude Code набрано /compact; в меню автодополнения — /compact с описанием «Clear conversation history but keep a summary in context. Optional:…» и под ним /security-review.">
+        <figcaption>Команда <code>/compact</code> в меню автодополнения.</figcaption>
+      </figure>
+      <p>Если хотите начать совсем с чистого листа, без памяти о прошлой сессии, запустите <code>/clear</code>. Эта команда удаляет всё.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb06-05.jpg" alt="Claude Code сразу после команды /clear: экран приветствия «Welcome back!», под /clear — «(no content)», строка ввода пуста.">
+        <figcaption>После <code>/clear</code> сессия начинается заново.</figcaption>
+      </figure>
+      <p>Чтобы проверить состояние контекста, запустите команду <code>/context</code>. Она покажет общую картину: размер контекста, категории, которые занимают больше всего места, и наглядную схему с разбивкой.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb06-06.jpg" alt="Вывод /context: сетка значков заполнения и разбивка для модели claude-haiku-4-5-20251001 — занято 64k из 200k токенов (32%), по категориям System prompt, System tools, Messages, Free space и Autocompact buffer.">
+        <figcaption><code>/context</code>: сколько места занято и чем — по категориям и на схеме.</figcaption>
+      </figure>
+
+      <h2>Когда что использовать</h2>
+      <p>Общее правило такое:</p>
+      <ul>
+        <li><strong>Используйте <code>/compact</code></strong>, когда работаете над конкретной функциональностью, упираетесь в предел контекста, но работу нужно продолжить. Важно, чтобы контекст касался именно той функциональности, над которой вы работаете.</li>
+        <li>
+          <p><strong>Используйте <code>/clear</code></strong>, когда начинаете новую функциональность. Прошлый разговор не должен влиять на новую работу. То, что Claude должен помнить между сессиями, запишите в файл <code>CLAUDE.md</code>, чтобы ему не приходилось выяснять всё с нуля.</p>
+          <figure class="shot">
+            <img src="../../assets/claude-code-101/cb06-07.jpg" alt="Файл CLAUDE.md в редакторе: раздел Commands с командами бэкенда и фронтенда, пометка **IMPORTANT** «Run the test suite EVERY TIME» и начало раздела Architecture.">
+            <figcaption><code>CLAUDE.md</code>: команды, важные пометки и архитектура — то, что нужно помнить между сессиями.</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Сжатие с фокусом.</strong> <code>/compact</code> принимает указания для сводки (то самое «Optional: …» в автодополнении), например <code>/compact focus on the API changes</code>. После сжатия (на ноябрь 2026) <code>CLAUDE.md</code> из корня проекта заново загружается с диска, а подробные указания из начала разговора могут потеряться, так что постоянные правила держите в <code>CLAUDE.md</code>.</li>
+          <li><strong>«Удаляет всё».</strong> По документации (на ноябрь 2026), <code>/clear</code> (он же <code>/reset</code> и <code>/new</code>) начинает новый разговор с пустым контекстом, но <code>CLAUDE.md</code> загружается снова, а прежний разговор не стирается: к нему можно вернуться через <code>/resume</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Как экономить место в контексте</h2>
+      <p><strong>Будьте конкретны.</strong> Расплывчатый промпт может показаться короче, но в итоге обходится контексту дороже. Без чётких указаний Claude приходится больше исследовать кодовую базу и самому додумывать задачу, а это занимает в контексте гораздо больше места, чем занял бы подробный промпт.</p>
+      <p><strong>Следите за MCP-серверами.</strong> По умолчанию подключённый MCP-сервер загружает в контекст только имена своих инструментов и инструкции, а полное описание инструмента подгружается, когда этот инструмент понадобится Claude. И всё же каждый сервер занимает какое-то место, поэтому серверы, настроенные для задач, не связанных с текущим проектом, стоит отключить.</p>
+      <p><strong>Пользуйтесь субагентами.</strong> Субагенты работают параллельно с основным агентом, но у них совершенно отдельное контекстное окно. В задачах, где вам нужен только ответ, — например, «где находятся эндпоинты аутентификации?» — субагент делает работу и возвращает основному агенту лишь краткую сводку, так что основной контекст остаётся чистым.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В видео сказано, что MCP-серверы по умолчанию загружают в контекст все свои инструменты, а skills предложены как более экономная альтернатива. Это устарело, и прав текст урока: на ноябрь 2026 загрузка определений инструментов MCP по умолчанию откладывается (tool search) до тех пор, пока инструмент не понадобится. Skills тоже загружаются по требованию: сначала Claude видит только их описания. Ненужные серверы отключают в <code>/mcp</code>.</p>
+      </aside>
+
+      <h2>Попробуйте сами</h2>
+      <p>В сессии, в которой вы уже какое-то время работаете, запустите <code>/context</code> и выясните, что занимает больше всего места. Если продолжаете работать над той же функциональностью, запустите <code>/compact</code>. Если начинаете что-то новое — <code>/clear</code>. Затем снова запустите <code>/context</code> и посмотрите, что изменилось.</p>
+
+      <h2>Итог</h2>
+      <p>Управлять контекстом в Claude Code крайне важно. Используйте <code>/compact</code>, чтобы сжать длинную сессию в сводку, и <code>/clear</code>, чтобы начать заново. Чтобы расходовать контекстное окно с толком, пишите конкретные промпты, проверяйте, что занимает текущий контекст, и поручайте субагентам задачи, от которых вам нужен только результат.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Ревью кода»: как самому просмотреть изменения Claude и попросить его проверить их ещё раз в чистом контексте.</p>
+      <div class="pager">
+        <a class="ghost" href="05-explore-plan-code-commit.html">Назад</a>
+        <a class="next" href="07-code-review.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/context-management" target="_blank" rel="noopener noreferrer">Context management</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

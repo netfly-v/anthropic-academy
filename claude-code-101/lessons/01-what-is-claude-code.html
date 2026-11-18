@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Что такое Claude Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html" aria-current="page"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Что такое Claude Code</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:55 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, чем Claude Code отличается от Claude.ai и почему его называют ИИ-агентом;</li>
+        <li>перечислить, что Claude Code делает в проекте: читает код, правит файлы, запускает команды, ищет в интернете;</li>
+        <li>назвать три вещи, которые нужно помнить для эффективной работы: контекстное окно, режимы разрешений и то, что Claude может ошибаться.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/fl1DSmwQKKY" title="What is Claude Code?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Claude Code — агентный инструмент для программирования: он разбирается в вашей кодовой базе, правит файлы, запускает команды и встраивается в инструменты разработки, которыми вы уже пользуетесь, помогая быстрее справляться с задачами. Он доступен в терминале, в Visual Studio Code, в приложении Claude Desktop, в вебе и в IDE от JetBrains.</p>
+
+      <h2>Чем Claude Code отличается от Claude?</h2>
+      <p>Если вы уже пользовались Claude.ai, вам, наверное, интересно, чем от него отличается Claude Code. В отличие от Claude.ai, у Claude Code есть прямой доступ к вашим файлам, к терминалу и ко всей кодовой базе. Вам не нужно копировать и вставлять код туда и обратно: Claude Code сам берётся за дело прямо в проекте.</p>
+      <p>Главное отличие в том, что Claude Code работает как <strong>ИИ-агент</strong> (AI Agent).</p>
+
+      <h2>Что такое агент?</h2>
+      <p>ИИ-агент — это программа, которая может взаимодействовать со своим окружением и выполнять действия, чтобы достичь поставленной цели. В основе лежит большая языковая модель, которая работает в цикле в реальном времени. У ИИ-агентов может быть доступ к инструментам, внешним сервисам и даже другим ИИ-агентам — всё это помогает им достигать целей.</p>
+
+      <h2>Что Claude Code умеет на самом деле?</h2>
+      <p>Вот как это выглядит на практике:</p>
+      <ul>
+        <li><strong>Читает и понимает вашу кодовую базу.</strong> Можно попросить Claude Code объяснить, как устроена какая-то функциональность, или проследить ошибку по всему коду.</li>
+        <li><strong>Правит файлы по всему проекту.</strong> Claude Code может отрефакторить функцию и обновить все файлы, которые на неё ссылаются.</li>
+        <li><strong>Запускает команды в терминале.</strong> Он может выполнить ваш скрипт сборки, прогнать тесты, установить пакеты и по выводу команд решить, что делать дальше.</li>
+        <li><strong>Ищет в интернете.</strong> Если ему нужна документация или свежий справочник по API, он может найти их за вас.</li>
+      </ul>
+
+      <h2>Как работать с Claude Code эффективно</h2>
+      <p>Чтобы работать с Claude Code эффективно, держите в голове три понятия.</p>
+      <p><strong>Контекстное окно.</strong> Считайте его рабочей памятью Claude. Оно вмещает много, но не всё сразу. Здесь и проявляется «агентность»: Claude продуманно ищет ответы в вашей кодовой базе, не загружая её в контекст целиком.</p>
+      <p><strong>Разрешениями управляете вы.</strong> Режимы разрешений Claude Code позволяют выбрать, насколько активно вы участвуете в работе: Claude может спрашивать вас, прежде чем запускать команды или вносить изменения, а может работать в режиме auto: тогда вместо вопросов большинство действий проходит фоновую проверку безопасности. Контроль всегда остаётся за вами — независимо от того, участвуете ли вы в каждом шаге или предпочитаете не вмешиваться.</p>
+      <p><strong>Он может ошибаться.</strong> Как и любой инструмент, Claude Code не идеален. Он может неверно понять, чего вы хотите, внести ошибку или переусложнить решение. Если не выпускать работу из виду, такие промахи легче поймать на ранней стадии.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Как Claude ищет ответы.</strong> Проект не загружается в контекст заранее: Claude ищет файлы по шаблону имени и по содержимому, а читает только нужные. Место в контекстном окне занимают разговор, прочитанные файлы и вывод команд.</li>
+          <li><strong>Режим по умолчанию.</strong> В видео сказано, что по умолчанию Claude Code спрашивает разрешения перед командами и изменениями. По документации (на ноябрь 2026) в свежих версиях интерактивная сессия в терминале и VS Code стартует в режиме auto: модель-классификатор проверяет действия и блокирует то, что выходит за рамки вашей просьбы; вопросов меньше, но безопасность не гарантирована. Если auto недоступен, сессия стартует в режиме Manual (<code>default</code>): файлы проекта Claude читает без вопросов, а перед большинством правок, команд оболочки и обращений к сети спрашивает. В терминале режимы переключают клавишами Shift+Tab.</li>
+        </ul>
+      </aside>
+
+      <h2>Итог</h2>
+      <p>Claude Code — агентный инструмент для программирования. Он читает вашу кодовую базу, правит файлы, запускает команды и подключается к внешним инструментам, чтобы вы быстрее доводили работу до релиза. Пользоваться им можно уже сегодня: в терминале, VS Code, JetBrains и приложении Claude Desktop.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Как работает Claude Code»: разберём агентный цикл, в котором Claude собирает контекст, действует и проверяет результат, пока задача не будет решена.</p>
+      <div class="pager">
+        <a class="next" href="02-how-it-works.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/what-is-claude-code" target="_blank" rel="noopener noreferrer">What is Claude Code?</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

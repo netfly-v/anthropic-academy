@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ревью кода</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html" aria-current="page"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Ревью кода</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Текстовый урок, около 10 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>читать diff командой <code>/diff</code> и находить то, о чём сводка Claude умолчала: непрошеные правки, ослабленные тесты, новые пакеты и значения, зашитые в код;</li>
+        <li>откатывать неудачное изменение через <code>/rewind</code>;</li>
+        <li>получать второе мнение из чистого контекста командой <code>/code-review</code>;</li>
+        <li>раскладывать находки ревью по стопкам «исправить сейчас», «спросить почему» и «оставить» и просить доказательства к каждому исправлению.</li>
+      </ul>
+
+      <p>Когда вы даёте Claude Code задачу в своей кодовой базе, Claude часто отчитывается коротко. Но за описанием того, что Claude изменил, может стоять целый набор изменённых файлов — от мелких правок до крупных переделок. Сессия, которая сама написала эти изменения (и сама их объяснила), зачастую не лучший их судья. Хорошая привычка — самому просматривать каждое изменение, прежде чем его оставить, а потом просить Claude проверить его ещё раз из чистого контекста, без истории этой сессии.</p>
+
+      <h2>Смотрите на сами изменения</h2>
+      <p>Diff — это изменение в виде «до и после»: удалённые и добавленные строки, файл за файлом. Команда <code>/diff</code> открывает интерактивный просмотр ваших незакоммиченных изменений в таком виде, а ещё может показать, что изменил каждый ход Claude. Стрелками вверх и вниз переходите между файлами, клавишей <code>Enter</code> открывайте файл.</p>
+      <pre>/diff</pre>
+      <p><strong>В <code>/diff</code> ничего не видно?</strong> <code>/diff</code> и <code>/code-review</code> узнают об изменениях из записей git, поэтому проект должен лежать в git-репозитории. Git — инструмент контроля версий, которым уже пользуется большинство проектов, и на нём держится шаг Commit из урока «Цикл Explore → Plan → Code → Commit». Сам git в этом курсе не объясняется. Если ваш проект ещё не в git, попросите Claude настроить репозиторий и сделать первый коммит до следующей задачи. С этого момента любое изменение будет видно в обеих командах. А о ревью изменения, которое перед вами сейчас, попросите обычными словами (как — ниже). Если вы работаете с другой системой контроля версий, <code>/diff</code> и <code>/code-review</code> ваших изменений не увидят, но всё остальное по-прежнему применимо: читайте изменение в своём инструменте, обычными словами просите Claude проверить файлы, которые он трогал, а <code>/rewind</code> всё равно работает, потому что Claude сам отслеживает свои правки.</p>
+      <p>В первую очередь второго взгляда всегда заслуживают:</p>
+      <ul>
+        <li><strong>Изменения, о которых вы не просили.</strong> Значение в конфиге, которое поменялось, пока Claude работал с этим файлом, или переписанный вспомогательный метод, о котором вы не упоминали.</li>
+        <li><strong>Тесты, которые стали слабее.</strong> Если в проекте, с которым вы работаете, есть тесты, найдите те, что пропустили, удалили или ослабляли, пока они не стали проходить.</li>
+        <li><strong>Новые пакеты и значения, зашитые в код.</strong> Зависимость, добавленная ради одной-единственной функции, или URL либо ключ, вписанный прямо в код.</li>
+      </ul>
+      <p>Если неверно всё изменение целиком, выполните <code>/rewind</code> (или дважды нажмите <code>Esc</code> при пустой строке ввода), укажите промпт, который к нему привёл, и выберите пункт <strong>Restore code and conversation</strong>. Одно ограничение, о котором стоит знать: файлы, которые изменили запущенные Claude shell-команды (например, установка пакета), не откатываются.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Как выглядит <code>/diff</code>.</strong> Стрелки и <code>Enter</code> из урока — это классический интерфейс. В полноэкранном режиме отрисовки (на ноябрь 2026 — по умолчанию у многих новых пользователей) <code>/diff</code> открывает панель рядом с разговором, файл в ней выбирают щелчком.</li>
+          <li><strong>Что откатывает <code>/rewind</code>.</strong> Урок упрощает: не откатывается файл, который меняли только shell-команды (например, при установке пакета). Если Claude уже правил файл своими инструментами, <code>/rewind</code> отменит и более поздние изменения shell-команд в нём.</li>
+        </ul>
+      </aside>
+      <p>В упражнении ниже — небольшая задача с формой регистрации: сверху сводка Claude, под ней восемь файлов, которые Claude затронул.</p>
+
+      <p><strong>Упражнение.</strong> Прочитайте сводку Claude о выполненной задаче, раскройте diff каждого изменённого файла и отметьте те, что заслуживают второго взгляда; после каждой попытки вы получаете отзыв. Цель — убедиться, что даже правдивая сводка может умалчивать об изменениях, которые стоит проверить.</p>
+      <h3>Сравните сводку Claude с diff</h3>
+      <p>Claude выполнил задачу и прислал сводку. Всё в ней правда. Теперь сравните её с файлами, которые изменились.</p>
+      <ol>
+        <li>Прочитайте сводку Claude.</li>
+        <li>Раскройте diff каждого файла и посмотрите, что в нём изменилось.</li>
+        <li>Отметьте три файла, которые, скорее всего, заслуживают второго взгляда.</li>
+      </ol>
+      <p>Сводка Claude. Промпт: добавить в форму регистрации проверку ввода — проверять формат email и требовать пароль не короче 8 символов, с сообщениями об ошибках прямо у полей. Ответ Claude: проверка ввода в форму регистрации добавлена; формат email и длина пароля проверяются до отправки; сообщения об ошибках появляются под каждым полем; все тесты проходят.</p>
+      <pre>&gt; Add input validation to the signup form: check the email format and require passwords of at least 8 characters, with inline error messages.
+
+Added input validation to the signup form.
+- Email format and password length are checked before submit
+- Inline error messages appear under each field
+- All tests pass</pre>
+      <p>Изменено файлов: 8</p>
+      <ul>
+        <li><code>src/components/SignupForm.tsx</code> · +34 −6</li>
+        <li><code>src/lib/validate.ts</code>, новый файл · +14</li>
+        <li><code>src/lib/validate.test.ts</code>, новый файл · +31</li>
+        <li><code>src/components/SignupForm.test.tsx</code> · +2 −8</li>
+        <li><code>src/styles/form.css</code> · +9</li>
+        <li><code>package.json</code> · +1</li>
+        <li><code>package-lock.json</code> · +14</li>
+        <li><code>src/config.ts</code> · +2 −1</li>
+      </ul>
+
+      <h2>Попросите второе мнение</h2>
+      <p>В уроке «Цикл Explore → Plan → Code → Commit» говорилось, что перед коммитом изменение должен посмотреть второй рецензент. Длинная сессия тянет за собой всё, что успела прочитать и решить. Это тот самый контекст, которым вы учились управлять в предыдущем уроке, и именно такая история рецензенту не нужна. <code>/code-review</code> и есть этот второй рецензент: он проверяет изменение в чистом контексте, без всякой истории вашей сессии, и сообщает, что нашёл. Он ничего не правит, пока вы об этом не попросите.</p>
+      <pre>/code-review</pre>
+      <p>Ревью идёт в фоне — от нескольких секунд до нескольких минут — и расходует ваш лимит использования, как любая другая задача, так что приберегайте его для изменений, которые заслуживают второго взгляда. Когда ревью закончится, находки появятся в вашем разговоре. Можно попросить и обычными словами: Claude может запустить то же ревью по вашей просьбе. Если вместо запуска ревью Claude отвечает прямо в разговоре, выполните команду сами.</p>
+      <pre>Review the changes you just made. Report problems; don't fix anything yet.</pre>
+      <p><strong>Нужно ревью полегче или поглубже?</strong> Добавьте к команде уровень effort. <code>/code-review low</code> сообщает только о находках, в которых больше всего уверен, поэтому ложных тревог будет меньше. <code>/code-review high</code> охватывает больше и может включить находки, в которых уверен меньше. Введённый уровень запоминается для следующих ревью, пока вы не введёте другой.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Что проверяет <code>/code-review</code>.</strong> На ноябрь 2026 это встроенный skill: в терминале он работает как фоновый субагент с собственным контекстным окном и историю вашей сессии не видит. Без аргументов он смотрит коммиты текущей ветки, которых ещё нет в upstream, вместе с незакоммиченными изменениями. Синоним команды — <code>/review</code>.</li>
+          <li><strong>Уровни и исправления.</strong> Кроме <code>low</code> и <code>high</code> есть <code>medium</code>, <code>xhigh</code> и <code>max</code>; пока уровень ни разу не вводили, берётся текущий effort сессии. Флаг <code>--fix</code> просит сразу применить находки, но фоновое ревью вносит их в обход контрольных точек: файлы, которые Claude в разговоре сам не правил, <code>/rewind</code> не вернёт — поможет git.</li>
+        </ul>
+      </aside>
+      <p>По изменению формы регистрации ревью выдало четыре находки.</p>
+      <p>Ниже — что сообщил <code>/code-review</code> по учебному изменению: у каждой находки есть место в файле, метка correctness или style и описание в одну строку. Вот что замечает рецензент, который смотрит на изменение из чистого контекста; дальше вы разложите эти находки по стопкам.</p>
+      <pre>&gt; /code-review
+
+Reviewed 8 changed files. 4 findings:
+
+1. src/components/SignupForm.test.tsx:18 [correctness]
+   A test was skipped and an assertion weakened; a form that submits empty values would still pass.
+2. src/lib/validate.ts:4 [correctness]
+   isValidEmail doesn't trim leading or trailing spaces, so an address pasted with a stray space is rejected.
+3. src/config.ts:1 [correctness]
+   API_URL is hard-coded to localhost:3000; a production build would send signups to a development address.
+4. src/styles/form.css:1 [style]
+   Error text uses a hex color instead of the project's --color-danger variable.</pre>
+
+      <h2>Решите, что делать с каждой находкой</h2>
+      <p>Отнесите каждую находку к одной из трёх стопок:</p>
+      <ol>
+        <li><strong>Исправить сейчас</strong> (Fix now). Это настоящая проблема, она важна, и её нужно исправить.</li>
+        <li><strong>Спросить почему</strong> (Ask why). Сюда попадают находки, которые вы не можете толком проверить или которые кажутся странными. Рецензент, который читает изменения с чистого листа, тоже может что-то упустить.</li>
+        <li><strong>Оставить</strong> (Leave it). Проблема настоящая, но мелкая или несущественная. Такие находки часто можно собрать в общий пакет исправлений и закрыть разом в одной из следующих сессий.</li>
+      </ol>
+      <p>Чтобы «спросить почему», процитируйте Claude его находку и попросите проверить ещё раз. О второй находке выше вы написали бы так:</p>
+      <pre>You reported that isValidEmail doesn't trim spaces, but line 4 calls trim(). Check again and tell me whether the finding stands.</pre>
+      <p>Когда просите что-то исправить, полезно сразу просить и доказательства:</p>
+      <pre>Fix the first finding: don't skip the empty-email test and restore the original assertion. Then run the tests and show me the output.</pre>
+      <p>Если исправление в итоге разрастётся в большое самостоятельное изменение, запустите ревью ещё раз.</p>
+
+      <h2>Когда стоит проверять внимательнее</h2>
+      <p>Простому изменению в одну строку часто хватает беглого взгляда на diff — и больше ничего не нужно. Ревью и от человека, и от Claude нужно, когда изменение больше, чем вы способны удержать в голове, когда оно затрагивает что-то чувствительное или делает что-то разрушительное, а также перед тем, как передать работу коллеге.</p>
+      <p><strong>Это то же самое, что Claude Code Review?</strong> Нет. <a href="https://code.claude.com/docs/en/code-review" target="_blank" rel="noopener noreferrer">Claude Code Review</a> — отдельный продукт для команд: владелец (Owner) вашей организации в Claude включает его для репозитория на GitHub, и продукт публикует свои находки в pull requests. Для этого урока он не нужен.</p>
+
+      <h2>Попробуйте: разложите четыре находки</h2>
+      <p><strong>Упражнение.</strong> Отнесите каждую находку инструмента ревью кода к одной из стопок — «исправить сейчас», «спросить почему» или «оставить»; после каждого выбора открывается отзыв. Упражнение показывает, что не каждая находка требует немедленного исправления, а рецензент иногда ошибается.</p>
+      <p>В какую стопку отправить каждую из этих находок?</p>
+      <p><strong>1. <code>src/components/SignupForm.test.tsx:18</code></strong> · correctness. Тест пропустили, а проверку ослабили: форма, которая отправляет пустые значения, всё равно пройдёт тест.</p>
+      <pre>- it("blocks submit when the email is empty", async () =&gt; {
++ it.skip("blocks submit when the email is empty", async () =&gt; {
+  …
+-   expect(onSubmit).toHaveBeenCalledWith({ email: "sam@example.com", password: "correct-horse-battery" });
++   expect(onSubmit).toHaveBeenCalled();</pre>
+      <p><strong>2. <code>src/lib/validate.ts:4</code></strong> · correctness. <code>isValidEmail</code> не обрезает пробелы в начале и в конце, поэтому адрес, вставленный с лишним пробелом, отклоняется.</p>
+      <pre>3  export function isValidEmail(value: string) {
+4    return isEmail(value.trim());
+5  }</pre>
+      <p><strong>3. <code>src/config.ts:1</code></strong> · correctness. <code>API_URL</code> жёстко задан как <code>localhost:3000</code>: продакшен-сборка будет отправлять регистрации на адрес для разработки.</p>
+      <pre>- export const API_URL = import.meta.env.VITE_API_URL;
++ export const API_URL = "http://localhost:3000"; // local testing</pre>
+      <p><strong>4. <code>src/styles/form.css:1</code></strong> · style. Для текста ошибки задан цвет в hex вместо переменной проекта <code>--color-danger</code>.</p>
+      <pre>1  .field-error { color: #c0392b; font-size: 0.875rem; margin-top: 4px; }</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>На Academy после каждого выбора появляется отзыв, в конспекте его нет. По критериям урока первая и третья находки — «исправить сейчас» (ослабленный тест; продакшен-сборка отправит регистрации на адрес для разработки); вторая — «спросить почему»: <code>trim()</code> в строке 4 уже вызывается, и рецензент, похоже, ошибся; четвёртая — «оставить»: проблема настоящая, но мелкая.</p>
+      </aside>
+
+      <h2>Итог</h2>
+      <ul>
+        <li>Прежде чем доверять одной только сводке, прочитайте сам diff изменённых файлов. Выполните <code>/diff</code> и ищите изменения, о которых вы не просили, ослабленные тесты, новые пакеты и значения, зашитые в код.</li>
+        <li>Получите второе мнение из чистого контекста командой <code>/code-review</code> (или попросите обычными словами, и Claude сам запустит ревью). Рецензент только сообщает о находках, а Claude ничего не правит, пока вы не попросите.</li>
+        <li>Относите каждую находку к одной из стопок — «исправить сейчас», «спросить почему» или «оставить» — и к каждой просьбе об исправлении добавляйте просьбу показать доказательства.</li>
+      </ul>
+      <p>Если рецензент несколько раз отмечает одну и ту же проблему, возможно, стоит записать правило, которое Claude будет читать в начале каждой сессии. Для этого есть файл <code>CLAUDE.md</code> — о нём следующий урок.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Файл CLAUDE.md»: как дать Claude Code постоянную память о проекте, которую он читает в начале каждой сессии.</p>
+      <div class="pager">
+        <a class="ghost" href="06-context-management.html">Назад</a>
+        <a class="next" href="08-claude-md.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/code-review" target="_blank" rel="noopener noreferrer">Code review</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

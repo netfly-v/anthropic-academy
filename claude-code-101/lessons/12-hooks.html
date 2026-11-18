@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hooks</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html" aria-current="page"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Hooks</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:21 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, чем hook отличается от указания в <code>CLAUDE.md</code> и для каких задач он нужен;</li>
+        <li>настроить hook в <code>settings.json</code> — событие, matcher и команду — на примере автоформатирования после правок;</li>
+        <li>блокировать опасные действия в PreToolUse кодом выхода 2;</li>
+        <li>поделиться hooks с командой через <code>.claude/settings.json</code> и переменную <code>CLAUDE_PROJECT_DIR</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/IkaPHiMDazM" title="Hooks" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Hooks позволяют запускать команды в определённые моменты жизненного цикла Claude Code. Главное отличие hooks от всего остального, о чём шла речь в этом курсе, в том, что hooks <strong>детерминированы</strong> — они выполняются всегда.</p>
+
+      <h2>Зачем нужны hooks</h2>
+      <p>В файле CLAUDE.md можно попросить Claude запускать Prettier после каждой правки файла. Чаще всего он так и сделает. Но иногда — нет. Hook гарантирует, что это произойдёт каждый раз, без исключений.</p>
+      <p>Типичные применения:</p>
+      <ul>
+        <li>автоформатирование после правки файлов;</li>
+        <li>запись всех выполненных команд в журнал ради соответствия требованиям (compliance);</li>
+        <li>блокировка опасных операций, например изменения файлов продакшена;</li>
+        <li>уведомления самому себе, когда Claude заканчивает задачу.</li>
+      </ul>
+
+      <h2>Как работают hooks</h2>
+      <p>Hooks настраивают в файле <code>settings.json</code>. Вы выбираете событие, при желании задаёте matcher — к каким инструментам относится hook — и указываете команду, которую нужно выполнить. Вот некоторые из самых распространённых событий:</p>
+      <ul>
+        <li><strong>PreToolUse</strong> — срабатывает перед вызовом инструмента;</li>
+        <li><strong>PostToolUse</strong> — срабатывает после того, как вызов инструмента завершился;</li>
+        <li><strong>UserPromptSubmit</strong> — срабатывает, когда вы отправляете промпт, до того как Claude начнёт его обрабатывать;</li>
+        <li><strong>Stop</strong> — срабатывает, когда Claude заканчивает ответ;</li>
+        <li><strong>Notification</strong> — срабатывает, когда Claude отправляет уведомление.</li>
+      </ul>
+      <p>Это лишь несколько событий, к которым можно подключить hook, — Claude Code поддерживает гораздо больше. Полный список — в <a href="https://code.claude.com/docs/en/hooks" target="_blank" rel="noopener noreferrer">справочнике по hooks</a>.</p>
+      <p>Настраивают hooks, редактируя <code>settings.json</code> напрямую. Команда <code>/hooks</code> внутри Claude Code открывает список настроенных hooks в режиме только для чтения: по нему можно проверить, что новый hook появился.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb12-01.jpg" alt="Проводник VS Code: в папке .claude проекта лежат папка hooks и файл settings.json, открытый в редакторе, где начинается блок hooks с событием PreToolUse.">
+        <figcaption>Файл <code>.claude/settings.json</code> с настройкой hooks.</figcaption>
+      </figure>
+
+      <h2>Практический пример</h2>
+      <p>Самый распространённый hook — автоформатирование после правок. Задайте hook <strong>PostToolUse</strong> с matcher <code>"Edit|Write"</code>, чтобы он срабатывал после того, как Claude воспользуется инструментом Edit или Write. Команда запускает тот форматтер, который принят в вашем проекте. Для Prettier добавьте в <code>.claude/settings.json</code> вот это (понадобится <code>jq</code>):</p>
+      <pre>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r '.tool_input.file_path') &amp;&amp; npx prettier --write -- \"$file\""
+          }
+        ]
+      }
+    ]
+  }
+}</pre>
+      <p>Чтобы проверить hook, попросите Claude отредактировать какой-нибудь файл и убедитесь, что файл переформатирован.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Видео расходится с текстом.</strong> В видео сказано, что hooks можно настраивать и в <code>/hooks</code>, а в matcher предлагается указать Edit или MultiEdit. По документации Claude Code (на ноябрь 2026) <code>/hooks</code> только показывает настроенные hooks, а добавляют их в файлах настроек — правку файла Claude Code обычно подхватывает сам. Инструмента MultiEdit в справочнике инструментов нет, а matcher в документации — <code>Edit|Write</code>, как в тексте урока.</li>
+          <li><strong>Чего matcher не видит.</strong> Файл, который Claude изменил shell-командой через Bash, этот hook не отформатирует. В документации к команде добавлен флаг <code>--ignore-unknown</code>: с ним файлы, которые Prettier не умеет форматировать, пропускаются без ошибки.</li>
+        </ul>
+      </aside>
+
+      <h2>Блокировка через PreToolUse</h2>
+      <p>Hooks PreToolUse могут <strong>блокировать вызовы инструментов</strong> до того, как те выполнятся. Hook получает имя инструмента и его входные данные в виде JSON через stdin. Что будет дальше, решает код выхода:</p>
+      <ul>
+        <li><strong>Код выхода 0</strong> — работа идёт как обычно.</li>
+        <li><strong>Код выхода 2</strong> — действие блокируется. Сообщение из stderr передаётся Claude как обратная связь: так он узнаёт, почему его остановили, и может скорректировать свои действия.</li>
+        <li><strong>Любой другой код выхода</strong> — неблокирующая ошибка: её покажут вам, но ничего не остановится.</li>
+      </ul>
+      <p>Так и обеспечивают соблюдение жёстких правил. Запретите запись в каталог с конфигурацией продакшена. Запретите bash-команды, в которых есть <code>rm -rf</code>. Запретите коммиты в main. Всё, что для вашей команды должно быть <em>гарантировано</em>, а не просто рекомендовано.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb12-02.jpg" alt="Файл .claude/settings.json в редакторе: hook PreToolUse с matcher Bash запускает скрипт &quot;$CLAUDE_PROJECT_DIR&quot;/.claude/hooks/block-dangerous-commands.sh, ниже начинается PostToolUse с matcher Edit|Write.">
+        <figcaption>Два hooks в одном файле: PreToolUse для Bash вызывает скрипт блокировки из проекта, PostToolUse — с matcher <code>Edit|Write</code>.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Код 1 не блокирует.</strong> Привычный в Unix код ошибки 1 — это «любой другой код»: по умолчанию действие выполнится. Для запрета нужен код 2.</li>
+          <li><strong>Код 0 не разрешает.</strong> После кода 0 вызов проходит обычную проверку разрешений, и Claude Code может всё равно спросить вас.</li>
+          <li><strong>Блокируют не все события.</strong> На ноябрь 2026 у PostToolUse код 2 только передаёт Claude stderr — инструмент уже выполнился; у Notification код выхода игнорируется. У UserPromptSubmit код 2 отбрасывает промпт, у Stop — не даёт Claude закончить ответ.</li>
+        </ul>
+      </aside>
+
+      <h2>Как поделиться hooks с командой</h2>
+      <p>Hooks, настроенные в <code>.claude/settings.json</code>, действуют на уровне проекта, и этот файл можно закоммитить в репозиторий. Тогда вся команда автоматически получит одни и те же hooks. Чтобы сослаться в командах на скрипты, которые лежат в проекте, используйте переменную окружения <code>CLAUDE_PROJECT_DIR</code>: так команды будут работать, каким бы ни был текущий рабочий каталог Claude.</p>
+
+      <h2>Итог</h2>
+      <p>Hooks дают детерминированный контроль над поведением Claude Code. PostToolUse используйте для автоформатирования и журналирования. PreToolUse — чтобы блокировать опасные операции. Настраивайте hooks в <code>settings.json</code>, а просматривайте командой <code>/hooks</code>. И коммитьте их в репозиторий, чтобы они были и у команды.</p>
+      <p>Если что-то должно происходить каждый раз, без сбоев, не пишите это в промпт. Сделайте для этого hook.</p>
+
+      <h2>Дальше</h2>
+      <p>Курс пройден. Официальный тест курса — <a href="https://academy.claude.com/courses/claude-code-101/course-quiz" target="_blank" rel="noopener noreferrer">Course quiz</a> — проходится на Academy (нужен вход в аккаунт). Проверить себя можно и нашим <a href="../quiz.html">пробным экзаменом</a> по всему курсу.</p>
+      <div class="pager">
+        <a class="ghost" href="11-mcp.html">Назад</a>
+        <a class="next" href="../quiz.html">К тесту</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/hooks" target="_blank" rel="noopener noreferrer">Hooks</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Файл CLAUDE.md</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html" aria-current="page"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Файл CLAUDE.md</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:01 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, зачем нужен файл <code>CLAUDE.md</code> и когда Claude Code его читает;</li>
+        <li>составить <code>CLAUDE.md</code> со стеком проекта, командами и правилами стиля кода;</li>
+        <li>отличать <code>CLAUDE.md</code> уровня проекта от <code>CLAUDE.md</code> уровня пользователя;</li>
+        <li>получать первый вариант файла командой <code>/init</code> и пополнять его поправками и ссылками на документы через <code>@</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/O0FGCxkHM-U" title="The CLAUDE.md file" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Одна из самых полезных возможностей Claude Code — файл <code>CLAUDE.md</code>. Он даёт Claude Code постоянную память о вашем проекте.</p>
+
+      <h2>Какую проблему он решает</h2>
+      <p>Если открыть Claude Code без файла <code>CLAUDE.md</code>, он каждый раз начинает с нуля. Ему приходится заново изучать кодовую базу, выяснять, какие нужны зависимости, и разбираться, какие функции уже реализованы. Иногда он строит догадки, и тогда направить Claude в нужную сторону становится труднее.</p>
+      <p><code>CLAUDE.md</code> решает эту проблему. Это Markdown-файл, который вы кладёте в корень проекта, а Claude Code автоматически читает его в начале каждой сессии. Считайте его вводным инструктажем по вашей кодовой базе. Содержимое файла <code>CLAUDE.md</code> добавляется к вашему промпту.</p>
+
+      <h2>Пример</h2>
+      <p>Вот как выглядит типичный файл <code>CLAUDE.md</code>:</p>
+      <pre># Project
+
+This is a Next.js 15 app using the App Router, Tailwind, and Drizzle ORM.
+
+# Commands
+- Dev server: `pnpm dev`
+- Run tests: `pnpm test`
+- Lint: `pnpm lint`
+
+# Code Style
+- Use 2-space indentation
+- Prefer named exports
+- All API routes go in app/api/
+- Use server actions instead of API routes where possible</pre>
+      <p>Всё просто. Теперь, если попросить Claude Code создать React-компонент, он уже знает, что стили пишутся на Tailwind и что нужно следовать вашим соглашениям о коде.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb08-01.jpg" alt="Файл CLAUDE.md, открытый в VS Code: описание проекта на Next.js 15, раздел Commands с командами pnpm и раздел Code Style с правилами оформления кода.">
+        <figcaption><code>CLAUDE.md</code> из примера в VS Code: проект, команды и стиль кода.</figcaption>
+      </figure>
+
+      <h2>CLAUDE.md — для всей команды</h2>
+      <p><code>CLAUDE.md</code> можно (и нужно) закоммитить в систему контроля версий, чтобы им пользовалась вся команда. Вообще файлов памяти несколько, и они выстроены в иерархию в зависимости от того, для кого предназначены:</p>
+      <ul>
+        <li><strong><code>CLAUDE.md</code> уровня проекта</strong> лежит в корневом каталоге проекта. Он общий для всей команды.</li>
+        <li><strong><code>CLAUDE.md</code> уровня пользователя</strong> лежит в вашей папке конфигурации. Он только для вас и действует во всех ваших проектах. Сюда записывайте личные предпочтения.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>«Папка конфигурации» — это <code>~/.claude/</code>, то есть файл <code>~/.claude/CLAUDE.md</code>. На ноябрь 2026 есть ещё личный <code>CLAUDE.local.md</code>, который не коммитят, и файл организации. Файлы не перекрывают друг друга: загружаются все, проектные — после пользовательских. В уроке сказано, что содержимое «добавляется к промпту»; точнее, Claude получает его сообщением после системного промпта — как контекст, которому старается следовать, а не как жёсткую настройку.</p>
+      </aside>
+
+      <h2>Советы</h2>
+      <p><strong>Сохраняйте поправки в памяти.</strong> Если вы раз за разом поправляете Claude — например, напоминаете, что всегда нужно использовать server actions, а не API routes, — прямо попросите Claude сохранить это правило в памяти. В следующий раз, когда вы откроете проект, он будет его знать.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb08-02.jpg" alt="Терминал Claude Code: Claude отвечает, что server actions лежат в src/actions/, а пользователь пишет «Ok, put in the CLAUDE.md file to only use server actions instead of API routes».">
+        <figcaption>Просьба записать в <code>CLAUDE.md</code> правило: только server actions, без API routes.</figcaption>
+      </figure>
+      <p><strong>Ссылайтесь на документацию проекта.</strong> Если в проекте есть документация, к которой Claude должен обращаться, укажите путь к файлу через символ <code>@</code>:</p>
+      <pre>## README.md
+
+Please read if you need more info: @README.md</pre>
+      <p><strong>Начинайте без него.</strong> Мы советуем начинать проект без файла <code>CLAUDE.md</code>, чтобы увидеть, где вам постоянно приходится поправлять модель. Так <code>CLAUDE.md</code> останется компактным и в нём будет только необходимое. Когда будете готовы, выполните <code>/init</code>, и Claude сгенерирует файл за вас.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>«Запомни» или «добавь в CLAUDE.md».</strong> На ноябрь 2026 то, что вы просите запомнить, попадает не в <code>CLAUDE.md</code>, а в auto memory — заметки, которые Claude ведёт сам и хранит только на вашем компьютере. Чтобы правило стало общим для команды, скажите «добавь это в CLAUDE.md», как на скриншоте.</li>
+          <li><strong>Импорт через <code>@</code>.</strong> <code>@README.md</code> не значит «прочитай при необходимости»: файл целиком загружается вместе с <code>CLAUDE.md</code> в каждую сессию.</li>
+        </ul>
+      </aside>
+
+      <h2>Попробуйте сами</h2>
+      <p>Возьмите проект без <code>CLAUDE.md</code> и выполните <code>/init</code>. Прочитайте, что написал Claude, и удалите все строки, о которых вы не стали бы и говорить новому коллеге. Добавьте одну поправку, которую вам приходится повторять, затем начните новую сессию и попросите сделать что-нибудь, к чему эта поправка относится. Учёл ли её Claude?</p>
+
+      <h2>Итог</h2>
+      <p>Разница между раздражающей и продуктивной сессией Claude Code часто сводится к контексту, а файл <code>CLAUDE.md</code> — это способ его передать. Начните со стека, своих предпочтений и команд, а дальше дополняйте файл по ходу работы.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Субагенты»: как Claude поручает части задачи субагентам, каждый из которых работает в собственном изолированном контекстном окне.</p>
+      <div class="pager">
+        <a class="ghost" href="07-code-review.html">Назад</a>
+        <a class="next" href="09-subagents.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/the-claude-md-file" target="_blank" rel="noopener noreferrer">The CLAUDE.md file</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

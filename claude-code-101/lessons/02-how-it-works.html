@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Как работает Claude Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html" aria-current="page"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Как работает Claude Code</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:50 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>описать агентный цикл Claude Code — сбор контекста, действие, проверку результата — и способы в него вмешаться;</li>
+        <li>объяснить, зачем Claude Code нужны инструменты и что происходит, когда заполняется контекстное окно;</li>
+        <li>различать режимы разрешений Manual, Auto-accept, Plan mode и Auto mode.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/6bs5b4FltCU" title="How Claude Code works" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Claude Code устроен не так, как обычные чат-приложения. Понимание того, как он работает изнутри, поможет пользоваться им эффективнее.</p>
+
+      <h2>Агентный цикл</h2>
+      <p>Работу Claude Code проще всего объяснить с помощью <strong>агентного цикла</strong>:</p>
+      <ol>
+        <li>Вы вводите промпт в Claude Code.</li>
+        <li>Claude собирает нужный ему контекст, обращаясь к модели. Модель возвращает текст или вызов инструмента, который Claude Code может выполнить.</li>
+        <li>Он действует — например, правит файл или запускает команду.</li>
+        <li>Он проверяет результат и решает, достигнуто ли то, ради чего вы писали промпт.</li>
+        <li>Если да, Claude заканчивает работу и ждёт следующего промпта. Если нет, он возвращается к началу цикла и пробует снова, пока результат не станет полным и проверяемым.</li>
+      </ol>
+      <p>На любом шаге цикла вы можете добавить контекст, прервать модель или скорректировать её курс, чтобы помочь ей достичь вашей цели.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb02-01.jpg" alt="Схема: «Your prompt» ведёт в блок «Agentic Loop» с шагами Gather context, Take action и Verify results и стрелкой возврата к первому шагу, затем в «Done»; снизу в цикл входит «You interrupt, steer or add context».">
+        <figcaption>Агентный цикл: сбор контекста, действие, проверка результата и повтор; вмешаться можно в любой момент.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Модель и Claude Code.</strong> «Claude» в шаге 2 — программа Claude Code, обвязка вокруг модели. Решает модель — ответить текстом или вызвать инструмент; Claude Code выполняет вызов и возвращает ей результат.</li>
+          <li><strong>Как вмешаться.</strong> <code>Esc</code> сразу останавливает Claude и отменяет текущий вызов инструмента. Сообщение, отправленное клавишей <code>Enter</code>, пока Claude работает, встаёт в очередь: Claude прочтёт его, когда завершит текущие вызовы инструментов.</li>
+        </ul>
+      </aside>
+
+      <h2>Контекст</h2>
+      <p>У Claude есть <strong>контекстное окно</strong>: от него зависит, какой объём разговора, содержимого файлов, вывода команд и прочего Claude может удерживать и использовать. Когда этот предел достигнут, Claude Code сжимает разговор — сам определяет, что можно убрать или кратко пересказать, чтобы контекстное окно снова уменьшилось до рабочего размера.</p>
+
+      <h2>Инструменты</h2>
+      <p>Инструменты — основа работы агентов. Большинство ИИ-ассистентов просто получают на вход текст и выдают текст. Инструменты позволяют Claude Code решать, <em>когда</em> выполнить код, чтобы приблизиться к завершению задачи. Это может быть инструмент чтения файлов, инструмент веб-поиска или любая из множества других возможностей. Claude Code опирается на понимание смысла, чтобы решить, когда вызвать инструмент и как распорядиться его результатом.</p>
+
+      <h2>Разрешения</h2>
+      <p>В Claude Code есть несколько режимов разрешений:</p>
+      <ul>
+        <li><strong>Manual:</strong> Claude спрашивает явного разрешения, прежде чем править файл или запускать shell-команду.</li>
+        <li><strong>Auto-accept:</strong> без вопросов правятся файлы и выполняются типовые команды файловой системы, такие как <code>mkdir</code>, <code>mv</code> и <code>rm</code>. Для остальных команд по-прежнему нужно одобрение.</li>
+        <li><strong>Plan mode:</strong> Claude читает файлы и запускает shell-команды, чтобы изучить проект, но не правит ваш исходный код; прежде чем браться за работу, он составляет план действий.</li>
+        <li><strong>Auto mode:</strong> Claude работает без рутинных запросов разрешения, а классификатор в фоне проверяет большинство действий. Его задача — блокировать необратимые и разрушительные действия, а также действия, направленные за пределы вашего окружения. Если что-то заблокировано, Claude обычно находит более безопасный путь или просит у вас разрешения.</li>
+      </ul>
+      <p>В каком режиме начинается новая сессия, зависит от версии Claude Code и ваших настроек.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb02-02.jpg" alt="Терминал Claude Code: в ответ на промпт «Can we create a simple test api with typescript?» Claude хочет выполнить Bash(npm init -y) и спрашивает «Do you want to proceed?» с вариантами Yes, «Yes, and don’t ask again for: npm init:*» и No.">
+        <figcaption>Claude Code просит разрешения перед запуском bash-команды <code>npm init -y</code>.</figcaption>
+      </figure>
+      <p>Всё это задаётся в файле настроек. Будьте осторожны с пропуском разрешений: если дать Claude Code полную свободу запускать команды, ошибку будет труднее поймать до того, как она случится.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Режим при запуске.</strong> В видео сказано, что по умолчанию Claude спрашивает разрешения. На ноябрь 2026 интерактивная сессия в актуальных версиях начинается в Auto mode, если он доступен, иначе — в Manual; <code>claude -p</code> — в Manual. Режимы переключает сочетание <code>Shift+Tab</code>, а стартовый режим задаёт ключ <code>permissions.defaultMode</code>: <code>default</code> (Manual), <code>acceptEdits</code>, <code>plan</code>, <code>auto</code>.</li>
+          <li><strong>Блокировка в Auto mode.</strong> Точнее, чем в уроке: Claude получает причину отказа, действие можно одобрить в <code>/permissions</code> (вкладка Recently blocked), а после серии блокировок Claude Code снова начинает спрашивать разрешения.</li>
+          <li><strong>Пропуск разрешений.</strong> Режим <code>bypassPermissions</code> (флаг <code>--dangerously-skip-permissions</code>): почти всё выполняется без запросов и без фоновой проверки. Документация советует запускать его только в изолированном контейнере или виртуальной машине.</li>
+        </ul>
+      </aside>
+
+      <h2>Итог</h2>
+      <p>Claude Code объединяет несколько агентных идей: агентный цикл, управляемое контекстное окно, инструменты и настраиваемые разрешения — и всё это прямо в вашем терминале. Он умеет читать вашу кодовую базу, действовать и проверять собственную работу. Именно этим он принципиально отличается от окна чата.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Установка Claude Code»: как поставить Claude Code и где с ним работать — в терминале, в IDE, в приложении Claude Desktop и в вебе.</p>
+      <div class="pager">
+        <a class="ghost" href="01-what-is-claude-code.html">Назад</a>
+        <a class="next" href="03-installing.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/how-claude-code-works" target="_blank" rel="noopener noreferrer">How Claude Code works</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

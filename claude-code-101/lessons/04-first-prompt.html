@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Первый промпт</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html" aria-current="page"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Первый промпт</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 2:27 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>выбрать режим разрешений — Manual, Auto-accept или Auto — и переключать режимы клавишами <code>Shift + Tab</code>;</li>
+        <li>объяснить, что делает plan mode и для каких задач он подходит;</li>
+        <li>проверить план перед тем, как принять его, и поправить Claude, если он что-то упустил.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/gbetp6D7J_Q" title="Your first prompt" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>С Claude Code разговаривают так же, как с любым ИИ-ассистентом. Но когда вы вводите промпт, стоит учесть несколько вещей: они и защитят вас, и упростят работу.</p>
+
+      <h2>Выбор режима разрешений</h2>
+      <p>Вы сами решаете, насколько плотно присматривать за Claude, пока он работает. Режимы переключаются по кругу клавишами <code>Shift + Tab</code>.</p>
+      <ul>
+        <li><strong>Режим Manual:</strong> Claude спрашивает разрешения каждый раз, когда хочет изменить файл или выполнить команду.</li>
+        <li><strong>Режим Auto-accept:</strong> правки файлов и типовые команды для работы с файловой системой, такие как <code>mkdir</code>, <code>mv</code> и <code>rm</code>, одобряются автоматически, но на остальные команды по-прежнему нужно ваше разрешение.</li>
+        <li><strong>Режим Auto:</strong> Claude работает без рутинных запросов разрешения, а система безопасности в фоне проверяет большинство действий; если что-то заблокировано, Claude обычно находит более безопасный путь или спрашивает вашего согласия.</li>
+      </ul>
+      <p>Правильного или неправильного выбора здесь нет — выбирайте то, что вам удобнее.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb04-01.jpg" alt="Терминал Claude Code: после просьбы исправить критические проблемы Claude читает файлы, а в строке состояния горит accept edits on.">
+        <figcaption>Claude Code в режиме Auto-accept (<code>accept edits on</code>) читает файлы и работает над задачей.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>На ноябрь 2026 сессия в терминале стартует в режиме Auto, если он доступен, а иначе — в Manual. Первое нажатие <code>Shift + Tab</code> переводит из Auto в Manual, дальше по кругу идут Auto-accept, plan mode и снова Auto. Про Manual урок говорит упрощённо: чтение файлов в рабочей папке и встроенные команды только для чтения (<code>ls</code>, <code>cat</code>, <code>grep</code> и т. п.) выполняются без вопросов, а разрешение Claude спрашивает на правки и остальные команды.</p>
+      </aside>
+
+      <h2>Plan mode — режим планирования</h2>
+      <p>В том же круге <code>Shift + Tab</code> есть <strong>plan mode</strong>. В этом режиме Claude берёт ваш промпт, читает файлы и запускает shell-команды, чтобы разобраться в кодовой базе и продумать предложенную вами реализацию, но исходные файлы не меняет. По ходу он задаёт уточняющие вопросы, а в конце выдаёт подробный план, который может сам и выполнить.</p>
+      <p>Plan mode отлично подходит, чтобы спланировать сложные изменения или безопасно провести ревью кода. Вы часто будете просить Claude реализовать функциональность в несколько шагов — и как раз здесь plan mode особенно силён.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb04-02.jpg" alt="Только что запущенный Claude Code в папке ~/sample-project, в строке состояния — индикатор plan mode on.">
+        <figcaption>Plan mode включён: в строке состояния — <code>plan mode on</code>.</figcaption>
+      </figure>
+
+      <h2>Пример: добавляем переключатель тёмной темы</h2>
+      <p>Разберём пример. Допустим, вашему приложению нужен переключатель тёмной темы. Откройте корневую папку проекта и запустите <code>claude</code>. Нажимайте <code>Shift + Tab</code>, пока в строке состояния не появится <code>plan mode on</code>, а затем напишите промпт вроде такого:</p>
+      <pre>My app needs a dark mode implemented across the entire app. Can you create a toggle switch on the header that allows a user to toggle between light mode and dark mode? I need you to find a good contrast color that works based on my existing light theme.</pre>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb04-03.jpg" alt="Claude Code с включённым plan mode: в поле ввода набран промпт о тёмной теме для всего приложения.">
+        <figcaption>Промпт о тёмной теме в Claude Code с включённым plan mode.</figcaption>
+      </figure>
+      <p>Дайте Claude составить план. Просмотрите его и, если он вас устраивает, примите — пусть Claude его выполняет. В зависимости от режима разрешений он может по ходу сверяться с вами. В конце видно, что именно сделал Claude и как он пришёл к своим выводам.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>На ноябрь 2026, когда план готов, Claude предлагает на выбор: <strong>Yes, and use auto mode</strong>, <strong>Yes, manually approve edits</strong> (одобрять каждую правку) или <strong>No, keep planning</strong> (остаться в plan mode и сказать, что изменить). После одобрения плана сессия переходит из plan mode в выбранный режим. Shell-команды во время планирования проверяет классификатор режима Auto, а если Auto недоступен, разрешения требует каждая команда, кроме команд только для чтения.</p>
+      </aside>
+
+      <h2>Попробуйте сами</h2>
+      <p>Откройте проект, который хорошо знаете, и запустите <code>claude</code>. Нажимайте <code>Shift + Tab</code>, пока в строке состояния не появится <code>plan mode on</code>, и попросите внести одно небольшое изменение, которое вы и так собирались сделать. Прежде чем принять план, проверьте его: названы ли в нём те файлы, которых вы ожидали? Если нет, скажите Claude, что он упустил, и прочитайте новый план.</p>
+
+      <h2>Итог</h2>
+      <p>Работая с Claude Code, старайтесь описывать задачу в промпте как можно подробнее. Если хотите участвовать в каждом шаге, такая возможность есть. Пользуйтесь plan mode, чтобы Claude, прежде чем браться за код, вник в детали того, чего вы хотите добиться.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Цикл Explore → Plan → Code → Commit»: главный рабочий процесс курса, в котором Claude сначала изучает код и составляет план, а уже потом пишет код и делает коммит.</p>
+      <div class="pager">
+        <a class="ghost" href="03-installing.html">Назад</a>
+        <a class="next" href="05-explore-plan-code-commit.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/your-first-prompt" target="_blank" rel="noopener noreferrer">Your first prompt</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

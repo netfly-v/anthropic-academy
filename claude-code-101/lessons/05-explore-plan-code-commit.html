@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Цикл Explore → Plan → Code → Commit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../index.html" aria-current="page">Claude Code 101</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Claude Code 101</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Что такое Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-is-claude-code.html"><span class="mark"></span>Что такое Claude Code</a></li>
+          <li><a href="02-how-it-works.html"><span class="mark"></span>Как работает Claude Code</a></li>
+        </ul>
+        <p class="nav-group">Первый промпт</p>
+        <ul class="lesson-nav">
+          <li><a href="03-installing.html"><span class="mark"></span>Установка</a></li>
+          <li><a href="04-first-prompt.html"><span class="mark"></span>Первый промпт</a></li>
+        </ul>
+        <p class="nav-group">Повседневная работа</p>
+        <ul class="lesson-nav">
+          <li><a href="05-explore-plan-code-commit.html" aria-current="page"><span class="mark"></span>Explore → Plan → Code → Commit</a></li>
+          <li><a href="06-context-management.html"><span class="mark"></span>Управление контекстом</a></li>
+          <li><a href="07-code-review.html"><span class="mark"></span>Ревью кода</a></li>
+        </ul>
+        <p class="nav-group">Настройка Claude Code</p>
+        <ul class="lesson-nav">
+          <li><a href="08-claude-md.html"><span class="mark"></span>Файл CLAUDE.md</a></li>
+          <li><a href="09-subagents.html"><span class="mark"></span>Субагенты</a></li>
+          <li><a href="10-skills.html"><span class="mark"></span>Skills</a></li>
+          <li><a href="11-mcp.html"><span class="mark"></span>MCP</a></li>
+          <li><a href="12-hooks.html"><span class="mark"></span>Hooks</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Цикл Explore → Plan → Code → Commit</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:11 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>назвать четыре шага цикла Explore → Plan → Code → Commit и объяснить, что даёт каждый;</li>
+        <li>исследовать код и получать план в plan mode, поправляя его до того, как будет написана первая строка кода;</li>
+        <li>подготовить этап кода: критерии успеха, инструменты вроде Claude in Chrome и надёжный набор тестов;</li>
+        <li>перед коммитом проверить работу субагентом-ревьюером и поручить Claude написать сообщение коммита.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/xJQuF02NAK8" title="The explore → plan → code → commit workflow" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Если запомнить из этого курса что-то одно, пусть это будет такой порядок работы: <strong>Explore, Plan, Code и Commit</strong> — исследовать, спланировать, написать код, закоммитить. Без него большинство сразу просит Claude написать код, а значит, потом приходится чаще поправлять курс.</p>
+
+      <h2>Explore и Plan</h2>
+      <p>Быстрее всего первые два шага проходят в <strong>plan mode</strong>. В plan mode Claude не может править файлы. Он читает файлы и запускает команды оболочки, чтобы осмотреться, и собирает сведения о том, как будет решать задачу.</p>
+      <p>Чтобы войти в plan mode, нажимайте <code>Shift + Tab</code>, пока в строке состояния не появится <code>plan mode on</code>. Затем напишите промпт, например такой:</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb05-01.jpg" alt="Нижняя часть окна Claude Code: под пустой строкой ввода строка состояния «plan mode on (shift+tab to cycle)».">
+        <figcaption>Строка состояния: plan mode включён, <code>Shift+Tab</code> переключает режимы.</figcaption>
+      </figure>
+      <pre>I need to add WebP conversion to our image upload pipeline. Figure out where in the pipeline it should happen, whether we need new dependencies, and how to approach it.</pre>
+      <p>Claude прочитает нужные файлы, поищет кое-что в интернете и выдаст вам план действий. Просмотрите его и решите, отвечает ли он вашим требованиям. Если нет, попросите переработать конкретные части.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb05-02.jpg" alt="Конец плана в Claude Code: раздел Verification со списком проверок и вопрос «Would you like to proceed?» с тремя вариантами одобрения и четвёртым пунктом, куда вписана поправка «Can you make the upload limit 10mb?».">
+        <figcaption>План готов: Claude спрашивает, выполнять ли его; в последнем пункте можно вписать свою поправку.</figcaption>
+      </figure>
+      <p>Это лучший момент, чтобы поправить курс: код ещё не написан. Кроме того, субагента Explore можно запустить и вне plan mode — если вам нужна просто общая сводка по кодовой базе и вы не собираетесь потом ничего менять.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Вход и одобрение.</strong> В plan mode можно войти и командой <code>/plan</code> в начале промпта. Кнопки «approve» нет: на ноябрь 2026 вариант одобрения сам переключает режим разрешений — «Yes, and use auto mode» (без режима auto — «Yes, auto-accept edits») или «Yes, manually approve edits», где каждую правку одобряете вы; «No, keep planning» оставляет вас в plan mode, чтобы сказать, что поменять. <code>Ctrl+G</code> открывает план в редакторе для ручной правки, а пункт с очисткой контекста (как на скриншоте) появляется, только если включена настройка <code>showClearContextOnPlanAccept</code>.</li>
+          <li><strong>Explore.</strong> Это встроенный субагент только для чтения. Claude сам поручает ему поиск по коду, чтобы результаты не занимали основной контекст; вне plan mode достаточно попросить Claude изучить кодовую базу. В plan mode исследование ведёт другой встроенный субагент — Plan.</li>
+        </ul>
+      </aside>
+
+      <h2>Code</h2>
+      <p>Когда план вас устроит, выберите «approve», чтобы принять его, и Claude пойдёт по пунктам списка. Как он будет действовать, зависит от режима разрешений: Claude может спрашивать вас на каждом шаге, принимать правки файлов автоматически или работать в режиме auto, где большинство действий просматривает фоновая проверка безопасности.</p>
+      <p>Прежде чем считать план «выполненным», Claude постарается сам разобраться с проблемами, но иногда вмешаться придётся вам. В этом и польза работы в plan mode: после выполнения у вас есть ещё и контекст того, как вы пришли к результату, и он помогает направлять следующие решения Claude.</p>
+      <p>Несколько советов, чтобы этап кода прошёл глаже:</p>
+      <ul>
+        <li><strong>Задайте критерии успеха.</strong> Чтобы Claude был уверен в своих результатах, ему нужно ясно понимать, что считать «правильным». Пропишите это явно, когда составляете план.</li>
+        <li><strong>Добавьте инструменты.</strong> Инструменты, которые помогают Claude достигать целей, сильно сокращают лишний обмен репликами. Например, если вы делаете веб-интерфейсы, установите расширение Claude in Chrome: тогда Claude Code сможет управлять вкладкой браузера и сам проверять интерфейс.
+          <figure class="shot">
+            <img src="../../assets/claude-code-101/cb05-03.jpg" alt="Страница расширения Claude в Chrome Web Store: подпись «Claude in Chrome (Beta)», кнопка «Remove from Chrome», описание расширения и видео с примером работы.">
+            <figcaption>Расширение Claude in Chrome в Chrome Web Store.</figcaption>
+          </figure>
+        </li>
+        <li><strong>Подключите набор тестов.</strong> Дайте Claude набор тестов, по которому он сможет постоянно себя проверять. Claude может даже написать тесты за вас. Но прежде чем передавать эту работу Claude, убедитесь, что тесты — надёжный источник истины, иначе можно получить ложноположительные результаты.</li>
+      </ul>
+      <p><strong>Совет:</strong> если Claude раз за разом натыкается на одни и те же проблемы, попросите его записать решение в файл <code>CLAUDE.md</code>.</p>
+
+      <h2>Commit</h2>
+      <p>Когда вы сами проверили изменения и довольны результатом, пора отправлять код. Перед коммитом запустите <strong>субагента-ревьюера</strong>, чтобы он проверил вашу работу. Субагент смотрит на кодовую базу свежим взглядом: у него нет предвзятости, которая могла накопиться у основного агента за сессию.</p>
+      <figure class="shot">
+        <img src="../../assets/claude-code-101/cb05-04.jpg" alt="Claude Code по просьбе «Spawn the code reviewer subagent to review the code we last created» запустил субагента code-reviewer: тот выполняет find и читает файлы src/utils/errors.ts и src/services/userService.ts.">
+        <figcaption>Субагент <code>code-reviewer</code> читает файлы и проверяет последние изменения.</figcaption>
+      </figure>
+      <p>Затем попросите Claude составить сообщение коммита в вашем стиле. И так по кругу.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Встроенного субагента-ревьюера в Claude Code нет: <code>code-reviewer</code> на скриншоте — пользовательский субагент. Его создают один раз: просят Claude или кладут файл в <code>.claude/agents/</code> (подробнее — в уроке «Субагенты»). Готовый вариант на ноябрь 2026 — встроенный skill <code>/code-review</code> (псевдоним <code>/review</code>): он проверяет текущий diff на ошибки в отдельном субагенте.</p>
+      </aside>
+
+      <h2>Итог</h2>
+      <p>Чтобы работать с Claude Code эффективно, придерживайтесь цикла Explore, Plan, Code и Commit:</p>
+      <ul>
+        <li><strong>Explore</strong> даёт Claude нужный контекст о вашем проекте.</li>
+        <li><strong>Plan</strong> создаёт план действий, по которому Claude оценивает, удалась ли работа.</li>
+        <li><strong>Code</strong> — это обмен репликами между вами и Claude, пока вы не придёте к окончательному результату.</li>
+        <li><strong>Commit</strong> помогает проверить и отправить код, чтобы взяться за следующую функцию.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Управление контекстом»: что занимает окно контекста Claude, что происходит, когда оно заполняется, и как расходовать его с умом.</p>
+      <div class="pager">
+        <a class="ghost" href="04-first-prompt.html">Назад</a>
+        <a class="next" href="06-context-management.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/claude-code-101/the-explore-plan-code-commit-workflow" target="_blank" rel="noopener noreferrer">The explore → plan → code → commit workflow</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
