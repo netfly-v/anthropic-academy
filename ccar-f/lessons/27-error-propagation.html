@@ -44,6 +44,15 @@
           <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
           <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
         </ul>
+        <p class="nav-group">Домен 2. Инструменты и MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="09-tool-descriptions.html"><span class="mark"></span>Описания инструментов</a></li>
+          <li><a href="10-mcp-errors.html"><span class="mark"></span>Ошибки MCP</a></li>
+          <li><a href="11-tool-distribution.html"><span class="mark"></span>Распределение инструментов</a></li>
+          <li><a href="12-tool-choice.html"><span class="mark"></span>tool_choice</a></li>
+          <li><a href="13-mcp-config.html"><span class="mark"></span>Настройка MCP</a></li>
+          <li><a href="14-builtin-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+        </ul>
         <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
         <ul class="lesson-nav">
           <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
@@ -74,7 +83,7 @@
         <li><a href="../../subagents/lessons/04-using-subagents-effectively.html">Subagents · Когда нужны субагенты</a> — ответ «тесты упали» без подробностей прячет то, что нужно для диагностики.</li>
         <li><a href="../../tool-use/lessons/03-parallel-tool-calling.html">Tool use · Параллельные вызовы инструментов: меньше задержка</a> — сбой одного вызова возвращают с <code>is_error: true</code> и не останавливают цикл; пропущенный вызов тоже получает ответ с ошибкой.</li>
       </ul>
-      <p>Ошибки самого инструмента — на странице <span data-pending="10-mcp-errors.html">«Ошибки MCP»</span>; здесь — что субагент делает со сбоем и что сообщает координатору.</p>
+      <p>Ошибки самого инструмента — на странице <a href="10-mcp-errors.html">«Ошибки MCP»</a>; здесь — что субагент делает со сбоем и что сообщает координатору.</p>
 
       <h2>Простыми словами</h2>
       <p>Ошибка поднимается по цепочке: инструмент → субагент → координатор. Правило: чинить сбой там, где о нём известно больше всего, а наверх отдавать только то, что починить не удалось, — с подробностями.</p>

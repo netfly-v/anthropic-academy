@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ошибки MCP-инструментов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 2. Инструменты и MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="09-tool-descriptions.html"><span class="mark"></span>Описания инструментов</a></li>
+          <li><a href="10-mcp-errors.html" aria-current="page"><span class="mark"></span>Ошибки MCP</a></li>
+          <li><a href="11-tool-distribution.html"><span class="mark"></span>Распределение инструментов</a></li>
+          <li><a href="12-tool-choice.html"><span class="mark"></span>tool_choice</a></li>
+          <li><a href="13-mcp-config.html"><span class="mark"></span>Настройка MCP</a></li>
+          <li><a href="14-builtin-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Ошибки MCP-инструментов</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 2 · подпункт 2.2</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/57-mcp-tools.html">API · Инструменты в MCP</a> — исключение в инструменте становится результатом с <code>isError</code>, и Claude видит его текст.</li>
+        <li><a href="../../mcp/lessons/05-mcp-tools.html">MCP · Инструменты в MCP</a> — проверка ID документа; в пояснении — как в SDK версии 2 передать Claude текст ошибки.</li>
+        <li><a href="../../api/lessons/29-tool-functions.html">API · Функции-инструменты</a> — проверка входных данных и понятное сообщение, по которому Claude повторит вызов с исправленными параметрами.</li>
+        <li><a href="../../api/lessons/34-implementing-turns.html">API · Реализация цикла</a> — даже при сбое инструмента в ответ уходит блок результата с <code>is_error</code>.</li>
+        <li><a href="../../tool-use/lessons/01-tools-claude-picks.html">Tool use · Инструменты, которые выбирает Claude</a> — «Error 404» Claude ничего не подсказывает, а сообщение с подсказкой помогает исправить вызов.</li>
+        <li><a href="../../tool-use/lessons/03-parallel-tool-calling.html">Tool use · Параллельные вызовы инструментов: меньше задержка</a> — в ошибке говорится, что пошло не так и что попробовать дальше.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Курсы учат главному: ошибка — тоже ответ, и Claude его читает. Экзамену важно другое: что агенту делать дальше — повторить, исправить аргументы, объяснить отказ или позвать человека. Из «Something went wrong» этого не понять, и агент гадает: повторяет вызов, который не пройдёт никогда, или сдаётся там, где хватило бы паузы.</p>
+      <p>Поэтому сервер различает четыре вида сбоев:</p>
+      <ul>
+        <li><strong>Временный (transient)</strong> — внешняя система не ответила вовремя, перегружена или упёрлась в лимит запросов. Повтор имеет смысл, лучше с паузой; сообщение говорит, когда повторить.</li>
+        <li><strong>Неверные входные данные (validation)</strong> — дата в прошлом, номер в неверном формате. Повтор без правки бесполезен; сообщение говорит, что исправить.</li>
+        <li><strong>Бизнес-правило (business)</strong> — запрос корректен, но его запрещают правила компании. Повтор не поможет: агент объясняет человеку причину и предлагает другой путь.</li>
+        <li><strong>Нет прав (permission)</strong> — доступа нет у агента или пользователя. Повтор тоже не поможет: нужен другой маршрут, например передача человеку.</li>
+      </ul>
+      <p>Ответ об ошибке должен сам сказать агенту три вещи: вид ошибки, стоит ли пробовать снова (отдельным полем «да/нет», а не намёком в тексте) и что случилось — словами, понятными человеку. К отказу по правилам компании добавьте готовую фразу для клиента — вежливую, без внутренних кодов, иначе агент сочинит причину сам.</p>
+      <p>Стандартных полей для этого на ноябрь 2026 нет: и в MCP, и в Claude API у ошибки есть только признак (<code>isError</code> / <code>is_error</code>), а вид и флаг сервер кладёт в содержимое результата в своём формате, поэтому на экзамене имена полей могут быть другими.</p>
+      <p>Отдельная ловушка — пустой результат. Поиск, который отработал и ничего не нашёл, — это успех: <code>isError</code> не ставится, а в тексте сказано, что искали и что совпадений нет. И наоборот: если база не ответила, пустой список возвращать нельзя — агент уверенно скажет клиенту «ничего нет», хотя даже не смог проверить.</p>
+
+      <h2>Пример</h2>
+      <p>В сети клиник запись на приём ведёт агент через MCP-сервер расписания с инструментами <code>search_slots</code> (свободные окна врача) и <code>move_visit</code> (перенос приёма). Первая версия сервера на любое исключение отвечает «Something went wrong». В логах три случая:</p>
+      <ul>
+        <li>база расписания на секунду не ответила — агент сказал пациенту, что перенос невозможен;</li>
+        <li>пациент хотел перенести приём за час до начала, а онлайн-перенос закрывается за 2 часа — агент пять раз повторил тот же вызов;</li>
+        <li>у врача не было окон на выбранную дату, и сервер вернул это как ошибку — агент ответил «система недоступна».</li>
+      </ul>
+      <p>Архитектор переделывает ответы сервера. Таймаут сервер сначала повторяет сам, а если не помогло, отдаёт временную ошибку с пометкой, через сколько повторить. Пустой поиск — успешный ответ «на 24 ноября свободных окон нет», и агент предлагает соседние даты. Отказ из-за правила о сроках выглядит так:</p>
+      <pre>{
+  "category": "business",
+  "retryable": false,
+  "detail": "Rebooking closes 2 hours before the visit",
+  "customer_message": "Перенести приём онлайн можно не позднее чем за 2 часа. Могу передать запрос в регистратуру."
+}</pre>
+      <p>Объект лежит текстом в результате с <code>isError: true</code>: <code>retryable: false</code> останавливает повторы, а <code>customer_message</code> агент передаёт пациенту.</p>
+
+      <h2>Как это спрашивают</h2>
+      <p>В вопросе агент зря повторяет вызовы, сдаётся при коротком сбое или путает «ничего не найдено» с «не удалось проверить». Заманчивые, но неверные ходы:</p>
+      <ul>
+        <li><strong>Правило в промпте</strong> («при ошибке повтори не больше трёх раз»): агент всё равно не знает вида ошибки и одинаково повторит и таймаут, и запрет по правилам компании.</li>
+        <li><strong>Один счётчик повторов в коде на все ошибки</strong>: попытки уходят на то, что не пройдёт никогда.</li>
+        <li><strong>Модель покрупнее</strong>: никакая модель не выведет причину из «Something went wrong».</li>
+        <li><strong>Пустой список вместо ошибки при сбое</strong> — или, наоборот, <code>isError</code> на пустой поиск.</li>
+      </ul>
+      <p>Верный ход — на стороне инструмента: причину сбоя знает только сервер, поэтому он сам передаёт вид ошибки, флаг повтора и понятное описание.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://modelcontextprotocol.io/specification/2026-07-28/server/tools#error-handling" target="_blank" rel="noopener noreferrer">MCP Specification (2026-07-28): Tools — Error Handling</a> — ошибки протокола (JSON-RPC) и ошибки выполнения с <code>isError</code>: сбои API, неверный ввод, бизнес-логика; ошибки выполнения клиенту следует передавать модели.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls#handling-errors-with-is-error" target="_blank" rel="noopener noreferrer">Handle tool calls: Handling errors with is_error</a> — инструктивные сообщения вместо «failed», пример с подсказкой, когда повторить; при неверном вызове Claude делает 2–3 попытки, прежде чем извиниться.</li>
+        <li><a href="https://www.anthropic.com/engineering/writing-tools-for-agents" target="_blank" rel="noopener noreferrer">Writing effective tools for agents — with agents</a> — фон (Anthropic Engineering): в ответе об ошибке — конкретные подсказки, а не непрозрачные коды и трассировки.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="09-tool-descriptions.html">Назад</a>
+        <a class="next" href="11-tool-distribution.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

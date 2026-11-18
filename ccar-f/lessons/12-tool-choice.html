@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tool_choice и структурированный вывод</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 2. Инструменты и MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="09-tool-descriptions.html"><span class="mark"></span>Описания инструментов</a></li>
+          <li><a href="10-mcp-errors.html"><span class="mark"></span>Ошибки MCP</a></li>
+          <li><a href="11-tool-distribution.html"><span class="mark"></span>Распределение инструментов</a></li>
+          <li><a href="12-tool-choice.html" aria-current="page"><span class="mark"></span>tool_choice</a></li>
+          <li><a href="13-mcp-config.html"><span class="mark"></span>Настройка MCP</a></li>
+          <li><a href="14-builtin-tools.html"><span class="mark"></span>Встроенные инструменты</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>tool_choice и структурированный вывод</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домены 2 и 4 · подпункты 2.3, 4.3</p>
+
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/30-tool-schemas.html">API · Схемы инструментов</a> — из чего состоит определение инструмента и его <code>input_schema</code>.</li>
+        <li><a href="../../api/lessons/31-message-blocks.html">API · Блоки сообщения</a> — как разобрать ответ из блоков <code>text</code> и <code>tool_use</code>.</li>
+        <li><a href="../../tool-use/lessons/02-strict-tool-use.html">Tool use · Strict tool use: перестаньте отклонять свои же вызовы</a> — <code>strict: true</code>, <code>null</code> для факта, которого нет в запросе, связка <code>any</code> + strict и модели, отклоняющие принудительный выбор.</li>
+        <li><a href="../../api/lessons/36-fine-grained.html">API · Fine-grained tool calling</a> — пояснение о принудительном <code>tool_choice</code> и ошибке 400 на новых моделях.</li>
+        <li><a href="../../api/lessons/72-routing.html">API · Маршрутизация</a> — пояснение: схема с <code>enum</code>, чтобы получить ровно одну категорию.</li>
+        <li><a href="../../api/lessons/12-structured-data.html">API · Структурированные данные</a> — JSON через prefill и stop sequence: старый способ; на Claude 4.6 и новее prefill даёт ошибку 400.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Если нужны данные строгой формы, опишите эту форму как инструмент. Инструмент извлечения ничего не выполняет: его <code>input_schema</code> и есть целевая структура, а результат — поле <code>input</code> блока <code>tool_use</code> в ответе. При <code>strict: true</code> это поле совпадает со схемой (исключения — в <a href="../../tool-use/lessons/02-strict-tool-use.html">уроке о strict</a>).</p>
+      <p>Вызов определяет параметр <code>tool_choice</code>:</p>
+      <ul>
+        <li><code>{"type": "auto"}</code> — по умолчанию: Claude сам решает, вызвать инструмент или ответить текстом. При извлечении вместо данных может прийти пересказ.</li>
+        <li><code>{"type": "any"}</code> — обязан вызвать один из инструментов, но какой — решает сам.</li>
+        <li><code>{"type": "tool", "name": "…"}</code> — обязан вызвать именно этот.</li>
+      </ul>
+      <p>Правило выбора:</p>
+      <ul>
+        <li><strong>Тип документа заранее неизвестен</strong> — заводят по инструменту извлечения на каждый вид и ставят <code>any</code>: вызов гарантирован, а по имени инструмента код узнаёт тип документа.</li>
+        <li><strong>Определённый шаг должен идти первым</strong> — его инструмент выбирают по имени в первом запросе, следующие — с <code>auto</code> (<code>tool_choice</code> задают в каждом запросе заново).</li>
+      </ul>
+      <p>В схеме:</p>
+      <ul>
+        <li><strong>Обязательное или необязательное.</strong> В <code>required</code> — только то, что есть в каждом документе этого вида; если поля в источнике может не быть, разрешают <code>null</code>.</li>
+        <li><strong><code>enum</code> с запасным выходом.</strong> Без него непредусмотренный случай попадёт в ближайшую, но неверную категорию. <code>"other"</code> с полем для уточнения показывает новые категории для списка; <code>"unclear"</code> — честный ответ на неоднозначный документ, который код передаст человеку.</li>
+        <li><strong>Правила нормализации — в промпте.</strong> Схема со strict гарантирует форму (строка формата <code>date</code>, сумма — число), но не объясняет, как читать «03/04/26» или «1 234,50». Это пишут в промпте или в описании поля.</li>
+      </ul>
+
+      <h2>Пример</h2>
+      <p>Бухгалтерия сети стоматологий получает от поставщиков PDF: счета, накладные, акты услуг. Первая версия — один инструмент и <code>auto</code> — иногда отвечала текстом «Это счёт от…», обучение персонала относила к «оборудованию», а без договора вписывала в обязательный «Номер договора» номер счёта. Архитектор:</p>
+      <ul>
+        <li>заводит три инструмента — <code>save_invoice</code>, <code>save_waybill</code>, <code>save_service_act</code> — и ставит <code>any</code>;</li>
+        <li>разрешает <code>null</code> для номера договора, добавляет в категории расхода <code>"other"</code> с полем <code>category_note</code> и <code>"unclear"</code>, а документы с <code>"unclear"</code> — на ручную проверку;</li>
+        <li>пишет в промпте: дату читать по стране поставщика и записывать в ISO 8601, запятая в суммах российских документов — десятичный разделитель;</li>
+        <li>на этапе сверки первый запрос отправляет с <code>{"type": "tool", "name": "read_requisites"}</code>, следующие — с <code>auto</code>: проверки контрагента и лимита идут по реквизитам из документа.</li>
+      </ul>
+
+      <h2>Как это спрашивают</h2>
+      <p>В вопросе конвейер извлечения получает текст вместо данных, неверную категорию или выдумку либо агент путает порядок шагов. Заманчивые ошибки:</p>
+      <ul>
+        <li><strong>«Всегда вызывай инструмент» в промпте при <code>auto</code></strong> — просьба, а не гарантия.</li>
+        <li><strong>Выбор по имени при неизвестном типе документа</strong> — счёт натянут на схему акта; нужен <code>any</code>. И наоборот, <code>any</code> для обязательного первого шага — первым может оказаться не тот инструмент.</li>
+        <li><strong>Принудительный выбор на каждом ходу</strong> — агент не сможет закончить текстовым ответом; принуждают только первый шаг.</li>
+        <li><strong>«Ответь чистым JSON», повторы, регулярные выражения, модель покрупнее</strong> — лечат симптом; форму гарантирует схема со strict.</li>
+        <li><strong>Свободная строка вместо <code>enum</code> или числовая «уверенность» вместо <code>"unclear"</code></strong> — категории расползаются, а порог неясен.</li>
+      </ul>
+      <p>Правильный ход — разделить гарантии: <code>tool_choice</code> отвечает за вызов, схема — за форму, <code>null</code>, <code>"other"</code> и <code>"unclear"</code> — за честность, промпт — за чтение источника.</p>
+
+      <aside class="callout">
+        <p class="callout-label">Курс vs экзамен</p>
+        <p>Экзамен считает <code>any</code> и выбор по имени штатными режимами. На ноябрь 2026 Fable 5.2 и 5.1, Mythos 5.2 и 5.1, Opus 5.5 и Sonnet 5.5 отвечают на них ошибкой 400. Для них документация советует <code>auto</code> со <code>strict: true</code> и указанием в промпте, а если в фиксированном JSON нужен сам ответ — structured outputs (<code>output_config.format</code>). Haiku 5.5 и Opus 5 принудительный выбор принимают. На экзамене отвечайте по смыслу режимов.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools#forcing-tool-use" target="_blank" rel="noopener noreferrer">Define tools</a> — значения <code>tool_choice</code> и модели, которые не принимают принудительный выбор.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use" target="_blank" rel="noopener noreferrer">Strict tool use</a> — поле <code>input</code> блока <code>tool_use</code> строго следует <code>input_schema</code>.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs" target="_blank" rel="noopener noreferrer">Structured outputs</a> — JSON outputs через <code>output_config.format</code>, обязательные поля, <code>enum</code>, форматы строк вроде <code>date</code> и случаи, когда вывод всё же не совпадает со схемой.</li>
+        <li><a href="https://platform.claude.com/docs/en/api/errors#forced-tool-use-not-supported" target="_blank" rel="noopener noreferrer">Errors</a> — ошибки 400 на принудительный <code>tool_choice</code> и на prefill и чем их заменить.</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" rel="noopener noreferrer">Reduce hallucinations</a> — разрешить Claude признать, что данных не хватает (идея значения <code>"unclear"</code>).</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency" target="_blank" rel="noopener noreferrer">Increase output consistency</a> — точно задавать формат вывода в промпте; для гарантии схемы — structured outputs.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="11-tool-distribution.html">Назад</a>
+        <a class="next" href="13-mcp-config.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

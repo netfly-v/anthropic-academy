@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Встроенные инструменты Claude Code</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 2. Инструменты и MCP</p>
+        <ul class="lesson-nav">
+          <li><a href="09-tool-descriptions.html"><span class="mark"></span>Описания инструментов</a></li>
+          <li><a href="10-mcp-errors.html"><span class="mark"></span>Ошибки MCP</a></li>
+          <li><a href="11-tool-distribution.html"><span class="mark"></span>Распределение инструментов</a></li>
+          <li><a href="12-tool-choice.html"><span class="mark"></span>tool_choice</a></li>
+          <li><a href="13-mcp-config.html"><span class="mark"></span>Настройка MCP</a></li>
+          <li><a href="14-builtin-tools.html" aria-current="page"><span class="mark"></span>Встроенные инструменты</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Встроенные инструменты Claude Code</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 2 · подпункт 2.5</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/73-agents-and-tools.html">API · Агенты и инструменты</a> — набор инструментов Claude Code (Bash, Read, Write, Edit, Glob, Grep) и почему они универсальны.</li>
+        <li><a href="../../api/lessons/74-environment-inspection.html">API · Проверка окружения</a> — «прочитай, прежде чем писать»; Edit срабатывает только при точном совпадении текста.</li>
+        <li><a href="../../api/lessons/37-text-editor-tool.html">API · Текстовый редактор</a> — те же операции с файлами в API: команды <code>view</code>, <code>str_replace</code>, <code>create</code>, <code>insert</code>.</li>
+        <li><a href="../../claude-code-101/lessons/01-what-is-claude-code.html">Claude Code 101 · Что такое Claude Code</a> — Claude ищет ответы в коде, не загружая его в контекст целиком.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Экзамен проверяет выбор инструмента под задачу и запасной ход, когда правка не проходит.</p>
+      <ul>
+        <li><strong>Grep — поиск по содержимому.</strong> Ищет текст внутри файлов по шаблону: где рождается строка ошибки из лога, кто вызывает функцию или импортирует модуль.</li>
+        <li><strong>Glob — поиск по пути и имени.</strong> Находит файлы по шаблону имени: <code>**/*.spec.ts</code> — все такие файлы на любой глубине папок. Внутрь файлов не заглядывает.</li>
+        <li><strong>Read и Write — файл целиком.</strong> Read читает файл, Write создаёт его или перезаписывает полностью: не дописывает и не сливает.</li>
+        <li><strong>Edit — точечная правка.</strong> Заменяет кусок <code>old_string</code> на <code>new_string</code>. Кусок должен совпасть с файлом символ в символ и встречаться в нём ровно один раз.</li>
+      </ul>
+      <p>Если Edit отказал, потому что текст встречается несколько раз, действуют по порядку:</p>
+      <ol>
+        <li>взять кусок длиннее — с соседними строками, которые делают его уникальным;</li>
+        <li>если менять нужно все вхождения — <code>replace_all: true</code>;</li>
+        <li>если уникальной «зацепки» нет — Read всего файла, затем Write полной новой версии, собранной из прочитанной. Если в вопросе экзамена зацепки нет, ответ — Read + Write.</li>
+      </ol>
+      <p><strong>Исследовать код — по шагам, а не «прочитать всё».</strong> Каждый прочитанный файл остаётся в контексте. Поэтому начинают с зацепки: Grep по тексту ошибки или имени обработчика находит стартовый файл. Его читают через Read и дальше идут по импортам — только по файлам, через которые проходит выполнение.</p>
+      <p><strong>Модули-обёртки.</strong> Обёртка может экспортировать функцию под другим именем или вызывать её внутри своей. Поиск по исходному имени пропустит такие вызовы, поэтому сначала выписывают все имена, которые экспортирует обёртка, и ищут каждое через Grep по всему репозиторию.</p>
+
+      <h2>Пример</h2>
+      <p>Команда службы доставки работает в Claude Code с репозиторием на TypeScript. В логах дневной смены растёт число ошибок «Courier slot expired»: нужно найти, кто бронирует слот, и поднять таймаут для этой смены. Просьба «прочитай <code>src/</code> и разберись» исчерпала контекст на сотне файлов. Архитектор ведёт агента от точки входа:</p>
+      <ol>
+        <li>Grep по «Courier slot expired» находит <code>slots/reserve.ts</code>.</li>
+        <li>Read этого файла показывает, что <code>reserveSlot</code> импортируется из <code>scheduling/index.ts</code>. Следующий Read — туда и только туда.</li>
+        <li><code>scheduling/index.ts</code> — обёртка: экспортирует ту же функцию ещё и как <code>bookWindow</code>, а <code>bookWithRetry</code> вызывает её внутри себя. Grep по одному <code>reserveSlot</code> нашёл 4 вызова, по всем трём именам — 19.</li>
+        <li>Glob <code>src/scheduling/**/*.spec.ts</code> — тесты модуля, которые придётся обновить.</li>
+        <li>В <code>slots/config.ts</code> три смены (утро, день, ночь) описаны одинаковыми блоками, и <code>timeoutMs: 30000</code> встречается трижды. Edit отказывает, а различающей зацепки нет: смену определяет только позиция в массиве. Агент делает Read всего файла и Write новой версии с изменённым вторым блоком; <code>git diff</code> подтверждает, что остальное не тронуто.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: контекст агента переполнен, найдены не все вызовы или правка не проходит. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>«Сначала прочитать все файлы».</strong> Контекст заполнится раньше, чем агент доберётся до сути.</li>
+        <li><strong>Glob для поиска вызовов или Grep для сбора файлов по маске имени.</strong> Glob видит только пути, Grep — содержимое.</li>
+        <li><strong>Повторить тот же Edit, взять модель посильнее, написать в промпте «будь точнее».</strong> Неуникальный текст от этого уникальным не станет.</li>
+        <li><strong>Write ради одной строки.</strong> Write перезаписывает файл целиком; для точечной правки есть Edit.</li>
+        <li><strong>Искать только исходное имя функции.</strong> Вызовы через имена из обёртки останутся ненайденными.</li>
+      </ul>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>Экзамен считает Grep и Glob постоянными инструментами. На ноябрь 2026 Claude Code на macOS, Linux и WSL по умолчанию их не включает и ищет через Bash (<code>find</code>, <code>grep</code>); вернуть их можно, назвав в <code>--tools</code> или <code>--allowedTools</code>. На Windows они есть сразу. На экзамене роли те же: содержимое — Grep, пути — Glob.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/tools-reference" target="_blank" rel="noopener noreferrer">Tools reference</a> — полный список встроенных инструментов Claude Code и какие из них спрашивают разрешения.</li>
+        <li><a href="https://code.claude.com/docs/en/tools-reference#grep-tool-behavior" target="_blank" rel="noopener noreferrer">Tools reference: Grep tool behavior</a> — поиск по содержимому, регулярные выражения ripgrep, режимы вывода.</li>
+        <li><a href="https://code.claude.com/docs/en/tools-reference#glob-tool-behavior" target="_blank" rel="noopener noreferrer">Tools reference: Glob tool behavior</a> — поиск по шаблону имени с <code>**</code>; почему на macOS, Linux и WSL вместо Glob и Grep по умолчанию работает Bash и как их вернуть.</li>
+        <li><a href="https://code.claude.com/docs/en/tools-reference#edit-tool-behavior" target="_blank" rel="noopener noreferrer">Tools reference: Edit tool behavior</a> — точное совпадение и уникальность <code>old_string</code>, кусок длиннее или <code>replace_all</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/tools-reference#write-tool-behavior" target="_blank" rel="noopener noreferrer">Tools reference: Write tool behavior</a> — перезапись целиком без слияния, чтение перед перезаписью, для частичных правок — Edit.</li>
+        <li><a href="https://code.claude.com/docs/en/tools-reference#read-tool-behavior" target="_blank" rel="noopener noreferrer">Tools reference: Read tool behavior</a> — файл больше 256 KB по умолчанию читают частями или ищут в нём нужное через Grep.</li>
+        <li><a href="https://code.claude.com/docs/en/how-claude-code-works#tools" target="_blank" rel="noopener noreferrer">How Claude Code works: Tools</a> — категории инструментов и порядок работы: найти нужные файлы, потом прочитать их.</li>
+        <li><a href="https://code.claude.com/docs/en/common-workflows#find-relevant-code" target="_blank" rel="noopener noreferrer">Common workflows: Find relevant code</a> — найти файлы, понять связи, проследить поток выполнения.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/agent-loop#built-in-tools" target="_blank" rel="noopener noreferrer">How the agent loop works: Built-in tools</a> — те же инструменты в Agent SDK: файловые операции, поиск, выполнение; в разделе The context window ниже — как вывод инструментов накапливается в контексте.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="13-mcp-config.html">Назад</a>
+        <a class="next" href="20-review-criteria.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
