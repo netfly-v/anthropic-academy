@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Потоковые вызовы инструментов: без зависших индикаторов</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html" aria-current="page"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Потоковые вызовы инструментов: без зависших индикаторов</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:24 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>описать, из каких событий складывается потоковый вызов инструмента: <code>content_block_start</code>, <code>content_block_delta</code> с <code>input_json_delta</code> и <code>content_block_stop</code>;</li>
+        <li>показывать пользователю выбранный инструмент, как только открылся его блок;</li>
+        <li>перевести цикл вызова инструментов с <code>client.messages.create(...)</code> на <code>client.messages.stream(...)</code> и получить готовый ответ через <code>stream.get_final_message()</code>, не меняя остальной код.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/S1LrVAQ96nU" title="Streaming tool calls: No more frozen spinners" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>При потоковой передаче вызов инструмента приходит так: сначала имя инструмента, а затем по частям его входные данные — поэтому экран может показывать, что происходит. В видео рядом показаны две версии экрана Meridian — вымышленной инженерно-консалтинговой компании. Одна работает без потоковой передачи, другая — с ней. Демо смоделировано и идёт в три раза медленнее обычного.</p>
+
+      <p><em>Видео записано в сентябре 2026 года, код в нём использует Claude Sonnet 5 (<code>claude-sonnet-5</code>). На более новых моделях результаты могут отличаться.</em></p>
+      <p>Допустим, ваш пользователь восемь секунд смотрит на крутящийся индикатор загрузки. Так происходит потому, что ваш цикл вызова инструментов отправляет каждый запрос, ждёт и получает обратно уже готовый ответ.</p>
+      <p>За это время Claude выбирает инструмент и пишет для него входные данные, ваш код запускает инструмент, а Claude пишет ответ. Ваш код видит каждый ответ только тогда, когда он готов целиком, поэтому интерфейсу нечего показать, пока Claude пишет.</p>
+      <p>Именно с этим сейчас столкнулась Meridian. Её агент поддержки написан на Python и отвечает на вопросы сотрудников о проектах. Когда сотрудник спрашивает «What's the status of the pump station job?» («Как продвигается проект насосной станции?»), на экране висит «thinking...», пока не придёт ответ.</p>
+      <p>Потоковая передача меняет то, что видит этот сотрудник. <strong>С потоковой передачей ваш код получает ответ по частям, ещё до того, как он будет готов.</strong> Поэтому на экране Meridian может появиться «Looking up project...», как только Claude выберет инструмент.</p>
+
+      <h2>Как выглядит потоковый вызов инструмента</h2>
+      <p>В том месте, где ваш цикл отправляет запрос, замените <code>client.messages.create(...)</code> на <a href="https://platform.claude.com/docs/en/build-with-claude/streaming#streaming-with-sdks" target="_blank" rel="noopener noreferrer"><code>client.messages.stream(...)</code></a>. Тогда ответ будет приходить серией <a href="https://platform.claude.com/docs/en/build-with-claude/streaming" target="_blank" rel="noopener noreferrer">server-sent events</a> — небольших JSON-сообщений, у каждого из которых есть поле <code>type</code>.</p>
+      <p>Ответ состоит из блоков содержимого (content blocks, или просто блоков): по одному блоку на каждый отрезок текста Claude и по одному на каждый вызов инструмента. У блока вызова инструмента тип <code>tool_use</code>. Современные модели могут добавлять ещё и блоки размышлений (thinking), но код этого урока их не учитывает.</p>
+      <p>Представьте, что друг по телефону диктует вам номер. Сначала он говорит, чей это номер: «Вот номер сантехника». Потом читает его по нескольку цифр, останавливаясь там, где захочет. А в конце говорит: «Всё».</p>
+      <p><strong>Блок вызова инструмента приходит так же, как этот номер.</strong> Одно событие его открывает, одно или несколько наполняют, и одно закрывает. Вот события вызова инструмента у Meridian.</p>
+      <pre>{"type": "content_block_start", "index": 0,
+ "content_block": {"type": "tool_use", "id": "toolu_01",
+                   "name": "lookup_project_status", "input": {}}}
+{"type": "content_block_delta", "index": 0,
+ "delta": {"type": "input_json_delta", "partial_json": "{\"project_"}}
+{"type": "content_block_delta", "index": 0,
+ "delta": {"type": "input_json_delta", "partial_json": "id\": \"MEG-2"}}
+{"type": "content_block_delta", "index": 0,
+ "delta": {"type": "input_json_delta", "partial_json": "026-0142\"}"}}
+{"type": "content_block_stop", "index": 0}</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Сборка входных данных.</strong> В видео есть правило для «сырых» событий: фрагменты <code>partial_json</code> режутся где угодно, даже посреди ключа или значения, а бывают и пустыми. Копите их в буфере и разбирайте JSON только после <code>content_block_stop</code>; если вызовов в ответе несколько, держите отдельный буфер для каждого <code>index</code>. Запускать инструмент пора, когда <code>message_delta</code> в конце ответа принесёт <code>stop_reason: "tool_use"</code>. <code>client.messages.stream(...)</code> собирает фрагменты сам.</li>
+          <li><strong>Паузы.</strong> На ноябрь 2026 API по умолчанию придерживает каждую пару «ключ — значение» из <code>input</code>, пока она не будет готова целиком, поэтому между событиями бывают паузы. Поле <code>eager_input_streaming: true</code> в описании инструмента включает fine-grained tool streaming: фрагменты идут сразу, но без проверки, и собранный JSON может оказаться невалидным.</li>
+        </ul>
+      </aside>
+
+      <h2>Показывайте выбранный инструмент, как только открылся его блок</h2>
+      <p><strong>Имя инструмента приходит в <code>content_block_start</code> — первом событии блока.</strong> Как только это событие придёт, ваш код может обновить строку состояния — ту единственную строку текста, которую интерфейс показывает, пока пользователь ждёт.</p>
+      <p>У Meridian есть небольшой словарь <code>STATUS</code>, который сопоставляет имени каждого инструмента понятные пользователю слова, так что <code>lookup_project_status</code> превращается на экране в «Looking up project...».</p>
+
+      <h2>Соберите потоковый запрос</h2>
+      <p><strong>Когда поток закончится, вызовите <code>stream.get_final_message()</code> и получите готовый ответ — объект того же вида, что возвращает <code>client.messages.create(...)</code>.</strong> Поэтому остальная часть цикла вызова инструментов остаётся прежней.</p>
+      <p>Вот потоковый запрос Meridian. <code>on_status</code> — функция, которую вы пишете сами: она выводит переданный ей текст в строку состояния.</p>
+      <p>На странице урока здесь упражнение: в цикле на Python, который обрабатывает события потокового вызова инструмента, нужно для каждой из пяти задач — например, открыть поток или показать выбранный инструмент — выбрать строку, которая её выполняет. При неверном выборе появляется подсказка, при верном строка подсвечивается и объясняется её роль. Задание: «Выберите строку программы, которая выполняет эту задачу».</p>
+      <pre>STATUS = {
+    "lookup_project_status": "Looking up project...",
+    "get_site_weather": "Checking site weather...",
+}
+
+with client.messages.stream(
+    model="claude-sonnet-5", max_tokens=1024,
+    tools=tools, messages=messages,
+) as stream:
+    for event in stream:
+        if event.type == "content_block_start":
+            if event.content_block.type == "tool_use":
+                on_status(STATUS[event.content_block.name])
+    resp = stream.get_final_message()</pre>
+      <p>Пять задач упражнения, подсказки и верные строки с пояснениями:</p>
+      <ol>
+        <li><strong>Нужно вызвать функцию вывода строки состояния и передать ей слова для инструмента, который выбрал Claude.</strong> Подсказка: <code>on_status</code> — функция, которая выводит текст в строку состояния. Верная строка — <code>on_status(STATUS[event.content_block.name])</code>, «Показать выбранный инструмент»: когда открывается блок <code>tool_use</code>, <code>STATUS</code> превращает его имя в слова, а <code>on_status</code> показывает их пользователю.</li>
+        <li><strong>Нужно, чтобы код срабатывал только при открытии блока, а не когда блок наполняется или закрывается.</strong> Подсказка: у каждого события есть поле <code>type</code>, и один из типов открывает блок. Верная строка — <code>if event.type == "content_block_start":</code>, «Поймать открытие блока»: это событие открывает блок и приходит для него первым.</li>
+        <li><strong>Нужно, чтобы остальной цикл работал как раньше, с объектом того же вида, что возвращал <code>create</code>.</strong> Подсказка: когда поток заканчивается, вспомогательный метод возвращает готовый ответ. Верная строка — <code>resp = stream.get_final_message()</code>, «Получить готовый ответ»: в <code>resp</code> лежит то, что раньше возвращал <code>create</code>, и дальше цикл идёт как прежде.</li>
+        <li><strong>Нужно изменить способ отправки запроса, сохранив настройки, которые были у старого запроса.</strong> Подсказка: поток открывает вспомогательный метод SDK, и он принимает настройки старого запроса. Верная строка — <code>with client.messages.stream(</code>, «Открыть поток»: метод принимает те же настройки, что и старый запрос, а цикл <code>for</code> затем получает события по одному.</li>
+        <li><strong>Нужно, чтобы строка состояния не менялась, когда открывается блок с текстом Claude.</strong> Подсказка: у блока вызова инструмента и у текстового блока разные типы. Верная строка — <code>if event.content_block.type == "tool_use":</code>, «Пропустить текстовые блоки»: блок с текстом Claude открывается так же, и эта проверка пропускает его, не трогая строку состояния.</li>
+      </ol>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Статус по входным данным.</strong> В демо из видео строка «Checking MEG-2026-0142» появляется, как только во входных данных набрался номер проекта, — ещё до запуска инструмента. На ноябрь 2026 в Python SDK для этого есть событие <code>input_json</code>: кроме очередного <code>partial_json</code> в нём лежит <code>snapshot</code> — уже разобранная часть входных данных, например <code>event.snapshot.get("project_id")</code>.</li>
+          <li><strong>Модель.</strong> На ноябрь 2026 <code>claude-sonnet-5</code> по-прежнему доступна, но самая новая модель Sonnet — <code>claude-sonnet-5-5</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Главное</h2>
+      <ul>
+        <li>Потоковый вызов инструмента приходит так: сначала имя инструмента, затем по частям его входные данные.</li>
+        <li>Как только пришло <code>content_block_start</code>, покажите выбранный инструмент словами, понятными пользователю.</li>
+        <li><code>stream.get_final_message()</code> возвращает готовый ответ, поэтому остальная часть цикла вызова инструментов не меняется.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Code execution: Claude запускает код, который пишет»: Claude пишет код на Python, запускает его на стороне Anthropic и отвечает по тому, что этот код вывел.</p>
+      <div class="pager">
+        <a class="ghost" href="03-parallel-tool-calling.html">Назад</a>
+        <a class="next" href="05-code-execution.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/streaming-tool-calls" target="_blank" rel="noopener noreferrer">Streaming tool calls: No more frozen spinners</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

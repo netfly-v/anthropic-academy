@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Параллельные вызовы инструментов: меньше задержка</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html" aria-current="page"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Параллельные вызовы инструментов: меньше задержка</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:16 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>обработать в цикле каждый блок <code>tool_use</code> из ответа Claude и выполнить независимые вызовы одновременно;</li>
+        <li>вернуть все результаты одним сообщением <code>user</code>, чтобы Claude и дальше вызывал инструменты параллельно;</li>
+        <li>отправить сбой инструмента как <code>tool_result</code> с <code>is_error: true</code>, не останавливая цикл.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/ZzI3hwXsnPA" title="Parallel tool calling: Cut the latency" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Claude может запросить несколько инструментов в одном ответе, а ваш код — выполнить их одновременно. В видео проверяется рабочая площадка Meridian — вымышленной инженерно-консалтинговой компании. Если выполнять вызовы инструментов по одному, проверка занимает 19,9 секунды, а с параллельными вызовами — 10,8.</p>
+      <p><em>Демонстрация в этом видео записана в сентябре 2026 года, в ней использовалась модель Claude Sonnet 5 (<code>claude-sonnet-5</code>). На более новых моделях результаты могут отличаться.</em></p>
+      <p>Когда вызовы инструментов выполняются по одному, пользователь ждёт каждый из них по очереди.</p>
+      <p>Если нужные Claude инструменты не зависят друг от друга, он может запросить их все в одном ответе. <strong>Claude делает так по умолчанию, поэтому ваш цикл должен обработать каждый вызов инструмента и на каждый отправить результат.</strong></p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>В видео есть то, чего нет в тексте. Выключают параллельные вызовы полем <code>disable_parallel_tool_use: true</code> внутри объекта <code>tool_choice</code>; это не параметр верхнего уровня запроса, и на верхнем уровне оно вызовет ошибку. По документации (на ноябрь 2026), с <code>tool_choice</code> типа <code>auto</code> Claude тогда вызывает не больше одного инструмента за ответ, с <code>any</code> или <code>tool</code> — ровно один (часть новых моделей, например Opus 5.5 и Sonnet 5.5, эти два типа не принимает вовсе — ошибка 400). А чтобы подтолкнуть Claude к параллельным вызовам, в видео и в документации советуют добавить в системный промпт строку вроде:</p>
+        <pre>For maximum efficiency, whenever you need to perform multiple independent operations, invoke all relevant tools simultaneously rather than sequentially.</pre>
+      </aside>
+
+      <h2>Три вызова инструментов в одном ответе</h2>
+      <p><strong>Параллельный вызов инструментов (parallel tool use) означает, что один ответ содержит несколько блоков <code>tool_use</code>.</strong></p>
+      <p>У Meridian есть скрипт на Python, который проверяет, готова ли рабочая площадка к полевым работам. Для этой проверки нужны три независимых друг от друга обращения: за статусом проекта, погодой на площадке и состоянием разрешения.</p>
+      <p>Вот что ответил Claude при проверке площадки Meridian: по одному блоку <code>tool_use</code> на каждый нужный ему инструмент.</p>
+      <pre>{
+  "role": "assistant",
+  "stop_reason": "tool_use",
+  "content": [
+    {"type": "tool_use", "id": "toolu_01", "name": "get_project_status",
+     "input": {"job_number": "MEG-2026-0142"}},
+    {"type": "tool_use", "id": "toolu_02", "name": "get_site_weather",
+     "input": {"site": "Riverside"}},
+    {"type": "tool_use", "id": "toolu_03", "name": "get_permit_state",
+     "input": {"permit_id": "P-88213"}}
+  ]
+}</pre>
+      <p>У ответа <code>stop_reason</code> равен <code>tool_use</code>, а у каждого вызова инструмента свой <code>id</code>.</p>
+
+      <h2>Выполните каждый вызов</h2>
+      <p>Цикл, написанный в расчёте на один вызов, читает только первый блок <code>tool_use</code>. Он отправляет один результат, два других вызова свои результаты так и не получают, и API отклоняет запрос. <strong>Поэтому соберите все блоки <code>tool_use</code> из ответа.</strong></p>
+      <pre>calls = [b for b in resp.content if b.type == "tool_use"]</pre>
+      <p>Затем выполните эти вызовы одновременно. Каждое такое обращение большую часть времени ждёт ответа другой системы. Дайте каждому свой поток — и три ожидания наложатся друг на друга, а не сложатся.</p>
+      <pre>with ThreadPoolExecutor() as pool:
+    results = list(pool.map(run_tool, calls))</pre>
+      <p><code>run_tool</code> выполняет один вызов инструмента и возвращает его результат; эту функцию мы соберём в следующих двух разделах.</p>
+      <p>Выполнять вызовы одновременно обычно безопасно, если они только читают данные и не зависят друг от друга, как обращения Meridian. Если инструменты меняют данные или должны выполняться в определённом порядке, возможно, лучше выполнять их один за другим.</p>
+
+      <h2>Верните все результаты одним сообщением</h2>
+      <p>Когда три вызова выполнены, Claude ждёт их результатов. Каждый результат возвращается в блоке <code>tool_result</code>, а его поле <code>tool_use_id</code> содержит <code>id</code> вызова, на который он отвечает.</p>
+      <pre>result = {"type": "tool_result", "tool_use_id": call.id}</pre>
+      <p><strong>Каждый блок <code>tool_use</code> получает один <code>tool_result</code>, и все они идут в следующее сообщение пользователя.</strong></p>
+      <pre>messages.append({"role": "assistant", "content": resp.content})
+messages.append({"role": "user", "content": results})</pre>
+      <figure class="shot">
+        <img src="../../assets/tool-use/tu03-01.png" alt="Вверху — один ответ Claude с тремя вызовами toolu_01 get_project_status, toolu_02 get_site_weather и toolu_03 get_permit_state; внизу слева, с галочкой, одно сообщение user со всеми тремя tool_result, справа, с крестиком, три сообщения user по одному результату в каждом.">
+        <figcaption>Одно сообщение пользователя со всеми тремя результатами — и Claude продолжает вызывать инструменты параллельно. Справа — по сообщению на результат: ошибки нет, но параллельных вызовов меньше.</figcaption>
+      </figure>
+      <p>Если же ваш цикл отправляет каждый результат отдельным сообщением, переписка выглядит так, будто Claude запрашивал инструменты по одному. Это частая причина того, что Claude делает меньше параллельных вызовов.</p>
+
+      <h2>Для неудачного вызова верните результат с ошибкой</h2>
+      <p>Когда три вызова выполняются одновременно, один может упасть, а два других — выполниться успешно. Если ваш код выбросит исключение и его никто не перехватит, цикл остановится, и два удачных результата тоже пропадут.</p>
+      <p><strong>Поэтому отправьте сбой обратно как результат.</strong> Это обычный <code>tool_result</code> с сообщением об ошибке в <code>content</code> и с <code>is_error: true</code>. В сообщении должно быть сказано, что пошло не так и что Claude стоит попробовать дальше.</p>
+      <pre>try:
+    result["content"] = HANDLERS[call.name](**call.input)
+except Exception as exc:
+    result["content"] = f"{call.name} failed: {exc}"
+    result["is_error"] = True</pre>
+      <p><code>HANDLERS</code> — словарь, где каждому имени инструмента сопоставлена функция Python, которая выполняет работу этого инструмента. Каждая функция возвращает строку, потому что <code>content</code> у <code>tool_result</code> — это строка или список блоков содержимого.</p>
+
+      <h2>Соберите цикл</h2>
+      <p>Фрагменты кода выше складываются в цикл Meridian, показанный ниже. В скрипте уже подготовлены <code>client</code>, <code>tools</code>, <code>prompt</code> и <code>HANDLERS</code>.</p>
+      <p>На странице урока здесь интерактивное упражнение: дан короткий цикл на Python, который выполняет вызовы инструментов Claude параллельно, и для каждой из пяти задач нужно выбрать строку программы, которая её выполняет. При неверном выборе появляется подсказка, при верном — объяснение. Первая задача: «Claude запрашивает все три обращения в одном ответе, и вы хотите, чтобы цикл забрал из него каждый вызов инструмента». Программа из упражнения:</p>
+      <pre>from concurrent.futures import ThreadPoolExecutor
+
+def run_tool(call):
+    result = {"type": "tool_result", "tool_use_id": call.id}
+    try:
+        result["content"] = HANDLERS[call.name](**call.input)
+    except Exception as exc:
+        result["content"] = f"{call.name} failed: {exc}"
+        result["is_error"] = True
+    return result
+
+messages = [{"role": "user", "content": prompt}]
+while True:
+    resp = client.messages.create(
+        model="claude-sonnet-5", max_tokens=1024,
+        tools=tools, messages=messages,
+    )
+    if resp.stop_reason != "tool_use":
+        break
+    calls = [b for b in resp.content if b.type == "tool_use"]
+    with ThreadPoolExecutor() as pool:
+        results = list(pool.map(run_tool, calls))
+    messages.append({"role": "assistant", "content": resp.content})
+    messages.append({"role": "user", "content": results})</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Порядок блоков.</strong> В сообщении с результатами блоки <code>tool_result</code> должны идти первыми; текст можно добавить только после них, иначе API вернёт ошибку 400.</li>
+          <li><strong>Невыполненный вызов.</strong> Если вы выполняете вызовы по очереди и пропустили один, потому что упал предыдущий, на него всё равно нужен <code>tool_result</code> с <code>is_error: true</code> и коротким объяснением: Claude должен знать, что вызова не было.</li>
+          <li><strong>Tool Runner.</strong> Если особая логика не нужна, весь этот цикл может взять на себя Tool Runner из SDK (в Python — <code>client.beta.messages.tool_runner</code>; на ноябрь 2026 в бете): он сам выполняет вызовы, оформляет результаты и превращает исключения инструментов в <code>is_error: true</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Главное</h2>
+      <ul>
+        <li>Выполняйте каждый вызов инструмента из ответа, а если вызовы не зависят друг от друга — одновременно.</li>
+        <li>Возвращайте по одному <code>tool_result</code> на каждый вызов и кладите их все в одно сообщение пользователя.</li>
+        <li>Не отправляйте каждый результат отдельным сообщением: от этого параллельных вызовов становится меньше.</li>
+        <li>Отправляйте сбой обратно как результат с <code>is_error: true</code>, чтобы один неудачный вызов не останавливал цикл.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Потоковые вызовы инструментов: без зависших индикаторов»: как с потоковой передачей показывать имя инструмента и его входные данные по мере их поступления, чтобы пользователь видел, что происходит, а не смотрел на крутящийся индикатор.</p>
+      <div class="pager">
+        <a class="ghost" href="02-strict-tool-use.html">Назад</a>
+        <a class="next" href="04-streaming-tool-calls.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/parallel-tool-calling" target="_blank" rel="noopener noreferrer">Parallel tool calling: Cut the latency</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

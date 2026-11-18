@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web search: ответы с сайтов, которым вы доверяете</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html" aria-current="page"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Web search: ответы с сайтов, которым вы доверяете</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:57 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>подключить серверный инструмент веб-поиска одной записью в <code>tools</code> и продолжить ход после <code>pause_turn</code>;</li>
+        <li>объяснить, что даёт динамическая фильтрация и когда она включена по умолчанию;</li>
+        <li>ограничить поиск доверенными сайтами через <code>allowed_domains</code>;</li>
+        <li>собрать ответ из всех блоков <code>text</code> и вывести источники из блоков <code>web_search_tool_result</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/JPDMo4M3kME" title="Web search: Answers from the sites you trust" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Инструмент веб-поиска (web search) позволяет Claude искать в интернете, пока он работает над вашим запросом. Динамическая фильтрация (dynamic filtering) оставляет только нужные части результатов поиска, поэтому на запросы, где много поиска, уходит меньше токенов. Meridian, вымышленная инженерная консалтинговая компания, ссылается в своих предложениях для клиентов на инженерные стандарты.</p>
+      <p><em>Демо в этом видео записано в сентябре 2026 года. Оно работало на Claude Sonnet 5 (<code>claude-sonnet-5</code>). На более новых моделях результаты могут отличаться.</em></p>
+      <p>Claude отвечает на основе того, что узнал при обучении, поэтому не знает ни о чём, что появилось позже, и ни о чём, чего в обучающих данных не было. Когда для ответа нужны такие факты, их кому-то приходится искать, и эта рутина достаётся вам.</p>
+      <p><strong>С инструментом веб-поиска Claude делает эту работу сам: ищет в интернете, пока работает над вашим запросом, и отвечает по тому, что нашёл.</strong></p>
+      <p>Одно из предложений Meridian ссылается на четыре канадских инженерных стандарта с точностью до пункта, и если хоть одна ссылка неверна, Meridian несёт профессиональную ответственность. Поэтому, прежде чем отправить предложение, Meridian хочет сверить каждую ссылку с официальными источниками.</p>
+
+      <h2>Добавьте инструмент в запрос</h2>
+      <p>Веб-поиск — серверный инструмент. Он работает на инфраструктуре Anthropic, поэтому писать для него обработчик и отправлять обратно <code>tool_result</code> не нужно.</p>
+      <p><strong>Чтобы его подключить, достаточно одной записи в списке <code>tools</code>.</strong> Поле <code>type</code> этой записи задаёт версию инструмента, и Meridian указывает <code>web_search_20260209</code>. Поле <code>name</code> всегда равно <code>web_search</code>. Действующие версии перечислены в <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference#anthropic-provided-tools" target="_blank" rel="noopener noreferrer">справочнике инструментов</a>, так что значение <code>type</code> копируйте оттуда.</p>
+      <p>На моделях Claude 4.6 и новее версии начиная с <code>web_search_20260209</code> по умолчанию используют динамическую фильтрацию. Claude запускает код, который фильтрует результаты поиска, поэтому в контекстное окно попадает только нужное.</p>
+      <p>Обычно Claude выполняет весь поиск в рамках одного запроса. Ваш код отправляет этот запрос и получает готовый ответ.</p>
+      <p>API может приостановить долгий ход и вернуть <code>stop_reason</code> со значением <code>pause_turn</code>. Тогда отправьте содержимое ответа обратно как сообщение ассистента, с теми же <code>tools</code>, и Claude продолжит.</p>
+      <p><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool#usage-and-pricing" target="_blank" rel="noopener noreferrer">Каждый поиск оплачивается</a> сверх стоимости токенов. <a href="https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock#features-not-supported" target="_blank" rel="noopener noreferrer">Веб-поиск есть не на каждой облачной платформе</a>.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Версии.</strong> На ноябрь 2026 действуют три: <code>web_search_20250305</code> (базовая), <code>web_search_20260209</code> (добавляет динамическую фильтрацию) и <code>web_search_20260318</code> (ещё и параметр <code>response_inclusion</code>).</li>
+          <li><strong>Как работает фильтрация.</strong> Поиск идёт изнутри code execution: у этих версий <code>allowed_callers</code> по умолчанию — <code>["code_execution_20260120"]</code>, а контейнер выделяет сам API. На моделях без programmatic tool calling, как сказано в видео, нужно указать <code>"allowed_callers": ["direct"]</code>, иначе API вернёт 400.</li>
+          <li><strong>Облака.</strong> На ноябрь 2026, как и в видео: на Amazon Bedrock веб-поиска нет; в Claude Models on Google Cloud (Google managed) — только базовая версия; в Claude Platform on AWS и Google Cloud под управлением Anthropic — все версии.</li>
+        </ul>
+      </aside>
+
+      <h2>Укажите, какими сайтами Claude может пользоваться</h2>
+      <p>Пока в запросе ничто не ограничивает, на каких сайтах Claude может искать, и для Meridian это проблема. В открытом интернете полно постов на форумах и сайтов перепродавцов, а Meridian может ручаться только за официальные источники.</p>
+      <p>Поэтому вы указываете поиску, где искать. <strong><code>allowed_domains</code> — ещё одно поле в записи инструмента, и оно ограничивает результаты поиска сайтами, которые вы перечислили.</strong> Meridian называет четыре сайта. Два принадлежат организациям, которые издают эти стандарты и сертифицируют на соответствие им, — <code>csagroup.org</code> и <code>cwbgroup.org</code>. Два — государственные: <code>ontario.ca</code> и <code>canada.ca</code>.</p>
+      <p><code>allowed_domains</code> принимает список. В каждом элементе пишите только домен, без <code>https://</code>; его поддомены тоже будут разрешены.</p>
+
+      <h2>Прочитайте ответ и его источники</h2>
+      <p>Ответ Claude может прийти несколькими блоками <code>text</code>, между которыми идут поиски. <strong>Поэтому, чтобы получить ответ целиком, склейте все блоки <code>text</code>.</strong></p>
+      <p>Кроме того, каждый поиск добавляет в ответ блок <code>web_search_tool_result</code>. В нём лежит список результатов, которые вернул поиск, и у каждого результата есть <code>title</code> и <code>url</code>.</p>
+      <p>Из четырёх ссылок Meridian, как выяснил Claude, две верны, третья верна во всём, кроме номера подпункта, а четвёртая ошибочна.</p>
+
+      <h2>Соберите программу</h2>
+      <p>Программа Meridian объединяет эти шаги. В ней <code>excerpt</code> хранит отрывок из предложения, а <code>QUESTION</code> — вопрос Meridian.</p>
+      <p>На странице урока здесь интерактивное упражнение: дана программа на Python с инструментом веб-поиска, и для каждой из пяти задач — например, ограничить результаты перечисленными доменами или выбрать версию инструмента — нужно указать строку, которая её выполняет. При неверном выборе появляется подсказка, а при верном — короткая заметка об этой строке.</p>
+      <p>Задание: «Выберите строку программы, которая выполняет эту задачу». Задача 1 из 5: ответ Claude приходит несколькими частями, между которыми идут поиски, и вы хотите прочитать его целиком.</p>
+      <pre>TOOLS = [{
+    "type": "web_search_20260209",
+    "name": "web_search",
+    "allowed_domains": ["csagroup.org", "cwbgroup.org",
+                        "ontario.ca", "canada.ca"],
+}]
+
+def answer(resp):
+    return "".join(b.text for b in resp.content if b.type == "text")
+
+messages = [{"role": "user", "content": QUESTION + excerpt}]
+resp = client.messages.create(
+    model="claude-sonnet-5", max_tokens=4096,
+    tools=TOOLS, messages=messages,
+)
+print(answer(resp))
+
+for block in resp.content:
+    if block.type == "web_search_tool_result":
+        if isinstance(block.content, list):
+            for result in block.content:
+                print(result.title, result.url)</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Домены.</strong> На ноябрь 2026 есть и обратный список <code>blocked_domains</code>, но в одном запросе допустимо только одно из двух полей, иначе API вернёт 400. В элементе можно указать и путь (<code>example.com/blog</code>), а поддомен (<code>docs.example.com</code>) ограничивает поиск только им.</li>
+          <li><strong>Зачем <code>isinstance</code>.</strong> Если поиск не удался (например, <code>max_uses_exceeded</code>), статус ответа всё равно 200, но <code>content</code> блока <code>web_search_tool_result</code> — не список, а объект <code>web_search_tool_result_error</code> с <code>error_code</code>. Поиск без результатов даёт пустой список.</li>
+          <li><strong>Цитаты.</strong> У веб-поиска они включены всегда: у блоков <code>text</code>, основанных на найденном, есть поле <code>citations</code> с <code>url</code>, <code>title</code> и <code>cited_text</code>.</li>
+        </ul>
+      </aside>
+
+      <h2>Главное</h2>
+      <ul>
+        <li>Веб-поиск — серверный инструмент: вы добавляете одну запись в <code>tools</code> и не пишете обработчик. Обычно Claude выполняет весь поиск в рамках одного запроса.</li>
+        <li><code>allowed_domains</code> ограничивает результаты поиска сайтами, которые вы назвали.</li>
+        <li>На моделях Claude 4.6 и новее в <code>web_search_20260209</code> и более поздних версиях динамическая фильтрация включена по умолчанию, поэтому в контекстное окно попадает только нужное.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Computer use: автоматизация программ без API»: как с помощью Claude автоматизировать настольные программы, у которых нет API.</p>
+      <div class="pager">
+        <a class="ghost" href="05-code-execution.html">Назад</a>
+        <a class="next" href="07-computer-use.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/web-search" target="_blank" rel="noopener noreferrer">Web search: Answers from the sites you trust</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strict tool use: перестаньте отклонять свои же вызовы</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html" aria-current="page"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Strict tool use: перестаньте отклонять свои же вызовы</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 4:30 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, как <code>strict: true</code> ограничивает выбор токенов с помощью грамматики и почему благодаря этому вызов инструмента совпадает со схемой;</li>
+        <li>оформить строгий инструмент: флаг <code>strict</code> на верхнем уровне определения и <code>"additionalProperties": false</code> у каждого объекта;</li>
+        <li>генерировать схему из валидатора (класса Pydantic или схемы Zod), чтобы схема и бэкенд не расходились;</li>
+        <li>учитывать ограничения strict: границы значений, общие лимиты на запрос, случаи несовпадения со схемой и модели, не принимающие принудительный <code>tool_choice</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/iX5OdlZnmec" title="Strict tool use: Stop rejecting your own calls" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Если ваш бэкенд отклоняет вызов инструмента, который сформировал сам Claude, решение — strict tool use. В видео его включают для одного инструмента в Meridian, вымышленной инженерно-консалтинговой компании, и прогоняют одни и те же 100 запросов сначала без strict, потом со strict.</p>
+      <p><em>Демонстрация в этом видео записана в сентябре 2026 года и проводилась на Claude Haiku 4.5 (<code>claude-haiku-4-5</code>). На более новых моделях результаты могут отличаться.</em></p>
+      <p>Обычно Claude соблюдает <code>input_schema</code> инструмента, но по умолчанию ничто этого не гарантирует. Поэтому ваш бэкенд иногда отклоняет вызов, сделанный Claude, — во входных данных вызова встречается одно из двух:</p>
+      <ul>
+        <li>строка <code>"2"</code> вместо целого числа <code>2</code>;</li>
+        <li>пропущенное обязательное поле.</li>
+      </ul>
+      <p>Strict tool use это исправляет. <strong>Один флаг, <code>strict: true</code>, приводит входные данные, которые пишет Claude, в соответствие с вашей схемой.</strong></p>
+      <p>В Meridian ассистент с помощью инструмента <code>queue_stamp_request</code> ставит комплекты чертежей в очередь на заверение печатью лицензированного инженера. Валидатор Meridian — это код, который проверяет каждый вызов инструмента. Без strict он отклоняет 79 запросов из 100. Со strict и схемой, сгенерированной из валидатора, — ни одного.</p>
+
+      <h2>Как работает strict tool use</h2>
+      <p>Когда указан <code>strict: true</code>, API сначала компилирует вашу JSON Schema в грамматику. <strong>Грамматика — это набор правил, которые в каждой точке входных данных определяют, какие токены могут идти дальше.</strong> Затем каждый раз, когда Claude выбирает следующий токен вызова инструмента, он может выбрать только токен, который разрешает грамматика. Это называется <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use" target="_blank" rel="noopener noreferrer">сэмплированием, ограниченным грамматикой</a> (grammar-constrained sampling).</p>
+      <figure class="shot">
+        <img src="../../assets/tool-use/tu02-01.png" alt="Схема требует, чтобы revision было целым числом, а Claude уже дописал вызов до ключа &quot;revision&quot;; без strict следующим может стать любой из пяти токенов — 3, &quot;3&quot;, three, 3.0 и null, а со strict: true выбрать можно только 3, остальные четыре зачёркнуты.">
+        <figcaption>Со <code>strict: true</code> выбрать можно только токены, которые разрешает схема, поэтому целочисленное поле получает целое число.</figcaption>
+      </figure>
+      <p>Вот определение инструмента Meridian в сокращённом виде. Для strict нужны две его строки: сам флаг и настройка, которой этот флаг требует.</p>
+      <pre>{
+  "name": "queue_stamp_request",
+  "description": "Queues a drawing set for a professional engineer's stamp.",
+  "strict": true,
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "drawing_set_id": {"type": "string"},
+      "revision": {"type": "integer"}
+    },
+    "required": ["drawing_set_id", "revision"],
+    "additionalProperties": false
+  }
+}</pre>
+      <ul>
+        <li><code>"strict": true</code> — это флаг. Он стоит на верхнем уровне, рядом с <code>name</code>, <code>description</code> и <code>input_schema</code>, то есть вне схемы.</li>
+        <li><code>"additionalProperties": false</code> — это настройка. Она означает, что во входных данных не может быть поля, которого нет в схеме, и strict требует её у каждого объекта.</li>
+      </ul>
+
+      <h2>Стройте схему из валидатора</h2>
+      <p>Strict tool use приводит входные данные Claude в соответствие с вашей схемой, поэтому схема должна требовать того же, что и валидатор. Когда схему пишут вручную, схема и валидатор со временем расходятся. <strong>Тогда вызов инструмента может соответствовать схеме и всё равно быть отклонён.</strong> В Meridian написанная вручную схема описывала номер лицензии как обычную строку без шаблона. Поэтому <code>"PE 46196"</code> прошёл проверку по схеме, но не прошёл валидатор, который требует <code>PE-</code> и пять цифр.</p>
+      <p>Запишите правила один раз — в валидаторе — и генерируйте схему из него. В Python валидатором обычно служит класс Pydantic. В TypeScript его обычно пишут на Zod.</p>
+      <p>Ниже — класс Pydantic <code>StampRequest</code> из Meridian вместе с кодом, который его использует, а затем схема, которую возвращает <code>StampRequest.model_json_schema()</code>. Каждый комментарий <code># ...</code> заменяет пропущенный код, а в схеме показан только номер лицензии.</p>
+      <pre>class StampRequest(BaseModel):
+    model_config = {"extra": "forbid"}
+    # ...
+    pe_license_number: str | None = Field(pattern=r"^PE-\d{5}$")
+    # ...
+stamp_tool = {
+    # ...
+    "input_schema": StampRequest.model_json_schema(),
+    "strict": True,
+}
+stamp_request = StampRequest.model_validate(call.input)</pre>
+      <pre>{
+  "additionalProperties": false,
+  "properties": {
+    "pe_license_number": {
+      "anyOf": [
+        {"pattern": "^PE-\\d{5}$", "type": "string"},
+        {"type": "null"}
+      ],
+      "title": "Pe License Number"
+    }
+  }
+}</pre>
+      <ul>
+        <li><code>"extra": "forbid"</code> превращается в <code>"additionalProperties": false</code> — ту самую настройку, которой требует strict.</li>
+        <li><code>str | None</code> превращается в <code>anyOf</code>: номер лицензии — либо строка с этим <code>pattern</code>, либо null.</li>
+        <li><code>model_validate()</code> проверяет <code>call.input</code>, то есть входные данные, которые написал Claude, по тому же классу.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>У генерации схемы из Pydantic есть подвох, связанный с пунктом 2 ограничений ниже. Границы, заданные прямо в поле (<code>Field(ge=1)</code>, <code>max_length=10</code>), <code>model_json_schema()</code> запишет в схему как <code>minimum</code> или <code>maxLength</code>, и запрос со strict вернёт ошибку 400. Поэтому границы проверяют в <code>@field_validator</code>: его код в схему не попадает. Другой путь, упомянутый в видео, — вспомогательные функции SDK. На ноябрь 2026 функция <code>transform_schema()</code> из пакета <code>anthropic</code> принимает и класс Pydantic: она убирает из схемы неподдерживаемые ограничения и дописывает их в описание поля, а проверять сами ограничения по-прежнему должен ваш код.</p>
+      </aside>
+
+      <h2>Сравните прогоны без strict и со strict</h2>
+      <p>Тест Meridian отправляет Claude Haiku 4.5 сто заявок на заверение, написанных обычным языком, вместе с инструментом <code>queue_stamp_request</code>, а <code>StampRequest</code> проверяет каждый вызов инструмента. Одни и те же 100 запросов прогоняют дважды: сначала с написанной вручную схемой и без strict, затем со сгенерированной схемой и со strict.</p>
+      <p>Воспроизведите оба прогона ниже.</p>
+      <p>На странице урока здесь интерактивная симуляция. Она проигрывает записанный тест: 100 вызовов инструмента для заявок на заверение сначала с написанным вручную определением и без strict, потом со сгенерированной схемой и со strict, — и показывает, сколько вызовов валидатор отклонил в каждом прогоне. Её вывод: схема, сгенерированная из валидатора, вместе со strict tool use приводит вызовы Claude к формату, которого ждёт ваш бэкенд.</p>
+      <p>Симуляция проигрывает два записанных прогона Meridian; Claude при этом ничего не отправляется. Сначала запросы отправляют без strict, затем strict включают и отправляют их снова. Запрос в симуляции:</p>
+      <ul>
+        <li><code>model</code> — <code>claude-haiku-4-5</code>;</li>
+        <li><code>tool_choice</code> — <code>{"type": "any"}</code>;</li>
+        <li><code>messages</code> — по одной заявке на заверение для каждого вызова инструмента, 100 вызовов за прогон;</li>
+        <li><code>tools</code> — переключатель strict (сначала Off); если его включить, он добавляет <code>strict: true</code> и заменяет схему на сгенерированную из класса Pydantic.</li>
+      </ul>
+      <p>Определение инструмента в прогоне без strict:</p>
+      <pre>{
+  "name": "queue_stamp_request",
+  "input_schema": {
+    "properties": {
+      …
+      "pe_license_number": {
+        "type": "string",
+        "description": "Stamping engineer's license number."
+      }
+    },
+    …
+  },
+  …
+}</pre>
+      <p>Каждая строка «…» заменяет пропущенные части определения.</p>
+      <p>Валидатор бэкенда требует, чтобы <code>pe_license_number</code> соответствовал <code>^PE-\d{5}$</code>.</p>
+      <p>После отправки симуляция показывает итог каждого прогона: без strict отклонено 79 вызовов из 100, со <code>strict: true</code> — ни одного.</p>
+      <p><strong><code>pattern</code> в схеме задаёт допустимый формат, а strict заставляет Claude его придерживаться.</strong></p>
+      <p>Strict управляет формой входных данных, но не может подставить факт, которого в запросе не было. В 28 запросах из 100 лицензия вообще не упоминается. Сгенерированная схема разрешает null для номера лицензии, и во всех 28 случаях вернулся null.</p>
+
+      <h2>Ограничения strict tool use</h2>
+      <p>Шесть вещей, которые нужно знать (на ноябрь 2026 года):</p>
+      <ol>
+        <li><strong>Не помещайте в схему защищённую медицинскую информацию (PHI).</strong> Скомпилированные схемы не получают той же защиты PHI, что промпты и ответы, поэтому не допускайте PHI в именах свойств, значениях <code>enum</code> и <code>const</code>, а также в выражениях <code>pattern</code>.</li>
+        <li><strong>Границы не поддерживаются.</strong> Запрос, в схеме которого есть <code>minimum</code>, <code>maximum</code>, <code>minLength</code> или <code>maxLength</code>, возвращает ошибку 400. Проверяйте границы в функции-валидаторе, например в <code>@field_validator</code> из Pydantic, и указывайте их в описании поля.</li>
+        <li><strong>Лимиты общие для всех инструментов.</strong> В одном запросе может быть не больше <a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs#schema-complexity-limits" target="_blank" rel="noopener noreferrer">20 строгих инструментов</a>. На все эти инструменты вместе допускается не больше 24 необязательных параметров. Кроме того, в запросе может быть не больше 16 параметров с <code>anyOf</code> или массивом типов — именно их порождает поле, допускающее null, вроде <code>str | None</code>.</li>
+        <li><strong>Входные данные всё же могут не совпасть со схемой.</strong> Так бывает после отказа, когда ответ обрезан по лимиту <code>max_tokens</code>, или когда строка из <code>enum</code> или <code>const</code> возвращается с другим регистром букв.</li>
+        <li><strong>Некоторые модели отклоняют принудительный вызов инструмента.</strong> Значение <code>any</code> или <code>tool</code> в <code>tool_choice</code> принуждает модель вызвать инструмент. На Claude Fable 5.2, Claude Mythos 5.2, Claude Opus 5.5, Claude Sonnet 5.5, Claude Fable 5.1 и Claude Mythos 5.1 такой запрос возвращает ошибку 400. На этих моделях оставляйте <code>tool_choice</code> равным <code>auto</code> — это значение по умолчанию.</li>
+        <li><strong>Programmatic tool calling не работает со строгими инструментами.</strong> При программном вызове инструментов Claude пишет код, который вызывает ваши инструменты. О нём рассказывает <a href="08-cut-the-cost.html">урок 8</a>.</li>
+      </ol>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Strict и принудительный выбор.</strong> В видео советуют сочетать strict с <code>tool_choice: {"type": "any"}</code>, чтобы вызов и гарантированно произошёл, и был корректным. На моделях из пункта 5 это даёт ошибку 400, поэтому там оставляют <code>auto</code>, сохраняют <code>strict: true</code> и просят вызвать инструмент в промпте. Остальные модели, например Claude Opus 5 и Claude Haiku 4.5 из демонстрации, принудительный вызов принимают, но не в сочетании с ручным extended thinking: при <code>thinking: {"type": "enabled"}</code> значения <code>any</code> и <code>tool</code> дают ошибку на любой модели (по документации на ноябрь 2026).</li>
+          <li><strong>Слишком сложная схема.</strong> Помимо лимитов из пункта 3, у скомпилированной грамматики есть внутренний предел размера; при его превышении API возвращает ошибку 400 с сообщением «Schema is too complex for compilation». Помогает оставить strict только у критичных инструментов, сократить число необязательных параметров или разнести строгие инструменты по разным запросам.</li>
+        </ul>
+      </aside>
+
+      <h2>Главное</h2>
+      <ul>
+        <li><code>strict: true</code> приводит входные данные инструмента в соответствие со схемой — кроме случаев отказа, обрезанного ответа или строки из <code>enum</code> или <code>const</code>, у которой изменился регистр.</li>
+        <li>Генерируйте схему из валидатора, например из класса Pydantic.</li>
+        <li>Не задавайте границы в схеме и считайте инструменты, необязательные параметры и параметры, допускающие null, по всему запросу целиком.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Параллельные вызовы инструментов: меньше задержка»: Claude может запросить несколько вызовов инструментов в одном ответе, а ваш код — выполнить их одновременно, и пользователю не придётся ждать каждый вызов по очереди.</p>
+      <div class="pager">
+        <a class="ghost" href="01-tools-claude-picks.html">Назад</a>
+        <a class="next" href="03-parallel-tool-calling.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/strict-tool-use" target="_blank" rel="noopener noreferrer">Strict tool use: Stop rejecting your own calls</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Computer use: автоматизация программ без API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html" aria-current="page"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Computer use: автоматизация программ без API</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Текстовый урок, около 9 минут</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, кто на самом деле выполняет действия computer use и как устроен цикл со скриншотами;</li>
+        <li>изолировать рабочий стол в отдельном контейнере и подключить его к Claude через подкласс computer toolset и Tool Runner;</li>
+        <li>написать функцию <code>confirm</code>, чтобы клики и ввод текста одобрял человек;</li>
+        <li>решать, когда нужен computer use, а когда лучше MCP-сервер, API, командная строка или browser use tool.</li>
+      </ul>
+      <p class="duration">На странице урока нет видео: текст и интерактивное упражнение.</p>
+
+      <p>В большинстве компаний есть хотя бы одна программа совсем без API. Инструменты из предыдущих уроков до неё не дотягиваются: им просто нечего вызывать.</p>
+      <p>У Meridian, вымышленной инженерной консалтинговой фирмы, такая программа есть. Это старый менеджер чертежей PlotDesk, тоже вымышленный. Каждую пятницу один сотрудник весь день прокликивает одни и те же экраны, чтобы выгрузить комплекты чертежей в PDF. У PlotDesk нет ни API, ни командной строки. Только окна и кнопки.</p>
+      <p><strong>Computer use позволяет Claude работать с PlotDesk через эти самые окна и кнопки, как работал бы человек: смотреть на скриншоты и решать, куда кликнуть и какой текст ввести.</strong></p>
+      <p>Meridian хочет, чтобы Claude выгрузил сегодняшний PDF-комплект чертежей по проекту MEG-2026-0142.</p>
+
+      <h2>Кто выполняет каждое действие</h2>
+      <p>Через API Claude никогда не подключается к рабочему столу. Всё, что выдаёт Claude, — ответ с вызовами инструментов. Ваша программа — это программа на Python, которая вызывает Messages API. Именно она выполняет каждое действие на рабочем столе и отправляет результат обратно.</p>
+      <p>Цикл выглядит так. Claude просит скриншот. Ваша программа делает его и отправляет обратно как изображение. Claude смотрит на него и присылает следующее действие — например, клик по заданным координатам или текст, который нужно ввести. Ваша программа выполняет действие, и цикл повторяется, пока задача не будет выполнена. <strong>Это тот же цикл инструментов, что у вас уже есть, только часть результатов — скриншоты.</strong></p>
+      <p>На всю выгрузку у Meridian ушло семь действий.</p>
+      <table class="compare">
+        <thead>
+          <tr><th>Действие Claude</th><th>Что произошло</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>screenshot</code></td><td>Claude находит окно PlotDesk</td></tr>
+          <tr><td><code>left_click</code></td><td>По полю Project number</td></tr>
+          <tr><td><code>type</code></td><td>MEG-2026-0142</td></tr>
+          <tr><td><code>left_click</code></td><td>По кнопке Open</td></tr>
+          <tr><td><code>screenshot</code></td><td>PlotDesk показывает проект: Pump Station Replacement, 22 листа</td></tr>
+          <tr><td><code>left_click</code></td><td>По кнопке Export PDF</td></tr>
+          <tr><td><code>screenshot</code></td><td>В строке состояния написано «Exported MEG-2026-0142_plots.pdf»</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Запускайте рабочий стол в отдельном контейнере</h2>
+      <p>Claude реагирует на всё, что появляется на экране. Текст на веб-странице или на картинке может взять верх над вашими инструкциями или подтолкнуть Claude к ошибкам. <strong>Чтобы ограничить вред от одного неверного действия, выделите рабочему столу отдельный контейнер или виртуальную машину, где есть только то, что нужно для задачи.</strong> Настройте его так:</p>
+      <ul>
+        <li>у каждой сессии свой отдельный контейнер;</li>
+        <li>в контейнере нет учётных данных и нет каталогов, примонтированных с хоста;</li>
+        <li>из контейнера доступны только те сетевые хосты, с которыми работает задача.</li>
+      </ul>
+      <p>Ваша программа и ваш API-ключ остаются за пределами контейнера.</p>
+
+      <h2>Напишите действия, а цикл пусть ведёт SDK</h2>
+      <p>В SDK для Python и TypeScript есть класс, который называется computer toolset. Вы создаёте от него подкласс и пишете по одному методу на каждое действие, нужное задаче. Класс сам собирает для toolset запись в <code>tools</code> и пока находится в бете. В Python для него нужен SDK версии 1.12.0 или новее.</p>
+      <p>Meridian реализует три действия из toolset: <code>screenshot</code>, <code>left_click</code> и <code>type</code>. Любое действие, которое вы не реализовали, уходит в API как отключённое.</p>
+      <p>Каждый метод — одна строка, которая передаёт работу объекту <code>backend</code>. Это ваша собственная обёртка над тем, что управляет рабочим столом, например над VNC-клиентом или <code>xdotool</code>. Начать удобно с этого <a href="https://github.com/anthropics/claude-quickstarts/tree/main/computer-toolset" target="_blank" rel="noopener noreferrer">минимального примера с VNC на Python и TypeScript</a>, но для продакшена он не предназначен.</p>
+      <p>Передайте экземпляр своего класса в <code>tools</code> вместе с промптом. <strong>Tool Runner, помощник из SDK, сам ведёт цикл, пока Claude не ответит без вызова инструмента.</strong></p>
+      <p>На ноябрь 2026 года <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/computer-use-tool" target="_blank" rel="noopener noreferrer">этот toolset</a> доступен в Claude API, Amazon Bedrock, Claude Platform on AWS, Claude Models on Google Cloud (Google managed) и Microsoft Foundry. Какие модели его поддерживают, зависит от платформы. Приведённая ниже программа Meridian обращается к Claude API, поэтому на другой платформе возьмите клиент SDK и ID модели этой платформы. У некоторых более старых моделей, например у Claude Opus 4.7, есть только прежние бета-версии инструмента. Для них нужна другая запись в <code>tools</code> и бета-заголовок — заголовок запроса, который включает бета-функцию.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Что уходит в API.</strong> Класс собирает запись <code>{"type": "computer_toolset_20260801"}</code>, а нереализованные действия помечает в её <code>configs</code> как <code>"enabled": false</code>. В бете — класс SDK и Tool Runner (отсюда <code>beta</code> в вызове), а сам toolset в Claude API, по документации на ноябрь 2026, бета-заголовка не требует.</li>
+          <li><strong>Прежняя версия.</strong> Для Claude Opus 4.7 это бета-инструмент <code>computer_20251124</code> с заголовком <code>computer-use-2025-11-24</code>: один инструмент <code>computer</code>, действие — в поле <code>action</code>. В toolset каждое действие — отдельный инструмент: в блоке <code>tool_use</code> стоят, например, <code>"name": "left_click"</code> и <code>"toolset_name": "computer"</code>.</li>
+          <li><strong>Несколько действий за ход.</strong> В отличие от цикла в уроке, Claude может прислать в одном ответе серию действий (batch action), например клик, ввод и скриншот. Их выполняют по порядку, а после первой ошибки остаток хода пропускают; Tool Runner делает это сам (на ноябрь 2026).</li>
+        </ul>
+      </aside>
+
+      <h2>Пусть клики и ввод текста одобряет человек</h2>
+      <p>Создавая экземпляр, передайте функцию <code>confirm</code>. SDK вызывает её перед каждым действием. Если она возвращает <code>True</code>, действие выполняется. Любое другое значение отклоняет действие, и Claude сообщают, что его отклонил человек.</p>
+      <p><code>confirm</code> видит действие и его входные данные, но не экран. А человек, который следит за рабочим столом, видит, что находится в той точке, куда Claude хочет кликнуть. <strong>Поэтому Meridian одобряет скриншоты автоматически, а каждый клик и каждое действие <code>type</code> отправляет своему оператору — человеку, который следит за рабочим столом.</strong></p>
+      <p>Вот программа Meridian. Три имени в ней взяты из собственного кода Meridian, а не из SDK: <code>backend</code>, <code>ask_operator</code> и <code>TASK</code>. <code>ask_operator</code> показывает действие оператору и возвращает его ответ, а в <code>TASK</code> лежит промпт.</p>
+      <p><strong>Упражнение.</strong> На странице урока программа дана в интерактивном упражнении: в ней создан подкласс computer toolset из SDK, и для каждой из пяти задач нужно выбрать строку, которая её выполняет. При неверном выборе показывают подсказку, а при верном — короткую заметку об этой части программы. Задачи идут по одной.</p>
+      <p>Выберите строку программы, которая выполняет эту задачу.</p>
+      <p><strong>Задача 1 из 5.</strong> Вы хотите, чтобы человек одобрял каждый клик и каждый ввод текста до того, как они произойдут.</p>
+      <pre>from anthropic import Anthropic
+from anthropic.tools.computer import (
+    BetaAbstractComputerToolset20260801,
+    BetaScreenshotResult,
+)
+
+class PlotDeskToolset(BetaAbstractComputerToolset20260801):
+    def __init__(self, backend, **options):
+        super().__init__(**options)
+        self.backend = backend
+
+    def screenshot(self, context, input):
+        return BetaScreenshotResult(data=self.backend.png_base64())
+
+    def left_click(self, context, input):
+        self.backend.click(input.coordinate)
+
+    def type(self, context, input):
+        self.backend.type(input.text)
+
+def confirm(context):
+    if context.member == "screenshot":
+        return True
+    return ask_operator(context.member, context.input.to_dict())
+
+with PlotDeskToolset(backend, confirm=confirm) as toolset:
+    runner = Anthropic().beta.messages.tool_runner(
+        model="claude-opus-5-5", max_tokens=1024,
+        tools=[toolset],
+        messages=[{"role": "user", "content": TASK}],
+    )
+    final = runner.until_done()
+print("".join(b.text for b in final.content if b.type == "text"))</pre>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Без <code>confirm</code> эта программа не запустится. По документации SDK (на ноябрь 2026), если класс реализует <code>type</code>, <code>key</code> или <code>hold_key</code>, конструктор требует передать <code>confirm</code> либо отключить эти действия в <code>configs</code>. Сам SDK никого не спрашивает: без <code>confirm</code> он выполнил бы любой вызов, включая клики. Отклонённый вызов возвращается Claude как ошибка с просьбой не повторять его, и работа продолжается. Функция Meridian по умолчанию спрашивает человека: оператору уходит всё, кроме <code>screenshot</code>, в том числе действия, добавленные позже.</p>
+      </aside>
+
+      <h2>Когда computer use уместен</h2>
+      <p>Каждый скриншот остаётся в разговоре, поэтому каждый следующий шаг обходится дороже предыдущего. Так что если у программы есть MCP-сервер (сервис, который предоставляет Claude свои функции как инструменты), API или командная строка, пользуйтесь ими, а не computer use. <strong>Computer use — для программ, у которых ничего этого нет, как у PlotDesk.</strong></p>
+      <p>Если задача не выходит за пределы веб-страниц, лучше подходит <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/browser-use-tool" target="_blank" rel="noopener noreferrer">browser use tool</a>. Он читает саму страницу и действует прямо на ней, и полный рабочий стол ему не нужен.</p>
+
+      <h2>Главное</h2>
+      <ul>
+        <li>Claude просит действия, а выполняет их ваша программа;</li>
+        <li>рабочий стол запускается в отдельном контейнере для каждой сессии;</li>
+        <li>вы реализуете только те действия, которые нужны задаче;</li>
+        <li>функция <code>confirm</code> у Meridian отправляет каждый клик и каждое действие <code>type</code> на одобрение человеку;</li>
+        <li>если есть прямой интерфейс, используйте его, а computer use — когда его нет.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Как снизить цену работы с инструментами»: агент с инструментами в каждом запросе заново отправляет всё, а programmatic tool calling и prompt caching сокращают разные части этой цены.</p>
+      <div class="pager">
+        <a class="ghost" href="06-web-search.html">Назад</a>
+        <a class="next" href="08-cut-the-cost.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/computer-use" target="_blank" rel="noopener noreferrer">Computer use: Automate desktop software with no API</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

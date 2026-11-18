@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Code execution: Claude запускает код, который пишет</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html" aria-current="page"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Code execution: Claude запускает код, который пишет</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:26 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, чем серверный инструмент code execution отличается от ваших собственных инструментов, и подключить его одной записью в <code>tools</code>;</li>
+        <li>передать свои файлы в контейнер через Files API и блоки <code>container_upload</code>;</li>
+        <li>прочитать ответ Claude и продолжить ход, если API вернул <code>stop_reason</code> со значением <code>pause_turn</code>.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/PQ8jjGKfP5o" title="Code execution: Claude runs the code it writes" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Code execution позволяет Claude написать код на Python, запустить его на стороне Anthropic и ответить, опираясь на то, что выведет этот код.</p>
+      <p><em>Демо в этом видео записано в сентябре 2026 года. В нём использовалась модель Claude Sonnet 5 (<code>claude-sonnet-5</code>). На более новых моделях результаты могут отличаться.</em></p>
+      <p>Для ответа на некоторые вопросы нужны расчёты по множеству файлов. Это работа для кода.</p>
+      <p>Возьмём Meridian — вымышленную инженерно-консалтинговую компанию. У неё 12 CSV-файлов, по одному на каждую насосную станцию, и в каждом файле — показания расхода за год. Компания хочет знать, превышала ли хоть одна станция свою проектную производительность и, если да, когда.</p>
+      <p>Такую работу Claude делает с помощью code execution. <strong>Claude получает контейнер, в котором может запускать написанный им код на Python и отвечать, опираясь на его вывод.</strong></p>
+
+      <h2>Добавьте инструмент в запрос</h2>
+      <p>Code execution — серверный инструмент, то есть он работает на инфраструктуре Anthropic. Обработчик для него вы не пишете, и ваш код не отправляет обратно <code>tool_result</code>.</p>
+      <p><strong>Чтобы подключить code execution, достаточно одной записи в списке <code>tools</code>.</strong> Дата в конце значения поля <code>type</code> этой записи — версия инструмента; Meridian использует <code>code_execution_20260120</code>. Актуальные версии <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference#anthropic-provided-tools" target="_blank" rel="noopener noreferrer">перечислены в справочнике инструментов (Tool reference)</a>, поэтому значение <code>type</code> копируйте оттуда.</p>
+      <p>Meridian хранит этот список в константе <code>TOOLS</code>, а в запросе передаёт его как <code>tools=TOOLS</code>:</p>
+      <pre>TOOLS = [{"type": "code_execution_20260120", "name": "code_execution"}]</pre>
+      <p>На октябрь 2026 года <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/code-execution-tool#availability-feature-support" target="_blank" rel="noopener noreferrer">code execution</a> работает в Claude API, в Claude Platform on AWS, в моделях Claude в Google Cloud, которыми управляет Anthropic, и в развёртываниях Microsoft Foundry, размещённых у Anthropic.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Версии.</strong> На ноябрь 2026 актуальны три версии; <code>code_execution_20260120</code> из урока — одна из них, а самая новая, <code>code_execution_20260521</code>, работает в той же среде.</li>
+          <li><strong>Состояние Python.</strong> В видео сказано, что состояние Python сохраняется между ходами начиная с <code>code_execution_20260120</code>. Документация уточняет: переменные интерпретатора сохраняются между запросами, только если переиспользовать контейнер и работать с programmatic tool calling, а файлы в переиспользованном контейнере сохраняются на любой версии. Ограничение для Haiku из видео относится только к Claude Haiku 4.5.</li>
+        </ul>
+      </aside>
+
+      <h2>Положите файлы в контейнер</h2>
+      <p>Код Claude выполняется в контейнере на стороне Anthropic. А файлы пока лежат на вашей машине, поэтому в контейнере их ещё нет. Программа Meridian переносит их в контейнер в два шага:</p>
+      <ol>
+        <li>Загрузить каждый файл через <a href="https://platform.claude.com/docs/en/build-with-claude/files" target="_blank" rel="noopener noreferrer">Files API</a> — в ответ вы получите ID файла.</li>
+        <li>Указать этот ID файла в сообщении, в блоке <code>container_upload</code>.</li>
+      </ol>
+      <p><strong>Программа Meridian добавляет по одному блоку <code>container_upload</code> на каждый файл — в то же сообщение, где стоит её вопрос.</strong> После этого файлы загружаются в контейнер, и код Claude может их открыть.</p>
+
+      <h2>Прочитайте ответ Claude</h2>
+      <p><strong>Ваш код отправляет один запрос и обычно получает уже готовый ответ.</strong></p>
+      <p>API может приостановить долгий ход и вернуть <code>stop_reason</code> со значением <code>pause_turn</code>. В этом случае отправьте содержимое ответа обратно как сообщение с ролью assistant, с теми же <code>tools</code>, и Claude продолжит.</p>
+      <p>Ответ Claude для Meridian: станция 7 дважды превысила свою проектную производительность в 600 л/с — в апреле и мае 2025 года. В ответе API это заключение идёт после команд, которые запускал Claude.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>По документации code execution (на ноябрь 2026), в запрос-продолжение после <code>pause_turn</code> нужно передать и ID контейнера из ответа — в параметре <code>container</code> верхнего уровня (<code>container=resp.container.id</code>). Без него запрос выполнится в новом контейнере, и файлы, которые уже появились в контейнере за этот ход, пропадут. Тем же параметром контейнер переиспользуют и в следующих запросах: запрос без <code>container</code> всегда получает новый контейнер. Продолжение тоже может вернуть <code>pause_turn</code>: повторяйте его, пока <code>stop_reason</code> не сменится, и храните в <code>messages</code> все приостановленные ответы по порядку. Программа ниже <code>pause_turn</code> не обрабатывает.</p>
+      </aside>
+
+      <h2>Соберите программу</h2>
+      <p>Ниже — программа Meridian: она подключает инструмент, кладёт файлы в контейнер и читает ответ. В программе <code>paths</code> содержит 12 CSV-файлов в виде объектов <code>pathlib.Path</code>, а <code>QUESTION</code> — вопрос Meridian.</p>
+      <p>На странице урока здесь интерактивное упражнение: дан пример программы на Python, которая использует инструмент code execution, и нужно сопоставить каждую описанную задачу со строкой, которая её выполняет. При неверном выборе появляется подсказка, а при верном — короткая заметка об этом шаге.</p>
+      <p>Задание: «Выберите строку программы, которая выполняет эту задачу». Задачи идут по одной; первая из пяти: «Вы хотите, чтобы код Claude мог открыть каждый загруженный вами файл». Программа из упражнения:</p>
+      <pre>TOOLS = [{"type": "code_execution_20260120", "name": "code_execution"}]
+
+content = []
+for path in paths:
+    uploaded = client.files.upload(file=path)
+    content.append({"type": "container_upload", "file_id": uploaded.id})
+content.append({"type": "text", "text": QUESTION})
+messages = [{"role": "user", "content": content}]
+
+resp = client.messages.create(
+    model="claude-sonnet-5", max_tokens=8000,
+    tools=TOOLS, messages=messages,
+)
+print("".join(b.text for b in resp.content if b.type == "text"))</pre>
+
+      <h2>Главное</h2>
+      <ul>
+        <li>Code execution — серверный инструмент. Вы добавляете одну запись в <code>tools</code>, а код Claude выполняется в контейнере на стороне Anthropic.</li>
+        <li>Каждый файл вы загружаете через Files API, а затем указываете его ID в блоке <code>container_upload</code>.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Web search: ответы с сайтов, которым вы доверяете»: Claude сам ищет в интернете, пока работает над вашим запросом, а динамическая фильтрация оставляет из результатов поиска только нужное.</p>
+      <div class="pager">
+        <a class="ghost" href="04-streaming-tool-calls.html">Назад</a>
+        <a class="next" href="06-web-search.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/code-execution" target="_blank" rel="noopener noreferrer">Code execution: Claude runs the code it writes</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

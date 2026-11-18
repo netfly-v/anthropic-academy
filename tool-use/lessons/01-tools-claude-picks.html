@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Инструменты, которые выбирает Claude</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html" aria-current="page"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Инструменты, которые выбирает Claude</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:10 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>назвать четыре части определения инструмента и объяснить, по какой из них Claude решает, вызывать ли инструмент;</li>
+        <li>писать описание, в котором сказано, что делает инструмент, когда его вызывать, а когда нет, что значат параметры и чего он не возвращает;</li>
+        <li>объединять пересекающиеся инструменты в один инструмент с параметром;</li>
+        <li>проверять правки определений оценкой (eval) и менять только ту часть, которая виновата в сбое.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/GqHhQGou3sE" title="Creating tools that Claude picks" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Если Claude выбирает не тот инструмент, первым делом смотрите на определение инструмента. В видео показана Meridian — вымышленная инженерно-консалтинговая компания. Meridian переписывает определения своих инструментов и прогоняет одни и те же 30 вопросов до и после правки.</p>
+      <p><em>Демонстрация в этом видео записана в сентябре 2026 года и проводилась на Claude Sonnet 5 (<code>claude-sonnet-5</code>). На более новых моделях результаты могут отличаться.</em></p>
+      <p>Допустим, цикл вызова инструментов у вас уже работает, а потом случается что-то из следующего:</p>
+      <ul>
+        <li>Claude вызывает не тот инструмент;</li>
+        <li>делает три вызова инструментов ради одного факта;</li>
+        <li>передаёт <code>0142</code> там, где ваш код ждёт <code>MEG-2026-0142</code>.</li>
+      </ul>
+      <p>Функцию, которая стоит за вашим инструментом, Claude не видит никогда. Он видит только определение, которое вы отправляете, и результаты, которые вы возвращаете. <strong>Поэтому, когда Claude неправильно пользуется инструментом, первым делом смотрите на определение.</strong></p>
+      <p>У Meridian есть внутренний ассистент, который отвечает на вопросы сотрудников о проектах, разрешениях и счетах. Когда определения его инструментов переписали, результат вырос с 14 до 26 из 30 тестовых вопросов — на той же модели.</p>
+
+      <h2>Какую часть инструмента видит Claude</h2>
+      <p><strong>Определение инструмента — это блок JSON, который сообщает Claude, что такой инструмент существует.</strong> Вы отправляете его в списке <code>tools</code> каждого запроса.</p>
+      <p>Вот переписанное определение инструмента Meridian для проектов. В нём четыре части.</p>
+      <pre>{
+  "name": "lookup_project_status",
+  "description": "Returns current facts about a single Meridian …",
+  "input_schema": {
+    "type": "object",
+    "properties": {
+      "project_id": {
+        "type": "string",
+        "description": "Full Meridian job number in the format MEG-YYYY-NNNN, e.g. MEG-2026-0142."
+      },
+      "fields": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "enum": ["phase", "status", "lead", "hours", "deadline", "site", "client"]
+        },
+        "description": "Which fields to return. Omit to return everything."
+      }
+    },
+    "required": ["project_id"]
+  },
+  "input_examples": [
+    {"project_id": "MEG-2026-0142", "fields": ["phase", "status"]},
+    {"project_id": "MEG-2025-0417", "fields": ["lead", "hours"]},
+    {"project_id": "MEG-2024-0233"}
+  ]
+}</pre>
+      <ul>
+        <li><code>name</code> — имя, по которому Claude вызывает инструмент.</li>
+        <li><code>description</code> — обычный текст: его пишете вы, а читает Claude. Здесь он обрезан, а целиком приведён в следующем разделе.</li>
+        <li><code>input_schema</code> перечисляет параметры инструмента в формате JSON Schema, у каждого — имя, тип и собственное описание. <code>required</code> указывает, какие из них обязательны.</li>
+        <li><code>input_examples</code> — необязательная часть. Она показывает Claude, как выглядят правильные входные данные, например полный номер заказа. Каждый пример должен проходить проверку по <code>input_schema</code>, иначе API вернёт ошибку 400.</li>
+      </ul>
+      <p>Вызывать ли инструмент, Claude решает, читая запрос пользователя и описание каждого инструмента.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>По документации (на ноябрь 2026) API собирает из списка <code>tools</code> специальный системный промпт, поэтому описания, схемы и примеры — это входные токены в каждом запросе: простой пример в <code>input_examples</code> стоит около 20–50 токенов, сложный вложенный — 100–200.</p>
+      </aside>
+
+      <h2>Пишите подробное описание</h2>
+      <p><strong>Из четырёх частей главную работу выполняет описание.</strong></p>
+      <p>Ориентируйтесь минимум на три-четыре предложения, а для сложного инструмента пишите больше. Опишите четыре вещи:</p>
+      <ol>
+        <li>что делает инструмент;</li>
+        <li>когда его использовать, а когда нет;</li>
+        <li>что означает каждый параметр;</li>
+        <li>чего он не возвращает.</li>
+      </ol>
+      <p>Вот полное описание инструмента Meridian:</p>
+      <pre>Returns current facts about a single Meridian project: phase,
+schedule status, project lead, hours budgeted and consumed,
+deadline, site city, and client. Use this only when the user asks
+about a specific project by name or job number; if only a partial
+number is given (e.g. 'the 0142 job'), normalize it to the full
+MEG-YYYY-NNNN format before calling. Pass the fields parameter to
+fetch just the fields the question needs instead of the whole
+record. This tool does not return permit or invoicing information.
+Use get_permit_status or get_billing_summary for those.</pre>
+      <figure class="shot">
+        <img src="../../assets/tool-use/tu01-01.png" alt="Описание инструмента Meridian, где каждый отрезок текста подсвечен цветом одного из четырёх пунктов: что делает инструмент, когда его вызывать и когда нет, что значат параметры и чего он не возвращает.">
+        <figcaption>В описании Meridian есть все четыре пункта, которые нужны хорошему описанию.</figcaption>
+      </figure>
+      <p>Когда в описании сказано, в каких случаях инструмент использовать, а в каких нет, Claude реже вызывает не тот инструмент. Описание Meridian ограничивает инструмент вопросами об одном проекте. Для разрешений и счетов оно называет инструменты, которые нужно использовать.</p>
+
+      <h2>Объединяйте пересекающиеся инструменты в один</h2>
+      <p>Хорошее описание мало чем поможет, если несколько инструментов делают почти одно и то же.</p>
+      <p>В первом наборе у Meridian было шесть «тонких» инструментов, у каждого — описание в одну строку. Четыре из них возвращали по одному факту о проекте. Эти четыре пересекались, и Claude приходилось угадывать, какие из них нужны для вопроса.</p>
+      <p><strong>Решение — объединить эти четыре в один инструмент <code>lookup_project_status</code> с параметром <code>fields</code>, который указывает, какие факты вернуть.</strong> Два остальных, для разрешений и счетов, делают другую работу, поэтому остаются. Из шести инструментов получается три.</p>
+
+      <h2>Измеряйте изменения оценкой (eval)</h2>
+      <p><strong>Eval, или оценка, — это фиксированный набор тестовых вопросов с заранее известными правильными ответами: их прогоняют через Claude и подсчитывают баллы.</strong> Оценка показывает, стали ли новые определения лучше.</p>
+      <p>Оценка Meridian проверяет, вызывает ли Claude нужные инструменты. В ней 30 вопросов, которые мог бы задать сотрудник, и у каждого размечены правильные вызовы инструментов. Meridian прогнала эти 30 вопросов дважды на <code>claude-sonnet-5</code> — по разу с каждым набором инструментов.</p>
+      <table class="compare">
+        <thead>
+          <tr><th>Набор инструментов</th><th>Число инструментов</th><th>Результат</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>«Тонкий»</td><td>6</td><td>14/30 (47%)</td></tr>
+          <tr><td>Объединённый</td><td>3</td><td><strong>26/30 (87%)</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h2>Исправляйте только виноватую часть</h2>
+      <p><strong>Чтобы исправить отдельный сбой, найдите часть определения, которая в нём виновата, измените только её и снова прогоните оценку.</strong></p>
+      <table class="compare">
+        <thead>
+          <tr><th>Что Claude делает не так</th><th>Что менять</th><th>Что сделать</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Вызывает не тот инструмент или больше инструментов, чем нужно для вопроса</td><td>Описание</td><td>Опишите, что делает каждый инструмент и когда его использовать. Объедините пересекающиеся инструменты.</td></tr>
+          <tr><td>Передаёт значение не того типа или формата</td><td>Схему и примеры</td><td>Укажите формат в собственном <code>description</code> параметра. Добавьте <code>input_examples</code>.</td></tr>
+        </tbody>
+      </table>
+      <p>Другие симптомы и способы их исправить — на странице документации <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/troubleshooting-tool-use#claude-calls-the-wrong-tool" target="_blank" rel="noopener noreferrer">Troubleshooting tool use</a>.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Когда Claude передаёт параметр не того типа, страница Troubleshooting tool use (на ноябрь 2026) советует, кроме <code>input_examples</code>, включить флаг <code>strict: true</code>: с ним вход Claude гарантированно совпадает со схемой. Ему посвящён следующий урок.</p>
+        <p>Ещё три совета есть в видео, но не в тексте урока; все они совпадают с документацией.</p>
+        <ul>
+          <li><strong>Действия — тоже параметром.</strong> Вместо отдельного инструмента на каждый глагол (<code>create_pr</code>, <code>review_pr</code>, <code>merge_pr</code>) — один инструмент с параметром <code>action</code>.</li>
+          <li><strong>Префиксы и tool search.</strong> Когда инструментов много, помогают имена с префиксом сервиса: <code>github_list_prs</code>, <code>slack_send_message</code>. Если определения съедают окно контекста, инструмент tool search подгружает их по требованию (такие инструменты помечают <code>defer_loading: true</code>). В видео порог — от 50 инструментов, а документация советует tool search уже с 10.</li>
+          <li><strong>Сообщение об ошибке — тоже промпт.</strong> Claude читает текст в <code>tool_result</code> с <code>"is_error": true</code>. «Error 404» ничему его не учит, а «Job number not found, verify format» подсказывает, что исправить, и следующим вызовом Claude обычно исправляет ошибку сам.</li>
+        </ul>
+      </aside>
+
+      <h2>Главное</h2>
+      <ul>
+        <li>пишите описания минимум из трёх-четырёх предложений и указывайте, когда инструмент использовать не нужно;</li>
+        <li>объединяйте пересекающиеся инструменты в один инструмент с параметрами;</li>
+        <li>измеряйте изменения оценкой;</li>
+        <li>чтобы исправить отдельный сбой, меняйте только виноватую часть.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Strict tool use: перестаньте отклонять свои же вызовы»: как флаг <code>strict: true</code> заставляет вход, который пишет Claude, точно соответствовать схеме, чтобы ваш бэкенд больше не отклонял его вызовы.</p>
+      <div class="pager">
+        <a class="next" href="02-strict-tool-use.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/creating-tools-that-claude-picks" target="_blank" rel="noopener noreferrer">Creating tools that Claude picks</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

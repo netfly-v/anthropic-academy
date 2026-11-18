@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Как снизить цену работы с инструментами</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../index.html" aria-current="page">Tool use</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Tool use в Messages API</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Надёжные вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="01-tools-claude-picks.html"><span class="mark"></span>Инструменты, которые выбирает Claude</a></li>
+          <li><a href="02-strict-tool-use.html"><span class="mark"></span>Strict tool use</a></li>
+        </ul>
+        <p class="nav-group">Параллельные и потоковые вызовы</p>
+        <ul class="lesson-nav">
+          <li><a href="03-parallel-tool-calling.html"><span class="mark"></span>Параллельные вызовы</a></li>
+          <li><a href="04-streaming-tool-calls.html"><span class="mark"></span>Потоковые вызовы</a></li>
+        </ul>
+        <p class="nav-group">Инструменты от Anthropic</p>
+        <ul class="lesson-nav">
+          <li><a href="05-code-execution.html"><span class="mark"></span>Code execution</a></li>
+          <li><a href="06-web-search.html"><span class="mark"></span>Web search</a></li>
+          <li><a href="07-computer-use.html"><span class="mark"></span>Computer use</a></li>
+        </ul>
+        <p class="nav-group">Цена запросов с инструментами</p>
+        <ul class="lesson-nav">
+          <li><a href="08-cut-the-cost.html" aria-current="page"><span class="mark"></span>Как снизить цену</a></li>
+        </ul>
+        <p class="nav-group">Итог курса</p>
+        <ul class="lesson-nav">
+          <li><a href="09-next-steps.html"><span class="mark"></span>Что дальше</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Как снизить цену работы с инструментами</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:45 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>находить по <code>usage.input_tokens</code>, какая часть запроса стоит дороже всего;</li>
+        <li>включать programmatic tool calling: инструмент code execution, поле <code>allowed_callers</code> и ID контейнера;</li>
+        <li>кешировать определения инструментов одной строкой с <code>cache_control</code> и помнить о подвохах кеша;</li>
+        <li>выбирать между двумя приёмами по тому, из чего складываются входные токены.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/gccCX7-qkvk" title="Cut the cost of tool-heavy workflows" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Агент, который пользуется инструментами, в каждом запросе отправляет всё заново. Programmatic tool calling и prompt caching сокращают разные части его расходов.</p>
+      <p><em>Демо в этом видео записано в сентябре 2026 года на Claude Sonnet 5 (<code>claude-sonnet-5</code>). На более новых моделях результаты могут отличаться.</em></p>
+      <p><strong>Агент с инструментами в каждом запросе отправляет всё заново, поэтому стоимость его работы растёт с каждым вызовом инструмента.</strong> Каждый запрос содержит определения инструментов, системный промпт, вопрос и все результаты инструментов, полученные к этому моменту. Это его входные токены, и каждый из них оплачивается.</p>
+      <p>Эту стоимость снижают и programmatic tool calling, и prompt caching.</p>
+      <p>Meridian — вымышленная инженерно-консалтинговая компания, в которой 40 инженеров. Её агенту задали один вопрос: у каких инженеров загрузка в июне 2026 года была ниже 70%? У агента было два инструмента: <code>list_employees</code> возвращает список сотрудников, а <code>get_employee_hours</code> — табель одного инженера.</p>
+      <p>Чтобы ответить на этот вопрос, агенту понадобилось 42 запроса и 1&nbsp;124&nbsp;799 входных токенов. Весь прогон обошёлся в $2,29 за токены.</p>
+
+      <h2>Измеряйте входные токены каждого запроса</h2>
+      <p><strong>Выводите <code>usage.input_tokens</code> каждый раз, когда приходит ответ: эти числа показывают, на что уходят деньги.</strong></p>
+      <pre>resp = client.messages.create(...)
+print(resp.usage.input_tokens, "input tokens")</pre>
+      <p>Агент Meridian работает в классическом цикле: в каждом ответе запрашивается один вызов инструмента. Вот два его замера.</p>
+      <table class="compare">
+        <thead>
+          <tr><th>Запрос</th><th>Что в нём</th><th>Входные токены</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Запрос 1</td><td>Определения инструментов, системный промпт и вопрос</td><td>606</td></tr>
+          <tr><td>Запрос 37</td><td>То же плюс 36 предыдущих результатов инструментов</td><td>47&nbsp;905</td></tr>
+        </tbody>
+      </table>
+      <p>В запросе 1 — только то, что отправляется с каждым запросом. В следующие запросы добавляются вызовы инструментов и их результаты. Сравните два числа, чтобы увидеть, какая часть выросла.</p>
+
+      <h2>Уберите результаты инструментов из того, что читает Claude</h2>
+      <p>При <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling#how-programmatic-tool-calling-works" target="_blank" rel="noopener noreferrer">programmatic tool calling</a> (программном вызове инструментов) Claude пишет скрипт, который вызывает ваши инструменты, а инструмент code execution запускает этот скрипт в контейнере. <strong>До Claude доходит только то, что скрипт выводит.</strong> Все 40 табелей Meridian остаются у скрипта, а Claude получает его короткий вывод.</p>
+      <p><strong>Сначала проверьте свои инструменты и модель.</strong> На октябрь 2026 года programmatic tool calling <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/programmatic-tool-calling#feature-incompatibilities" target="_blank" rel="noopener noreferrer">не поддерживает инструменты с <code>strict: true</code></a>. Не поддерживает он и <code>disable_parallel_tool_use</code> — настройку <code>tool_choice</code>, которая ограничивает Claude одним вызовом инструмента в каждом ответе. А через <code>tool_choice</code> нельзя заставить Claude вызвать инструмент из скрипта.</p>
+      <p>Claude Haiku 4.5 эту возможность не поддерживает. Она работает в Claude API, Claude Platform on AWS и в развёртываниях Microsoft Foundry, размещённых у Anthropic.</p>
+      <p>Чтобы включить programmatic tool calling, нужны четыре изменения.</p>
+      <ol>
+        <li><strong>Добавьте инструмент code execution в список <code>tools</code>.</strong></li>
+        <li><strong>Отметьте инструменты, которые может вызывать скрипт.</strong> Добавьте каждому из них поле <code>allowed_callers</code> и укажите в нём инструмент code execution <a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference" target="_blank" rel="noopener noreferrer">версии <code>code_execution_20260120</code> или новее</a>.</li>
+        <li><strong>Возвращайте ID контейнера.</strong> Берите его из каждого ответа, который остановился на вызове инструмента, и отправляйте в запросе, который возвращает результаты ваших инструментов.</li>
+        <li><strong>Опишите результат каждого инструмента.</strong> Укажите в описании структуру результата: скрипту нужно его разобрать. Вот описание <code>get_employee_hours</code> у Meridian.</li>
+      </ol>
+      <p><code>Returns one engineer's hours for the month as JSON: {"name": str, "billable_hours": float, "utilization": float 0-1}</code></p>
+      <p>Вот цикл Meridian после этих изменений.</p>
+      <pre>CODE_EXECUTION = "code_execution_20260120"
+TOOLS = [
+    {"type": CODE_EXECUTION, "name": "code_execution"},
+    {**LIST_EMPLOYEES, "allowed_callers": [CODE_EXECUTION]},
+    {**GET_EMPLOYEE_HOURS, "allowed_callers": [CODE_EXECUTION]},
+]
+
+messages = [{"role": "user", "content": QUESTION}]
+container = None
+while True:
+    resp = client.messages.create(
+        model="claude-sonnet-5", max_tokens=4096,
+        tools=TOOLS, messages=messages, container=container,
+    )
+    print(resp.usage.input_tokens, "input tokens")
+    if resp.stop_reason not in ("tool_use", "pause_turn"):
+        break
+    container = resp.container.id
+    messages.append({"role": "assistant", "content": resp.content})
+    if resp.stop_reason == "tool_use":
+        messages.append({"role": "user", "content": run_tools(resp)})
+print("".join(b.text for b in resp.content if b.type == "text"))</pre>
+      <ul>
+        <li><code>LIST_EMPLOYEES</code> и <code>GET_EMPLOYEE_HOURS</code> — определения инструментов Meridian.</li>
+        <li>Ваша собственная функция <code>run_tools</code> выполняет каждый вызов инструмента и возвращает результаты.</li>
+        <li>При <code>pause_turn</code> цикл отправляет ответ обратно и продолжает работу.</li>
+      </ul>
+      <p>Когда скрипт вызывает инструмент, <code>stop_reason</code> ответа равен <code>"tool_use"</code>. Ваш код выполняет инструмент, и результат уходит скрипту, а не Claude. Скрипт может запускать инструменты параллельно, поэтому в одном ответе может оказаться несколько вызовов инструментов.</p>
+      <p>Вот тот же вопрос, решённый обоими способами.</p>
+      <table class="compare">
+        <thead>
+          <tr><th>Прогон</th><th>Запросы</th><th>Вызовы инструментов</th><th>Входные токены</th><th>Стоимость токенов</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Классический цикл</td><td>42</td><td>41</td><td>1&nbsp;124&nbsp;799</td><td>$2,29</td></tr>
+          <tr><td>Programmatic tool calling</td><td>3</td><td>41</td><td>28&nbsp;486</td><td>$0,0667</td></tr>
+        </tbody>
+      </table>
+      <p><em>В обоих прогонах использовались один и тот же вопрос, одни и те же инструменты и <code>claude-sonnet-5</code>. Стоимость рассчитана <a href="https://claude.com/pricing" target="_blank" rel="noopener noreferrer">по тарифам на сентябрь 2026 года</a>, а время работы code execution оплачивается отдельно от токенов.</em></p>
+      <p>Programmatic tool calling подходит для независимых друг от друга обращений к данным. Пользы от него мало, когда Claude должен обдумать каждый результат, прежде чем сделать следующий вызов инструмента.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Почему запросов три.</strong> Судя по цифрам, скрипт сначала вызвал <code>list_employees</code>, затем запросил 40 табелей параллельно, одним ответом. Каждая пауза скрипта — отдельный запрос вашего цикла.</li>
+          <li><strong>Что идёт в счёт.</strong> На ноябрь 2026 результаты программных вызовов не засчитываются во входные и выходные токены: считаются только итоговый вывод code execution и ответ Claude.</li>
+          <li><strong>Ответ на паузу.</strong> Сообщение с результатами для скрипта должно содержать только блоки <code>tool_result</code>, без текста, а без ID контейнера API его отклонит. На ноябрь 2026 вызов, который ждёт результата, завершается ошибкой <code>TimeoutError</code> внутри скрипта примерно через 4 минуты (в видео — «через несколько минут»).</li>
+        </ul>
+      </aside>
+
+      <h2>Кешируйте повторяющиеся определения инструментов</h2>
+      <p>Когда включён prompt caching, API сохраняет префикс вашего запроса — часть до отмеченной вами точки кеширования. Повторное чтение этого префикса обходится гораздо дешевле.</p>
+      <p>У второго агента Meridian 14 инструментов, и их определения занимают 3&nbsp;305 токенов, которые заново отправляются с каждым запросом.</p>
+      <p><strong>Отметьте точку кеширования, добавив <code>cache_control</code> к последнему инструменту, — и в кеш попадёт весь список.</strong> Это одна строка:</p>
+      <pre>TOOLS[-1]["cache_control"] = {"type": "ephemeral"}</pre>
+      <p>На Claude Sonnet 5 чтение префикса стоит <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pricing" target="_blank" rel="noopener noreferrer">десятую часть обычной цены входных токенов</a>. Запись обходится в 1,25 раза дороже обычных входных токенов.</p>
+      <p>Кешированный префикс по умолчанию живёт пять минут, и каждое использование продлевает этот срок. Если запросы идут реже, добавьте <code>"ttl": "1h"</code> в <code>cache_control</code>, чтобы префикс хранился час. Запись часового кеша стоит <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pricing" target="_blank" rel="noopener noreferrer">вдвое дороже обычных входных токенов</a>.</p>
+      <p>Meridian прогнала одни и те же восемь вопросов с кешем и без него. Общая стоимость входных токенов снизилась с $0,0554 до $0,0154.</p>
+      <p>При <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-caching#automatic-caching" target="_blank" rel="noopener noreferrer">автоматическом кешировании</a> вы добавляете одно поле <code>cache_control</code> на верхний уровень запроса, а точку кеширования ставит за вас API.</p>
+      <p>Когда кеш включён, следите за тремя вещами:</p>
+      <ol>
+        <li>Измените любое определение инструмента — и потеряете весь кеш.</li>
+        <li>На Sonnet 5 кешированный префикс должен быть не короче 1&nbsp;024 токенов. Если он короче, ничего не кешируется, и никакая ошибка об этом не сообщит.</li>
+        <li>С включённым кешем в <code>input_tokens</code> не входит кешированный префикс, поэтому настоящее число входных токенов запроса — это сумма <code>input_tokens</code>, <code>cache_read_input_tokens</code> и <code>cache_creation_input_tokens</code>.</li>
+      </ol>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Уточнение из видео к первому пункту: префикс кешируется в порядке <code>tools</code> → <code>system</code> → <code>messages</code>, и изменение на любом уровне сбрасывает кеш этого уровня и всех следующих. Поэтому правка определения инструмента обнуляет весь кеш, а правка системного промпта кеш инструментов сохраняет. Понять, что кеш не сработал (второй пункт), можно по <code>usage</code>: если <code>cache_creation_input_tokens</code> и <code>cache_read_input_tokens</code> оба равны 0, ничего не закешировано.</p>
+      </aside>
+
+      <h2>Сочетайте приёмы там, где они подходят</h2>
+      <p>Добавляйте их в таком порядке.</p>
+      <ol>
+        <li><strong>Начните с кеширования.</strong> Это одна строка.</li>
+        <li><strong>Проверьте programmatic tool calling.</strong> Прогоните часть обычного трафика с <code>allowed_callers</code> и без него, затем сравните оплаченные входные токены каждого прогона.</li>
+      </ol>
+      <p>Для каждого из двух запросов Meridian, приведённых ниже, найдите часть, в которой больше всего входных токенов, и выберите приём, который её сокращает.</p>
+      <p>Упражнение: полосы на двух карточках показывают, из каких источников складываются входные токены — для одного записанного запроса в конце долгого прогона агента и для среднего запроса из прогона другого агента. Нужно выбрать, что экономит больше всего: programmatic tool calling, prompt caching или ни то ни другое, — и упражнение прокомментирует выбор.</p>
+      <p>Цифры взяты из прогонов Meridian, записанных в сентябре 2026 года. Сама страница к Claude не обращается.</p>
+      <p>Полосы на каждой карточке (здесь — строки таблицы) делят входные токены агента Meridian по источникам. Посмотрите на полосы и ответьте на вопрос под ними.</p>
+
+      <h3>Классический цикл, запрос 37 из 42</h3>
+      <p><strong>47&nbsp;905 входных токенов</strong></p>
+      <p>В классическом цикле в каждом ответе запрашивается один вызов инструмента, и каждый табель заново отправляется с каждым следующим запросом. Вызовы инструментов не зависят друг от друга.</p>
+      <table class="compare">
+        <tbody>
+          <tr><td>Отправляется с каждым запросом: определения инструментов, системный промпт и вопрос</td><td>606 (1%)</td></tr>
+          <tr><td>Добавлено предыдущими запросами</td><td>47&nbsp;299 (99%)</td></tr>
+        </tbody>
+      </table>
+      <p>Запрос 1 содержал только то, что отправляется с каждым запросом, — 606 токенов.</p>
+      <p>Какой приём сильнее всего сократит входные токены этого запроса?</p>
+      <ul>
+        <li>Programmatic tool calling</li>
+        <li>Prompt caching</li>
+        <li>Ни то ни другое</li>
+      </ul>
+
+      <h3>Агент Meridian с 14 инструментами, средний запрос</h3>
+      <p><strong>3&nbsp;461 входной токен</strong></p>
+      <p>Все 14 определений инструментов уходят с каждым запросом.</p>
+      <table class="compare">
+        <tbody>
+          <tr><td>Определения инструментов</td><td>3&nbsp;305 (95%)</td></tr>
+          <tr><td>Системный промпт и вопрос</td><td>156 (5%)</td></tr>
+        </tbody>
+      </table>
+      <p>Определения инструментов занимают 3&nbsp;305 токенов.</p>
+      <p>Какой приём сильнее всего сократит входные токены этого запроса?</p>
+      <ul>
+        <li>Programmatic tool calling</li>
+        <li>Prompt caching</li>
+        <li>Ни то ни другое</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>На странице урока это интерактивное упражнение с отзывом. Ответы: в первой карточке 99% токенов — накопленные результаты независимых вызовов, их убирает из контекста programmatic tool calling. Во второй 95% — повторяющиеся определения инструментов, их удешевляет prompt caching (3&nbsp;305 токенов больше минимума в 1&nbsp;024).</p>
+      </aside>
+
+      <h2>Главное</h2>
+      <ul>
+        <li>Каждый запрос отправляет всё заново, поэтому за старые результаты инструментов вы платите снова и снова.</li>
+        <li>Выводите <code>usage.input_tokens</code> каждый раз, когда приходит ответ, — так вы узнаете, какая часть запроса стоит дороже всего.</li>
+        <li>Начните с кеширования. Добавьте <code>cache_control</code> к последнему инструменту в списке.</li>
+        <li>Если вызовы инструментов не зависят друг от друга, настройте programmatic tool calling с инструментом code execution и <code>allowed_callers</code>. Отправляйте ID контейнера с каждым следующим запросом.</li>
+      </ul>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Чините свои инструменты»: короткий итог курса о том, как по симптому выбрать нужное исправление и где искать помощь дальше.</p>
+      <div class="pager">
+        <a class="ghost" href="07-computer-use.html">Назад</a>
+        <a class="next" href="09-next-steps.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/tool-use-with-the-messages-api/cut-the-cost-of-tool-heavy-workflows" target="_blank" rel="noopener noreferrer">Cut the cost of tool-heavy workflows</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

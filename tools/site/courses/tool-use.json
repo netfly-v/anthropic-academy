@@ -1,0 +1,144 @@
+{
+ "dir": "tool-use",
+ "course": "tool-use-with-the-messages-api",
+ "platform": "academy",
+ "img_prefix": "tu",
+ "title": "Tool use в Messages API",
+ "orig_title": "Tool use with the Messages API",
+ "lead": "Что делать, когда tool use уже работает: как сделать вызовы инструментов надёжными, быстрыми и дешёвыми и как подключить инструменты, которые предоставляет Anthropic.",
+ "about": [
+  "<p>Курс Anthropic Academy на academy.claude.com для тех, у кого первый круг tool use уже работает: Claude вызывает ваш инструмент, код его выполняет, результат возвращается. Каждый урок разбирает одну проблему на примере вымышленной инженерной фирмы Meridian. Здесь весь курс в том же порядке, что и в оригинале: текст по-русски, плюс пояснения там, где урок короткий или расходится с документацией. Видео — те же ролики с YouTube.</p>"
+ ],
+ "sections": [
+  {
+   "title": "Надёжные вызовы",
+   "lessons": [
+    {
+     "file": "01-tools-claude-picks.html",
+     "nav": "Инструменты, которые выбирает Claude",
+     "sid": "creating-tools-that-claude-picks",
+     "orig": "Creating tools that Claude picks",
+     "note": "Описание, схема и примеры: как Claude выбирает инструмент",
+     "dur": "3 мин 10 с",
+     "toc": 1
+    },
+    {
+     "file": "02-strict-tool-use.html",
+     "nav": "Strict tool use",
+     "sid": "strict-tool-use",
+     "orig": "Strict tool use: Stop rejecting your own calls",
+     "note": "strict: true, схема из валидатора и лимиты strict",
+     "dur": "4 мин 30 с",
+     "toc": 2,
+     "h1": "Strict tool use: перестаньте отклонять свои же вызовы"
+    }
+   ]
+  },
+  {
+   "title": "Параллельные и потоковые вызовы",
+   "lessons": [
+    {
+     "file": "03-parallel-tool-calling.html",
+     "nav": "Параллельные вызовы",
+     "sid": "parallel-tool-calling",
+     "orig": "Parallel tool calling: Cut the latency",
+     "note": "Все вызовы сразу, ответы одним сообщением, is_error",
+     "dur": "3 мин 16 с",
+     "toc": 3,
+     "h1": "Параллельные вызовы инструментов: меньше задержка"
+    },
+    {
+     "file": "04-streaming-tool-calls.html",
+     "nav": "Потоковые вызовы",
+     "sid": "streaming-tool-calls",
+     "orig": "Streaming tool calls: No more frozen spinners",
+     "note": "События потокового вызова и живая строка состояния",
+     "dur": "3 мин 24 с",
+     "toc": 4,
+     "h1": "Потоковые вызовы инструментов: без зависших индикаторов"
+    }
+   ]
+  },
+  {
+   "title": "Инструменты от Anthropic",
+   "lessons": [
+    {
+     "file": "05-code-execution.html",
+     "nav": "Code execution",
+     "sid": "code-execution",
+     "orig": "Code execution: Claude runs the code it writes",
+     "note": "Серверный code execution, файлы в контейнере, pause_turn",
+     "dur": "3 мин 26 с",
+     "toc": 5,
+     "h1": "Code execution: Claude запускает код, который пишет"
+    },
+    {
+     "file": "06-web-search.html",
+     "nav": "Web search",
+     "sid": "web-search",
+     "orig": "Web search: Answers from the sites you trust",
+     "note": "Веб-поиск, allowed_domains и источники ответа",
+     "dur": "3 мин 57 с",
+     "toc": 6,
+     "h1": "Web search: ответы с сайтов, которым вы доверяете"
+    },
+    {
+     "file": "07-computer-use.html",
+     "nav": "Computer use",
+     "sid": "computer-use",
+     "orig": "Computer use: Automate desktop software with no API",
+     "note": "Программа без API: скриншоты, контейнер и confirm",
+     "dur": "",
+     "toc": 7,
+     "h1": "Computer use: автоматизация программ без API"
+    }
+   ]
+  },
+  {
+   "title": "Цена запросов с инструментами",
+   "lessons": [
+    {
+     "file": "08-cut-the-cost.html",
+     "nav": "Как снизить цену",
+     "sid": "cut-the-cost-of-tool-heavy-workflows",
+     "orig": "Cut the cost of tool-heavy workflows",
+     "note": "Замер токенов, programmatic tool calling и кеш инструментов",
+     "dur": "3 мин 45 с",
+     "toc": 8,
+     "h1": "Как снизить цену работы с инструментами"
+    }
+   ]
+  },
+  {
+   "title": "Итог курса",
+   "lessons": [
+    {
+     "file": "09-next-steps.html",
+     "nav": "Что дальше",
+     "sid": "next-steps",
+     "orig": "Start fixing your own tools",
+     "note": "Итог курса: что чем чинить и где искать дальше",
+     "dur": "",
+     "toc": 10,
+     "h1": "Чините свои инструменты",
+     "allow_cross": true
+    }
+   ]
+  }
+ ],
+ "quiz": {
+  "file": "quiz.html",
+  "items": 16,
+  "minutes": 20,
+  "bank": "tool-use-quiz.js",
+  "page_title": "Tool use в Messages API",
+  "kicker": "Tool use в Messages API"
+ },
+ "official": [
+  {
+   "id": "course-quiz",
+   "title": "Course quiz",
+   "questions_text": "около 10 минут, нужен вход в Academy"
+  }
+ ]
+}
