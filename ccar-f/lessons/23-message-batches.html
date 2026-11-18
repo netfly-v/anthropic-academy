@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Message Batches API</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html" aria-current="page"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Message Batches API</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 4 · подпункт 4.5</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/17-running-the-eval.html">API · Запуск оценки</a> — в пояснении: большую оценку, результаты которой не нужны сразу, можно отправить пакетом — асинхронно и вдвое дешевле.</li>
+        <li><a href="../../api/lessons/70-parallelization.html">API · Параллельные рабочие процессы</a> — в пояснении: ночную обработку без спешки отправляют пакетом; большинство пакетов готово меньше чем за час, цена на 50% ниже.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Message Batches API принимает много обычных запросов к Messages API и обрабатывает их асинхронно, каждый отдельно. На ноябрь 2026 это вдвое дешевле. Большинство пакетов готово меньше чем за час, но обработка может занять до 24 часов, и срок не гарантирован.</p>
+      <p><strong>Когда нужен пакет.</strong> Решает один вопрос: ждёт ли кто-то ответа прямо сейчас.</p>
+      <ul>
+        <li>Ждёт — пользователь в чате, проверка, без которой не пройдёт выкладка. Нужен синхронный Messages API.</li>
+        <li>Не ждёт — ночная разметка обращений, разбор архива отзывов за квартал: это работа для пакета.</li>
+      </ul>
+      <p><strong>Свои инструменты внутри запроса не выполнятся.</strong> Если Claude вызывает ваш инструмент, ответ заканчивается блоком <code>tool_use</code>, а <code>tool_result</code> уходит только следующим запросом (цикл — в уроке <a href="../../api/lessons/33-multi-turn-tools.html">API · Диалог с инструментами</a>). В пакете каждый такой круг — новый пакет и до суток ожидания, поэтому агента со своими инструментами запускают синхронно.</p>
+      <p><strong><code>custom_id</code>.</strong> Результаты могут прийти в любом порядке, поэтому каждому запросу дают уникальный в пакете <code>custom_id</code>, например номер документа, и по нему связывают результат с запросом.</p>
+      <p><strong>Сбои.</strong> Итог каждого запроса — <code>succeeded</code>, <code>errored</code>, <code>canceled</code> или <code>expired</code>; сбой одного не мешает остальным. Удачные ответы уже оплачены, поэтому повторяют только <code>custom_id</code> с неудачным итогом:</p>
+      <ul>
+        <li><code>errored</code> с <code>invalid_request_error</code> — ошибка в самом запросе, без исправления он упадёт снова. Например, документ не поместился в контекстное окно: его режут на фрагменты, у каждого свой <code>custom_id</code>.</li>
+        <li>Ошибка сервера или <code>expired</code> — повторяют без изменений.</li>
+      </ul>
+      <p><strong>Частота отправки под SLA.</strong> Считают по худшему случаю: ожидание ближайшей отправки, до 24 часов обработки, разбор и повтор упавших запросов. Правило: интервал между отправками ≤ SLA − 24 часа − запас на разбор и повтор.</p>
+      <p><strong>Сначала выборка.</strong> Об ошибках в <code>params</code> API сообщает только после окончания всего пакета, а слабый промпт проявится через часы и сразу на всём оплаченном объёме. Поэтому форму запроса проверяют одним синхронным вызовом, а промпт доводят на небольшой выборке с известными ответами.</p>
+
+      <h2>Пример</h2>
+      <p>Юридический сервис извлекает поля из 20–30 тысяч договоров в сутки; поля нужны не позже чем через 36 часов после загрузки. А при загрузке юрист должен сразу видеть, не пропущены ли обязательные разделы. Что делает архитектор:</p>
+      <ol>
+        <li>Проверку разделов делает синхронным вызовом: юрист ждёт ответа.</li>
+        <li>Промпт извлечения доводит на 200 договорах с проверенными вручную полями.</li>
+        <li>Извлечение отправляет пакетами раз в 8 часов: 36 − 24 − 4 часа запаса на разбор и повтор. Повторы — синхронные: новый пакет мог бы снова занять сутки.</li>
+        <li><code>custom_id</code> — номер договора.</li>
+        <li>Из 25 000 запросов 140 завершились с <code>errored</code>. Сто длинных договоров не поместились в окно — их режут по разделам (<code>contract-58213-p1</code>, <code>contract-58213-p2</code>) и отправляют заново. Сорок с ошибкой сервера повторяют как есть.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>В вопросе обычно смешаны блокирующие и фоновые вызовы, иногда есть срок готовности или упавшие запросы. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>«Пакеты обычно готовы за час — подойдут и блокирующему шагу».</strong> Срок не гарантирован, считают по худшему случаю.</li>
+        <li><strong>Перевести на пакеты агента со своими инструментами.</strong> Каждый круг <code>tool_use</code> → <code>tool_result</code> стал бы новым пакетом.</li>
+        <li><strong>Переотправить весь пакет или повторить упавшее без изменений.</strong> Первое — повторная плата за готовое, второе не поможет, если ошибка в самом запросе. Верно — повторить только неудачные <code>custom_id</code>, исправив ошибочные.</li>
+        <li><strong>Сразу запустить весь объём и чинить по ходу.</strong> Каждая итерация — целый пакет и до суток ожидания. Верно — сначала довести промпт на выборке.</li>
+      </ul>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>На экзамене: многоходового вызова инструментов внутри запроса пакета нет, и если модель вызывает ваши инструменты, пакет не подходит. По документации на ноябрь 2026 это верно для клиентских инструментов; серверные (web search, code execution и другие) проходят в пакете тот же цикл, что и в синхронном API. А «Tool use» и «Multi-turn conversations» в списке возможностей пакетов значат лишь, что в запрос можно передать инструменты и готовую историю диалога.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/batch-processing" target="_blank" rel="noopener noreferrer">Batch processing</a> — скидка 50%, до 24 часов на пакет (большинство — меньше часа), четыре итога запроса, порядок результатов и <code>custom_id</code>, какие ошибки исправлять перед повтором, серверные инструменты в пакете, проверка формы запроса через Messages API.</li>
+        <li><a href="https://platform.claude.com/docs/en/api/messages/batches/create" target="_blank" rel="noopener noreferrer">Create a Message Batch</a> — поле <code>custom_id</code>: зачем нужно, уникальность, допустимые символы и длина.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview" target="_blank" rel="noopener noreferrer">Tool use with Claude</a> — клиентские инструменты выполняет ваш код: ответ с <code>stop_reason: "tool_use"</code>, результат — в следующем запросе; серверные выполняет Anthropic.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/context-windows#context-window-overflow-behavior" target="_blank" rel="noopener noreferrer">Context windows: Context window overflow behavior</a> — вход больше окна даёт 400 <code>invalid_request_error</code> («prompt is too long»).</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/develop-tests" target="_blank" rel="noopener noreferrer">Define success criteria and build evaluations</a> — цикл: тестовые случаи, черновой промпт, итерации и доработка, финальная проверка, выпуск.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="22-validation-retry.html">Назад</a>
+        <a class="next" href="24-long-context.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

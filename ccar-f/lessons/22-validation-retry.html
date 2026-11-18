@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Проверка и повтор с текстом ошибки</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html" aria-current="page"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Проверка и повтор с текстом ошибки</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 4 · подпункт 4.4</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../tool-use/lessons/02-strict-tool-use.html">Tool use · Strict tool use: перестаньте отклонять свои же вызовы</a> — <code>strict: true</code> приводит вызов к схеме, бизнес-правила по-прежнему проверяет валидатор, а факт, которого нет в запросе, приходит как <code>null</code>.</li>
+        <li><a href="../../tool-use/lessons/01-tools-claude-picks.html">Tool use · Инструменты, которые выбирает Claude</a> — понятный текст ошибки в <code>tool_result</code> с <code>"is_error": true</code> подсказывает Claude, что исправить.</li>
+        <li><a href="../../api/lessons/71-chaining.html">API · Цепочки</a> — отдельный запрос на доработку исправляет конкретные нарушения в готовом результате.</li>
+        <li><a href="../../api/lessons/69-agents-and-workflows.html">API · Агенты и рабочие процессы</a> — evaluator-optimizer: замечания оценщика возвращаются исполнителю, число итераций ограничено.</li>
+        <li><a href="../../claude-code/lessons/08-verifying-runs.html">Claude Code · Проверка автономных запусков</a> — hook с <code>exit 2</code> передаёт Claude текст сбоя, и тот сам исправляет ошибку.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>При извлечении данных бывают ошибки двух видов, и лечат их по-разному.</p>
+      <ul>
+        <li><strong>Ошибки формы</strong> (синтаксические): невалидный JSON, строка вместо числа, пропущенное обязательное поле. Их устраняет схема — strict tool use или JSON outputs, повторы не нужны.</li>
+        <li><strong>Ошибки смысла</strong> (семантические): JSON безупречен, но данные неверны — налог записан в поле скидки, строки в сумме не дают напечатанный итог. Схемой это не выразить: такое ловит только ваш код-валидатор после ответа.</li>
+      </ul>
+      <p>Для ошибок смысла работает повтор с обратной связью. В новый запрос передают три вещи: исходный документ, неудачный результат и конкретные сообщения валидатора (например, Pydantic) — какое поле и что с ним не так. Это self-correction из документации о chaining, только проверяет здесь не Claude, а ваш код.</p>
+      <p>Но повтор помогает не всегда:</p>
+      <ul>
+        <li><strong>Поможет</strong>, если ответ в документе есть, а модель ошиблась с форматом, полем или структурой: пропустила строку, записала дату не в том виде.</li>
+        <li><strong>Не поможет</strong>, если данных в документе нет или они в другом документе, который в запрос не попал. Факт не появится, растёт лишь риск выдумки. Такое поле в схеме допускает <code>null</code>, модели прямо разрешают ответить «в документе нет», а запись передают человеку или добавляют в запрос недостающий документ.</li>
+      </ul>
+      <p>Самопроверку закладывают в схему: рядом с напечатанным итогом модель записывает итог, посчитанный по строкам, а булев флаг отмечает противоречие в самом источнике. Код сравнивает два числа: расхождение без флага — промах модели, его обычно исправляет повтор; с флагом — ошибка в документе, запись уходит человеку.</p>
+
+      <h2>Пример</h2>
+      <p>Логистическая компания разносит счета перевозчиков (PDF) в учётную систему. Claude вызывает инструмент <code>record_carrier_invoice</code> со <code>strict: true</code>; среди полей — <code>printed_total</code> (напечатанный итог), <code>lines_total</code> (сумма строк по подсчёту модели), флаг <code>source_conflict</code> и тариф <code>contract_rate</code>. Валидатор отклоняет каждый седьмой счёт; ошибок формы среди отказов нет, только ошибки смысла.</p>
+      <ol>
+        <li>Когда <code>lines_total</code> и <code>printed_total</code> расходятся, код отправляет повтор: тот же PDF, неудачный JSON и сообщение «сумма строк 48 300 ≠ напечатанный итог 51 300: проверьте, не пропущена ли строка и не попала ли доплата за топливо в другое поле». Чаще всего модель находит пропущенную строку.</li>
+        <li>Если строки и после повтора дают 48 300, ошибка в самом счёте: модель ставит <code>source_conflict: true</code>, и счёт уходит бухгалтеру, а не на третий круг.</li>
+        <li><code>contract_rate</code> пустует во всех счетах «по тарифу договора»: тариф есть только в договоре, которого в запросе нет, и повторы бесполезны. Поле допускает <code>null</code>, код берёт тариф из базы договоров.</li>
+        <li>Повторов не больше одного-двух, дальше — ручная проверка.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: валидатор в конвейере извлечения отклоняет часть документов; одни поля повтор исправляет, другие — никогда. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>Повтор без текста ошибки или без документа</strong> — модель не знает, что исправлять, или не может перечитать источник.</li>
+        <li><strong>Больше повторов или более крупная модель</strong> для поля, которого в документе нет, — факт не появится, а риск выдумки вырастет.</li>
+        <li><strong>Правило в промпте</strong> («проверь, что итог сходится») вместо сравнения в коде — инструкция не гарантия.</li>
+        <li><strong>Поле уверенности</strong> (confidence score) — самооценка модели не проверяет арифметику, а сравнение двух чисел в коде проверяет.</li>
+        <li><strong>Надежда на схему</strong> при ошибках смысла — strict гарантирует форму, а не правильность.</li>
+      </ul>
+      <p>Верный ход: проверка в коде; повтор с документом, результатом и текстом ошибок — только для того, что в документе есть; для отсутствующего — <code>null</code> и человек; для противоречия в источнике — флаг.</p>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>Экзамен считает, что синтаксические ошибки устраняет сам tool use с JSON-схемой. По документации на ноябрь 2026 без strict Claude может прислать <code>"2"</code> вместо <code>2</code> или пропустить обязательное поле; гарантию дают <code>strict: true</code> или JSON outputs (кроме отказа и обрыва по <code>max_tokens</code>). На экзамене отвечайте «синтаксис обеспечивает tool use, смысл проверяет валидатор»; в продукте включайте strict.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs" target="_blank" rel="noopener noreferrer">Structured outputs</a> — JSON outputs и strict tool use: валидный JSON без повторов из-за нарушений схемы; раздел Invalid outputs — отказ и обрыв по <code>max_tokens</code> (повторить с увеличенным лимитом).</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use" target="_blank" rel="noopener noreferrer">Strict tool use</a> — без strict возможны <code>"2"</code> вместо <code>2</code> и пропущенные обязательные поля; со strict входные данные инструмента совпадают со схемой.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls" target="_blank" rel="noopener noreferrer">Handle tool calls</a> — раздел Handling errors with is_error: понятное сообщение об ошибке, и Claude повторяет вызов с исправлениями.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#chain-complex-prompts" target="_blank" rel="noopener noreferrer">Prompting best practices: Chain complex prompts</a> — self-correction: черновик, проверка по критериям, доработка отдельными вызовами.</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" rel="noopener noreferrer">Reduce hallucinations</a> — разрешить ответ «не знаю» и опираться только на переданные документы.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="21-few-shot.html">Назад</a>
+        <a class="next" href="23-message-batches.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

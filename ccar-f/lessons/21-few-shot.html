@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Few-shot для неоднозначных случаев</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html" aria-current="page"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Few-shot для неоднозначных случаев</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 4 · подпункт 4.2</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/25-examples.html">API · Примеры в промпте</a> — one-shot и multi-shot, пример для сарказма, теги для примеров, объяснение, чем ответ в примере хорош.</li>
+        <li><a href="../../tool-use/lessons/02-strict-tool-use.html">Tool use · Strict tool use: перестаньте отклонять свои же вызовы</a> — strict отвечает за форму, а не за факты: если данных нет, поле, где разрешён null, так и приходит с null.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p><strong>Примеры с обоснованием.</strong> Список правил не покроет всех случаев, а пример с одним ответом модель может скопировать по внешним признакам. Если же пример объясняет, почему выбрано это действие, а не другое, модель усваивает принцип и применяет его к случаям, которых в промпте нет. Документация о том же: зная причину, Claude обобщает правило.</p>
+      <p>Как собрать такие примеры:</p>
+      <ul>
+        <li>2–4 штуки и только на настоящие пограничные случаи, где разумны два действия; очевидные модель решит и без примеров.</li>
+        <li>В каждом — выбранное действие, отвергнутая альтернатива и признак, который решил дело.</li>
+        <li>Примеры разные: однотипные, предупреждает документация, учат случайным шаблонам.</li>
+      </ul>
+      <p><strong>Примеры для извлечения.</strong> Здесь две противоположные ошибки: модель выдумывает значение, которого в документе нет, или оставляет поле пустым, хотя значение есть, просто записано непривычно. Правило «не выдумывай» лечит первую и может усилить вторую. Примеры справляются с обеими, если покрывают:</p>
+      <ul>
+        <li>все места, где встречается значение: таблица, текст, сноска, отдельный раздел (источник в статье — в скобках в тексте или в списке литературы, метод — в своём разделе или среди результатов);</li>
+        <li>неформальные меры («около метра», «в две ладони») и как их записывать;</li>
+        <li>случай, когда значения действительно нет: тогда пустое поле и есть правильный ответ.</li>
+      </ul>
+      <p>По документации, пример нужного результата действует сильнее абстрактной инструкции, а явное разрешение ответить «не знаю» может резко сократить выдумки.</p>
+
+      <h2>Пример</h2>
+      <p>Маркетплейс мебели собирает карточки товаров из описаний поставщиков: ширина, глубина, высота, вес, материал; если значения в документе нет, поле остаётся пустым (<code>null</code>). Размеры бывают в таблице, в тексте или в разделе PDF «Упаковка и доставка». После запуска у трети карточек ширина пустая, хотя в документе она есть, а вес иногда взят у похожего товара.</p>
+      <p>Правило «не оставляй полей пустыми» только усилило бы угадывание веса. Вместо этого архитектор добавляет в промпт три примера с коротким обоснованием:</p>
+      <ol>
+        <li>Размеры в тексте: «шириной 1,2 м, в глубину 60 см» → 120 и 60. Почему: всё приводится к сантиметрам.</li>
+        <li>«Шириной чуть больше метра» → 100 с пометкой «приблизительно» и исходной фразой. Почему не пустое поле: значение в тексте есть, а пометка и фраза позволяют его проверить.</li>
+        <li>Вес не указан нигде → пустое поле. Почему не вес похожего стола: карточка отражает этот документ, а не каталог.</li>
+      </ol>
+      <p>Ложно пустых полей и выдуманных весов становится меньше. Новый вид документа — повод добавить пример, а не правило.</p>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: агент верно решает случаи из промпта, но ошибается на новых; или извлечение в одних документах оставляет пустые поля, а в других выдумывает значения. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>Дописать ещё правил</strong> — новый случай в список снова не попадёт.</li>
+        <li><strong>«Будь внимательнее», «не выдумывай»</strong> — не показывает, где искать значение и что считать пограничным случаем.</li>
+        <li><strong>Оценка уверенности с порогом</strong> — число рядом с ошибкой её не исправляет.</li>
+        <li><strong>Ужесточить схему</strong> — она гарантирует форму ответа, а не то, что значение взято из документа; а если пустое значение запрещено, модели остаётся только выдумывать.</li>
+        <li><strong>Модель побольше или повтор того же запроса</strong> — пока не показано, как поле выглядит в таком документе, пробел останется.</li>
+        <li><strong>Много однотипных примеров или примеры без обоснования</strong> — модель копирует форму, а не принцип.</li>
+      </ul>
+      <p>Верный ход: 2–4 примера на спорные случаи с объяснением выбора; для извлечения — примеры на каждый вид документа и один с честно пустым полем.</p>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>Экзамен советует 2–4 примера, документация на ноябрь 2026 — 3–5; на экзамене отвечайте «2–4 с обоснованием». Обоснование пишите сами, пояснением к примеру: на ноябрь 2026 у Fable 5, 5.1 и 5.2, Opus 5 и 5.5 и Sonnet 5.5 промпт, требующий выписать рассуждение в ответ (раздел <code>&lt;reasoning&gt;</code>, поле <code>reasoning</code> в JSON), может получить отказ <code>reasoning_extraction</code>. Короткое объяснение или доказательство из документа просить можно.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#use-examples-effectively" target="_blank" rel="noopener noreferrer">Prompting best practices: Use examples effectively</a> — примеры уместные, разнообразные и чётко оформленные; 3–5 штук; однотипные учат случайным шаблонам.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#add-context-to-improve-performance" target="_blank" rel="noopener noreferrer">Prompting best practices: Add context to improve performance</a> — объяснение причины помогает: Claude обобщает правило из объяснения.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#leverage-thinking-and-interleaved-thinking-capabilities" target="_blank" rel="noopener noreferrer">Prompting best practices: Leverage thinking and interleaved thinking capabilities</a> — разобранные примеры (задача, способ, ответ) задают подход к похожим задачам; ручной chain-of-thought на новых моделях может получить отказ.</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/increase-consistency#constrain-with-examples" target="_blank" rel="noopener noreferrer">Increase output consistency: Constrain with examples</a> — пример результата действует сильнее абстрактной инструкции.</li>
+        <li><a href="https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" rel="noopener noreferrer">Reduce hallucinations</a> — разрешить «не знаю», опираться на цитаты из документа.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/structured-outputs" target="_blank" rel="noopener noreferrer">Structured outputs</a> — гарантирует валидный JSON, типы и обязательные поля, то есть форму ответа; поле для рассуждений модели может вызвать отказ <code>reasoning_extraction</code>.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback#keep-reasoning-in-thinking-blocks" target="_blank" rel="noopener noreferrer">Refusals and fallback: Keep reasoning in thinking blocks</a> — отказ <code>reasoning_extraction</code>; короткое объяснение и доказательства просить можно.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="20-review-criteria.html">Назад</a>
+        <a class="next" href="22-validation-retry.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

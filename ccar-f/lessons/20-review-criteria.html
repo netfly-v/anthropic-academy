@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Явные критерии ревью вместо «будь осторожен»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 4. Промпты и структурированный вывод</p>
+        <ul class="lesson-nav">
+          <li><a href="20-review-criteria.html" aria-current="page"><span class="mark"></span>Критерии ревью</a></li>
+          <li><a href="21-few-shot.html"><span class="mark"></span>Few-shot</a></li>
+          <li><a href="22-validation-retry.html"><span class="mark"></span>Проверка и повтор</a></li>
+          <li><a href="23-message-batches.html"><span class="mark"></span>Message Batches</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Явные критерии ревью вместо «будь осторожен»</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 4 · подпункты 4.1, 4.2, 4.4</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/23-being-specific.html">API · Конкретика</a> — явные указания подняли оценку промпта более чем вдвое.</li>
+        <li><a href="../../api/lessons/20-evals-exercise.html">API · Упражнение: критерии для грейдера</a> — критерии хорошего решения прямо в промпте проверяющей модели.</li>
+        <li><a href="../../api/lessons/25-examples.html">API · Примеры в промпте</a> — примеры на пограничные случаи и пояснение, чем пример хорош.</li>
+        <li><a href="../../api/lessons/47-images.html">API · Изображения</a> — шкала риска от 1 до 4, у каждого уровня свой конкретный признак.</li>
+        <li><a href="../../claude-code/lessons/02-claude-md.html">Claude Code · CLAUDE.md, которому следуют</a> — правило, которое можно проверить, работает, а «следуй лучшим практикам» — нет.</li>
+        <li><a href="../../claude-code-101/lessons/07-code-review.html">Claude Code 101 · Ревью кода</a> — <code>/code-review</code> и его уровни effort, разбор находок на «исправить», «спросить почему», «оставить».</li>
+        <li><a href="../../claude-code/lessons/07-github-actions.html">Claude Code · GitHub Actions и Code Review</a> — сервис ревью убирает дубли и ставит находкам пометку серьёзности.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Автоматическое ревью полезно, пока разработчики читают его находки. Каждое ложное срабатывание приучает их пролистывать комментарии бота, поэтому для доверия важна точность (precision): доля находок, оказавшихся настоящими проблемами.</p>
+      <p><strong>Почему «будь осторожен» не помогает.</strong> «Будь осторожнее» или «пиши, только если уверен» не называют, что в вашей команде считается шумом, а уверена модель бывает и в придирке к имени переменной. Opus 4.8 и Opus 5, по документации на ноябрь 2026, исполняют такую фразу буквально: находят ошибку, но молчат, если она ниже планки, — и пропадают настоящие проблемы. Точность дают явные категории:</p>
+      <ul>
+        <li><strong>сообщать</strong>: ошибки логики, уязвимости, утечки данных и секретов;</li>
+        <li><strong>пропускать</strong>: стиль и имена, сгенерированные файлы, принятые в модуле приёмы и всё, что и так ловят линтер и CI.</li>
+      </ul>
+      <p><strong>Шум не остаётся в своей категории.</strong> После десятка ложных «возможных гонок» разработчик закрывает не читая и точные замечания об уязвимостях. Поэтому шумную категорию временно отключают, точные оставляют, а для выключенной тем временем переписывают критерии и примеры.</p>
+      <p><strong>Уровни серьёзности с образцами.</strong> Без определений одна и та же проблема в одном прогоне «важная», в другом — «мелочь». У каждого уровня — определение и образец из вашего кода:</p>
+      <ul>
+        <li>критично — SQL-запрос склеен из строки, пришедшей от пользователя;</li>
+        <li>важно — ошибка списания денег перехвачена и нигде не записана;</li>
+        <li>мелочь — проверка на пустое значение повторена дважды.</li>
+      </ul>
+      <p><strong>Пары «допустимо / проблема».</strong> Против ложных срабатываний примеры (few-shot) составляют парами похожих фрагментов: пустой обработчик исключения с комментарием «отмену пользователем игнорируем» допустим, а пустой обработчик вокруг списания денег — проблема. К паре добавляют пояснение: по нему Claude обобщает правило на похожие случаи (см. <a href="21-few-shot.html">«Few-shot»</a>).</p>
+      <p><strong>Метка шаблона для разбора отказов.</strong> В схему находки добавляют поле <code>detected_pattern</code> — короткую метку того, на что отреагировал ревьюер: «пустой catch», «SQL из строки». Отклонённые находки сохраняют с меткой, и сводка показывает, какие шаблоны дают больше всего отказов: критерии правят для них. Без метки видно только, что отказов много.</p>
+
+      <h2>Пример</h2>
+      <p>Платёжный сервис ревьюит pull request в CI: Claude Code в неинтерактивном режиме отдаёт находки в JSON по схеме (флаг <code>--json-schema</code>). В промпте — «Be careful and flag only issues you are sure about». Через месяц разработчики отклоняли почти половину находок, в основном «возможные гонки» в обработчиках очереди, где порядок и так гарантирован. Комментарии бота стали закрывать не читая — и пропустили запись номера карты в журнал.</p>
+      <p>Что делает архитектор:</p>
+      <ol>
+        <li>Заменяет эту фразу списком «сообщать / пропускать».</li>
+        <li>Выключает категорию «конкурентность» и пишет для неё пары: очередь с гарантированным порядком — допустимо, общий счётчик без блокировки — проблема.</li>
+        <li>Задаёт три уровня серьёзности с примерами из кода сервиса.</li>
+        <li>Делает <code>detected_pattern</code> обязательным полем схемы и раз в неделю смотрит, какие шаблоны отклоняют чаще всего.</li>
+        <li>Включает конкурентность снова, когда на прошлых pull request она больше не шумит.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: разработчики не доверяют ревью из-за ложных срабатываний или одна проблема получает разную серьёзность в разных прогонах. Неверные ходы:</p>
+      <ul>
+        <li><strong>«Будь осторожнее» или порог по оценке уверенности от самой модели.</strong> Граница шума не названа, а самооценка не знает норм команды.</li>
+        <li><strong>Модель побольше.</strong> Ваших норм не знает и она.</li>
+        <li><strong>Выключить ревью целиком.</strong> Пропадут и точные категории.</li>
+        <li><strong>Чинить промпт, не выключая шумную категорию.</strong> Пока идёт настройка, люди отвыкают читать бота.</li>
+        <li><strong>Уровни серьёзности без примеров.</strong> Оценки останутся разными.</li>
+        <li><strong>Перечитывать отказы вручную.</strong> Без метки шаблона не видно, что даёт шум.</li>
+      </ul>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>На экзамене фильтр по уверенности — неверный ответ, хотя продукт на ноябрь 2026 им пользуется: <code>/code-review low</code> показывает только самые уверенные находки, а руководства по Opus 4.8 и Opus 5 советуют сообщать обо всём, указывая уверенность и серьёзность, и отсеивать отдельным шагом (в одном проходе — называть порог конкретно). На экзамене выбирайте явные категории.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#be-clear-and-direct" target="_blank" rel="noopener noreferrer">Prompting best practices: Be clear and direct</a> — Claude как толковый новый сотрудник, который не знает ваших норм; чем конкретнее указания, тем лучше результат.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#add-context-to-improve-performance" target="_blank" rel="noopener noreferrer">Prompting best practices: Add context to improve performance</a> — причина правила помогает: Claude обобщает по объяснению.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#use-examples-effectively" target="_blank" rel="noopener noreferrer">Prompting best practices: Use examples effectively</a> — 3–5 релевантных и разнообразных примеров в тегах <code>&lt;example&gt;</code>.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-4-8#code-review-harnesses" target="_blank" rel="noopener noreferrer">Prompting Claude Opus 4.8: Code review harnesses</a> — «be conservative» и «only report high-severity issues» модель исполняет буквально и сообщает меньше; совет: на шаге поиска сообщать обо всём, указывая уверенность и серьёзность, а в одном проходе называть порог конкретно.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5#capability-improvements" target="_blank" rel="noopener noreferrer">Prompting Claude Opus 5: Capability improvements</a> — то же для Opus 5: на «be conservative» модель сообщает меньше; просить сообщать обо всём и отсеивать отдельным проходом.</li>
+        <li><a href="https://code.claude.com/docs/en/code-review-customize" target="_blank" rel="noopener noreferrer">Customize Code Review</a> — <code>REVIEW.md</code>: что значит Important, что не сообщать, что проверять всегда, лимит мелких замечаний, доказательства для класса находок.</li>
+        <li><a href="https://code.claude.com/docs/en/code-review-pull-requests" target="_blank" rel="noopener noreferrer">Read and request reviews on a pull request</a> — уровни Important, Nit и Pre-existing; как отклонить находку; повторяющуюся находку закрывают правилом в <code>REVIEW.md</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/code-review" target="_blank" rel="noopener noreferrer">Code Review</a> — по умолчанию ищет ошибки корректности, а не форматирование; шаг проверки отсеивает ложные срабатывания.</li>
+        <li><a href="https://code.claude.com/docs/en/code-review-local" target="_blank" rel="noopener noreferrer">Review locally with /code-review</a> — уровень effort <code>low</code>: только самые уверенные находки и меньше ложных срабатываний; ревью следует <code>CLAUDE.md</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/github-actions" target="_blank" rel="noopener noreferrer">Claude Code GitHub Actions</a> — ревью pull request в своём CI; критерии ревью и правила проекта — в <code>CLAUDE.md</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/headless#get-structured-output" target="_blank" rel="noopener noreferrer">Run Claude Code programmatically: Get structured output</a> — <code>--json-schema</code> вместе с <code>--output-format json</code> и ответ по схеме в поле <code>structured_output</code>.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="08-decomposition.html">Назад</a>
+        <a class="next" href="21-few-shot.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
