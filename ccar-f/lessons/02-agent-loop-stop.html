@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Когда агентный цикл должен остановиться</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html" aria-current="page"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Когда агентный цикл должен остановиться</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 1 · подпункт 1.1</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/34-implementing-turns.html">API · Реализация цикла</a> — цикл идёт, пока <code>stop_reason</code> равен <code>"tool_use"</code>; в ответе бывают текст, запросы инструментов или то и другое.</li>
+        <li><a href="../../platform-101/lessons/04-agent-loop.html">Platform 101 · Как устроен цикл агента</a> — ветки по <code>stop_reason</code>: <code>tool_use</code>, <code>end_turn</code> и все прочие; без последней ветки цикл после ответа, оборванного на <code>max_tokens</code>, снова и снова шлёт тот же запрос.</li>
+        <li><a href="../../tool-use/lessons/08-cut-the-cost.html">Tool use · Как снизить цену работы с инструментами</a> — при <code>pause_turn</code> цикл отправляет ответ обратно и продолжает.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Как цикл ветвится по <code>stop_reason</code>, разобрано в уроках выше. Сигнал «работа сделана» у Claude один — значение <code>"end_turn"</code> в этом поле; пока там <code>"tool_use"</code>, работа идёт. Сколько будет кругов, заранее неизвестно, и коду знать это не нужно.</p>
+      <p>Экзамен проверяет, узнаёте ли вы три неверных способа решить, что работа закончена:</p>
+      <ul>
+        <li><strong>Искать в тексте слова-признаки</strong> («готово», «DONE»). Claude формулирует по-разному, и документация прямо говорит: код не должен полагаться на формулировки и формат этого текста. Если программе нужен итог в виде данных, его передают полем в схеме инструмента.</li>
+        <li><strong>Останавливать цикл по счётчику кругов.</strong> Счётчик не знает, закончена ли работа. Низкий лимит обрывает сложную задачу на середине (в Agent SDK такой прогон заканчивается ошибкой <code>error_max_turns</code> без итогового ответа), а с высоким вы дольше платите за зацикливание.</li>
+        <li><strong>Считать готовым любой ответ с текстом.</strong> Перед вызовом инструмента Claude часто пишет, что собирается сделать: в ответе есть и текст, и блок <code>tool_use</code>, а <code>stop_reason</code> равен <code>"tool_use"</code>. Бывает и наоборот: ответ с <code>"end_turn"</code> приходит пустым. Цикл, который ждёт текста, отправит такой ответ обратно, Claude останется при своём, и круги пойдут впустую до лимита.</li>
+      </ul>
+      <p>Лимит всё же нужен, но как страховка от зацикливания и перерасхода, а не как признак выполненной задачи. Если он сработал, это сбой: его записывают в лог, а частичный результат не выдают за готовый. На ноябрь 2026 в Agent SDK для этого есть <code>max_turns</code> и <code>max_budget_usd</code> (по умолчанию лимитов нет), в Tool Runner (помощник SDK, пока в бете) — <code>max_iterations</code>.</p>
+
+      <h2>Пример</h2>
+      <p>Команда платформы подключила к CI агента, который разбирает упавшие сборки: читает лог, ищет похожие инциденты и заводит задачу. В первой версии цикл останавливался, когда в ответе появлялось слово «ГОТОВО» или проходило пять кругов, а в промпт добавили: «закончив, напиши ГОТОВО». Что пошло не так:</p>
+      <ul>
+        <li>сложному сбою понадобилось восемь кругов, на пятом цикл оборвался, а пайплайн отметил сборку как разобранную;</li>
+        <li>Claude написал «Готово, завожу задачу» в одном ответе с вызовом инструмента: цикл остановился, и задача так и не появилась;</li>
+        <li>итог пришёл без слова «ГОТОВО», и цикл до лимита гонял платные запросы, хотя работа была сделана.</li>
+      </ul>
+      <p>Что делает архитектор:</p>
+      <ol>
+        <li>Цикл ветвится только по <code>stop_reason</code>: <code>tool_use</code> — выполнить инструменты и продолжить, <code>end_turn</code> — завершить. <code>max_tokens</code> и <code>refusal</code> уходят в отдельную обработку и успехом не считаются.</li>
+        <li>Итог разбора агент сообщает через инструмент <code>report_triage</code>: поле <code>status</code> принимает значения из фиксированного списка, и пайплайн читает его, а не текст.</li>
+        <li>Лимит поднят до 30 кругов и нужен только против зацикливания. Если он сработал, сборка получает пометку «нужен человек».</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: агент то останавливается раньше времени, то работает слишком долго, то выдаёт незаконченную работу за готовую. Неверные варианты — три способа выше, часто в обёртке: правило в промпте «по окончании напиши DONE» с поиском этого слова, «подобрать лимит кругов получше», проверка, есть ли в ответе текст. Ещё две приманки — попросить Claude оценить свою уверенность или взять модель побольше: самооценка — не протокол, а сильная модель не спасёт цикл, который читает не тот сигнал.</p>
+      <p>Верный ход: продолжать при <code>tool_use</code>, завершать при <code>end_turn</code>, а лимит кругов или бюджета оставить страховкой и считать его срабатывание ошибкой.</p>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>Экзамен сводит управление циклом к двум значениям: <code>tool_use</code> — продолжать, <code>end_turn</code> — остановиться. Так и отвечайте. В API на ноябрь 2026 значений <code>stop_reason</code> семь, и продолжать нужно ещё при <code>pause_turn</code>: работа серверного инструмента не закончена, ответ отправляют обратно (урок Tool use выше).</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/how-tool-use-works" target="_blank" rel="noopener noreferrer">How tool use works</a> — раздел The agentic loop (client tools): цикл продолжается, пока <code>stop_reason</code> равен <code>"tool_use"</code>; раздел When to use tools: регулярное выражение по ответу модели — признак того, что здесь нужен вызов инструмента.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/handling-stop-reasons" target="_blank" rel="noopener noreferrer">Stop reasons and fallback</a> — семь значений <code>stop_reason</code> и что делать с каждым; пустой ответ с <code>end_turn</code>; <code>pause_turn</code>.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/define-tools" target="_blank" rel="noopener noreferrer">Define tools</a> — раздел Model responses with tools: текст перед вызовом инструмента, код не должен полагаться на формулировки.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls" target="_blank" rel="noopener noreferrer">Handle tool calls</a> — пример ответа со <code>stop_reason: "tool_use"</code>, в котором есть и текст, и <code>tool_use</code>.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/build-a-tool-using-agent" target="_blank" rel="noopener noreferrer">Tutorial: Build a tool-using agent</a> — Ring 2: число кругов заранее неизвестно, и коду не нужно его знать.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner" target="_blank" rel="noopener noreferrer">Tool runner (SDK)</a> — цикл идёт, пока в ответе есть вызовы инструментов; <code>max_iterations</code> ограничивает число кругов.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/agent-loop" target="_blank" rel="noopener noreferrer">How the agent loop works</a> — Agent SDK: <code>max_turns</code> и <code>max_budget_usd</code> (по умолчанию без лимита), <code>error_max_turns</code> без итогового ответа.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="01-map.html">Назад</a>
+        <a class="next" href="03-coordinator.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Сессии: продолжить, разветвить или начать заново</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html" aria-current="page"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Сессии: продолжить, разветвить или начать заново</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 1 · подпункты 1.3, 1.7</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../claude-code/lessons/06-routines-headless.html">Claude Code · Routines и headless</a> — <code>session_id</code> из JSON-вывода <code>claude -p</code> и продолжение сессии через <code>--resume</code>.</li>
+        <li><a href="../../claude-code/lessons/08-verifying-runs.html">Claude Code · Проверка автономных запусков</a> — форк-субагент наследует историю разговора, поэтому «холодным» рецензентом не будет.</li>
+        <li><a href="../../claude-code-101/lessons/06-context-management.html">Claude Code 101 · Управление контекстом</a> — <code>/clear</code> для чистого старта; то, что должно пережить сессию, — в <code>CLAUDE.md</code>.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Сессия — сохранённый разговор агента: промпты, ответы, вызовы инструментов и их результаты. Вернувшись к ней, агент снова помнит прочитанные файлы и сделанные выводы. Файлы проекта сессия не хранит.</p>
+      <p>Ходов три.</p>
+      <ul>
+        <li><strong>Продолжить.</strong> <code>claude --continue</code> открывает последнюю сессию в текущей папке. Если задач несколько, дайте каждой сессии имя (<code>claude -n имя</code> при запуске или <code>/rename</code> в сессии) и возвращайтесь через <code>claude --resume имя</code>.</li>
+        <li><strong>Разветвить.</strong> Форк — новая сессия с копией истории и собственным ID; исходная не меняется, обе можно продолжать независимо. В командной строке это <code>--fork-session</code> вместе с <code>--resume</code> или <code>--continue</code>, в сессии — <code>/branch</code>, в Agent SDK — <code>resume</code> плюс <code>fork_session=True</code> (Python) или <code>forkSession: true</code> (TypeScript). Форк копирует только разговор, а правки файлов видны всем сессиям в папке, поэтому форкам, которые пишут код, дают по отдельному worktree.</li>
+        <li><strong>Начать заново со сводкой.</strong> Новая сессия получает в первом промпте структурированную сводку: что выяснено и чем подтверждено, решения и их причины, отвергнутые гипотезы, открытые вопросы, на какие файлы опираются выводы.</li>
+      </ul>
+      <p>Почему не всегда продолжать? Вместе с историей возвращаются старые результаты инструментов. Если код менялся, в контексте остаются прежние версии файлов: новую Claude увидит, только снова прочитав файл, а выводы по старой сами не обновятся. Claude Code (на ноябрь 2026) добавляет в разговор заметку, если изменился на диске файл, который Claude раньше правил, но сделанные выводы она не перепроверяет. Сводка надёжнее: в ней только выводы и файлы, на которые они опираются, без старых копий кода, которые модель может принять за текущие.</p>
+      <p>Правило выбора:</p>
+      <ul>
+        <li>изменений немного и вы знаете, какие именно, — продолжить по имени: первым же сообщением назвать изменённые файлы и суть правок, попросить перечитать только их;</li>
+        <li>прочитанное агентом описывает уже другой код (большой рефакторинг, неделя чужих коммитов) или сессия увязла в неудачных попытках — новая сессия со сводкой;</li>
+        <li>нужно сравнить два подхода на основе одного анализа — форк.</li>
+      </ul>
+
+      <h2>Пример</h2>
+      <p>Команда выясняет, откуда берутся дубли push-уведомлений. В понедельник разработчик запускает <code>claude -n push-dupes</code>, агент читает модуль отправки, воркер повторов и настройки очереди и находит причину: после таймаута воркер повторяет уже прошедшую отправку.</p>
+      <p>Во вторник — <code>claude --resume push-dupes</code>. За ночь влили PR, который поменял <code>retry_worker.py</code> и <code>queue.yaml</code>. Первым же сообщением разработчик пишет об этом, просит перечитать оба файла и сказать, какие выводы ещё в силе. Остальные сорок файлов перечитывать незачем.</p>
+      <p>Исправить можно ключом идемпотентности в базе или дедупликацией в очереди. Разработчик дважды запускает <code>claude --resume push-dupes --fork-session</code>, и каждый форк на основе общего анализа готовит план своего способа.</p>
+      <p>Через две недели модуль отправки переписан на другую библиотеку, половина файлов переименована. Разработчик просит старую сессию записать сводку в файл, открывает новую, передаёт ей файл и велит сверить каждый вывод с текущим кодом.</p>
+
+      <h2>Как это спрашивают</h2>
+      <p>К анализу возвращаются после перерыва, за который код изменился, или хотят сравнить два решения. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>Просто продолжить и надеяться, что агент заметит изменения.</strong> Старые результаты чтения остаются в истории, и какие выводы устарели, агент сам не узнает.</li>
+        <li><strong>Исследовать всё заново.</strong> Дорого, когда изменились два файла из сорока.</li>
+        <li><strong>Модель покрупнее или правило «всегда перепроверяй» в промпте.</strong> Устаревшие данные из контекста не исчезнут, а какие файлы изменились, знает тот, кто запускает сессию.</li>
+        <li><strong><code>--continue</code>, когда в папке несколько сессий.</strong> Откроется последняя, а не нужная.</li>
+        <li><strong>Два подхода по очереди в одной сессии.</strong> Они смешиваются; нужен форк.</li>
+        <li><strong>Новая сессия без сводки</strong> теряет выводы, а <strong>с полной копией старой истории</strong> тащит те же устаревшие данные.</li>
+      </ul>
+      <p>Верный ход — по правилу выбора выше: всё решает, насколько прочитанное агентом ещё соответствует коду.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/sessions" target="_blank" rel="noopener noreferrer">Manage sessions</a> — имена (<code>-n</code>, <code>/rename</code>, <code>--resume</code> по имени), <code>--continue</code>, <code>/branch</code> и <code>--fork-session</code>, что восстанавливается при возобновлении.</li>
+        <li><a href="https://code.claude.com/docs/en/cli-reference" target="_blank" rel="noopener noreferrer">CLI reference</a> — флаги <code>--resume</code>, <code>--continue</code>, <code>--fork-session</code>, <code>--name</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/sessions" target="_blank" rel="noopener noreferrer">Work with sessions (Agent SDK)</a> — continue, <code>resume</code>, <code>fork_session</code>/<code>forkSession</code>; сессия хранит разговор, а не файлы; результаты в промпт свежей сессии вместо переноса истории.</li>
+        <li><a href="https://code.claude.com/docs/en/common-workflows" target="_blank" rel="noopener noreferrer">Common workflows</a> — Resume previous conversations, параллельные сессии в worktree; новую версию файла Claude видит при следующем чтении.</li>
+        <li><a href="https://code.claude.com/docs/en/best-practices#steer-the-session" target="_blank" rel="noopener noreferrer">Best practices: Steer the session</a> — <code>/clear</code> и новый промпт с тем, что узнали; <code>/rename</code> и <code>--resume</code> для работы на несколько дней.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/modifying-system-prompts#reminders-claude-code-adds-to-the-conversation" target="_blank" rel="noopener noreferrer">Modifying system prompts: Reminders Claude Code adds to the conversation</a> — File-changed notes: заметка, что файл, который Claude правил, изменился на диске.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="04-sdk-subagents.html">Назад</a>
+        <a class="next" href="06-enforced-steps-handoff.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

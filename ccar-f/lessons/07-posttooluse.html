@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PostToolUse: привести результаты к одному виду</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html" aria-current="page"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>PostToolUse: привести результаты к одному виду</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 1 · подпункт 1.5</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../claude-code/lessons/05-hooks.html">Claude Code · Hooks</a> — события hooks; PreToolUse переписывает вызов через <code>updatedInput</code>, PostToolUse срабатывает после успешного вызова, когда блокировать уже поздно.</li>
+        <li><a href="../../claude-code-101/lessons/12-hooks.html">Claude Code 101 · Hooks</a> — настройка в <code>settings.json</code>, matcher, PostToolUse для автоформатирования.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>PostToolUse получает результат инструмента после выполнения, но <em>до того</em>, как его прочтёт модель. В курсах он только запускает форматтер или передаёт Claude текст, а главное упущено: hook может подменить сам результат.</p>
+      <p>Зачем это нужно? Агент подключён к нескольким MCP-серверам, и у каждого свой формат: время числом секунд с 1970 года (Unix time) или строкой ISO 8601 со смещением часового пояса, статус числовым кодом. Модель гадает, что это значит, и каждый раз по-разному. Hook PostToolUse приводит всё к одному виду раньше, чем данные дойдут до модели.</p>
+      <p>Правило: привести результаты инструментов к одному формату, очистить или скрыть их, пока их не увидела модель, — задача кода в PostToolUse, а не просьбы в промпте. Код срабатывает на каждый подходящий вызов, а просьбу модель выполняет лишь «обычно».</p>
+      <p>Как это устроено на ноябрь 2026:</p>
+      <ul>
+        <li><strong>Чем заменить.</strong> Hook возвращает в <code>hookSpecificOutput</code> поле <code>updatedToolOutput</code>, и Claude получает его вместо исходного результата. Подмена работает для встроенных и MCP-инструментов, в Claude Code и в Agent SDK (там hook — функция-колбэк в <code>options.hooks</code> с ответом того же формата). Старое поле <code>updatedMCPToolOutput</code> подменяет только результаты MCP-инструментов.</li>
+        <li><strong>Как выбрать инструменты.</strong> Matcher проверяет имя инструмента. Имена MCP-инструментов имеют вид <code>mcp__&lt;сервер&gt;__&lt;инструмент&gt;</code>: все инструменты сервера <code>tickets</code> ловит <code>mcp__tickets__.*</code>, все MCP-инструменты — <code>^mcp__</code>.</li>
+        <li><strong>Ограничения.</strong> Сам вызов уже выполнен: подмена меняет только то, что видит модель. Фоновый hook (<code>async: true</code>) результат не переписывает, PostToolUseFailure — тоже: ошибка доходит до Claude как есть.</li>
+      </ul>
+
+      <h2>Пример</h2>
+      <p>Команда эксплуатации делает агента для разбора инцидентов. Он подключён к трём MCP-серверам — <code>alerts</code> (мониторинг), <code>tickets</code> (трекер задач) и <code>releases</code> (выкладки) — и собирает хронологию: что выкатили, что сломалось, когда отреагировали.</p>
+      <p>Что идёт не так. Выкладка закончилась в 06:05 по UTC, но система выкладок отдаёт время без часового пояса. Мониторинг сообщает время алерта числом <code>1794982320</code>, трекер записывает время тикета как <code>2026-11-18T09:15:00+03:00</code>. Агент принимает 09:15 за UTC и решает, что тикет открыли через три часа после выкладки, а значит, она ни при чём. Вдобавок код <code>2</code> у выкладок означает «откатили», а у тикетов — «в работе», и агент пишет, что откат ещё идёт.</p>
+      <p>Архитектор настраивает один hook PostToolUse с matcher <code>mcp__(alerts|tickets|releases)__.*</code>. Hook переводит любое время в ISO 8601 по UTC, коды — в слова и возвращает результат через <code>updatedToolOutput</code>:</p>
+      <pre>"hookSpecificOutput": {
+  "hookEventName": "PostToolUse",
+  "updatedToolOutput": { "status": "rolled_back", "finished_at": "2026-11-18T06:05:00Z" }
+}</pre>
+      <p>Незнакомый код статуса hook не выбрасывает, а оставляет с пометкой: без нужных подробностей модель продолжит работу на ложном допущении.</p>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: агент получает данные от нескольких инструментов или MCP-серверов в разных форматах и ошибается, сравнивая даты или читая статусы. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>Правило в промпте</strong> или таблица кодов в описании инструмента. Это просьба, а не гарантия: модель всё равно переводит каждый ответ сама и на длинных разборах иногда путается.</li>
+        <li><strong>Инструмент-конвертер</strong> или отдельный проход модели. Вызывать ли его, опять решает модель, а на каждый ответ уходит лишний шаг.</li>
+        <li><strong>Модель побольше.</strong> Беда не в способностях модели, а в разнобое данных.</li>
+        <li><strong>PreToolUse.</strong> Он срабатывает, когда результата ещё нет.</li>
+        <li><strong><code>additionalContext</code> или <code>decision: "block"</code> в PostToolUse.</strong> Они лишь добавляют к результату заметку или причину, а исходные данные модель видит по-прежнему.</li>
+        <li><strong>Переделать каждый сервер.</strong> Чужие серверы не поправить, свои придётся менять по одному. Hook — одна точка между инструментами и моделью.</li>
+      </ul>
+      <p>Верный ход — детерминированная нормализация в hook PostToolUse с matcher на нужные инструменты. Не путайте с разбором документов: если разнобой в тексте, который модель читает сама (даты в сканах договоров), единый формат задают схема вывода и правило в промпте — кода между таким текстом и моделью нет.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/hooks#posttooluse-decision-control" target="_blank" rel="noopener noreferrer">Hooks reference: PostToolUse decision control</a> — поля <code>updatedToolOutput</code>, <code>updatedMCPToolOutput</code>, <code>additionalContext</code> и <code>decision</code>; подмена меняет только то, что видит Claude.</li>
+        <li><a href="https://code.claude.com/docs/en/hooks#decision-control" target="_blank" rel="noopener noreferrer">Hooks reference: Decision control</a> — какие события переписывают содержимое; PostToolUseFailure результат не переписывает.</li>
+        <li><a href="https://code.claude.com/docs/en/hooks#match-mcp-tools" target="_blank" rel="noopener noreferrer">Hooks reference: Match MCP tools</a> — имена <code>mcp__&lt;сервер&gt;__&lt;инструмент&gt;</code> и matcher на все инструменты сервера.</li>
+        <li><a href="https://code.claude.com/docs/en/hooks#posttooluse" target="_blank" rel="noopener noreferrer">Hooks reference: PostToolUse</a> — когда срабатывает событие; hook с <code>async: true</code> не может переписать результат.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/hooks" target="_blank" rel="noopener noreferrer">Agent SDK: Intercept and control agent behavior with hooks</a> — функции-колбэки в <code>options.hooks</code>, matcher <code>^mcp__</code>; <code>updatedToolOutput</code> для встроенных и MCP-инструментов в обоих SDK.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="06-enforced-steps-handoff.html">Назад</a>
+        <a class="next" href="08-decomposition.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Субагенты в Agent SDK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html" aria-current="page"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Субагенты в Agent SDK</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 1 · подпункт 1.3</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../subagents/lessons/01-what-are-subagents.html">Subagents · Что такое субагенты</a> — своё окно контекста; на старте — системный промпт и задача от главного агента, без его истории.</li>
+        <li><a href="../../subagents/lessons/02-creating-a-subagent.html">Subagents · Как создать субагента</a> — поля <code>name</code>, <code>description</code>, <code>tools</code>, <code>model</code> в файле из <code>.claude/agents/</code>.</li>
+        <li><a href="../../subagents/lessons/03-designing-effective-subagents.html">Subagents · Эффективные субагенты</a> — описание решает, когда субагента запустят и что ему поручат; узкий список инструментов.</li>
+        <li><a href="../../claude-code-101/lessons/09-subagents.html">Claude Code 101 · Субагенты</a> — изоляция контекста и параллельная работа в Claude Code.</li>
+        <li><a href="../../skills/lessons/05-sharing-skills.html">Skills · Как делиться skills</a> — субагент не наследует skills разговора.</li>
+        <li><a href="../../tool-use/lessons/03-parallel-tool-calling.html">Tool use · Параллельные вызовы инструментов: меньше задержка</a> — несколько блоков <code>tool_use</code> в одном ответе.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Курсы учат субагентам Claude Code — файлам в <code>.claude/agents/</code>. Экзамен спрашивает про Agent SDK, где субагентов задают в коде.</p>
+      <p><strong>Определение.</strong> Опция <code>agents</code> в <code>query()</code> — словарь «имя → <code>AgentDefinition</code>»:</p>
+      <ul>
+        <li><code>description</code> — когда вызывать: по нему координатор выбирает исполнителя (см. <a href="03-coordinator.html">«Координатор и субагенты»</a>);</li>
+        <li><code>prompt</code> — системный промпт: роль, правила, формат результата;</li>
+        <li><code>tools</code> — разрешённые инструменты; без этого поля субагент получает все инструменты, доступные субагентам;</li>
+        <li><code>model</code> — псевдоним, полный ID или <code>inherit</code>.</li>
+      </ul>
+      <p><strong>Запуск.</strong> Координатор вызывает инструмент запуска: на экзамене — Task, в текущем SDK — Agent. По логике экзамена без <code>"Task"</code> в <code>allowedTools</code> субагентов не запустить. В вызове два главных поля: <code>subagent_type</code> (какое определение взять) и <code>prompt</code> — конкретная задача, не путать с постоянной ролью из определения.</p>
+      <p><strong>Контекст.</strong> От координатора доходит только строка <code>prompt</code> вызова — разговора субагент не видит. Поэтому в неё пишут всё: цель, входные данные (пути, идентификаторы), что уже решено, ограничения, формат ответа. Каждый вызов начинается с нуля: выводы первого субагента второй получит, только если координатор вставит их в задачу.</p>
+      <p><strong>Параллельность.</strong> Независимые подзадачи координатор раздаёт одним ответом — несколькими вызовами Task, как блоки <code>tool_use</code> в курсе Tool use. Ждать приходится только самого медленного. По одному вызову за ход запускают только зависимые шаги.</p>
+
+      <h2>Пример</h2>
+      <p>Отдел закупок сети аптек строит на Agent SDK проверку поставщиков перед тендером. Координатор общается с менеджером, субагент <code>supplier-auditor</code> разбирает папку одного поставщика. В первой версии три ошибки.</p>
+      <ol>
+        <li><strong>Задача без контекста.</strong> Менеджер согласовал с координатором критерии (поставки в срок — не ниже 95%, период — 2026 год), а субагент получил только «проверь ФармЛогистик». Исправление: в задаче — путь к папке, критерии с порогами, период и формат ответа.</li>
+        <li><strong>Очередь.</strong> Пять поставщиков проверялись по одному. Исправление: правило в системном промпте координатора раздавать независимые проверки одним ответом.</li>
+        <li><strong>Лишние права.</strong> В определении не было <code>tools</code>: субагент унаследовал все инструменты, доступные субагентам, правки одобрялись автоматически — и он «исправил опечатки» в CSV поставщика. Исправление — в определении, а не в промпте.</li>
+      </ol>
+      <pre>allowedTools: ["Agent", "Read"],
+agents: {
+  "supplier-auditor": {
+    description: "Audits ONE supplier folder against the procurement criteria it is given.",
+    prompt: "You audit a single supplier. Return a table: criterion, value, threshold, verdict, source file.",
+    tools: ["Read", "Grep", "Glob"]
+  }
+}</pre>
+      <p>Первая строка — настройка координатора (на экзамене там <code>"Task"</code>). Ниже — определение: по <code>description</code> субагента выбирают, <code>prompt</code> задаёт формат отчёта, <code>tools</code> оставляет только чтение.</p>
+
+      <h2>Как это спрашивают</h2>
+      <ul>
+        <li><strong>Субагент отвечает не по делу, хотя «всё обсуждалось».</strong> Модель покрупнее, повторы или фраза «учитывай разговор» не помогут: разговора он не видит. Верно — передать в задаче данные, выводы прошлых шагов и формат ответа.</li>
+        <li><strong>Определения на месте, но субагенты не запускаются.</strong> Описания и промпты влияют на выбор, а не на право запуска. По логике экзамена верно — добавить Task в <code>allowedTools</code>.</li>
+        <li><strong>Конвейер медленный.</strong> Быстрая модель не уберёт очередь, а один большой агент лишится изоляции контекста. Верно — независимые подзадачи несколькими вызовами Task в одном ответе, а не по одному за ход.</li>
+        <li><strong>Субагент сделал лишнее.</strong> Запрет в промпте модель может нарушить. Верно — список <code>tools</code> в <code>AgentDefinition</code>.</li>
+      </ul>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>На экзамене отвечайте в его терминах. В SDK на ноябрь 2026 иначе:</p>
+        <ul>
+          <li><strong>Имя и <code>allowedTools</code>.</strong> С Claude Code 2.1.63 инструмент называется Agent, имя Task принимается как синоним. <code>allowedTools</code> только одобряет инструменты заранее: Agent разрешения не спрашивает и работает без этого списка, а запрещают его через <code>disallowedTools</code>.</li>
+          <li><strong>Контекст.</strong> Кроме задачи, субагент получает CLAUDE.md проекта. Форк-субагент (<code>subagent_type: "fork"</code>) копирует весь разговор, законченного субагента можно продолжить по <code>agentId</code>, а поле <code>memory</code> даёт ему постоянную папку памяти между запусками.</li>
+          <li><strong>Параллельность.</strong> По умолчанию субагент стартует в фоне, поэтому одновременно могут работать и субагенты из разных ходов.</li>
+        </ul>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/subagents" target="_blank" rel="noopener noreferrer">Subagents in the SDK</a> — опция <code>agents</code>, поля <code>AgentDefinition</code>, что наследует субагент (от родителя — только строка задачи), имена Agent и Task, запуск в фоне по умолчанию, форки и продолжение по <code>agentId</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/typescript#agent" target="_blank" rel="noopener noreferrer">Agent SDK reference - TypeScript: Agent</a> — поля вызова (<code>subagent_type</code>, <code>prompt</code>); Task принимается как синоним, в <code>system:init</code> инструмент значится как Task.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/python#agentdefinition" target="_blank" rel="noopener noreferrer">Agent SDK reference - Python: AgentDefinition</a> — те же поля определения в Python.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/permissions#allow-and-deny-rules" target="_blank" rel="noopener noreferrer">Configure permissions: Allow and deny rules</a> — <code>allowedTools</code> только одобряет заранее; Agent не спрашивает разрешения; скрыть инструмент — <code>disallowedTools</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/tools-reference#agent-tool-behavior" target="_blank" rel="noopener noreferrer">Tools reference: Agent tool behavior</a> — как <code>tools</code> и <code>disallowedTools</code> задают набор инструментов субагента.</li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents#manage-subagent-context" target="_blank" rel="noopener noreferrer">Create custom subagents: Manage subagent context</a> — что субагент получает на старте и чего не видит; правило, которое должно дойти до субагента, повторяют в задаче.</li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents#enable-persistent-memory" target="_blank" rel="noopener noreferrer">Create custom subagents: Enable persistent memory</a> — поле <code>memory</code>: постоянная папка памяти субагента, которая переживает разговоры.</li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents#run-parallel-research" target="_blank" rel="noopener noreferrer">Create custom subagents: Run parallel research</a> — параллельные субагенты для независимых направлений.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use" target="_blank" rel="noopener noreferrer">Parallel tool use</a> — несколько блоков <code>tool_use</code> в одном ответе модели.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="03-coordinator.html">Назад</a>
+        <a class="next" href="05-sessions.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

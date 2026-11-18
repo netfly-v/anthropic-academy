@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Координатор и субагенты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html" aria-current="page"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Координатор и субагенты</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 1 · подпункты 1.2, 1.3</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../platform-101/lessons/11-managed-agents.html">Platform 101 · Что такое Managed Agents</a> — координатор раздаёт алерт трём специалистам и сводит их выводы; отдельный грейдер возвращает работу на доработку.</li>
+        <li><a href="../../api/lessons/72-routing.html">API · Маршрутизация</a> — запрос уходит в один подходящий конвейер, а не во все.</li>
+        <li><a href="../../api/lessons/69-agents-and-workflows.html">API · Агенты и рабочие процессы</a> — цикл evaluator-optimizer: оценщик возвращает результат с замечаниями, пока не примет.</li>
+        <li><a href="../../subagents/lessons/03-designing-effective-subagents.html">Subagents · Эффективные субагенты</a> — главный агент выбирает субагента по описанию; формат результата подсказывает, когда остановиться.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Схема «звезда» (hub-and-spoke): в центре координатор, вокруг субагенты. Субагенты не общаются друг с другом: каждый получает задание от координатора и ему же возвращает результат. Координатор решает, кого звать, делит вопрос, раздаёт части и сводит ответы в итог.</p>
+      <p>Зачем вести всё через центр:</p>
+      <ul>
+        <li><strong>Видимость.</strong> Все задания и отчёты видны в одном месте; в Managed Agents это главный поток сессии.</li>
+        <li><strong>Единая обработка ошибок.</strong> Если субагент прервался, например из-за ошибки API, об этом узнаёт координатор и решает: повторить, взять другой источник или отметить пробел.</li>
+        <li><strong>Контроль над информацией.</strong> Субагент знает о задаче только то, что координатор вписал в задание (подробнее — <a href="04-sdk-subagents.html">«Субагенты в Agent SDK»</a>).</li>
+      </ul>
+      <p>Четыре решения координатора:</p>
+      <ul>
+        <li><strong>Кого звать — по сложности запроса.</strong> Один факт, сравнение или анализ последствий требуют разного состава и числа субагентов, а не всего конвейера на каждый запрос. Документация советует: задачу на несколько вызовов инструментов делать самому, а если хватает одного субагента — звать одного.</li>
+        <li><strong>Как делить — без пересечений.</strong> Сначала перечислить стороны вопроса, которые должен охватить итог, и только потом делить работу — по темам или по источникам данных. Участки не перекрываются и вместе закрывают весь список; в задании сказано, чем субагент не занимается. Так слишком узкое деление, частая причина однобокого отчёта, видно ещё до запуска.</li>
+        <li><strong>Как закрывать пробелы.</strong> Черновик итога координатор сверяет со списком сторон: по каждой непокрытой даёт точечное задание тому субагенту, чей это участок, и пересобирает итог — пока список не закрыт или не исчерпан <a href="02-agent-loop-stop.html">лимит кругов</a>. Что осталось открытым, отчёт называет прямо.</li>
+        <li><strong>Что писать в задании — цель, а не сценарий.</strong> Цель, границы участка, критерии качества, формат результата. Пошаговая процедура ломается на первом неожиданном источнике.</li>
+      </ul>
+
+      <h2>Пример</h2>
+      <p>Исследовательская система логистической компании: координатор, два поисковых субагента, один по внутренним данным и один для синтеза. На вопрос «Что изменится для наших автоперевозок, если ЕС введёт углеродный сбор для грузовиков?» приходит отчёт только о ставках и сроках сбора, с повторами и без договоров с клиентами, конкуренции с железной дорогой и обновления парка. А справка «с какого числа действует сбор» готовится десять минут.</p>
+      <p>Причина в координаторе: все подзадачи он строит вокруг самого сбора, обоим поисковым субагентам даёт одно задание и на любой вопрос зовёт всю четвёрку. Что меняет архитектор:</p>
+      <ol>
+        <li>На вопрос о факте — один поисковый субагент; полный состав — для вопросов о последствиях.</li>
+        <li>Участки — по типам источников: законы, отраслевая аналитика, внутренние договоры и данные о рейсах.</li>
+        <li>Список сторон — затраты, договоры, конкуренты, сроки, парк — составляется до раздачи, по нему проверяется черновик синтеза. Пробел закрывает точечное задание («какие договоры позволяют переложить сбор на клиента») и новый синтез — не больше двух дополнительных кругов.</li>
+        <li>Вместо «открой пять ссылок и выпиши цифры» задание называет цель, участок, критерии (каждый факт с источником, прогноз отдельно от факта) и формат ответа.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: отчёт однобокий или с повторами, простая справка долгая и дорогая, сбой одного источника остаётся незамеченным. Соблазнительные неверные ходы:</p>
+      <ul>
+        <li><strong>Чинить исполнителей:</strong> модель побольше, другой поисковик, больше повторов. Сильный исполнитель лишь тщательнее раскопает тот же узкий участок.</li>
+        <li><strong>Всегда запускать весь конвейер «для надёжности».</strong> Время и цена растут, а качество ответа на простой вопрос — нет.</li>
+        <li><strong>Прямой обмен между субагентами «ради скорости»</strong> — даже там, где продукт его допускает (в Claude Code и Agent SDK — инструмент SendMessage). Пропадают общий журнал, единая обработка ошибок и контроль над тем, что видит каждый агент.</li>
+        <li><strong>Поручить субагенту синтеза заполнить пробелы.</strong> Он заполнит их по памяти, без источников.</li>
+        <li><strong>Пошаговый сценарий в задании.</strong> Субагент перестаёт приспосабливаться к тому, что нашёл.</li>
+      </ul>
+      <p>Верный ход — в координаторе: выбор по сложности, деление без пересечений, точечное закрытие пробелов, связь только через центр.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration" target="_blank" rel="noopener noreferrer">Multiagent orchestration</a> — что делегировать (параллельные независимые подзадачи, специализация), делегирование субагентам на один уровень, пример указаний для workflow run: как делить работу, перепроверять и называть непокрытое.</li>
+        <li><a href="https://platform.claude.com/docs/en/managed-agents/session-threads" target="_blank" rel="noopener noreferrer">Session threads</a> — главный поток: начало и конец работы субагентов, задания и отчёты; поток каждого субагента — отдельно.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/subagents" target="_blank" rel="noopener noreferrer">Subagents in the SDK</a> — выбор субагента по <code>description</code>, субагенту (кроме форка) передаётся только промпт из вызова инструмента Agent, лимиты глубины и числа субагентов.</li>
+        <li><a href="https://code.claude.com/docs/en/sub-agents" target="_blank" rel="noopener noreferrer">Create custom subagents</a> — вложенные субагенты до трёх уровней, SendMessage, сбой субагента на ошибке API возвращается Claude; Task переименован в Agent в версии 2.1.63.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#subagent-orchestration" target="_blank" rel="noopener noreferrer">Prompting best practices: Subagent orchestration</a> — когда субагенты оправданы, а когда работать напрямую.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#research-and-information-gathering" target="_blank" rel="noopener noreferrer">Prompting best practices: Research and information gathering</a> — явные критерии успеха и проверка по нескольким источникам.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#leverage-thinking-and-interleaved-thinking-capabilities" target="_blank" rel="noopener noreferrer">Prompting best practices: Leverage thinking and interleaved thinking capabilities</a> — общие указания вместо расписанного пошагового плана (о рассуждениях модели).</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/prompting-claude-opus-5#controlling-subagent-spawning" target="_blank" rel="noopener noreferrer">Prompting Claude Opus 5: Controlling subagent spawning</a> — делегировать только крупные независимые задачи, звать одного субагента, если его хватает; жёсткие лимиты.</li>
+        <li><a href="https://www.anthropic.com/engineering/multi-agent-research-system" target="_blank" rel="noopener noreferrer">How we built our multi-agent research system</a> — фон (Anthropic Engineering): ведущий агент подбирает число субагентов под сложность запроса; расплывчатые задания ведут к дублированию и пробелам.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="02-agent-loop-stop.html">Назад</a>
+        <a class="next" href="04-sdk-subagents.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

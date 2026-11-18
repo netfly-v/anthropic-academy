@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Декомпозиция задач и многопроходное ревью</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html" aria-current="page"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Декомпозиция задач и многопроходное ревью</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 1 · подпункты 1.4, 1.6; домен 4 · подпункт 4.6</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../api/lessons/70-parallelization.html">API · Параллельные рабочие процессы</a> — независимые подзадачи со своими критериями и шаг-агрегатор; один огромный промпт теряет фокус.</li>
+        <li><a href="../../api/lessons/71-chaining.html">API · Цепочки</a> — последовательные шаги, каждый опирается на результат предыдущего; отдельный проход на доработку.</li>
+        <li><a href="../../api/lessons/73-agents-and-tools.html">API · Агенты и инструменты</a> — агент получает цель и инструменты и сам составляет план.</li>
+        <li><a href="../../api/lessons/75-workflows-vs-agents.html">API · Workflow или агент</a> — workflow для известных шагов, агент — когда шаги заранее неизвестны.</li>
+        <li><a href="../../subagents/lessons/04-using-subagents-effectively.html">Subagents · Когда нужны субагенты</a> — конвейер из субагентов теряет информацию, если каждый шаг зависит от находок предыдущего.</li>
+        <li><a href="../../tool-use/lessons/03-parallel-tool-calling.html">Tool use · Параллельные вызовы инструментов: меньше задержка</a> — несколько независимых вызовов инструментов в одном ответе Claude.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <h3>Большое ревью: проходы по файлам и интеграционный проход</h3>
+      <p>Чем больше файлов в одном запросе, тем меньше внимания достаётся каждому: модель пропускает ошибки и противоречит сама себе. Документация называет это context rot: с ростом числа токенов падают точность и полнота, даже если всё помещается в окно. Поэтому ревью строят как цепочку промптов (prompt chaining):</p>
+      <ol>
+        <li><strong>Локальные проходы</strong> — отдельный запрос на каждый файл, все параллельно. Кроме замечаний, каждый возвращает справку: что файл отдаёт другим модулям, какие данные читает и пишет.</li>
+        <li><strong>Интеграционный проход</strong> — отдельный запрос после всех локальных. Он получает справки и замечания, а не весь код, ищет ошибки на стыках (как данные идут между модулями и где их понимают по-разному) и сводит замечания в один список без повторов и противоречий.</li>
+      </ol>
+      <p>На экзамене большое ревью разбивают явной цепочкой проходов — так и отвечайте. По документации (на ноябрь 2026) с адаптивным мышлением и субагентами многошаговые рассуждения Claude в основном ведёт сам, а явная цепочка нужна, когда надо видеть промежуточные результаты или задать строгий конвейер — например, в своём CI.</p>
+
+      <h3>Открытая задача: план, который меняется</h3>
+      <p>Цепочка с заданными шагами годится, когда подзадачи известны заранее. В открытой задаче — скажем, покрыть тестами старый сервис — они появляются по ходу:</p>
+      <ol>
+        <li>составить карту: модули, точки входа, связи, где тесты уже есть;</li>
+        <li>найти места, где тесты дадут больше всего: код рискованный, часто меняется и не покрыт;</li>
+        <li>выстроить очередь от самого важного и после каждого шага пересобирать её по находкам.</li>
+      </ol>
+      <p>Если модуль сам обращается к базе и тест для него не написать, появляется новая подзадача — вынести обращение за интерфейс, — и она встаёт в плане раньше тестов. Следующий шаг выбирают по находкам, а не по списку, составленному вслепую.</p>
+
+      <h3>Обращение клиента с несколькими проблемами</h3>
+      <p>Клиент пишет в одном сообщении о трёх проблемах; типичный провал — агент решает первую и забывает остальные. Правильно:</p>
+      <ol>
+        <li>разбить обращение на отдельные пункты;</li>
+        <li>расследовать их параллельно (например, несколькими вызовами инструментов в одном ответе) с общим контекстом: кто клиент, какой у него договор, что уже проверено — иначе каждое расследование начинает с нуля и выводы расходятся;</li>
+        <li>согласовать находки и дать одно решение и один ответ по всем пунктам, а не три ответа подряд.</li>
+      </ol>
+
+      <h2>Пример</h2>
+      <p>Финтех-команда проверяет каждый pull request (PR) в CI: скрипт отправляет весь diff Claude одним запросом. PR переводит суммы из рублей с копейками в целые копейки и затрагивает 22 файла. Ревью нашло мелочи, но пропустило главное: модуль отчётов по-прежнему ждёт рубли, и суммы в выгрузке выросли в сто раз. Ни в одном файле по отдельности ошибки нет — она между файлами.</p>
+      <p>Архитектор делает два прохода. Сначала каждый изменённый файл проверяется отдельным запросом, все параллельно; ответ структурированный — замечания и справка, какие суммы файл принимает и отдаёт и в каких единицах. Затем отдельный запрос по всем справкам и замечаниям проверяет поток данных: везде ли одни единицы, нет ли двойного пересчёта. В PR уходит только его сводный список.</p>
+
+      <h2>Как это спрашивают</h2>
+      <p>Ситуации: ревью пропускает ошибку на стыке модулей; агент держится плана, составленного до первой находки; агент поддержки отвечает только на часть обращения. Неверные ходы:</p>
+      <ul>
+        <li><strong>Модель покрупнее или окно побольше.</strong> Код и так помещается; беда в том, что один запрос держит в фокусе слишком много.</li>
+        <li><strong>Правило в промпте</strong> («проверяй каждый файл одинаково тщательно»). Внимания не прибавится: в запросе всё тот же diff целиком.</li>
+        <li><strong>Только проходы по файлам.</strong> Ошибки между файлами им не видны: нужен интеграционный проход.</li>
+        <li><strong>Полный план заранее</strong> и строгое следование ему: зависимости, найденные по ходу, в план не попадают.</li>
+        <li><strong>Цепочка исполнителей, где каждый пересказывает результат следующему:</strong> подробности теряются.</li>
+        <li><strong>Попросить клиента писать о каждой проблеме отдельно:</strong> работа перекладывается на клиента, связь между пунктами теряется.</li>
+      </ul>
+      <p>Верный ход меняет саму схему работы: отдельные проходы, план по находкам, общий контекст и один ответ.</p>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#chain-complex-prompts" target="_blank" rel="noopener noreferrer">Prompting best practices: Chain complex prompts</a> — когда явная цепочка запросов ещё нужна; самый частый вариант — черновик, ревью по критериям, доработка.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#subagent-orchestration" target="_blank" rel="noopener noreferrer">Prompting best practices: Subagent orchestration</a> — образец промпта: субагенты — для параллельных независимых задач, а там, где контекст нужен между шагами, лучше работать без делегирования.</li>
+        <li><a href="https://platform.claude.com/docs/en/build-with-claude/context-windows" target="_blank" rel="noopener noreferrer">Context windows</a> — context rot: с ростом числа токенов падают точность и полнота.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/parallel-tool-use" target="_blank" rel="noopener noreferrer">Parallel tool use</a> — несколько блоков <code>tool_use</code> в одном ответе; независимые вызовы на чтение можно выполнять одновременно.</li>
+        <li><a href="https://code.claude.com/docs/en/workflows#review-every-changed-file-and-write-one-summary" target="_blank" rel="noopener noreferrer">Orchestrate subagents at scale with dynamic workflows</a> — пример «ревьюер на каждый изменённый файл, затем один ранжированный список без дублей».</li>
+        <li><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener noreferrer">Building effective agents</a> — фон (Anthropic Engineering): prompt chaining, sectioning, orchestrator-workers (подзадачи определяются под конкретный вход) и агенты, которые на каждом шаге сверяются с результатами.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="07-posttooluse.html">Назад</a>
+        <a class="next" href="24-long-context.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

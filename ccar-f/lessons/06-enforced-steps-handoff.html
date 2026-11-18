@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Обязательный порядок шагов и передача человеку</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../../subagents/index.html">Subagents</a>
+      <a href="../../tool-use/index.html">Tool use</a>
+      <a href="../../platform-101/index.html">Platform 101</a>
+      <a href="../../claude-code-101/index.html">Claude Code 101</a>
+      <a href="../index.html" aria-current="page">CCAR-F</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">CCAR-F: темы вне курсов</h2>
+        <a class="course-kicker" href="../index.html">Обзор раздела</a>
+        <p class="nav-group">Карта</p>
+        <ul class="lesson-nav">
+          <li><a href="01-map.html"><span class="mark"></span>Карта CCAR-F</a></li>
+        </ul>
+        <p class="nav-group">Домен 1. Агентная архитектура</p>
+        <ul class="lesson-nav">
+          <li><a href="02-agent-loop-stop.html"><span class="mark"></span>Остановка цикла</a></li>
+          <li><a href="03-coordinator.html"><span class="mark"></span>Координатор</a></li>
+          <li><a href="04-sdk-subagents.html"><span class="mark"></span>Субагенты в SDK</a></li>
+          <li><a href="05-sessions.html"><span class="mark"></span>Сессии</a></li>
+          <li><a href="06-enforced-steps-handoff.html" aria-current="page"><span class="mark"></span>Порядок шагов</a></li>
+          <li><a href="07-posttooluse.html"><span class="mark"></span>PostToolUse</a></li>
+          <li><a href="08-decomposition.html"><span class="mark"></span>Декомпозиция</a></li>
+        </ul>
+        <p class="nav-group">Домен 5. Контекст и надёжность</p>
+        <ul class="lesson-nav">
+          <li><a href="24-long-context.html"><span class="mark"></span>Длинный контекст</a></li>
+          <li><a href="25-agent-handoffs.html"><span class="mark"></span>Передача между агентами</a></li>
+          <li><a href="26-escalation.html"><span class="mark"></span>Эскалация</a></li>
+          <li><a href="27-error-propagation.html"><span class="mark"></span>Ошибки между агентами</a></li>
+          <li><a href="28-large-codebase.html"><span class="mark"></span>Большой код</a></li>
+          <li><a href="29-human-review.html"><span class="mark"></span>Проверка человеком</a></li>
+          <li><a href="30-provenance.html"><span class="mark"></span>Источники</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Обязательный порядок шагов и передача человеку</h1>
+      <div class="rule"></div>
+      <p class="kicker">Домен 1 · подпункт 1.4</p>
+      <h2>Что уже есть в курсах</h2>
+      <ul>
+        <li><a href="../../claude-code/lessons/05-hooks.html">Claude Code · Hooks</a> — правило в CLAUDE.md — лишь просьба, а hook даёт гарантию; PreToolUse возвращает <code>deny</code> до того, как вызов выполнится.</li>
+        <li><a href="../../claude-code-101/lessons/12-hooks.html">Claude Code 101 · Hooks</a> — PreToolUse блокирует опасное действие и сообщает Claude причину.</li>
+        <li><a href="../../tool-use/lessons/03-parallel-tool-calling.html">Tool use · Параллельные вызовы инструментов: меньше задержка</a> — вызовы, которые меняют данные или зависят друг от друга, лучше выполнять по очереди; на пропущенный вызов отвечают <code>tool_result</code> с <code>is_error: true</code>.</li>
+        <li><a href="../../platform-101/lessons/11-managed-agents.html">Platform 101 · Что такое Managed Agents</a> — политика разрешений приостанавливает чувствительное действие, пока его не одобрит человек.</li>
+      </ul>
+
+      <h2>Простыми словами</h2>
+      <p>Некоторые шаги должны идти строго по порядку: сначала подтвердить личность клиента, потом трогать его деньги и данные. Правило в промпте — лишь просьба (см. урок <a href="../../claude-code/lessons/05-hooks.html">Claude Code · Hooks</a>). Если пропуск шага грозит потерей денег или данных либо нарушает закон, порядок обеспечивает код, а промпт только объясняет его.</p>
+      <ul>
+        <li><strong>Состояние хранит ваш код.</strong> Когда проверка пройдена, код записывает подтверждённый ID клиента в состояние сессии. Модель его не записывает и не стирает.</li>
+        <li><strong>Барьер стоит перед инструментом.</strong> В Agent SDK hook PreToolUse — функция вашего приложения — стоит на каждом инструменте, которому нужен проверенный клиент (и на денежном, и на читающем его данные). Если клиент не подтверждён или ID в вызове чужой, hook возвращает <code>permissionDecision: "deny"</code>, а в <code>permissionDecisionReason</code> пишет для Claude, какой шаг сделать сначала.</li>
+        <li><strong>Свой цикл на Messages API:</strong> та же проверка перед выполнением, а вместо вызова — <code>tool_result</code> с <code>is_error: true</code> и подсказкой, что делать дальше.</li>
+        <li><strong>Не <code>canUseTool</code>.</strong> До этого колбэка разрешений не доходят вызовы, уже одобренные правилом <code>allowedTools</code> или режимом <code>bypassPermissions</code>. PreToolUse видит и их, а его <code>deny</code> действует даже в <code>bypassPermissions</code>. <code>canUseTool</code> нужен, чтобы показать вызов человеку и дождаться решения.</li>
+      </ul>
+      <p>Вторая половина темы — передача дела человеку посреди процесса. Оператор переписки не видит, и пересказ «клиент недоволен, разберитесь» заставит его начинать с нуля. Поэтому агент вызывает инструмент передачи с обязательными полями; в Messages API со <code>strict: true</code> входные данные всегда соответствуют схеме. В сводке:</p>
+      <ul>
+        <li>подтверждённый ID клиента и суть обращения;</li>
+        <li>найденная причина проблемы и чем она подтверждена;</li>
+        <li>сумма или предмет спора;</li>
+        <li>что агент уже сделал и сказал клиенту;</li>
+        <li>почему передал: лимит, исключение из правил, просьба клиента;</li>
+        <li>рекомендуемое действие.</li>
+      </ul>
+      <p>Точно известные поля (ID из состояния, суммы из учётных систем) подставляет код, модели остаются причина и рекомендация.</p>
+
+      <h2>Пример</h2>
+      <p>Агент поддержки интернет-провайдера начисляет компенсацию за перебои связи. Инструменты: <code>verify_subscriber</code> (номер договора и код из SMS), <code>apply_credit</code> и <code>open_operator_ticket</code>. Аудит нашёл начисления без проверки: клиент торопил агента или называл чужой договор, хотя промпт требует «сначала проверка».</p>
+      <ol>
+        <li>При верном коде обработчик <code>verify_subscriber</code> записывает номер договора в состояние сессии.</li>
+        <li>PreToolUse на <code>apply_credit</code> отказывает, если подтверждения нет или договор другой: «Абонент не подтверждён. Сначала verify_subscriber». У hook задан <code>on_failure="block"</code> (<code>onFailure</code> в TypeScript): без него упавший колбэк пропускает вызов дальше, к обычной проверке разрешений.</li>
+        <li>Сумму выше лимита агента тот же hook отклоняет: «Выше лимита, передай оператору». Агент открывает заявку: договор, жалоба, причина (авария на узле с 3 по 5 ноября, подтверждённая мониторингом), расчёт суммы, что сказано клиенту, рекомендация «начислить 2&nbsp;400&nbsp;₽». Клиенту он сообщает, что дело передано специалисту, но сумму не обещает.</li>
+      </ol>
+
+      <h2>Как это спрашивают</h2>
+      <p>Типичная ситуация: агент изредка пропускает обязательный шаг перед необратимым действием или операторы после эскалации заново расспрашивают клиентов. Неверные ходы:</p>
+      <ul>
+        <li><strong>Усилить промпт</strong> («ОБЯЗАТЕЛЬНО», примеры): пропусков станет меньше, но для денег и персональных данных нужен ноль.</li>
+        <li><strong>Модель побольше или самопроверка</strong> («оцени уверенность, что клиент проверен»): та же вероятность, и модель проверяет сама себя.</li>
+        <li><strong>Проверка задним числом</strong> (<a href="07-posttooluse.html">PostToolUse</a>, ночной аудит): ошибку найдут, когда деньги уже ушли.</li>
+        <li><strong>Вся переписка или свободный пересказ оператору</strong>: длинную переписку не прочтут, а в свободном тексте легко потерять сумму или ID.</li>
+      </ul>
+      <p>Верный ход детерминированный: барьер в коде до вызова инструмента и сводка с фиксированными полями.</p>
+
+      <aside class="callout"><p class="callout-label">Курс vs экзамен</p>
+        <p>Экзамен, как и уроки Claude Code («без исключений»), считает программный барьер детерминированной гарантией. На ноябрь 2026 в Agent SDK это верно, пока колбэк не падает (шаг 2 примера); не уложившийся в таймаут PreToolUse блокирует вызов и без <code>on_failure</code>. На экзамене выбирайте программный барьер, а в коде ставьте <code>on_failure="block"</code>.</p>
+      </aside>
+
+      <h2>Документация</h2>
+      <ul>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/hooks" target="_blank" rel="noopener noreferrer">Intercept and control agent behavior with hooks</a> — колбэк PreToolUse: <code>deny</code> с причиной для Claude, <code>onFailure: "block"</code>, таймаут блокирует вызов, <code>session_id</code> во входных данных.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/permissions" target="_blank" rel="noopener noreferrer">Configure permissions</a> — порядок проверки вызова: hooks, правила, режим, <code>canUseTool</code>; вызовы, одобренные на предыдущих шагах, до <code>canUseTool</code> не доходят; <code>deny</code> из hook действует и в <code>bypassPermissions</code>.</li>
+        <li><a href="https://code.claude.com/docs/en/agent-sdk/user-input" target="_blank" rel="noopener noreferrer">Handle approvals and user input</a> — <code>canUseTool</code> приостанавливает вызов до ответа человека; вызов, который уже одобрило правило или режим, до него не доходит, а PreToolUse видит и такие.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/handle-tool-calls" target="_blank" rel="noopener noreferrer">Handle tool calls</a> — <code>is_error: true</code> и совет писать в ошибке, что пошло не так и что делать дальше.</li>
+        <li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/strict-tool-use" target="_blank" rel="noopener noreferrer">Strict tool use</a> — со <code>strict: true</code> входные данные инструмента всегда соответствуют схеме, обязательные поля на месте.</li>
+        <li><a href="https://platform.claude.com/docs/en/about-claude/use-case-guides/customer-support-chat" target="_blank" rel="noopener noreferrer">Customer support agent</a> — точность эскалации как метрика успеха; агент не даёт обещаний сверх своих полномочий.</li>
+      </ul>
+      <div class="pager">
+        <a class="ghost" href="05-sessions.html">Назад</a>
+        <a class="next" href="07-posttooluse.html">Дальше</a>
+      </div>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>
