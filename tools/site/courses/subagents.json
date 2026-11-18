@@ -1,0 +1,64 @@
+{
+ "dir": "subagents",
+ "course": "introduction-to-subagents",
+ "platform": "academy",
+ "img_prefix": "sub",
+ "title": "Введение в субагентов",
+ "orig_title": "Introduction to subagents",
+ "lead": "Как Claude Code поручает задачи субагентам — помощникам с собственным окном контекста, — как создать своего субагента, как сделать его полезным и когда делегировать вообще стоит.",
+ "about": [
+  "<p>Короткий курс Anthropic Academy из четырёх уроков, на academy.claude.com. Здесь весь курс в том же порядке, что и в оригинале: текст по-русски, плюс пояснения там, где урок короткий или расходится с документацией Claude Code. Видео — те же ролики с YouTube. Официального теста у этого курса нет, пробный экзамен в конце — наш.</p>"
+ ],
+ "sections": [
+  {
+   "title": "Уроки",
+   "lessons": [
+    {
+     "file": "01-what-are-subagents.html",
+     "nav": "Что такое субагенты",
+     "sid": "what-are-subagents",
+     "orig": "What are subagents?",
+     "note": "Зачем субагенты и какие встроены в Claude Code",
+     "dur": "2 мин 46 с",
+     "toc": 1
+    },
+    {
+     "file": "02-creating-a-subagent.html",
+     "nav": "Как создать субагента",
+     "sid": "creating-a-subagent",
+     "orig": "Creating a subagent",
+     "note": "Файл субагента: уровень, инструменты, модель, промпт",
+     "dur": "3 мин 40 с",
+     "toc": 2
+    },
+    {
+     "file": "03-designing-effective-subagents.html",
+     "nav": "Эффективные субагенты",
+     "sid": "designing-effective-subagents",
+     "orig": "Designing effective subagents",
+     "note": "Описание, формат результата, препятствия, инструменты",
+     "dur": "3 мин 38 с",
+     "toc": 3
+    },
+    {
+     "file": "04-using-subagents-effectively.html",
+     "nav": "Когда нужны субагенты",
+     "sid": "using-subagents-effectively",
+     "orig": "Using subagents effectively",
+     "note": "Когда делегировать субагенту, а когда нет",
+     "dur": "4 мин 41 с",
+     "toc": 4
+    }
+   ]
+  }
+ ],
+ "quiz": {
+  "file": "quiz.html",
+  "items": 12,
+  "minutes": 15,
+  "bank": "subagents-quiz.js",
+  "page_title": "Введение в субагентов",
+  "kicker": "Введение в субагентов"
+ },
+ "official": []
+}

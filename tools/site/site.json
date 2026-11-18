@@ -23,6 +23,30 @@
    "label": "Claude Code",
    "title": "Claude Code in Action",
    "card": "Курс 2026 года переведён целиком: 9 уроков о долгих и автономных сессиях — CLAUDE.md, skills, режимы разрешений, hooks, routines, GitHub Actions и плагины, базовый и сложный пробные экзамены."
+  },
+  {
+   "dir": "subagents",
+   "label": "Subagents",
+   "title": "Введение в субагентов",
+   "card": "Курс переведён целиком: 4 урока о субагентах Claude Code — как они работают, как их создать и настроить и когда делегировать стоит, пробный экзамен."
+  },
+  {
+   "dir": "tool-use",
+   "label": "Tool use",
+   "title": "Tool use в Messages API",
+   "card": "Курс переведён целиком: 9 уроков о надёжном, быстром и дешёвом tool use — описания инструментов, strict, параллельные и потоковые вызовы, code execution, web search, computer use и цена, пробный экзамен."
+  },
+  {
+   "dir": "platform-101",
+   "label": "Platform 101",
+   "title": "Claude Platform 101",
+   "card": "Курс переведён целиком: 13 уроков о Claude Platform с нуля — запрос и выбор модели, цикл агента, tool use, thinking, встроенные инструменты, skills, MCP, контекст и Managed Agents, пробный экзамен."
+  },
+  {
+   "dir": "claude-code-101",
+   "label": "Claude Code 101",
+   "title": "Claude Code 101",
+   "card": "Курс переведён целиком: 12 уроков о повседневной работе с Claude Code — цикл Explore → Plan → Code → Commit, контекст, ревью, CLAUDE.md, субагенты, skills, MCP и hooks, пробный экзамен."
   }
  ]
 }

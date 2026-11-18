@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Эффективные субагенты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../index.html" aria-current="page">Subagents</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в субагентов</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Уроки</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-are-subagents.html"><span class="mark"></span>Что такое субагенты</a></li>
+          <li><a href="02-creating-a-subagent.html"><span class="mark"></span>Как создать субагента</a></li>
+          <li><a href="03-designing-effective-subagents.html" aria-current="page"><span class="mark"></span>Эффективные субагенты</a></li>
+          <li><a href="04-using-subagents-effectively.html"><span class="mark"></span>Когда нужны субагенты</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Эффективные субагенты</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:38 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>объяснить, как имя и описание субагента влияют на то, когда главный агент его запускает и какой входной промпт ему пишет;</li>
+        <li>задавать в системном промпте субагента формат результата, чтобы он вовремя останавливался;</li>
+        <li>добавлять в формат раздел о препятствиях, чтобы найденные обходные пути не терялись;</li>
+        <li>выдавать субагенту только те инструменты, которые нужны для его работы.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/WPxWKT_OaU4" title="Designing effective subagents" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>Теперь, когда вы умеете создавать субагентов, разберём приёмы, которые делают их по-настоящему эффективными. Плохо настроенный субагент блуждает, работает слишком долго или возвращает результат, которым главный агент не может воспользоваться. Чтобы это исправить, нужны четыре вещи: хорошие описания, заданный формат результата, отчёт о препятствиях и ограниченный доступ к инструментам.</p>
+
+      <h2>Как используются данные из конфигурации субагента</h2>
+      <p>Когда вы отправляете сообщение агенту в основном окне контекста, в системный промпт попадают имя и описание каждого доступного субагента. По ним главный агент решает, какого субагента запустить и когда. Если вы хотите лучше управлять тем, когда субагент запускается автоматически, правьте именно имя и описание.</p>
+      <p>У описания есть и вторая роль. Запуская субагента, главный агент пишет входной промпт, с которого начинается задача, и при этом опирается на описание. Поэтому описание управляет не только тем, когда запускается субагент, — оно формирует и то, что ему поручат.</p>
+      <figure class="shot">
+        <img src="../../assets/subagents/sub03-01.png" alt="Конфигурация субагента code-quality-reviewer с полями name и description; стрелка ведёт от описания к полю ввода промпта в Claude Code.">
+        <figcaption>Имя и описание из конфигурации субагента попадают в промпт главного агента.</figcaption>
+      </figure>
+
+      <h2>Как писать описания, которые формируют входной промпт</h2>
+      <p>Возьмём субагента для ревью кода. Если описание общее, главный агент может написать входной промпт вроде «найди текущие изменения через <code>git diff</code>». Это расплывчато: субагенту приходится самому выяснять, какие файлы важны.</p>
+      <p>Если добавить в описание что-нибудь вроде «You must tell the agent precisely which files you want it to review» («точно укажи агенту, какие файлы нужно проверить»), главный агент станет писать гораздо более конкретный входной промпт — с перечнем конкретных файлов для ревью.</p>
+      <p>Тот же приём работает и с другими видами субагентов. Например, если добавить в описание субагента для веб-поиска «return sources that can be cited» («возвращай источники, на которые можно сослаться»), главный агент будет включать это указание, когда поручает ему задачу.</p>
+      <figure class="shot">
+        <img src="../../assets/subagents/sub03-02.png" alt="Главный агент по запросу «Use the @agent-code-quality-reviewer» запускает субагента code-quality-reviewer с подробным входным промптом: изменённый файл app/routers/users.py и шесть пунктов, на которых сосредоточить ревью.">
+        <figcaption>Теперь входной промпт называет изменённый файл и то, на что смотреть при ревью.</figcaption>
+      </figure>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Описание — короткое.</strong> По документации Claude Code (на ноябрь 2026), описания всех субагентов постоянно занимают контекст главного агента, поэтому их рекомендуют держать короткими, а подробности переносить в системный промпт субагента: он загружается, только когда субагент запущен. Чтобы главный агент охотнее запускал субагента сам, документация советует вписать в описание слова вроде «use proactively».</li>
+          <li><strong>Task и Agent.</strong> В описании на первом скриншоте упомянут инструмент Task. В Claude Code 2.1.63 его переименовали в <code>Agent</code>; старое имя <code>Task(...)</code> в настройках и файлах субагентов работает как синоним.</li>
+        </ul>
+      </aside>
+
+      <h2>Формат результата</h2>
+      <p>Самое важное улучшение, которое можно сделать в субагенте, — задать в его системном промпте формат результата. Это даёт две вещи:</p>
+      <ul>
+        <li>Появляются естественные точки остановки: субагент знает, что закончил, когда заполнил все разделы формата.</li>
+        <li>Формат не даёт субагенту работать слишком долго. Без заданного формата субагентам трудно понять, когда исследования уже достаточно, и обычно они работают гораздо дольше, чем нужно.</li>
+      </ul>
+      <p>Вот пример структурированного формата результата для субагента, который проверяет код:</p>
+      <pre>Provide your review in a structured format:
+1. Summary: Brief overview of what you reviewed and overall assessment
+2. Critical Issues: Any security vulnerabilities, data integrity risks, or logic errors that must be fixed immediately
+3. Major Issues: Quality problems, architecture misalignment, or significant performance concerns
+4. Minor Issues: Style inconsistencies, documentation gaps, or minor optimizations
+5. Recommendations: Suggestions for improvement, refactoring opportunities, or best practices to apply
+6. Approval Status: Clear statement of whether the code is ready to merge/deploy or requires changes</pre>
+      <p>Такой формат даёт субагенту понятный чеклист. Когда заполнены все разделы, субагент знает, что может остановиться.</p>
+
+      <h2>Отчёт о препятствиях</h2>
+      <p>Если субагент по ходу работы находит обходной путь — например, решает проблему с зависимостью или выясняет, что какой-то команде нужны особые флаги, — эти подробности должны попасть в сводку, которую он возвращает. Иначе основному разговору придётся самостоятельно искать те же решения заново, а это пустая трата времени и токенов.</p>
+      <p>Вот что стоит выносить в отчёт:</p>
+      <ul>
+        <li>проблемы с настройкой или особенности окружения;</li>
+        <li>обходные пути, найденные во время задачи;</li>
+        <li>команды, которым понадобились особые флаги или настройки;</li>
+        <li>зависимости или импорты, с которыми были проблемы.</li>
+      </ul>
+      <p>Чтобы получить эти сведения, о них нужно прямо попросить в формате результата. Если добавить в шаблон результата раздел «Obstacles Encountered» («Возникшие препятствия»), они будут надёжно попадать в ответ.</p>
+      <pre>7. Obstacles Encountered: Report any obstacles encountered during the review process. This can be: setup issues, workarounds discovered or environment quirks. Report commands that needed a special flag or configuration. Report dependencies or imports that caused problems.</pre>
+      <figure class="shot">
+        <img src="../../assets/subagents/sub03-03.png" alt="Системный промпт субагента в файле .claude/agents/code-quality-reviewer.md, открытом в VS Code: формат ревью из семи пунктов, выделен седьмой — Obstacles Encountered.">
+        <figcaption>Раздел «Obstacles Encountered» — седьмой пункт формата в системном промпте <code>code-quality-reviewer</code>.</figcaption>
+      </figure>
+
+      <h2>Ограничение доступа к инструментам</h2>
+      <p>Не каждому субагенту нужен доступ ко всем инструментам. Подумайте, что субагенту действительно предстоит делать, и дайте ему только те инструменты, которые нужны для этой работы. Это решает две задачи: исключает непреднамеренные побочные эффекты и делает роль каждого субагента понятнее, когда их у вас несколько.</p>
+      <p>Вот как подойти к выбору инструментов для типичных видов субагентов:</p>
+      <ul>
+        <li><strong>Исследовательский субагент, только для чтения</strong> — нужны только <code>Glob</code>, <code>Grep</code> и <code>Read</code>. Случайно изменить файлы он не может.</li>
+        <li><strong>Ревьюер кода</strong> — нужен доступ к <code>Bash</code>, чтобы запускать <code>git diff</code> и видеть, что изменилось, но <code>Edit</code> и <code>Write</code> ему всё равно не нужны.</li>
+        <li><strong>Агент для правки стилей или кода</strong> — именно ему дают доступ к <code>Edit</code> и <code>Write</code>, потому что работа этого субагента — действительно менять ваш код.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>Ревьюер с <code>Bash</code>, но без <code>Edit</code> и <code>Write</code> — ещё не «только чтение»: команды вроде <code>rm</code> или <code>sed -i</code> тоже меняют файлы. По документации (на ноябрь 2026), без запроса разрешения в оболочке выполняется лишь встроенный набор команд для чтения (<code>ls</code>, <code>grep</code>, <code>git diff</code>…), остальные требуют подтверждения, если его не снимает режим разрешений. Наверняка не изменит файлы только субагент без оболочки и инструментов записи, например с <code>Glob</code>, <code>Grep</code>, <code>Read</code>. Инструменты перечисляют в поле <code>tools</code>; если его нет, субагент наследует все инструменты, доступные субагентам, а <code>disallowedTools</code> убирает лишние. Чтобы оставить <code>Bash</code>, но запретить отдельные команды, нужно правило в <code>permissions.deny</code> настроек, например <code>Bash(git push *)</code>, или hook <code>PreToolUse</code>.</p>
+      </aside>
+
+      <h2>Всё вместе</h2>
+      <p>У эффективных субагентов четыре общие черты:</p>
+      <ol>
+        <li><strong>Конкретные описания</strong> — описание определяет, когда запускается субагент и какие указания он получает. Пишите его так, чтобы направлять и то, и другое.</li>
+        <li><strong>Структурированный результат</strong> — задайте в системном промпте формат результата, чтобы субагент знал, когда закончил, и возвращал сведения, которыми может воспользоваться основной разговор.</li>
+        <li><strong>Отчёт о препятствиях</strong> — включите в формат результата раздел для обходных путей, особенностей и проблем, чтобы основному разговору не пришлось открывать их заново.</li>
+        <li><strong>Ограниченный доступ к инструментам</strong> — давайте субагенту только те инструменты, которые ему действительно нужны: только чтение — для исследований, <code>Bash</code> — для ревьюеров, <code>Edit</code> и <code>Write</code> — только для агентов, которые должны менять код.</li>
+      </ol>
+      <p>Каждый из этих приёмов по отдельности прост, но вместе они превращают субагента из помощника, который как-то пытается быть полезным, в сосредоточенного и предсказуемого исполнителя: он заканчивает вовремя и ясно отчитывается.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Когда нужны субагенты»: в каких задачах субагенты действительно помогают, а в каких мешают, и почему всё решает, важна ли основному разговору промежуточная работа.</p>
+      <div class="pager">
+        <a class="ghost" href="02-creating-a-subagent.html">Назад</a>
+        <a class="next" href="04-using-subagents-effectively.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/introduction-to-subagents/designing-effective-subagents" target="_blank" rel="noopener noreferrer">Designing effective subagents</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

@@ -1,13 +1,16 @@
-# Translating one Skilljar lesson into a Russian lesson fragment
+# Translating one Skilljar or Academy lesson into a Russian lesson fragment
 
 You write the Russian text of ONE lesson page of the study site /Users/netfly/Projects/anthropic_academy (read its
 CLAUDE.md, rules 1–5 of «Правила правки сайта», they are binding). The site is the owner's Russian notes of an
-Anthropic Academy course: a full, faithful translation of the Skilljar lesson plus short «Пояснение» notes.
+Anthropic Academy course: a full, faithful translation of the original lesson plus short «Пояснение» notes.
+Older courses come from Skilljar (`tools/skilljar`), newer ones from academy.claude.com (`tools/academy`); the lesson
+map says which.
 
 ## Inputs (paths in your task)
-- the dump of the lesson: `NN-<id>.md` = Skilljar page text (with code blocks), then «(video transcript)»;
+- the dump of the lesson: `NN-<id>.md` = page text (with code blocks), then «(video transcript)» (Skilljar: the
+  subtitles; Academy: the text of the lesson's Transcript tab);
 - the raw HTML of the page `NN-<id>.html` — use it when you need the exact code text or the exact structure;
-- the lesson map of the course: site numbers, files, Russian titles, Skilljar ids, images of each lesson;
+- the lesson map of the course: site numbers, files, Russian titles, original ids (Skilljar) or slugs (Academy), images of each lesson;
 - a format reference: a finished lesson of the site (see below).
 
 ## Output
@@ -38,13 +41,21 @@ Video block:
 - Skilljar video (JW Player): the reference block
   `<a class="video-link" href="https://anthropic.skilljar.com/{course}/{sid}" target="_blank" rel="noopener noreferrer">`
   `<strong>Смотреть урок на Skilljar</strong>` `<span>{English lesson title} · 4:40</span>` `</a>`.
-- YouTube video embedded in the page: `<div class="video">` + `<iframe src="https://www.youtube.com/embed/{id}"
+- YouTube video embedded in the page (every Academy lesson with a video): `<div class="video">` + `<iframe src="https://www.youtube.com/embed/{id}"
   title="{English lesson title}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;
   picture-in-picture" allowfullscreen></iframe>` + `</div>` (as in skills/lessons/01-what-are-skills.html).
 - Page with no text, only a video: estimate «Видео 3:09», duration line «На странице урока только видео. Ниже — его
   содержание по субтитрам.», then a structured Russian rendering of the transcript (headings, paragraphs, lists),
   in the video's order, nothing invented. Code that is only read out or shown in the video is reconstructed from the
   transcript and marked so in a short «Пояснение» («код восстановлен по видео»).
+
+Academy pages:
+- The page text starts with a card that repeats the lesson title and gives a short summary paragraph: translate the
+  summary paragraph as the first paragraph after the video block, drop the repeated title.
+- `[VIDEO youtube <id>]` marks where the video is; it becomes the video block above.
+- `[PROMPT]…[/PROMPT]` is a sample prompt shown in a box: keep it in English, exactly, in a `<pre>` (as the site does
+  with prompts in api/lessons/23-being-specific.html); translate the text around it.
+- Buttons such as «Watch on YouTube», «Copy prompt», «Open in Claude Code» are not part of the text.
 
 ## Translation rules
 - Translate EVERY paragraph, heading, list item and table of the page text, in the same order. Nothing dropped,
@@ -72,9 +83,15 @@ Video block:
   with the date («на ноябрь 2026») when it can change; name the page you used in your final report, not in the
   fragment. If the lesson contradicts the current documentation, say so plainly and give the current behaviour.
   Never pad: no notes that only repeat the lesson.
+- Size norm for notes: at most about a quarter of the lesson text, usually one or two callouts of 60–200 words in
+  total. Keep, in this priority: (1) where the lesson contradicts the current documentation — the current behaviour,
+  briefly; (2) outdated code, commands or names and what to use now; (3) a short clarification of what the lesson
+  leaves genuinely unclear for a learner preparing for the Claude certification. Leave out details beyond the
+  lesson's content (plans, prices, numeric limits, neighbouring features, version numbers that do not matter).
 - «Дальше»: one or two sentences about the next lesson (its Russian title from the lesson map). After the last lesson
-  of the course: the official Skilljar test (link with target="_blank" rel="noopener noreferrer", question count
-  from the lesson map) and our practice exam `../quiz.html`.
+  of the course: the official test of the course on Skilljar or Academy, if the lesson map lists one (link with
+  target="_blank" rel="noopener noreferrer", question count from the lesson map when known), and our practice exam
+  `../quiz.html`.
 - No `<main>`, no pager, no «Оригинал урока», no inline styles, no scripts.
 
 ## Final report (your structured output)

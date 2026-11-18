@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Как создать субагента</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,460;0,8..60,560;0,8..60,650;1,8..60,460&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="wordmark" href="../../index.html">ANTHROPIC ACADEMY</a>
+    <nav class="header-nav">
+      <a href="../../index.html">Курсы</a>
+      <a href="../../skills/index.html">Skills</a>
+      <a href="../../api/index.html">API</a>
+      <a href="../../mcp/index.html">MCP</a>
+      <a href="../../claude-code/index.html">Claude Code</a>
+      <a href="../index.html" aria-current="page">Subagents</a>
+    </nav>
+  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-inner">
+        <h2 class="course-title">Введение в субагентов</h2>
+        <a class="course-kicker" href="../index.html">Обзор курса</a>
+        <p class="nav-group">Уроки</p>
+        <ul class="lesson-nav">
+          <li><a href="01-what-are-subagents.html"><span class="mark"></span>Что такое субагенты</a></li>
+          <li><a href="02-creating-a-subagent.html" aria-current="page"><span class="mark"></span>Как создать субагента</a></li>
+          <li><a href="03-designing-effective-subagents.html"><span class="mark"></span>Эффективные субагенты</a></li>
+          <li><a href="04-using-subagents-effectively.html"><span class="mark"></span>Когда нужны субагенты</a></li>
+        </ul>
+        <p class="nav-group">Экзамен</p>
+        <ul class="lesson-nav">
+          <li><a href="../quiz.html"><span class="mark"></span>Practice exam</a></li>
+        </ul>
+      </div>
+    </aside>
+    <main class="lesson">
+      <h1>Как создать субагента</h1>
+      <div class="rule"></div>
+      <p class="kicker">Чему научитесь</p>
+      <p class="estimate">Видео 3:40 и текст урока</p>
+      <p>К концу урока вы сможете:</p>
+      <ul class="objectives">
+        <li>создать собственного субагента и выбрать для него уровень (проекта или пользователя), инструменты, модель и цвет;</li>
+        <li>разобрать файл субагента: поля frontmatter <code>name</code>, <code>description</code>, <code>tools</code>, <code>model</code>, <code>color</code> и системный промпт в теле файла;</li>
+        <li>настроить описание так, чтобы Claude сам передавал задачи субагенту, и проверить субагента в деле.</li>
+      </ul>
+      <p class="duration">Видео и текст урока.</p>
+      <div class="video">
+        <iframe src="https://www.youtube.com/embed/arD6qEWa2Xc" title="Creating a subagent" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p>В Claude Code есть встроенные субагенты, но можно создавать и своих. Собственные субагенты специализируются на определённых задачах — например, проверяют код, пишут тесты или сверяют документацию. Их описывают в Markdown-файлах с YAML-frontmatter, которые сообщают Claude, когда использовать субагента и как ему себя вести.</p>
+
+      <h2>Создание субагента</h2>
+      <p>Проще всего создать субагента — попросить Claude написать его за вас. Опишите, какой субагент вам нужен и куда его сохранить, и Claude напишет файл. В видео и на первых трёх скриншотах урока показан мастер <code>/agents</code>, который убрали в Claude Code v2.1.198. Файл субагента и его поля не изменились, поэтому вы по-прежнему выбираете уровень, инструменты, модель и цвет. Укажите их в своей просьбе.</p>
+      <p>Сначала выберите уровень субагента. Файл в <code>.claude/agents/</code> — субагент уровня проекта, а файл в <code>~/.claude/agents/</code> — уровня пользователя:</p>
+      <ul>
+        <li><strong>уровень проекта</strong> — субагент доступен только в текущем проекте;</li>
+        <li><strong>уровень пользователя</strong> — субагент общий для всех проектов на вашем компьютере.</li>
+      </ul>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <p>По документации Claude Code (на ноябрь 2026), команда <code>/agents</code> больше не открывает мастер, а только напоминает: попросите Claude или сами создайте файл в <code>.claude/agents/</code> или <code>~/.claude/agents/</code>. Если субагенты с одинаковым <code>name</code> есть на обоих уровнях, используется субагент проекта.</p>
+      </aside>
+      <p>Затем можно выбрать способ создания. Конфигурацию можно написать вручную, но рекомендуемый путь — поручить её Claude. Просто опишите, что должен делать субагент, и Claude по вашему описанию составит имя, описание и системный промпт.</p>
+      <figure class="shot">
+        <img src="../../assets/subagents/sub02-01.png" alt="Мастер /agents в Claude Code v2.0.59: шаг «Create new agent — Creation method» с вариантами «Generate with Claude (recommended)» и «Manual configuration».">
+        <figcaption>Старый мастер <code>/agents</code>: выбор способа создания — сгенерировать с помощью Claude или настроить вручную.</figcaption>
+      </figure>
+
+      <h2>Настройка инструментов</h2>
+      <p>При создании можно настроить, к каким инструментам у субагента будет доступ. Инструменты делятся на категории:</p>
+      <ul>
+        <li>инструменты только для чтения (Read-only tools);</li>
+        <li>инструменты правки (Edit tools);</li>
+        <li>инструменты выполнения (Execution tools);</li>
+        <li>инструменты MCP (MCP tools);</li>
+        <li>прочие инструменты (Other tools).</li>
+      </ul>
+      <figure class="shot">
+        <img src="../../assets/subagents/sub02-02.png" alt="Шаг «Select tools» мастера /agents: флажки All tools, Read-only tools, Edit tools, Execution tools, MCP tools и Other tools, все отмечены, внизу надпись «All tools selected».">
+        <figcaption>Шаг выбора инструментов: категории включаются и выключаются флажками.</figcaption>
+      </figure>
+      <p>Подумайте, что субагенту действительно нужно. Рецензенту кода, скорее всего, не нужны инструменты правки: он должен читать и анализировать код, а не менять его. Но инструменты выполнения, возможно, стоит оставить, чтобы ему было проще находить ещё не закоммиченные изменения.</p>
+
+      <h2>Выбор модели и цвета</h2>
+      <p>Настроив инструменты, вы выбираете модель Claude, на которой будет работать субагент. Варианты такие:</p>
+      <ul>
+        <li><strong>Haiku</strong> — лучше всего подходит для быстрых и лёгких задач;</li>
+        <li><strong>Sonnet</strong> — золотая середина между скоростью и глубиной;</li>
+        <li><strong>Opus</strong> — лучше всего подходит для сложного анализа;</li>
+        <li><strong>Inherit</strong> — та же модель, на которой работает основной разговор.</li>
+      </ul>
+      <p>Наконец, вы выбираете цвет. Он отображается в интерфейсе, чтобы можно было сразу понять, какой субагент сейчас работает. Мелочь, но она помогает, когда у вас запущено несколько субагентов.</p>
+      <figure class="shot">
+        <img src="../../assets/subagents/sub02-03.png" alt="Шаг «Choose background color» мастера /agents: список цветов от Red до Cyan, выбран Cyan, внизу превью имени code-quality-reviewer на бирюзовом фоне.">
+        <figcaption>Шаг выбора цвета: превью показывает, как имя субагента будет выглядеть в интерфейсе.</figcaption>
+      </figure>
+
+      <h2>Файл конфигурации</h2>
+      <p>Когда субагент создан, его файл конфигурации сохраняется в папке выбранного уровня (для субагента уровня проекта обычно это <code>.claude/agents/your-agent-name.md</code>). Вот как выглядит типичная конфигурация субагента:</p>
+      <pre>---
+name: code-quality-reviewer
+description: Use this agent when you need to review recently written or modified code for quality, security, and best practice compliance.
+tools: Bash, Glob, Grep, Read, WebFetch, WebSearch
+model: sonnet
+color: purple
+---
+
+You are an expert code reviewer specializing in quality assurance, security best practices, and
+adherence to project standards. Your role is to thoroughly examine recently written or modified code
+and identify issues that could impact reliability, security, maintainability, or performance.</pre>
+      <p>Разберём каждое поле:</p>
+      <ul>
+        <li><strong><code>name</code></strong> — уникальный идентификатор субагента. По нему к субагенту и обращаются: просят Claude напрямую или пишут в сообщении <code>@agent-code-quality-reviewer</code>.</li>
+        <li><strong><code>description</code></strong> — определяет, когда Claude решит использовать субагента. Описание должно занимать одну строку (если нужны переносы, используйте экранированные символы новой строки <code>\n</code>). Сюда можно добавить примеры диалогов, чтобы Claude понимал, когда уместно передавать задачу субагенту.</li>
+        <li><strong><code>tools</code></strong> — список инструментов, доступных субагенту. Claude заполняет его по вашей просьбе, но вы можете в любой момент поправить список прямо здесь.</li>
+        <li><strong><code>model</code></strong> — какую модель Claude использовать: псевдоним (<code>sonnet</code>, <code>opus</code>, <code>haiku</code> или <code>fable</code>), полный ID модели, например <code>claude-sonnet-5</code>, или <code>inherit</code>.</li>
+        <li><strong><code>color</code></strong> — цвет в интерфейсе, по которому узнают субагента.</li>
+      </ul>
+
+      <h2>Системный промпт</h2>
+      <p>Тело Markdown-файла (всё, что ниже YAML-frontmatter) — это системный промпт. Здесь вы даёте субагенту инструкции: на чём сосредоточиться, как анализировать и как сообщать о найденном основному агенту.</p>
+      <p>От того, насколько хорошо написан системный промпт, зависит, принесёт ли субагент пользу или будет бить мимо цели. Укажите конкретно, что субагент должен искать и как оформлять результат.</p>
+
+      <h2>Чтобы Claude сам обращался к субагенту</h2>
+      <p>Если хотите, чтобы Claude передавал задачи субагенту без вашей явной просьбы, добавьте в поле <code>description</code> слово <strong>«proactively»</strong>. Например:</p>
+      <pre>description: Proactively suggest running this agent after major code changes...</pre>
+      <p>В описание можно добавить и примеры диалогов, чтобы Claude понимал, в каких именно ситуациях нужен этот субагент. Чем конкретнее примеры, тем лучше Claude понимает, когда передавать ему задачу.</p>
+      <aside class="callout">
+        <p class="callout-label">Пояснение</p>
+        <ul>
+          <li><strong>Необязательные поля.</strong> По документации Claude Code (на ноябрь 2026), обязательны только <code>name</code> и <code>description</code>. Без <code>tools</code> субагент получает все инструменты, доступные субагентам (отдельные можно запретить полем <code>disallowedTools</code>), а без <code>model</code> по умолчанию работает на модели запустившего его разговора.</li>
+          <li><strong>Только свой промпт.</strong> Тело файла заменяет системный промпт Claude Code, а не дописывается к нему: субагент получает этот промпт и сведения об окружении, но не инструкции Claude Code (файлы CLAUDE.md при этом загружаются).</li>
+          <li><strong>Автоматический выбор.</strong> Урок здесь строже документации: Claude передаёт задачу субагенту и без слова «proactively», если она подходит под <code>description</code> с учётом запроса и контекста, а фраза вроде «use proactively» лишь поощряет делегирование. Упоминание <code>@agent-code-quality-reviewer</code> велит Claude запустить субагента на эту задачу, а просьба словами оставляет решение за Claude.</li>
+          <li><strong>Длина описания.</strong> Описания всех субагентов расходуют контекст основного разговора, поэтому документация советует держать их короткими (примеры диалогов тоже занимают место), а подробности переносить в системный промпт: он загружается, только когда субагент запущен.</li>
+        </ul>
+      </aside>
+
+      <h2>Проверка субагента</h2>
+      <p>Создав субагента, испытайте его: внесите какие-нибудь изменения в код и попросите Claude их проверить. Если на момент запуска сессии папки <code>agents</code> ещё не было, сначала перезапустите Claude Code, чтобы он загрузил нового субагента.</p>
+      <figure class="shot">
+        <img src="../../assets/subagents/sub02-04.png" alt="Редактор кода с открытым проектом FastAPI (файл main.py), справа панель Claude Code с просьбой «Use the code-reviewer subagent to review my recent changes.».">
+        <figcaption>Проверка в деле: Claude просят проверить последние изменения с помощью субагента code-reviewer.</figcaption>
+      </figure>
+      <p>Если субагент не используется там, где вы этого ждёте, вернитесь и проверьте описание. Добавьте в него более конкретные примеры и сценарии, в которых нужен субагент: это помогает Claude понять, когда передавать ему работу.</p>
+
+      <h2>Дальше</h2>
+      <p>Следующий урок — «Эффективные субагенты»: как хорошее описание, заданный формат ответа, отчёт о препятствиях и ограничение инструментов помогают субагенту не блуждать и возвращать результат, которым может воспользоваться основной агент.</p>
+      <div class="pager">
+        <a class="ghost" href="01-what-are-subagents.html">Назад</a>
+        <a class="next" href="03-designing-effective-subagents.html">Дальше</a>
+      </div>
+
+      <p class="source">Оригинал урока: <a href="https://academy.claude.com/courses/introduction-to-subagents/creating-a-subagent" target="_blank" rel="noopener noreferrer">Creating a subagent</a>.</p>
+    </main>
+  </div>
+  <script src="../../js/sidebar.js"></script>
+</body>
+</html>

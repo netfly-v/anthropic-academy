@@ -16,13 +16,14 @@ index.html                 каталог курсов
 css/style.css              общие стили
 js/quiz.js                 движок экзаменов; js/<курс>-quiz.js — банки вопросов (window.QUIZ_BANK)
 js/sidebar.js              прокручивает меню к группе текущего урока (подключён на каждой странице с меню)
-assets/                    картинки из уроков (assets/<курс>/: api/, mcp/, claude-code/)
-tools/skilljar/            скрипт выгрузки уроков со Skilljar
+assets/                    картинки из уроков (assets/<курс>/)
+tools/skilljar/            скрипт выгрузки уроков со Skilljar (старый сайт, закрывается в начале декабря 2026)
+tools/academy/             скрипт выгрузки уроков с academy.claude.com (новый сайт Academy, вход не нужен)
 tools/site/                сборка: курс API — blocks.json + build_api_block.py; короткие курсы — courses/<курс>.json +
                            build_course.py; шапка сайта и каталог — site.json + site_nav.py; qa/ — промпты проверки и перевода
 ```
 
-Курсы: `skills/` — Introduction to agent skills; `api/` — Building with the Claude API; `mcp/` — Introduction to Model Context Protocol; `claude-code/` — Claude Code in Action (редакция 2026 года). Курсы API, MCP и Claude Code переведены целиком.
+Курсы: `skills/` — Introduction to agent skills; `api/` — Building with the Claude API; `mcp/` — Introduction to Model Context Protocol; `claude-code/` — Claude Code in Action (редакция 2026 года); с academy.claude.com: `subagents/` — Introduction to subagents, `tool-use/` — Tool use with the Messages API, `platform-101/` — Claude Platform 101, `claude-code-101/` — Claude Code 101. Все курсы, кроме skills, переведены целиком.
 
 Сборки нет: страницы — обычный HTML, открываются двойным щелчком. Для проверки: `python3 -m http.server` в корне.
 
@@ -39,6 +40,7 @@ tools/site/                сборка: курс API — blocks.json + build_ap
 4. **Картинки оригинала** — в `assets/`, на тех же местах, что в уроке: `<figure class="shot"><img …><figcaption>…</figcaption></figure>`.
 5. Ссылки «Смотреть урок на Skilljar» — `target="_blank" rel="noopener noreferrer"`.
 6. Квизы — на английском, в стиле сертификационного экзамена; результат только после Submit, сброс кнопкой «Очистить».
+   **С 18.11.2026 экзамены не пишем:** новые банки (базовые и сложные) — только по прямой просьбе владельца. Курсы `subagents/`, `tool-use/`, `platform-101/` и `claude-code-101/` вышли с одним базовым экзаменом; черновики их сложных банков (проверка не закончена) лежат вне репозитория, в `~/Projects/academy-dump/drafts-hard-quizzes/`. Правила ниже — на случай, если владелец попросит снова.
    Начиная с блока «RAG и поиск» и для всех блоков после него, а также для всех будущих курсов и блоков, у каждого блока два экзамена: **Old · базовый** (`js/api-<блок>-quiz.js`, текущий стиль, пишет Opus, как раньше) и **New · сложный** (`js/api-<блок>-hard-quiz.js`, поле `hard_quiz` блока в `blocks.json`; у коротких курсов один экзамен на курс — `js/<курс>-quiz.js` и `js/<курс>-hard-quiz.js`, поля `quiz`/`hard_quiz` в `tools/site/courses/<курс>.json`; сложный пишет модель Fable — если сессия не на Fable, субагент с `model: "fable"`; если лимит Fable исчерпан — Opus). Зачем: владелец сравнивает эффективность — старые банки угадывались по форме (правильный почти всегда «b» и самый длинный), а настоящий экзамен сложнее. Требования и контроль качества сложного банка — `tools/site/hard-quiz-requirements.md` (`quiz_check.py`, проверка «вслепую»; промпты проверяющих и переводчиков — `tools/site/qa/`). Старые банки не править и не перемешивать: это контрольная группа. Русский перевод `why` (показывается после Submit): у сложных банков — поле `why_ru`, у базовых — `js/why-ru/<банк>.js`, через `tools/site/why_ru.py`. Русский перевод условия: у сложных банков — поле `stem_ru`, у базовых — `js/stem-ru/<банк>.js` (`why_ru.py --field stem_ru`); кнопка «Показать перевод условия» активна только после выбора ответа, открытия запоминаются в попытке (`peeked`) и показываются в результате. Правила перевода условия — в `hard-quiz-requirements.md`.
 7. Шапку, сайдбар и навигацию «Назад/Дальше» менять согласованно во всех страницах курса. Ссылки на курсы в шапке и каталог на `index.html` собирает `tools/site/site_nav.py` из `tools/site/site.json` — руками их не править; новый курс сначала добавить в `site.json`.
 8. Перед пушем: проверить, что нет битых внутренних ссылок и картинок.
@@ -53,9 +55,9 @@ tools/site/                сборка: курс API — blocks.json + build_ap
 
 ## Как добавить короткий курс (для строителя)
 
-Короткий курс — разделы с уроками и одна пара экзаменов на весь курс (так сделаны `mcp/` и `claude-code/`).
+Короткий курс — разделы с уроками и экзамен на весь курс: пара Old/New у `mcp/` и `claude-code/`, один базовый у курсов с academy.claude.com (так сделаны все курсы, кроме `api/` и `skills/`). Поле `hard_quiz` в конфиге необязательно.
 
-1. Выгрузить курс: `~/.academy-browser/venv/bin/python tools/skilljar/skilljar.py dump <slug>` (субтитры YouTube скрипт снимает сам, нужен `youtube-transcript-api` в том же venv).
-2. Добавить курс в `tools/site/site.json` (папка, подпись в шапке, название, текст карточки) и написать `tools/site/courses/<курс>.json`: разделы и уроки (`file`, `nav`, `sid`, `orig`, `note`, `dur`), `quiz`, `hard_quiz`, `official` (официальный тест Skilljar — только ссылкой), `img_prefix`.
+1. Выгрузить курс: с academy.claude.com — `~/.academy-browser/venv/bin/python tools/academy/academy.py dump <slug>` (`tools/academy/README.md`); со Skilljar, пока он работает, — `tools/skilljar/skilljar.py dump <slug>`. Субтитры YouTube скрипты снимают сами (нужен `youtube-transcript-api` в том же venv).
+2. Добавить курс в `tools/site/site.json` (папка, подпись в шапке, название, текст карточки) и написать `tools/site/courses/<курс>.json`: разделы и уроки (`file`, `nav`, `sid`, `orig`, `note`, `dur`), `quiz`, `hard_quiz`, `official` (официальный тест — только ссылкой), `img_prefix`; у курса с academy.claude.com — `"platform": "academy"`, а `sid` урока — его slug.
 3. Картинки — в `assets/<курс>/<prefix>NN-KK.png` (NN — номер урока на сайте). Фрагменты `<main>` уроков — по правилам `tools/site/qa/TRANSLATE-LESSON.md`, файлы `NN.html` в отдельной папке.
 4. `python3 tools/site/build_course.py <курс> --frags <папка>` — создаст уроки, страницы экзаменов (если банки уже есть), страницу курса и обновит шапку всех страниц. Без аргументов пересобирает все короткие курсы; существующие уроки не перезаписываются (меняются только меню и пейджер).

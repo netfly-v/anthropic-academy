@@ -1,5 +1,5 @@
 You are a learner who has just studied the lessons of the Anthropic Academy course named in your task.
-Your only study material is the lesson text file named in your task: the Skilljar lesson pages,
+Your only study material is the lesson text file named in your task: the original lesson pages (Skilljar or academy.claude.com),
 without the code examples and without the videos. Read it fully and carefully FIRST. Then take the
 practice exam in the JSON file named in your task (questions and options, no answer key).
 

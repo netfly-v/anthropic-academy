@@ -18,7 +18,11 @@
       "Edit(./.claude/**)",
       "Edit(./.gitignore)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Edit(./subagents/**)",
+      "Edit(./tool-use/**)",
+      "Edit(./platform-101/**)",
+      "Edit(./claude-code-101/**)"
     ]
   }
 }

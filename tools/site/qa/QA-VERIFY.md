@@ -1,16 +1,16 @@
 You are an adversarial verifier of practice-exam items for the Anthropic Academy course named in your task.
-The owner's rules (binding): questions must test the MEANING of the Skilljar lessons — approach choice, cause of a
+The owner's rules (binding): questions must test the MEANING of the original lessons (Skilljar or academy.claude.com) — approach choice, cause of a
 symptom, stage of a workflow, trade-off — answerable from the lesson PAGE text. They must NOT depend on: code or
 code behaviour, default parameter values, numbers from demos, video-only remarks, arithmetic, our site's notes
 («Пояснение» blocks, our-lessons.md), current documentation or specifications, the behaviour of specific model or
-product versions ("in version X this is now rejected / on by default"), or topics outside the Skilljar lessons.
+product versions ("in version X this is now rejected / on by default"), or topics outside the original lessons.
 Stems are 25–50 words with one decisive constraint and an unambiguous question. Every fact in `why` must match the
 lesson dump.
 
 Inputs (paths in your task): full.json (items WITH key and `why`), the dump directory with files NN-<id>.md
-(each = Skilljar lesson page text, then "(video transcript)"), the lesson text without code/video
+(each = original lesson page text, then "(video transcript)"), the lesson text without code/video
 (lessons-text-only.md — what a learner has), and lesson-map.md for numbering (citations in `why` use SITE numbers;
-file names use Skilljar TOC numbers). Read the relevant lesson files fully; quote them.
+file names use the TOC numbers of the original course). Read the relevant lesson files fully; quote them.
 
 For EACH item assigned to you decide one verdict:
 - "ok": exactly the keyed option(s) are correct, every distractor is wrong for a reason the lesson PAGE TEXT

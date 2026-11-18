@@ -12,6 +12,9 @@ DIR — папка с фрагментами <main> уроков: файл NN.ht
 страница экзамена создаётся, только когда есть файл банка. В конце шапка всех страниц сайта и каталог
 пересобираются через site_nav.py.
 
+Курс с полем "platform": "academy" выгружен с academy.claude.com (tools/academy): ссылки на уроки ведут туда,
+sid урока — его slug. Без поля — Skilljar, как у первых курсов.
+
 --seed-from-api берёт урок курса API, указанный в поле from_api, и пишет черновик фрагмента: ссылка на видео
 ведёт на урок нового курса, картинки копируются в assets/<курс>/. Пользоваться только после сверки дампов:
 текст, субтитры и картинки урока в обоих курсах должны совпадать. Черновик потом правится вручную
@@ -50,8 +53,18 @@ def sub1(pattern, repl, text, what):
     return new
 
 
+def academy(c):
+    return c.get("platform") == "academy"
+
+
+def course_url(c, sid=None):
+    if academy(c):
+        return f'https://academy.claude.com/courses/{c["course"]}' + (f"/{sid}" if sid else "")
+    return f'https://anthropic.skilljar.com/{c["course"]}' + (f"/{sid}" if sid else "")
+
+
 def link(c, sid, title):
-    return f'<a href="https://anthropic.skilljar.com/{c["course"]}/{sid}" target="_blank" rel="noopener noreferrer">{title}</a>'
+    return f'<a href="{course_url(c, sid)}" target="_blank" rel="noopener noreferrer">{title}</a>'
 
 
 def lessons(c):
@@ -95,7 +108,7 @@ def lint(c, l, frag):
     assert "<h1>" in frag, f'{l["file"]}: no <h1>'
     assert 'class="pager"' not in frag, f'{l["file"]}: pager inside the fragment'
     assert "assets/api/" not in frag, f'{l["file"]}: picture from assets/api/'
-    for slug in re.findall(r"skilljar\.com/([a-z0-9-]+)/", frag):
+    for slug in re.findall(r"skilljar\.com/([a-z0-9-]+)/", frag) + re.findall(r"academy\.claude\.com/courses/([a-z0-9-]+)", frag):
         assert slug == c["course"] or l.get("allow_cross"), f'{l["file"]}: link to another course ({slug})'
     for sid in re.findall(r'class="video-link" href="https://anthropic\.skilljar\.com/[a-z0-9-]+/(\d+)"', frag):
         assert sid == l["sid"], f'{l["file"]}: video link to lesson {sid}, expected {l["sid"]}'
@@ -213,9 +226,10 @@ def build_index(c):
     off = c.get("official", [])
     if off:
         links = ", ".join(f"{link(c, o['id'], o['title'])} ({o['questions_text']})" for o in off)
-        main += (f"      <p>В оригинале в конце курса — официальный тест Skilljar {links}. Он проходится на Skilljar и "
+        where = "Academy" if academy(c) else "Skilljar"
+        main += (f"      <p>В оригинале в конце курса — официальный тест {where} {links}. Он проходится на {where} и "
                  f"засчитывается в курс; наш Practice exam — отдельный тренировочный тест.{c.get('official_note', '')}</p>\n")
-    main += (f'      <p class="source">Оригинал курса: <a href="https://anthropic.skilljar.com/{c["course"]}">'
+    main += (f'      <p class="source">Оригинал курса: <a href="{course_url(c)}" target="_blank" rel="noopener noreferrer">'
              f'{c["orig_title"]}</a>.</p>\n')
     t = sub1(MAIN_RE, main, t, "main")
     page.parent.mkdir(parents=True, exist_ok=True)

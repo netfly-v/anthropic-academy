@@ -594,6 +594,11 @@ p code, li code, figcaption code, p a, li a {
   .sidebar-inner { position: static; max-height: none; overflow: visible; }
   .lesson { padding: 1.5rem 1.1rem 3rem; }
   .header-nav { gap: 0.35rem 0.9rem; }
+  /* Ссылок на курсы в шапке много: на узком экране она занимает несколько строк и не должна висеть сверху. */
+  .site-header { position: static; }
+  /* Широкая таблица прокручивается сама, а не растягивает страницу. */
+  .compare { display: block; overflow-x: auto; font-size: 0.88rem; }
+  .compare th, .compare td { padding: 0.5rem 0.45rem; }
 }
 
 .quiz-switch {
